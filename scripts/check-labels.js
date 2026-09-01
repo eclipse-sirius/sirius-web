@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,21 +14,27 @@ const event = process.env.GITHUB_EVENT;
 const body = JSON.parse(event);
 
 const hasOnePriorityLabel =
-  body.pull_request.labels.filter((label) => label.name.startsWith("priority:"))
-    .length === 1;
+    body.pull_request.labels.filter((label) => label.name.startsWith("priority:"))
+        .length === 1;
 const hasOneReviewLabel =
-  body.pull_request.labels.filter((label) =>
-    label.name.startsWith("pr: to review")
-  ).length === 1;
+    body.pull_request.labels.filter((label) =>
+        label.name.startsWith("pr: to review")
+    ).length === 1;
+const hasOnlyAllowedLabels = body.pull_request.labels.map((label) => label.name).every(
+    (label) =>
+        label.startsWith("priority:") ||
+        label.startsWith("pr: to review") ||
+        label === "ci: run e2e"
+);
 
 if (!hasOnePriorityLabel || !hasOneReviewLabel) {
   console.log(
-    "The pull request is either lacking the priority or the pr label"
+      "The pull request is either lacking the priority or the pr label"
   );
   process.exit(1);
-} else if (body.pull_request.labels.length > 2) {
+} else if (!hasOnlyAllowedLabels) {
   console.log(
-    "The pull request contains useless labels, please use priority and pr labels for pull requests"
+      "The pull request contains useless labels, please use priority and pr labels for pull requests"
   );
   process.exit(1);
 }
