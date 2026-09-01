@@ -36,16 +36,17 @@ export const useTreeStateContainer = (
 
   const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
     setState((prevState) => {
-      if (state.activeTreeDescriptionId) {
+      if (prevState.activeTreeDescriptionId) {
+        const activeTreeDescriptionId: string = prevState.activeTreeDescriptionId;
         return {
           ...prevState,
           expanded: {
             ...prevState.expanded,
-            [state.activeTreeDescriptionId]: newExpandedIds,
+            [activeTreeDescriptionId]: newExpandedIds,
           },
           maxDepth: {
             ...prevState.maxDepth,
-            [state.activeTreeDescriptionId]: Math.max(newMaxDepth, prevState.maxDepth[state.activeTreeDescriptionId]),
+            [activeTreeDescriptionId]: Math.max(newMaxDepth, prevState.maxDepth[activeTreeDescriptionId] ?? 1),
           },
         };
       } else {
@@ -65,7 +66,7 @@ export const useTreeStateContainer = (
 
       setState((prevState) => ({
         ...prevState,
-        activeTreeDescriptionId: state.activeTreeDescriptionId ?? explorerDescriptions[0].id,
+        activeTreeDescriptionId: prevState.activeTreeDescriptionId ?? explorerDescriptions[0].id,
         expanded: expandedInitiated,
         maxDepth: maxDepthInitiated,
       }));
@@ -74,8 +75,8 @@ export const useTreeStateContainer = (
 
   return {
     activeTreeDescriptionId: state.activeTreeDescriptionId,
-    expanded: state.activeTreeDescriptionId ? state.expanded[state.activeTreeDescriptionId] : [],
-    maxDepth: state.activeTreeDescriptionId ? state.maxDepth[state.activeTreeDescriptionId] : 1,
+    expanded: state.activeTreeDescriptionId ? state.expanded[state.activeTreeDescriptionId] ?? [] : [],
+    maxDepth: state.activeTreeDescriptionId ? state.maxDepth[state.activeTreeDescriptionId] ?? 1 : 1,
     setActiveDescriptionId,
     onExpandedElementChange,
   };
