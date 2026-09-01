@@ -36,4 +36,4 @@ End users simply point their browsers to the deployed endpoint, download the fro
 
 Need to understand how to extend or embed the platform instead of using the stock jar?
 See xref:developer-guide:extend.adoc[] for the supported strategies (custom entry points, additional Spring Boot jars, or embedding Sirius Components inside another host application).
-For a deeper look at how the backend itself is structured, refer to xref:developer-guide:architecture.adoc[].
+For a deeper look at how the backend itself is structured, refer to xref:developer-guide:backend/architecture.adoc[].

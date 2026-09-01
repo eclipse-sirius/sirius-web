@@ -1,0 +1,178 @@
+@startuml
+<style>
+legend {
+  BackGroundColor transparent
+}
+</style>
+
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam ArrowColor #4A5568
+skinparam activityBackgroundColor #EDF2F7
+skinparam activityBorderColor #4A5568
+skinparam noteBackgroundColor #FFF7D6
+
+rectangle "<img:./diagrams/Record.svg{scale=0.5}> CreateProjectInput" as createProjectInput #D6EAF8
+rectangle "<img:./diagrams/Controller.svg{scale=0.5}> MutationCreateProjectDataFetcher" as mutationCreateProjectDataFetcher
+rectangle "<img:./diagrams/Controller.svg{scale=0.5}>  ProjectRestController" as projectRestController
+rectangle "<img:./diagrams/ApplicationService.svg{scale=0.5}> ProjectCreationApplicationService" as projectCreationApplicationService #D5F5E3
+rectangle "<img:./diagrams/Service.svg{scale=0.5}> ProjectCreationService" as projectCreationService
+rectangle "<img:./diagrams/Class.svg{scale=0.5}> Project" as project #FCF3CF
+rectangle "<img:./diagrams/Event.svg{scale=0.5}> ProjectCreatedEvent" as projectCreatedEvent #FADBD8
+
+rectangle "<img:./diagrams/ApplicationService.svg{scale=0.5}> SemanticDataCreator" as semanticDataCreator #D5F5E3
+rectangle "<img:./diagrams/Service.svg{scale=0.5}> SemanticDataCreationService" as semanticDataCreationService
+rectangle "<img:./diagrams/Class.svg{scale=0.5}> SemanticData" as semanticData #FCF3CF
+rectangle "<img:./diagrams/Event.svg{scale=0.5}> SemanticDataCreatedEvent" as semanticDataCreatedEvent #FADBD8
+
+rectangle "<img:./diagrams/ApplicationService.svg{scale=0.5}> ProjectSemanticDataCreator" as projectSemanticDataCreator #D5F5E3
+rectangle "<img:./diagrams/Service.svg{scale=0.5}> ProjectSemanticDataCreationService" as projectSemanticDataCreationService
+rectangle "<img:./diagrams/Class.svg{scale=0.5}> ProjectSemanticData" as projectSemanticData #FCF3CF
+rectangle "<img:./diagrams/Event.svg{scale=0.5}> ProjectSemanticDataCreatedEvent" as projectSemanticDataCreatedEvent #FADBD8
+
+rectangle "<img:./diagrams/ApplicationService.svg{scale=0.5}> ProjectSemanticDataInitializer" as projectSemanticDataInitializer #D5F5E3
+rectangle "<img:./diagrams/Service.svg{scale=0.5}> ISemanticDataInitializer" as semanticDataInitializer
+rectangle "<img:./diagrams/Class.svg{scale=0.5}> SemanticData" as semanticDataWithContentToUpdate #FCF3CF
+rectangle "<img:./diagrams/Event.svg{scale=0.5}> SemanticDataUpdatedEvent" as semanticDataUpdatedEvent #FADBD8
+
+rectangle "<img:./diagrams/ApplicationService.svg{scale=0.5}> StudioRepresentationInitializer" as studioRepresentationInitializer #D5F5E3
+
+rectangle "<img:./diagrams/Service.svg{scale=0.5}> IRepresentationMetadataPersistenceService" as representationMetadataPersistenceService
+rectangle "<img:./diagrams/Service.svg{scale=0.5}> IRepresentationPersistenceService" as representationPersistenceService
+rectangle "<img:./diagrams/Service.svg{scale=0.5}> IRepresentationContentCreationService" as representationContentCreationService
+
+rectangle "<img:./diagrams/Class.svg{scale=0.5}> RepresentationMetadata" as representationMetadata #FCF3CF
+rectangle "<img:./diagrams/Event.svg{scale=0.5}> RepresentationMetadataCreatedEvent" as representationMetadataCreated #FADBD8
+rectangle "<img:./diagrams/Class.svg{scale=0.5}> RepresentationContent" as representationContent #FCF3CF
+rectangle "<img:./diagrams/Event.svg{scale=0.5}> RepresentationContentCreatedEvent" as representationContentCreated #FADBD8
+
+rectangle "<img:./diagrams/ApplicationService.svg{scale=0.5}> ProjectLibrariesImporter" as projectLibrariesImporter #D5F5E3
+rectangle "<img:./diagrams/Service.svg{scale=0.5}> SemanticDataUpdateService" as semanticDataUpdateService
+rectangle "<img:./diagrams/Class.svg{scale=0.5}> SemanticData" as semanticDataWithDependenciesToUpdate #FCF3CF
+rectangle "<img:./diagrams/Event.svg{scale=0.5}> SemanticDataUpdatedEvent" as semanticDataUpdatedEventDependenciesUpdated #FADBD8
+
+
+mutationCreateProjectDataFetcher --> createProjectInput
+projectRestController --> createProjectInput
+createProjectInput --> projectCreationApplicationService
+projectCreationApplicationService --> projectCreationService
+projectCreationService --> project
+project --> projectCreatedEvent : emits
+
+projectCreatedEvent --> semanticDataCreator : is listened by after commit
+semanticDataCreator --> semanticDataCreationService
+semanticDataCreationService --> semanticData
+semanticData --> semanticDataCreatedEvent : emits
+
+semanticDataCreatedEvent --> projectSemanticDataCreator : is listened by after commit
+projectSemanticDataCreator --> projectSemanticDataCreationService
+projectSemanticDataCreationService --> projectSemanticData
+projectSemanticData --> projectSemanticDataCreatedEvent : emits
+
+projectSemanticDataCreatedEvent --> projectSemanticDataInitializer
+projectSemanticDataInitializer --> semanticDataInitializer
+semanticDataInitializer --> semanticDataWithContentToUpdate
+semanticDataWithContentToUpdate --> semanticDataUpdatedEvent : emits
+
+semanticDataUpdatedEvent ..> studioRepresentationInitializer : studio template only
+studioRepresentationInitializer --> representationMetadataPersistenceService 
+representationMetadataPersistenceService  --> representationMetadata
+studioRepresentationInitializer --> representationPersistenceService 
+representationPersistenceService  --> representationContentCreationService
+representationContentCreationService --> representationContent
+representationMetadata --> representationMetadataCreated : emits
+representationContent --> representationContentCreated : emits
+
+semanticDataCreatedEvent --> projectLibrariesImporter :  is listened by after commit
+projectLibrariesImporter --> semanticDataUpdateService
+semanticDataUpdateService --> semanticDataWithDependenciesToUpdate
+semanticDataWithDependenciesToUpdate --> semanticDataUpdatedEventDependenciesUpdated : emits
+
+note right of projectCreationApplicationService
+Perform the resolution of the project template.
+end note
+
+note right of projectCreationService
+Sanitize and validate the project name then create and save the Project aggregate root.
+end note
+
+note right of projectCreatedEvent
+The transaction for the creation of the project ends here.
+This event has been caused by the CreateProjectInput.
+end note
+
+note right of semanticDataCreator
+Transactional event listener creating a new transaction.
+Used to initialize the semantic data of the project to an empty state.
+end note
+
+note right of semanticDataCreationService
+Create and save the SemanticData aggregate root
+end note
+
+note right of semanticDataCreatedEvent
+The transaction for the creation of the blank semantic data ends here.
+This event has been caused by the ProjectCreatedEvent.
+The semantic data have not been linked to the project yet.
+end note
+
+note left of projectSemanticDataCreator
+Transactional event listener creating a new transaction.
+Used to link the project to its semantic data.
+end note
+
+note left of projectSemanticDataCreationService
+Create and save ProjectSemanticData
+end note
+
+note left of projectSemanticDataCreatedEvent
+The transaction for the creation of the link between a project and its semantic data ends here.
+This event has been caused by the SemanticDataCreatedEvent.
+After this event, the project can, for the first time, be considered usable
+end note
+
+note left of projectSemanticDataInitializer
+Transactional event listener creating a new transaction.
+Used to initialize the project with meaningful data.
+Perform the resolution of the semantic data initializer for the template.
+end note
+
+note left of semanticDataInitializer
+Initialize the semantic data depending on the template selected.
+After that, the semantic data are persisted with the proper content.
+end note
+
+note left of semanticDataUpdatedEvent
+The transaction for the initialization of the semantic data ends here.
+This event has been caused by the ProjectSemanticDataCreatedEvent.
+end note
+
+note left of studioRepresentationInitializer
+Transactional event listener creating a new transaction.
+Used to create some initial representation(s) for the studio template.
+end note
+
+note right of projectLibrariesImporter
+Transactional event listener creating a new transaction.
+Used to add the relevant libraries as dependencies of the semantic data.
+end note
+
+note right of semanticDataUpdateService
+Used to add dependencies to the semantic data.
+end note
+
+note right of semanticDataUpdatedEventDependenciesUpdated
+The transaction for the addition of the dependencies ends here.
+This event has been caused by the SemanticDataCreatedEvent.
+end note
+
+legend top right
+<#transparent,#transparent>| <img:./diagrams/Controller.svg{scale=0.5}> | Controller |
+| <img:./diagrams/Record.svg{scale=0.5}> | Input |
+| <img:./diagrams/ApplicationService.svg{scale=0.5}> | Application service |
+| <img:./diagrams/Service.svg{scale=0.5}> | Domain service |
+| <img:./diagrams/Class.svg{scale=0.5}> | Aggregate root |
+| <img:./diagrams/Event.svg{scale=0.5}> | Event |
+end legend
+
+@enduml

@@ -1,4 +1,4 @@
-= Backend architecture
+= Architecture
 
 {product} is a modular monolith organised along domain-driven design (DDD) principles so that contributors can extend or replace capabilities without forking the entire stack.
 This page summarises the structure of the backend modules and the conventions followed inside each layer.
