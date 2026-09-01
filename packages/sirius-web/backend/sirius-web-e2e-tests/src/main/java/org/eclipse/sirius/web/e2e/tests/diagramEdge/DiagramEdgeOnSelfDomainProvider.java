@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
  *
  * @author frouene
  */
-@Profile("test")
+@Profile("e2e")
 @Service
 public class DiagramEdgeOnSelfDomainProvider implements IDomainProvider {
 

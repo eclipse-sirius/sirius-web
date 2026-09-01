@@ -52,7 +52,7 @@ import org.springframework.stereotype.Service;
  *
  * @author mcharfadi
  */
-@Profile("test")
+@Profile("e2e")
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramEdgeViewProvider implements IE2EViewProvider {
