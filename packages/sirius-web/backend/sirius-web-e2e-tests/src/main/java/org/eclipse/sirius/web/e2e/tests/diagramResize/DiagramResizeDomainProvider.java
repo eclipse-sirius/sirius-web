@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
  *
  * @author mcharfadi
  */
-@Profile("test")
+@Profile("e2e")
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramResizeDomainProvider implements IDomainProvider {
