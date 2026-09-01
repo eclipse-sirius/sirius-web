@@ -38,8 +38,6 @@ public class ReferenceWidgetDescriptionItemProviderSpec extends ReferenceWidgetD
 
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createSetValue()));
