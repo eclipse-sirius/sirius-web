@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
  *
  * @author gdaniel
  */
-@Profile("test")
+@Profile("e2e")
 @Service
 public class PapayaProjectAdditionalPageDescriptionProvider implements IPageDescriptionProvider {
 

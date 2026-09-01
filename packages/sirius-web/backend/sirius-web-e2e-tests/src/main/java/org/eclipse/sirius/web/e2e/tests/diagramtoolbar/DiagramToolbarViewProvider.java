@@ -43,7 +43,7 @@ import org.springframework.stereotype.Service;
  *
  * @author tgiraudet
  */
-@Profile("test")
+@Profile("e2e")
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramToolbarViewProvider implements IE2EViewProvider {

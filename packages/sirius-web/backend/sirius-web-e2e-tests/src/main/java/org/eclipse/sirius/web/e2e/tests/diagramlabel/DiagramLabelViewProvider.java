@@ -48,7 +48,7 @@ import org.springframework.stereotype.Service;
  *
  * @author gcoutable
  */
-@Profile("test")
+@Profile("e2e")
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramLabelViewProvider implements IE2EViewProvider {

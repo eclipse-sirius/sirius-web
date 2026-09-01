@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
  *
  * @author tgiraudet
  */
-@Profile("test")
+@Profile("e2e")
 @Service
 public class DiagramToolbarDomainProvider implements IDomainProvider {
 
