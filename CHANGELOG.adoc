@@ -87,6 +87,7 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6851[#6851] [diagram] Fix global selection so it targets the last selected element.
 - https://github.com/eclipse-sirius/sirius-web/issues/6857[#6857] [diagram] Fix an issue where a tool could be executed in a readonly diagram using a tool keyboard shortcut.
 - https://github.com/eclipse-sirius/sirius-web/issues/6871[#6871] [diagram] Fix an issue where no remaining node was marked as last selected after unselecting multiple nodes with the lasso.
+- https://github.com/eclipse-sirius/sirius-web/issues/6893[#6893] [workbench] Fix an issue that prevented the workbench from being shared.
 
 
 === New Features
