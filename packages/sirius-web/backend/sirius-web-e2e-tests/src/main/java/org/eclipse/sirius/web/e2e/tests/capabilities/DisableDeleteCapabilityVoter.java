@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
  *
  * @author gcoutable
  */
-@Profile("test")
+@Profile("e2e")
 @Service
 public class DisableDeleteCapabilityVoter implements ICapabilityVoter {
 

@@ -43,7 +43,7 @@ import org.springframework.stereotype.Service;
  *
  * @author frouene
  */
-@Profile("test")
+@Profile("e2e")
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramDnDViewProvider implements IE2EViewProvider {
