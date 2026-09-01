@@ -75,6 +75,7 @@ The classes `Module`, `Window`, `Failure`, `IResult`, `Success`, and `AbstractVa
 - https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [core] Improve the consistency of the variables used.
 For that, some calls to `VariableManager.SELF` have thus been replaced by `RepresentationVariables.SELF.name()` and calls to `IEditingContext.EDITING_CONTEXT` have been replaced by `CoreVariables.EDITING_CONTEXT.name()`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [deck] Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
+- [doc] Update the backend documentation and add a first schema of the lifecycle of the backend with the creation of a project.
 
 
 

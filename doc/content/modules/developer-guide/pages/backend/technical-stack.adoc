@@ -1,4 +1,4 @@
-= Backend stack
+= Technical stack
 
 This page summarises the reusable backend components shipped in the monorepo ({product} + Sirius Components) and how they fit together when you embed them in another Spring Boot application.
 
