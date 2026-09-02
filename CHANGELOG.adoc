@@ -91,7 +91,7 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6871[#6871] [diagram] Fix an issue where no remaining node was marked as last selected after unselecting multiple nodes with the lasso.
 - https://github.com/eclipse-sirius/sirius-web/issues/6893[#6893] [workbench] Fix an issue that prevented the workbench from being shared.
 - https://github.com/eclipse-sirius/sirius-web/issues/6895[#6895] [tree] Fix an issue where the impact analysis modal was not opening after updating a library with the tree item palette.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6906[#6906] [sirius-web] Remove stray semicolon from the library view.
 
 === New Features
 

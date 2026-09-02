@@ -88,7 +88,6 @@ export const DisplayLibraryView = () => {
           </RepresentationPathContext.Provider>
         </LibraryContext.Provider>
       ) : null}
-      ;
     </div>
   );
 };
