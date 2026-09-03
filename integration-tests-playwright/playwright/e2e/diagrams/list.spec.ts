@@ -228,7 +228,7 @@ test.describe('diagram - list', () => {
 
     const nodeSizeBefore = await node.getReactFlowSize();
     await node.click();
-    await node.resize({ height: -50, width: -50 });
+    await node.resize({ height: 0, width: -50 }, 'right.line');
     const nodeSizeAfter = await node.getReactFlowSize();
     expect(nodeSizeAfter.width).toBeLessThan(nodeSizeBefore.width);
 

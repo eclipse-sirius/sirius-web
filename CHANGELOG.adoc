@@ -93,6 +93,7 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6895[#6895] [tree] Fix an issue where the impact analysis modal was not opening after updating a library with the tree item palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6906[#6906] [sirius-web] Remove stray semicolon from the library view.
 
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6540[#6540] [diagram] Use the palette to render connector tools
