@@ -10,19 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.images.domain.services.api;
 
-import java.io.InputStream;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.core.domain.results.IResult;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
+import org.eclipse.sirius.web.images.domain.Image;
 
 /**
- * Used to create images.
+ * Used to find images.
  *
  * @author sbegaudeau
  */
-public interface IImageCreationService {
-    IResult<Image> createImage(ICause cause, String label, String fileName, InputStream inputStream);
+public interface IImageSearchService {
+
+    Optional<Image> findById(UUID id);
+
+    boolean existsByLabel(String label);
+
+    List<Image> findAll();
 }

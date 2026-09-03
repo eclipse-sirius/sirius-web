@@ -69,6 +69,7 @@
 		<module>datatree/backend</module>
 		<module>starters/backend</module>
 		<module>papaya/backend</module>
+		<module>images/backend</module>
 		<module>library/backend</module>
 		<module>sirius-web/backend</module>
 		<module>releng/backend</module>
