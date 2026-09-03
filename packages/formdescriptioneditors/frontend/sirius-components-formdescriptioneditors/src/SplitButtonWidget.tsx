@@ -14,8 +14,8 @@ import { useMutation } from '@apollo/client/react';
 import {
   ServerContext,
   ServerContextValue,
-  Toast,
   getCSSColor,
+  useMultiToast,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import { GQLButton, GQLButtonStyle, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
@@ -115,7 +115,6 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
     selected: false,
     open: false,
     selectedIndex: 0,
-    message: '',
     actionsButtonLabel: [],
     actionsImageURL: [],
     actionsIsValidImage: [],
@@ -128,6 +127,8 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
   const buttonGroupRef = useRef<HTMLDivElement>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
 
+  const { addErrorMessage, addMessages } = useMultiToast();
+
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,
     GQLAddWidgetMutationVariables
@@ -136,16 +137,12 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
   useEffect(() => {
     if (!addWidgetLoading) {
       if (addWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: addWidgetError.message };
-        });
+        addErrorMessage(addWidgetError.message);
       }
       if (addWidgetData) {
         const { addWidget } = addWidgetData;
         if (isErrorPayload(addWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: addWidget.message };
-          });
+          addMessages(addWidget.messages);
         }
       }
     }
@@ -361,17 +358,6 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
         onDrop={readOnly ? noop : handleDrop}>
         <Typography variant="body1">{'Drag and drop a button widget here'}</Typography>
       </div>
-      {state.message ? (
-        <Toast
-          open
-          message={state.message}
-          onClose={() =>
-            setState((prevState) => {
-              return { ...prevState, message: null };
-            })
-          }
-        />
-      ) : null}
     </div>
   );
 };

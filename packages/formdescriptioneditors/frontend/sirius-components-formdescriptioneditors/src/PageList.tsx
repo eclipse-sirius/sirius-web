@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast, useDeletionConfirmationDialog, useSelection } from '@eclipse-sirius/sirius-components-core';
+import {
+  Selection,
+  useDeletionConfirmationDialog,
+  useMultiToast,
+  useSelection,
+} from '@eclipse-sirius/sirius-components-core';
 import { GQLFlexboxContainer, GQLPage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -114,11 +119,11 @@ export const PageList = () => {
 
   const { pages } = formDescriptionEditor;
 
-  const [state, setState] = useState<PageListState>({ message: null, selectedPage: pages[0] ?? null, pages });
-  const { message } = state;
+  const [state, setState] = useState<PageListState>({ selectedPage: pages[0] ?? null, pages });
 
   const { selection, setSelection } = useSelection();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
     const entry = selection.entries.at(0);
@@ -176,16 +181,12 @@ export const PageList = () => {
   useEffect(() => {
     if (!addPageLoading) {
       if (addPageError) {
-        setState((prevState) => {
-          return { ...prevState, message: addPageError.message };
-        });
+        addErrorMessage(addPageError.message);
       }
       if (addPageData) {
         const { addPage } = addPageData;
         if (isErrorPayload(addPage)) {
-          setState((prevState) => {
-            return { ...prevState, message: addPage.message };
-          });
+          addMessages(addPage.messages);
         }
       }
     }
@@ -199,16 +200,12 @@ export const PageList = () => {
   useEffect(() => {
     if (!movePageLoading) {
       if (movePageError) {
-        setState((prevState) => {
-          return { ...prevState, message: movePageError.message };
-        });
+        addErrorMessage(movePageError.message);
       }
       if (movePageData) {
         const { movePage } = movePageData;
         if (isErrorPayload(movePage)) {
-          setState((prevState) => {
-            return { ...prevState, message: movePage.message };
-          });
+          addMessages(movePage.messages);
         }
       }
     }
@@ -222,16 +219,12 @@ export const PageList = () => {
   useEffect(() => {
     if (!deletePageLoading) {
       if (deletePageError) {
-        setState((prevState) => {
-          return { ...prevState, message: deletePageError.message };
-        });
+        addErrorMessage(deletePageError.message);
       }
       if (deletePageData) {
         const { deletePage } = deletePageData;
         if (isErrorPayload(deletePage)) {
-          setState((prevState) => {
-            return { ...prevState, message: deletePage.message };
-          });
+          addMessages(deletePage.messages);
         }
       }
     }
@@ -420,17 +413,6 @@ export const PageList = () => {
         {selectedPageToolbar}
       </div>
       {state.selectedPage ? <Page page={state.selectedPage} /> : null}
-      {message ? (
-        <Toast
-          open
-          message={message}
-          onClose={() =>
-            setState((prevState) => {
-              return { ...prevState, message: null };
-            })
-          }
-        />
-      ) : null}
     </div>
   );
 };

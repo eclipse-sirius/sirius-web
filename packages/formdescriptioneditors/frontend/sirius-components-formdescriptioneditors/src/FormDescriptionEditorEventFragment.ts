@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,10 @@ export const formDescriptionEditorEventSubscription = `
       __typename
       ... on ErrorPayload {
         id
-        message
+        messages {
+          body
+          level
+        }
       }
       ... on FormDescriptionEditorRefreshedEventPayload {
         id
@@ -118,9 +121,17 @@ export const addGroupMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -132,9 +143,17 @@ export const deleteGroupMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -146,9 +165,17 @@ export const moveGroupMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -160,9 +187,17 @@ export const addWidgetMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -174,9 +209,17 @@ export const deleteWidgetMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -188,9 +231,17 @@ export const moveWidgetMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -202,9 +253,17 @@ export const addToolbarActionMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -216,9 +275,17 @@ export const deleteToolbarActionMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -230,9 +297,17 @@ export const moveToolbarActionMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -244,9 +319,17 @@ export const addPageMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -258,9 +341,17 @@ export const movePageMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -272,9 +363,17 @@ export const deletePageMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
