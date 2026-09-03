@@ -2,27 +2,78 @@
 
 == Key highlights
 
--
+- Align the capabilities of the new tree palette with the existing diagram palette.
+- Add the ability to customize the palette computed in a diagram or tree thanks to various post processors.
+
 
 == Breaking changes
 
-- All palette contributed tools from sirius web (the list of tools is available on the documentation) expects to have their label declared on the backend side.
+- Frontend packages published from `packages/*/frontend/` do not provide UMD bundles anymore.
+They are now distributed as ES modules and CommonJS bundles only.
+Downstream consumers relying on the previous `.umd.js` artifacts or on direct browser script-tag usage must migrate to a bundler-based integration or consume the new CommonJS entry points instead.
+- Remove the file `reset.css` from the Sirius Web sample project and rely entirely on MUI's `CssBaseline`.
+As a result, we have updated some of our components to deactivate at some very specific locations the default `outline` of some selected elements.
+We have also removed the `listStyle`, `margin` and `padding` of some `ul` used in specific locations.
+We should probably not rely on `ul` entirely in the future.
+Downstream projects are advised to just rely on MUI's `CssBaseline` and perform the relevant customization locally in their components instead.
+- Add a dedicated package for markdown edition and rendering.
+As such a new dependency is required to run Sirius Web, the package `sirius-components-markdown` which mainly depends on Lexical npm packages.
+Downstream projects using this sirius-components-markdown package will thus have to depend on `lexical`, `@lexical/code-core`, `@lexical/extension`, `@lexical/link`, `@lexical/list`, `@lexical/markdown`, `@lexical/react`, `@lexical/rich-text`, `@lexical/selection` and `@lexical/utils` in version `0.42.0` for now.
+The package `@lexical/code` is not used anymore.
+- If you have an implementation of `IOmniboxCommandOrderer`, it should now implements
+`IOmniboxCommandOrdererDelegate` instead.
+If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation of `IDefaultOmniboxCommandOrderer` that is part of sirius-components will be used.
+- `ChangeDescription#getInput(): IInput` has been modified to `ChangeDescription#getCause(): ICause`.
+- An overridden tool contribution has to return null or an empty fragment if the `searchedValue` does not match the label of the overridden tool, we can't guess what label will be used in external contributions.
+- The DTO `Palette`, `ITool`, `IPaletteEntry`, `PaletteDivider` & `ToolSection` have been moved to new maven project `sirius-components-palette`.
+`sirius-components-collaborative-diagrams` has a dependency to this new package.
+A new GraphQL schema `palette.graphqls` has been added.
+- The `TreeDescriptionPaletteDataFetcher` does not retrieve all tools from the implementations of `ITreeItemPaletteProvider`, you'll need a custom `ITreeItemPaletteProvider` in order to add your own tool.
+- In case a tree item palette provider is available for a representation, the `ITreeItemContextMenuEntryProvider` contributions will be ignored.
+A tree item palette provider is now provided for the explorer which will thus now ignore `ITreeItemContextMenuEntryProvider`.
+- `withImpactAnalysis` attribute has been removed from `GQLFetchTreeItemContextMenuEntry` type, it's available on `GQLSingleClickTreeItemContextMenuEntry`.
+- When using `CustomTreeItemContextMenuEntry` with a `contributionId` reused from sirius web, you will now also need to set the `labelExpression` in order for the label to render correctly on the frontend contribution.
+All contributed or overridden tools from sirius web frontend (the list is available on the documentation) expect the label to be set on the backend (since the internationalization is done on the backend)
+
 
 == Bug fixes
 
+* Center the position of the creation handles relative to their node.
+* Add a translation for the warning notification that no edges are available.
+* Prevent existing values from being added again when selecting a new value in a multi-valued reference widget.
+* Fix incorrect bending point handling for non-Manhattan edges during layout.
+* Preserve the layout of child nodes while resizing a free-form node.
+* Add overridden contribution to palette search results.
+Add `searchedValue` prop to `PaletteToolOverriddenContributionComponentProps`
+Export fuzzyMatch function to filter a tool with the searchedValue.
+Use exported `ToolListItemText component` from the palette package to highlight the searched text in rendered contributions.
+* Fix the search feature of the palette with tool contribution
+Add `searchedValue` prop to `PaletteToolContributionComponentProps`.
+Contributions have to return null in their component if they are not candidate of the search, you can do that using `searchedValue` and `fuzzyMatch function`
 * Fix an issue where a node was not correctly selected after the execution of a tool.
 * Fix an issue where a node creation handle could stay highlighted after a connection.
+* Fix node decorators not showing on hover.
+* Fix palette tool search sometimes dropping matching elements.
+* Fix an issue where quicktools contributed from `IGroupPaletteToolsProvider` were displayed after the ones from the view model.
+* Resize free-form parent nodes to contain child nodes moved partially outside their bounds.
+* Prevent hidden child nodes from affecting the resize of their free-form parent.
+* Improve lasso selection to only include a single node as "last selected" instead of several ones when they are aligned.
 * Fix "Last Selected Element" that was not correctly set after a diagram refresh.
+* Fix an issue where tree item tools declared from a view dsl were not executed correctly
+* Fix invalid Studios created from templates by setting a default color palette name.
 * Fix "Last Selected Element" that was not correctly set after a tool redefined the selection.
 * Fix an issue where a tree item tooltip could stay displayed while the palette was opened.
 * Fix an issue where the Details view did not always display the last selected element.
 * Fix an issue where a tool could be executed in a readonly diagram using a tool's keyboard shortcut.
 * Fix an issue where no remaining node was marked as last selected after unselecting multiple nodes with the lasso.
+* Fix an issue that prevented the workbench from being shared.
 * Fix an issue where the impact analysis modal was not opening after updating a library with the tree item palette.
 * Remove stray semicolon from the library view.
 
+
 == New features
 
+* Add `ITreeItemPaletteProvider` interface in order to provide a tree item palette at once.
 * *Add the ability to customize the palette computed in a diagram or tree thanks to various post processors.
 Downstream projects can use either the `ITreeItemPaletteCustomizer` to transform the palette of a tree item, the `IDiagramPaletteCustomizer` to customize the palette computed for the background of the diagram or any number of diagram elements or finally the `IDiagramConnectorPaletteCustomizer` to customize the palette computed for a connector tool mostly used to create edges between diagram elements.
 * The connector tools of a diagram (used when creating a connection between 2 nodes) are now rendered in the palette component.
@@ -31,15 +82,35 @@ Downstream projects can use either the `ITreeItemPaletteCustomizer` to transform
 This makes it possible to reliably retrieve a relevant cause even when intermediate causes have been added to the chain.
 * Add an attribute `labelExpression` to `CustomTreeItemContextMenuEntry` in the tree view dsl, this can be useful for backend internationalization of labels.
 
+
 == Improvements
 
+* Improve the frontend package build by replacing UMD outputs with CommonJS outputs for reusable npm libraries.
+This removes Rollup warnings about missing global names for externalized peer dependencies while keeping React, MUI, Apollo and other shared dependencies outside the published bundles.
+* Add formatting related tasks to package.json to make them easier to use.
+One can now simply run `npm run format` to format the frontend code or `npm run format-lint` to check the proper formatting of the frontend code.
+* Reduce the log of the frontend tasks `format-lint` and `build-dev` by default to make tasks such as `build` or `start` less verbose.
+* Add a top margin for child node with free form layout
 * The internationalization of the tree item palette tools have been moved to the backend.
+* Expose previous project name in 'ProjectNameUpdatedEvent'
+* Add a dedicated package for Markdown edition and rendering.
+This package can thus be easily reused by those who want to integrate Markdown rendering the their Sirius Web based applications.
+* Make `IOmniboxCommandOrderer` extensible by downstream applications.
+Downstream applications can implement `IOmniboxCommandOrdererDelegate` to define their own ordering strategy.
+* Start extracting the manual code annotated with '@generated NOT' from generated code into a spec package.
+* Update `ChangeDescription` to accept an `ICause` as parameter instead of just `IInput`.
+This will allow us to reuse the change description to propagate more information.
+* Use outside label height for child node layout in freeform diagrams.
+* Allow downstream applications to configure the static locations to use to load frontend artifacts.
+Downstream applications can now use the `spring.web.resources.static-locations` property to configure the location of its frontend artifacts.
 * Diagram users can now pin or unpin multiple selected nodes at once from the group palette.
 * Small pointer movements while clicking a diagram node no longer start a drag, reducing accidental node movements.
 * Studio makers can now use the `diagramServices.deleteViews(nodes)` AQL service to configure group palette actions that remove multiple selected unsynchronized nodes from a diagram without deleting their semantic elements.
+* Ensure that the frontend GraphQL error payloads now use `ErrorPayload#messages` instead of `ErrorPayload#message`, and the affected mutation hooks now log server feedback with `useMultiToast` when they use custom payloads and `useReporting` when they use the shared success/error contract.
 * Rectangle selection in diagrams now excludes the node where the selection starts and its containers, making it easier to select nested elements without selecting their containers.
 * The group selection has been improved: now when several nodes are selected at the exact same time with the lasso, only the node the closest to the cursor is marked as "last selected" (pink round angles) instead of all of them.
 * Deck representation integration tests now use dedicated mutation executors for card creation, deletion, visibility changes, and lane-collapse changes.
+
 
 == Technical details
 
