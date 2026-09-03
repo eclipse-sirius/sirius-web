@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -168,7 +168,7 @@ export class Explorer {
  */
 class ExplorerTreeItemActions {
   public getTreeItemMenu(): Cypress.Chainable<JQuery<HTMLElement>> {
-    return cy.getByTestId('treeitem-contextmenu');
+    return cy.getByTestId('Palette').getByTestId('palette-tool-section');
   }
 
   public getNewObjectButton(): Cypress.Chainable<JQuery<HTMLElement>> {
