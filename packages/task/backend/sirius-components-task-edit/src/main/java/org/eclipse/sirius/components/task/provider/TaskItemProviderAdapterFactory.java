@@ -12,6 +12,22 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.provider;
 
+import org.eclipse.sirius.components.task.provider.spec.TeamItemProviderSpec;
+
+import org.eclipse.sirius.components.task.provider.spec.TaskTagItemProviderSpec;
+
+import org.eclipse.sirius.components.task.provider.spec.TaskItemProviderSpec;
+
+import org.eclipse.sirius.components.task.provider.spec.ProjectItemProviderSpec;
+
+import org.eclipse.sirius.components.task.provider.spec.PersonItemProviderSpec;
+
+import org.eclipse.sirius.components.task.provider.spec.ObjectiveItemProviderSpec;
+
+import org.eclipse.sirius.components.task.provider.spec.KeyResultItemProviderSpec;
+
+import org.eclipse.sirius.components.task.provider.spec.CompanyItemProviderSpec;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -111,12 +127,12 @@ public class TaskItemProviderAdapterFactory extends TaskAdapterFactory
      * {@link org.eclipse.sirius.components.task.Company}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCompanyAdapter() {
         if (this.companyItemProvider == null) {
-            this.companyItemProvider = new CompanyItemProvider(this);
+            this.companyItemProvider = new CompanyItemProviderSpec(this);
         }
 
         return this.companyItemProvider;
@@ -136,12 +152,12 @@ public class TaskItemProviderAdapterFactory extends TaskAdapterFactory
      * {@link org.eclipse.sirius.components.task.Team}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTeamAdapter() {
         if (this.teamItemProvider == null) {
-            this.teamItemProvider = new TeamItemProvider(this);
+            this.teamItemProvider = new TeamItemProviderSpec(this);
         }
 
         return this.teamItemProvider;
@@ -161,12 +177,12 @@ public class TaskItemProviderAdapterFactory extends TaskAdapterFactory
      * {@link org.eclipse.sirius.components.task.Person}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createPersonAdapter() {
         if (this.personItemProvider == null) {
-            this.personItemProvider = new PersonItemProvider(this);
+            this.personItemProvider = new PersonItemProviderSpec(this);
         }
 
         return this.personItemProvider;
@@ -186,12 +202,12 @@ public class TaskItemProviderAdapterFactory extends TaskAdapterFactory
      * {@link org.eclipse.sirius.components.task.Task}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTaskAdapter() {
         if (this.taskItemProvider == null) {
-            this.taskItemProvider = new TaskItemProvider(this);
+            this.taskItemProvider = new TaskItemProviderSpec(this);
         }
 
         return this.taskItemProvider;
@@ -211,12 +227,12 @@ public class TaskItemProviderAdapterFactory extends TaskAdapterFactory
      * {@link org.eclipse.sirius.components.task.Objective}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createObjectiveAdapter() {
         if (this.objectiveItemProvider == null) {
-            this.objectiveItemProvider = new ObjectiveItemProvider(this);
+            this.objectiveItemProvider = new ObjectiveItemProviderSpec(this);
         }
 
         return this.objectiveItemProvider;
@@ -236,12 +252,12 @@ public class TaskItemProviderAdapterFactory extends TaskAdapterFactory
      * {@link org.eclipse.sirius.components.task.KeyResult}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createKeyResultAdapter() {
         if (this.keyResultItemProvider == null) {
-            this.keyResultItemProvider = new KeyResultItemProvider(this);
+            this.keyResultItemProvider = new KeyResultItemProviderSpec(this);
         }
 
         return this.keyResultItemProvider;
@@ -261,12 +277,12 @@ public class TaskItemProviderAdapterFactory extends TaskAdapterFactory
      * {@link org.eclipse.sirius.components.task.Project}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createProjectAdapter() {
         if (this.projectItemProvider == null) {
-            this.projectItemProvider = new ProjectItemProvider(this);
+            this.projectItemProvider = new ProjectItemProviderSpec(this);
         }
 
         return this.projectItemProvider;
@@ -286,12 +302,12 @@ public class TaskItemProviderAdapterFactory extends TaskAdapterFactory
      * {@link org.eclipse.sirius.components.task.TaskTag}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTaskTagAdapter() {
         if (this.taskTagItemProvider == null) {
-            this.taskTagItemProvider = new TaskTagItemProvider(this);
+            this.taskTagItemProvider = new TaskTagItemProviderSpec(this);
         }
 
         return this.taskTagItemProvider;
