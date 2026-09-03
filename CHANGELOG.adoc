@@ -21,6 +21,9 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2770[#2770] [diagram] Remove `findNodeIndex` from `@eclipse-sirius/sirius-components-diagrams`.
+Custom node layout handlers should use `getNodeBorderWidth(node.data.style)` instead of inspecting hidden rendered nodes.
+Consumers that still need a node index can use `nodes.findIndex((node) => node.id === nodeId)`.
 - [releng] Frontend packages published from `packages/*/frontend/` do not provide UMD bundles anymore.
 They are now distributed as ES modules and CommonJS bundles only.
 Downstream consumers relying on the previous `.umd.js` artifacts or on direct browser script-tag usage must migrate to a bundler-based integration or consume the new CommonJS entry points instead.
@@ -60,6 +63,7 @@ All contributed or overridden tools from sirius web frontend (the list is availa
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2770[#2770] [diagram] Prevent React Flow handle warnings while computing the initial diagram layout.
 - https://github.com/eclipse-sirius/sirius-web/issues/6662[#6662] [diagram] Center the position of the creation handles relative to their node
 - https://github.com/eclipse-sirius/sirius-web/issues/6704[#6704] [diagram] Add a translation for the warning notification that no edges are available.
 - https://github.com/eclipse-sirius/sirius-web/issues/5706[#5706] [diagram] Fix post tool selection not set correctly on diagrams

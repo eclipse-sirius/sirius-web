@@ -15,8 +15,8 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@mui/material/styles';
-import { Edge, Node, NodeProps, ReactFlowProvider } from '@xyflow/react';
-import { Fragment, createElement, useEffect } from 'react';
+import { Edge, Node, ReactFlowProvider } from '@xyflow/react';
+import { createElement, useEffect } from 'react';
 import { Root, createRoot } from 'react-dom/client';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
@@ -25,43 +25,29 @@ import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
 import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
 import { isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
-import { FreeFormNode } from '../node/FreeFormNode';
-import { FreeFormNodeData } from '../node/FreeFormNode.types';
 import { isHandleNode } from '../node/HandleNode.types';
-import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
 import { computePreviousPosition } from './bounds';
+import { getNodeBorderWidth } from './getNodeBorderWidth';
 import { RawDiagram } from './layout.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { computeNewlyNodePosition, getChildren } from './layoutNode';
 import { gap } from './layoutParams';
 
-const emptyNodeProps = {
-  selected: false,
-  isConnectable: true,
-  dragging: false,
-  positionAbsoluteX: 0,
-  positionAbsoluteY: 0,
-  zIndex: -1,
-};
-
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
-const isFreeFormNode = (node: Node<NodeData>): node is Node<FreeFormNodeData> => node.type === 'freeFormNode';
 
-const getNodeBorderWidth = (node: Node<NodeData>, visibleNodes: Node<NodeData>[]) => {
+const getNodeBorderWidthForLabel = (node: Node<NodeData>, visibleNodes: Node<NodeData>[]): number => {
   if (node.parentId) {
     const parentNodeParent = visibleNodes.find((node) => node.id === node.parentId);
     if (parentNodeParent && parentNodeParent.type === 'listNode') {
-      return getNodeBorderWidth(parentNodeParent, visibleNodes);
+      return getNodeBorderWidthForLabel(parentNodeParent, visibleNodes);
     }
-    return node.data.style.borderWidth;
-  } else {
-    return node.data.style.borderWidth;
   }
+  return getNodeBorderWidth(node.data.style);
 };
 
 export const prepareLayoutArea = (
@@ -76,13 +62,12 @@ export const prepareLayoutArea = (
   hiddenContainer.style.visibility = 'hidden';
   hiddenContainer.style.zIndex = '-1';
   document.body.appendChild(hiddenContainer);
-  const elements: JSX.Element[] = [];
   const visibleNodes = diagram.nodes.filter((node) => !node.hidden);
 
   // Render all label first
   const labelElements: JSX.Element[] = [];
   visibleNodes.forEach((node) => {
-    const borderWidth: number = getNodeBorderWidth(node, visibleNodes) ?? 0;
+    const borderWidth: number = getNodeBorderWidthForLabel(node, visibleNodes);
     let insideLabelConstraintWidth = (node.width ?? 0) - borderWidth * 2;
     if (node.parentId) {
       const parentNode = visibleNodes.find((n) => n.id === node.parentId);
@@ -191,73 +176,6 @@ export const prepareLayoutArea = (
     },
     children: labelElements,
   });
-  elements.push(labelContainerElement);
-
-  const nodeElements: JSX.Element[] = [];
-  visibleNodes.forEach((node, index) => {
-    if (hiddenContainer && node) {
-      const children: JSX.Element[] = [];
-      if (isFreeFormNode(node)) {
-        const freeFormNodeProps: NodeProps<Node<FreeFormNodeData, 'freeFormNode'>> = {
-          ...emptyNodeProps,
-          type: 'freeFormNode',
-          id: node.id,
-          data: node.data,
-          deletable: true,
-          draggable: true,
-          selectable: true,
-        };
-
-        const element = createElement(FreeFormNode, {
-          ...freeFormNodeProps,
-          id: node.id,
-          data: node.data,
-          key: `${node.id}-${index}`,
-        });
-        children.push(element);
-      }
-      if (isListNode(node)) {
-        const listNodeProps: NodeProps<Node<ListNodeData, 'listNode'>> = {
-          ...emptyNodeProps,
-          type: 'listNode',
-          id: node.id,
-          data: node.data,
-          deletable: true,
-          draggable: true,
-          selectable: true,
-        };
-
-        const element = createElement(ListNode, {
-          ...listNodeProps,
-          key: `${node.id}-${index}`,
-        });
-        children.push(element);
-      }
-      if (children.length > 0) {
-        const elementWrapper: JSX.Element = createElement('div', {
-          id: `${node.id}-${node.type}-${index}`,
-          key: node.id,
-          children,
-        });
-        nodeElements.push(elementWrapper);
-      }
-    }
-  });
-
-  const nodeContainerElement: JSX.Element = createElement('div', {
-    id: 'hidden-node-container',
-    key: 'hidden-node-container',
-    style: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      alignItems: 'flex-start',
-    },
-    children: nodeElements,
-  });
-  elements.push(nodeContainerElement);
-
-  const hiddenContainerContentElements: JSX.Element = createElement(Fragment, { children: elements });
-
   const Element = () => {
     useEffect(() => {
       renderCallback();
@@ -271,7 +189,7 @@ export const prepareLayoutArea = (
                 value={{
                   enqueueSnackbar: (_body: string, _options?: MessageOptions) => {},
                 }}>
-                <DiagramDirectEditContextProvider>{hiddenContainerContentElements}</DiagramDirectEditContextProvider>
+                <DiagramDirectEditContextProvider>{labelContainerElement}</DiagramDirectEditContextProvider>
               </ToastContext.Provider>
             </ServerContext.Provider>
           </ThemeProvider>
