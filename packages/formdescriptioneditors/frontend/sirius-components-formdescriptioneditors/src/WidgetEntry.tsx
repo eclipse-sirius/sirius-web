@@ -13,9 +13,9 @@
 import { useMutation } from '@apollo/client';
 import {
   Selection,
-  Toast,
   useData,
   useDeletionConfirmationDialog,
+  useMultiToast,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import {
@@ -45,7 +45,7 @@ import {
 } from '@eclipse-sirius/sirius-components-forms';
 import Tooltip from '@mui/material/Tooltip';
 import { Theme } from '@mui/material/styles';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles, withStyles } from 'tss-react/mui';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
@@ -83,7 +83,7 @@ import { SplitButtonWidget } from './SplitButtonWidget';
 import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
 import { TreeWidget } from './TreeWidget';
-import { WidgetEntryProps, WidgetEntryState } from './WidgetEntry.types';
+import { WidgetEntryProps } from './WidgetEntry.types';
 import { isFlexboxContainer, isGroup, isKind } from './WidgetOperations';
 import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
@@ -142,14 +142,11 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
   const noop = () => {};
   const { classes } = useWidgetEntryStyles({ flexDirection, flexGrow, kind: widget.__typename });
 
-  const initialState: WidgetEntryState = { message: null };
-  const [state, setState] = useState<WidgetEntryState>(initialState);
-  const { message } = state;
-
   const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
 
   const { setSelection } = useSelection();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,
@@ -159,16 +156,12 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
   useEffect(() => {
     if (!addWidgetLoading) {
       if (addWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: addWidgetError.message };
-        });
+        addErrorMessage(addWidgetError.message);
       }
       if (addWidgetData) {
         const { addWidget } = addWidgetData;
         if (isErrorPayload(addWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: addWidget.message };
-          });
+          addMessages(addWidget.messages);
         }
       }
     }
@@ -180,16 +173,12 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
   useEffect(() => {
     if (!deleteWidgetLoading) {
       if (deleteWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: deleteWidgetError.message };
-        });
+        addErrorMessage(deleteWidgetError.message);
       }
       if (deleteWidgetData) {
         const { deleteWidget } = deleteWidgetData;
         if (isErrorPayload(deleteWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: deleteWidget.message };
-          });
+          addMessages(deleteWidget.messages);
         }
       }
     }
@@ -203,16 +192,12 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
   useEffect(() => {
     if (!moveWidgetLoading) {
       if (moveWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: moveWidgetError.message };
-        });
+        addErrorMessage(moveWidgetError.message);
       }
       if (moveWidgetData) {
         const { moveWidget } = moveWidgetData;
         if (isErrorPayload(moveWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: moveWidget.message };
-          });
+          addMessages(moveWidget.messages);
         }
       }
     }
@@ -520,7 +505,6 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
           {widgetElement}
         </div>
       </WidgetTooltip>
-      {message ? <Toast open message={message} onClose={() => setState({ message: null })} /> : null}
     </div>
   );
 };
