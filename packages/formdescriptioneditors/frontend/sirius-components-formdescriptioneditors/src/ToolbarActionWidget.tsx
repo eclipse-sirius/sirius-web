@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,8 @@ import {
   Selection,
   ServerContext,
   ServerContextValue,
-  Toast,
   getCSSColor,
+  useMultiToast,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import {
@@ -117,7 +117,6 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
     buttonLabel: toolbarAction.buttonLabel,
     imageURL: toolbarAction.imageURL,
     validImage: false,
-    message: null,
     selected: false,
   };
   const [state, setState] = useState<ToolbarActionState>(initialState);
@@ -200,6 +199,8 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
     }
   }, [selection, toolbarAction]);
 
+  const { addErrorMessage, addMessages } = useMultiToast();
+
   const [
     deleteToolbarAction,
     { loading: deleteToolbarActionLoading, data: deleteToolbarActionData, error: deleteToolbarActionError },
@@ -210,22 +211,12 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
   useEffect(() => {
     if (!deleteToolbarActionLoading) {
       if (deleteToolbarActionError) {
-        setState((prevState) => {
-          return {
-            ...prevState,
-            message: deleteToolbarActionError.message,
-          };
-        });
+        addErrorMessage(deleteToolbarActionError.message);
       }
       if (deleteToolbarActionData) {
         const { deleteToolbarAction } = deleteToolbarActionData;
         if (isErrorPayload(deleteToolbarAction)) {
-          setState((prevState) => {
-            return {
-              ...prevState,
-              message: deleteToolbarAction.message,
-            };
-          });
+          addMessages(deleteToolbarAction.messages);
         }
       }
     }
@@ -239,23 +230,13 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
   useEffect(() => {
     if (!moveToolbarActionLoading) {
       if (moveToolbarActionError) {
-        setState((prevState) => {
-          return {
-            ...prevState,
-            message: moveToolbarActionError.message,
-          };
-        });
+        addErrorMessage(moveToolbarActionError.message);
       }
-      if (moveToolbarActionData) {
-        const { moveToolbarAction } = moveToolbarActionData;
-        if (isErrorPayload(moveToolbarAction)) {
-          setState((prevState) => {
-            return {
-              ...prevState,
-              message: moveToolbarAction.message,
-            };
-          });
-        }
+    }
+    if (moveToolbarActionData) {
+      const { moveToolbarAction } = moveToolbarActionData;
+      if (isErrorPayload(moveToolbarAction)) {
+        addMessages(moveToolbarAction.messages);
       }
     }
   }, [moveToolbarActionLoading, moveToolbarActionData, moveToolbarActionError]);
@@ -389,20 +370,6 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
           {state.buttonLabel}
         </Button>
       </div>
-      {state.message ? (
-        <Toast
-          open
-          message={state.message}
-          onClose={() =>
-            setState((prevState) => {
-              return {
-                ...prevState,
-                message: null,
-              };
-            })
-          }
-        />
-      ) : null}
     </div>
   );
 };
