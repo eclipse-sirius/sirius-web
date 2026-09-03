@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface GQLUndoVariables {
   input: GQLUndoInput;
 }
@@ -44,4 +46,12 @@ export interface GQLUndoRedoItemPayload {
 
 export interface GQLSuccessPayload {
   __typename: 'SuccessPayload';
+  id: string;
+  messages: GQLMessage[];
+}
+
+export interface GQLErrorPayload {
+  __typename: 'ErrorPayload';
+  id: string;
+  messages: GQLMessage[];
 }

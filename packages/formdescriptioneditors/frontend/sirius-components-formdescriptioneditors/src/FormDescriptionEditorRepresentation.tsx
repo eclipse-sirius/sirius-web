@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import {
   RepresentationComponentProps,
   RepresentationLoadingIndicator,
   useData,
+  useMultiToast,
   WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
@@ -24,7 +25,10 @@ import Typography from '@mui/material/Typography';
 import React, { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
-import { GQLFormDescriptionEditorRefreshedEventPayload } from './FormDescriptionEditorEventFragment.types';
+import {
+  GQLErrorPayload,
+  GQLFormDescriptionEditorRefreshedEventPayload,
+} from './FormDescriptionEditorEventFragment.types';
 import {
   FormDescriptionEditorRepresentationState,
   WidgetDescriptor,
@@ -131,6 +135,9 @@ const isFormDescriptionEditorRefreshedEventPayload = (
 ): payload is GQLFormDescriptionEditorRefreshedEventPayload =>
   payload && payload.__typename === 'FormDescriptionEditorRefreshedEventPayload';
 
+const isErrorPayload = (payload: GQLFormDescriptionEditorEventPayload): payload is GQLErrorPayload =>
+  payload && payload.__typename === 'ErrorPayload';
+
 export const FormDescriptionEditorRepresentation = forwardRef<
   WorkbenchMainRepresentationHandle,
   RepresentationComponentProps
@@ -159,6 +166,8 @@ export const FormDescriptionEditorRepresentation = forwardRef<
       []
     );
 
+    const { addMessages } = useMultiToast();
+
     const {
       loading,
       payload: formDescriptionEditorEventPayload,
@@ -166,14 +175,15 @@ export const FormDescriptionEditorRepresentation = forwardRef<
     } = useFormDescriptionEditorEventSubscription(editingContextId, representationId);
 
     useEffect(() => {
-      if (
-        formDescriptionEditorEventPayload &&
-        isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)
-      ) {
-        setState((prevState) => ({
-          ...prevState,
-          formDescriptionEditor: formDescriptionEditorEventPayload.formDescriptionEditor,
-        }));
+      if (formDescriptionEditorEventPayload) {
+        if (isErrorPayload(formDescriptionEditorEventPayload)) {
+          addMessages(formDescriptionEditorEventPayload.messages);
+        } else if (isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)) {
+          setState((prevState) => ({
+            ...prevState,
+            formDescriptionEditor: formDescriptionEditorEventPayload.formDescriptionEditor,
+          }));
+        }
       }
     }, [formDescriptionEditorEventPayload]);
 
