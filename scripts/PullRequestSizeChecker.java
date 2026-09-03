@@ -20,7 +20,7 @@ import java.util.List;
  * Used to test the size of pull requests.
  *
  * <p>
- *     This test will be used to evaluate the size of a pull request in GitHub. For that it will use the following rules
+ * This test will be used to evaluate the size of a pull request in GitHub. For that it will use the following rules
  * </p>
  * <ul>
  *     <li>It will ignore the generated code of the various metamodels</li>
@@ -157,7 +157,11 @@ public class PullRequestSizeChecker {
                 "packages/view/backend/sirius-components-widget-reference-view-edit",
                 "packages/view/backend/sirius-components-widget-table-view",
                 "packages/view/backend/sirius-components-widget-table-view-edit",
-                "packages/sirius-web/backend/sirius-web/src/test"
+                "packages/sirius-web/backend/sirius-web/src/test",
+                "packages/sirius-web/backend/sirius-web-e2e-tests",
+                "packages/sirius-web/backend/sirius-web-tests-data",
+                "integration-tests"
+
         ).stream().anyMatch(line::contains);
     }
 }
