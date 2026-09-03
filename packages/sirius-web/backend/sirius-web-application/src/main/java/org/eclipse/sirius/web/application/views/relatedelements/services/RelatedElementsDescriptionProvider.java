@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.collaborative.forms.api.IRelatedElementsDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -51,7 +51,7 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
 
     private static final String PAGE_DESCRIPTION_ID = "defaultRelatedElementsPage";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
@@ -61,8 +61,8 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
 
     private final IOutgoingTreeDescriptionProvider outgoingTreeDescriptionProvider;
 
-    public RelatedElementsDescriptionProvider(IObjectService objectService, ILabelService labelService, IIncomingTreeDescriptionProvider incomingTreeDescriptionProvider, ICurrentTreeDescriptionProvider currentTreeDescriptionProvider, IOutgoingTreeDescriptionProvider outgoingTreeDescriptionProvider) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public RelatedElementsDescriptionProvider(IIdentityService identityService, ILabelService labelService, IIncomingTreeDescriptionProvider incomingTreeDescriptionProvider, ICurrentTreeDescriptionProvider currentTreeDescriptionProvider, IOutgoingTreeDescriptionProvider outgoingTreeDescriptionProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.incomingTreeDescriptionProvider = Objects.requireNonNull(incomingTreeDescriptionProvider);
         this.currentTreeDescriptionProvider = Objects.requireNonNull(currentTreeDescriptionProvider);
@@ -74,13 +74,13 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
         List<GroupDescription> groupDescriptions = List.of(this.getGroupDescription());
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         return FormDescription.newFormDescription(FORM_DESCRIPTION_ID)
                 .label(FORM_TITLE)
                 .idProvider(this::getFormId)
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.identityService::getId).orElse(null))
                 .labelProvider(variableManager -> FORM_TITLE)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
@@ -92,7 +92,7 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
     private String getFormId(VariableManager variableManager) {
         List<?> selectedObjects = variableManager.get(FormVariableProvider.SELECTION.name(), List.class).orElse(List.of());
         List<String> selectedObjectIds = selectedObjects.stream()
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .toList();
 
         var encodedIds = selectedObjectIds.stream().map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8)).toList();
@@ -116,7 +116,7 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
         Function<VariableManager, String> idProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElseGet(() -> UUID.randomUUID().toString());
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)

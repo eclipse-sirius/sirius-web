@@ -30,7 +30,7 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.TreeNode;
@@ -73,14 +73,14 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
 
     private static final String CONTAINMENT_REFERENCE_KIND = "siriusWeb://category/containment-reference";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
     private final IMessageService messageService;
 
-    public CurrentTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, IMessageService messageService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public CurrentTreeDescriptionProvider(IIdentityService identityService, ILabelService labelService, IMessageService messageService) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -89,7 +89,7 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
     public TreeDescription getTreeDescription() {
         return TreeDescription.newTreeDescription(WIDGET_ID)
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.identityService::getId).orElse(null))
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
@@ -117,7 +117,7 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
         } else if (self instanceof EReference eReference) {
             result = "reference/" + eReference.getName();
         } else if (self != null) {
-            result = this.objectService.getId(self);
+            result = this.identityService.getId(self);
         }
         return result;
     }
@@ -184,7 +184,7 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
         } else if (self instanceof EReference) {
             result = CONTAINMENT_REFERENCE_KIND;
         } else if (self != null) {
-            result = this.objectService.getKind(self);
+            result = this.identityService.getKind(self);
         }
         return result;
     }
