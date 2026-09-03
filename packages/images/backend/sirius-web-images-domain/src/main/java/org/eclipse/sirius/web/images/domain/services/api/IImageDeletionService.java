@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,24 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.images.domain.services.api;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.IResult;
 
 /**
- * Used to find images.
+ * Used to delete images.
  *
  * @author sbegaudeau
  */
-public interface IImageSearchService {
-
-    Optional<Image> findById(UUID id);
-
-    boolean existsByLabel(String label);
-
-    List<Image> findAll();
+public interface IImageDeletionService {
+    IResult<Void> deleteImage(ICause cause, UUID imageId);
 }

@@ -63,6 +63,12 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.library.domain.events.LibraryCreatedEvent`
 - https://github.com/eclipse-sirius/sirius-web/issues/6740[#6740] [sirius-web] Add support for required libraries in templates.
 A new `List<ProjectTemplateRequiredLibrary>` argument is now required to create a `ProjectTemplate`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [images] Classes from the image domain such as `Image`, `IImageSearchService`, `IImageCreationService` or `ImageCreatedEvent` have been moved to the new module `sirius-web-images-domain`.
+Imports of these classes must be updated to:
+* `org.eclipse.sirius.web.images.domain.Image`
+* `org.eclipse.sirius.web.images.domain.services.api.IImageSearchService`
+* `org.eclipse.sirius.web.images.domain.services.api.IImageCreationService`
+* `org.eclipse.sirius.web.images.domain.events.ImageCreatedEvent`
 
 
 === Dependency update
@@ -99,6 +105,8 @@ Templates can now define required libraries (specifying their namespace, name, a
 These libraries are selected by default in the project creation's library table, and cannot be unselected.
 - [releng] Run end-to-end tests on master and only on relevant pull requests.
 The `ci: run e2e` label can be added to a pull request to force end-to-end test execution.
+- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [images] Extract the domain parts of the image bounded context into the `sirius-web-images-domain` module.
+
 
 
 == 2026.9.0
