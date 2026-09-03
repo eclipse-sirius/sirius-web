@@ -35,6 +35,19 @@ import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.provider.spec.ChangeContextItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.ColorPaletteItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.CreateInstanceItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.DeleteElementItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.FixedColorItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.ForItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.IfItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.LetItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.SetValueItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.TextStyleDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.TextStylePaletteItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.UnsetValueItemProviderSpec;
+import org.eclipse.sirius.components.view.provider.spec.ViewItemProviderSpec;
 import org.eclipse.sirius.components.view.util.ViewAdapterFactory;
 
 /**
@@ -102,12 +115,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.View}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createViewAdapter() {
         if (this.viewItemProvider == null) {
-            this.viewItemProvider = new ViewItemProvider(this);
+            this.viewItemProvider = new ViewItemProviderSpec(this);
         }
 
         return this.viewItemProvider;
@@ -125,12 +138,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.ColorPalette}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createColorPaletteAdapter() {
         if (this.colorPaletteItemProvider == null) {
-            this.colorPaletteItemProvider = new ColorPaletteItemProvider(this);
+            this.colorPaletteItemProvider = new ColorPaletteItemProviderSpec(this);
         }
 
         return this.colorPaletteItemProvider;
@@ -148,12 +161,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.FixedColor}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createFixedColorAdapter() {
         if (this.fixedColorItemProvider == null) {
-            this.fixedColorItemProvider = new FixedColorItemProvider(this);
+            this.fixedColorItemProvider = new FixedColorItemProviderSpec(this);
         }
 
         return this.fixedColorItemProvider;
@@ -171,12 +184,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.ChangeContext}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createChangeContextAdapter() {
         if (this.changeContextItemProvider == null) {
-            this.changeContextItemProvider = new ChangeContextItemProvider(this);
+            this.changeContextItemProvider = new ChangeContextItemProviderSpec(this);
         }
 
         return this.changeContextItemProvider;
@@ -194,12 +207,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.CreateInstance}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCreateInstanceAdapter() {
         if (this.createInstanceItemProvider == null) {
-            this.createInstanceItemProvider = new CreateInstanceItemProvider(this);
+            this.createInstanceItemProvider = new CreateInstanceItemProviderSpec(this);
         }
 
         return this.createInstanceItemProvider;
@@ -217,12 +230,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.SetValue}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createSetValueAdapter() {
         if (this.setValueItemProvider == null) {
-            this.setValueItemProvider = new SetValueItemProvider(this);
+            this.setValueItemProvider = new SetValueItemProviderSpec(this);
         }
 
         return this.setValueItemProvider;
@@ -240,12 +253,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.UnsetValue}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createUnsetValueAdapter() {
         if (this.unsetValueItemProvider == null) {
-            this.unsetValueItemProvider = new UnsetValueItemProvider(this);
+            this.unsetValueItemProvider = new UnsetValueItemProviderSpec(this);
         }
 
         return this.unsetValueItemProvider;
@@ -263,12 +276,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.DeleteElement}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDeleteElementAdapter() {
         if (this.deleteElementItemProvider == null) {
-            this.deleteElementItemProvider = new DeleteElementItemProvider(this);
+            this.deleteElementItemProvider = new DeleteElementItemProviderSpec(this);
         }
 
         return this.deleteElementItemProvider;
@@ -286,12 +299,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.Let}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createLetAdapter() {
         if (this.letItemProvider == null) {
-            this.letItemProvider = new LetItemProvider(this);
+            this.letItemProvider = new LetItemProviderSpec(this);
         }
 
         return this.letItemProvider;
@@ -309,12 +322,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.If}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createIfAdapter() {
         if (this.ifItemProvider == null) {
-            this.ifItemProvider = new IfItemProvider(this);
+            this.ifItemProvider = new IfItemProviderSpec(this);
         }
 
         return this.ifItemProvider;
@@ -332,12 +345,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.For}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createForAdapter() {
         if (this.forItemProvider == null) {
-            this.forItemProvider = new ForItemProvider(this);
+            this.forItemProvider = new ForItemProviderSpec(this);
         }
 
         return this.forItemProvider;
@@ -355,12 +368,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.TextStylePalette}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTextStylePaletteAdapter() {
         if (this.textStylePaletteItemProvider == null) {
-            this.textStylePaletteItemProvider = new TextStylePaletteItemProvider(this);
+            this.textStylePaletteItemProvider = new TextStylePaletteItemProviderSpec(this);
         }
 
         return this.textStylePaletteItemProvider;
@@ -378,12 +391,12 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.TextStyleDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTextStyleDescriptionAdapter() {
         if (this.textStyleDescriptionItemProvider == null) {
-            this.textStyleDescriptionItemProvider = new TextStyleDescriptionItemProvider(this);
+            this.textStyleDescriptionItemProvider = new TextStyleDescriptionItemProviderSpec(this);
         }
 
         return this.textStyleDescriptionItemProvider;
