@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageCons
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -81,7 +81,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private static final String FORM_TITLE = "Diagram Filters";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
@@ -93,8 +93,8 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private final IMessageService messageService;
 
-    public DiagramFilterDescriptionProvider(IObjectService objectService, ILabelService labelService, @Lazy IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, List<IDiagramFilterActionContributionProvider> diagramFilterActionContributionProviders, IDiagramFilterHelper diagramFilterHelper, IMessageService messageService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DiagramFilterDescriptionProvider(IIdentityService identityService, ILabelService labelService, @Lazy IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, List<IDiagramFilterActionContributionProvider> diagramFilterActionContributionProviders, IDiagramFilterHelper diagramFilterHelper, IMessageService messageService) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.diagramFilterActionContributionProviders = Objects.requireNonNull(diagramFilterActionContributionProviders);
@@ -107,13 +107,13 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
         List<GroupDescription> groupDescriptions = List.of(this.getGroupDescription());
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         return FormDescription.newFormDescription(FORM_DESCRIPTION_ID)
                 .label(FORM_TITLE)
                 .idProvider(new GetOrCreateRandomIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.identityService::getId).orElse(null))
                 .labelProvider(variableManager -> FORM_TITLE)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
@@ -154,7 +154,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
         Function<VariableManager, String> idProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElseGet(() -> UUID.randomUUID().toString());
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
@@ -190,7 +190,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private LabelDescription createTreeLabelDescription() {
         return LabelDescription.newLabelDescription("diagram-filter/tree-label")
-                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.identityService::getId).orElse(null))
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(variableManager -> "")
                 .valueProvider(variableManager -> this.messageService.diagramFilterElementsOnDiagram())
@@ -203,7 +203,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private CheckboxDescription createTreeCheckboxDescription() {
         return CheckboxDescription.newCheckboxDescription("diagram-filter/tree-checkbox")
-                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.identityService::getId).orElse(null))
                 .idProvider(variableManager -> "TreeCheckBox")
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();
@@ -230,7 +230,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     private TreeDescription createTreeDescription() {
         return TreeDescription.newTreeDescription("diagram-filter/tree")
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.identityService::getId).orElse(null))
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
@@ -257,7 +257,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     private SplitButtonDescription createSplitButtonDescription() {
         return SplitButtonDescription.newSplitButtonDescription("diagram-filter/split-button")
                 .idProvider(variableManager -> "TreeSplitButton")
-                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.identityService::getId).orElse(null))
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();
                     if (selectedElementCount <= 1) {

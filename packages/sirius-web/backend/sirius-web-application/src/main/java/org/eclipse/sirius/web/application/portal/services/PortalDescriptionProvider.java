@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.portals.description.PortalDescription;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -39,10 +39,10 @@ public class PortalDescriptionProvider implements IEditingContextRepresentationD
 
     public static final String DESCRIPTION_ID = UUID.nameUUIDFromBytes("portals_description".getBytes()).toString();
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public PortalDescriptionProvider(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public PortalDescriptionProvider(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class PortalDescriptionProvider implements IEditingContextRepresentationD
                 .orElse("Portal");
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse("");
 
         var portalDescription = PortalDescription.newPortalDescription(DESCRIPTION_ID)
