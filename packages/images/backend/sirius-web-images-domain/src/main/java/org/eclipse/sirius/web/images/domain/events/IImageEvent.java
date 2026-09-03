@@ -10,18 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services.api;
+package org.eclipse.sirius.web.images.domain.events;
 
-import java.util.UUID;
-
-import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.domain.events.IDomainEvent;
 
 /**
- * Used to delete images.
+ * Interface implemented by all the domain events of the image bounded context.
  *
  * @author sbegaudeau
  */
-public interface IImageDeletionService {
-    IResult<Void> deleteImage(ICause cause, UUID imageId);
+public interface IImageEvent extends IDomainEvent {
 }

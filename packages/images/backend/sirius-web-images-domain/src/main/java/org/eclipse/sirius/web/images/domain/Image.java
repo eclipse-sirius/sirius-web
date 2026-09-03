@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image;
+package org.eclipse.sirius.web.images.domain;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -18,8 +18,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.events.ImageCreatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.events.ImageDeletedEvent;
+import org.eclipse.sirius.web.images.domain.events.ImageCreatedEvent;
+import org.eclipse.sirius.web.images.domain.events.ImageDeletedEvent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
