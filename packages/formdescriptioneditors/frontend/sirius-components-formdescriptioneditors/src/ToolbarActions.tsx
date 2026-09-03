@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,13 @@
  *******************************************************************************/
 
 import { useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { Theme } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { addToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -73,9 +73,9 @@ const isErrorPayload = (
 export const ToolbarActions = ({ toolbarActions, containerId }: ToolbarActionsProps) => {
   const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
   const noop = () => {};
-  const { classes } = useToolbarActionsStyles();
 
-  const [message, setMessage] = useState<string | null>(null);
+  const { classes } = useToolbarActionsStyles();
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const [
     addToolbarAction,
@@ -85,12 +85,12 @@ export const ToolbarActions = ({ toolbarActions, containerId }: ToolbarActionsPr
   useEffect(() => {
     if (!addToolbarActionLoading) {
       if (addToolbarActionError) {
-        setMessage(addToolbarActionError.message);
+        addErrorMessage(addToolbarActionError.message);
       }
       if (addToolbarActionData) {
         const { addToolbarAction } = addToolbarActionData;
         if (isErrorPayload(addToolbarAction)) {
-          setMessage(addToolbarAction.message);
+          addMessages(addToolbarAction.messages);
         }
       }
     }
@@ -104,12 +104,12 @@ export const ToolbarActions = ({ toolbarActions, containerId }: ToolbarActionsPr
   useEffect(() => {
     if (!moveToolbarActionLoading) {
       if (moveToolbarActionError) {
-        setMessage(moveToolbarActionError.message);
+        addErrorMessage(moveToolbarActionError.message);
       }
       if (moveToolbarActionData) {
         const { moveToolbarAction } = moveToolbarActionData;
         if (isErrorPayload(moveToolbarAction)) {
-          setMessage(moveToolbarAction.message);
+          addMessages(moveToolbarAction.messages);
         }
       }
     }
@@ -193,7 +193,6 @@ export const ToolbarActions = ({ toolbarActions, containerId }: ToolbarActionsPr
           </IconButton>
         </Tooltip>
       </div>
-      {message ? <Toast open message={message} onClose={() => setMessage(null)} /> : null}
     </div>
   );
 };

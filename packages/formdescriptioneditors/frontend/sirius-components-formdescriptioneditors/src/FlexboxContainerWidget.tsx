@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Toast, getCSSColor, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useData, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLWidget, widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
 import Typography from '@mui/material/Typography';
@@ -92,10 +92,11 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
     borderStyle: widget.borderStyle,
   });
 
-  const initialState: FlexboxContainerWidgetState = { message: null, selected: false };
+  const initialState: FlexboxContainerWidgetState = { selected: false };
   const [state, setState] = useState<FlexboxContainerWidgetState>(initialState);
-  const { message, selected } = state;
+  const { selected } = state;
   const { selection } = useSelection();
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,
@@ -105,16 +106,12 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
   useEffect(() => {
     if (!addWidgetLoading) {
       if (addWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: addWidgetError.message };
-        });
+        addErrorMessage(addWidgetError.message);
       }
       if (addWidgetData) {
         const { addWidget } = addWidgetData;
         if (isErrorPayload(addWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: addWidget.message };
-          });
+          addMessages(addWidget.messages);
         }
       }
     }
@@ -143,16 +140,12 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
   useEffect(() => {
     if (!moveWidgetLoading) {
       if (moveWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: moveWidgetError.message };
-        });
+        addErrorMessage(moveWidgetError.message);
       }
       if (moveWidgetData) {
         const { moveWidget } = moveWidgetData;
         if (isErrorPayload(moveWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: moveWidget.message };
-          });
+          addMessages(moveWidget.messages);
         }
       }
     }
@@ -253,17 +246,6 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
         onDrop={readOnly ? noop : handleDrop}>
         <Typography variant="body1">{'Drag and drop a widget here'}</Typography>
       </div>
-      {message ? (
-        <Toast
-          open
-          message={message}
-          onClose={() =>
-            setState((prevState) => {
-              return { ...prevState, message: null };
-            })
-          }
-        />
-      ) : null}
     </div>
   );
 };
