@@ -1,0 +1,60 @@
+= 003 - Extracting the Sirius Web Library domain module
+
+This post-mortem records the second implementation step of xref:../adrs/237_improve_the_modularity_of_sirius_web_domain.adoc[ADR-237 - Improve the Modularity of Sirius Web Domain].
+It covers the issue https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868].
+
+
+== Goal
+
+After extracting the generic core-domain infrastructure, the Library bounded context was still implemented inside `sirius-web-domain`.
+Consequently, consumers of library aggregates and services could not depend on the Library domain independently of the remaining bounded contexts.
+
+This extraction establishes the pattern for moving a complete bounded-context domain: its aggregate, events, repositories, services, and public service APIs move together into an artifact with a context-specific namespace.
+
+
+== What changed
+
+The change introduced `sirius-web-library-domain` in `packages/library/backend` and registered its parent reactor in the top-level Maven build before the Sirius Web backend reactor.
+The module includes the standard Maven, Eclipse, Checkstyle, JaCoCo, resources, and architecture-test configuration used by the core-domain extraction.
+
+The Library aggregate, its events, repository, creation and search services, and service APIs moved from `org.eclipse.sirius.web.domain.boundedcontexts.library` to `org.eclipse.sirius.web.library.domain`.
+The old package no longer contains Library domain implementation types.
+
+The extracted module keeps an explicit dependency on `sirius-web-domain` for the shared and Semantic Data types that have not yet been extracted.
+In particular, the Library aggregate still refers to Semantic Data through an `AggregateReference`.
+This preserves the existing persistence model and behavior while making the remaining dependency visible for a later extraction.
+
+All Java consumers were updated to the new namespace.
+The main application module and coverage aggregation now declare the Library domain artifact.
+`JDBCConfiguration` was also updated to include `org.eclipse.sirius.web.library.domain` in its `@EnableJdbcRepositories` base packages, so Spring Data JDBC continues to discover the repository after its namespace changed.
+
+
+== What worked well
+
+* Moving the whole Library slice made its public API obvious: consumers use `Library`, its events, and the two service interfaces from one stable namespace.
+* Retaining the existing aggregate and repository behavior avoided a schema or persistence migration during a module-boundary refactoring.
+* The new module's architecture tests immediately protect its package boundary and keep it aligned with the repository's coding and Spring conventions.
+* The compiler identified import migration work across application services, Papaya initialization code, infrastructure configuration, and integration tests.
+
+
+== Lessons and follow-up
+
+Future bounded-context extractions should follow this order:
+
+. Map the owned aggregate, events, repositories, services, public APIs, and every Java consumer before changing files.
+. Identify outbound dependencies separately. Keep them explicit in the new module; do not duplicate shared types or pull an unrelated bounded context into the extracted package.
+. Create and register the dedicated reactor before its consumers, then give the module a stable `org.eclipse.sirius.web.<context>.domain` namespace.
+. Move all types forming the bounded-context domain together and update package-scanning or persistence configuration in addition to Java imports.
+. Add direct Maven dependencies for consumers instead of relying on transitive dependencies.
+. Copy the standard module metadata and architecture-test suite, then compile the producer and every direct consumer from the top-level reactor.
+
+The Library domain remains temporarily coupled to `sirius-web-domain` because Semantic Data and some shared domain types are still located there.
+That is an intentional intermediate state: later extractions should reduce this dependency by moving their owned types to dedicated modules, not by widening the Library module's responsibility.
+
+
+== Verification
+
+Run the Library domain architecture tests with its reactor dependencies, then compile its direct consumers and their test sources from the top-level reactor.
+In addition to compilation, check that the infrastructure module scans the moved repository package and that the Library integration tests start with the new artifact on the classpath.
+
+Before merging, search for the former `org.eclipse.sirius.web.domain.boundedcontexts.library` namespace to confirm that no stale imports or package declarations remain.
