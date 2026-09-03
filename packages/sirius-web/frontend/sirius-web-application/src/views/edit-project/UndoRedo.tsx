@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,13 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
+  GQLErrorPayload,
   GQLRedoData,
   GQLRedoInput,
+  GQLRedoVariables,
   GQLSuccessPayload,
   GQLUndoData,
   GQLUndoInput,
@@ -30,9 +33,17 @@ const undoMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -44,9 +55,17 @@ const redoMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        id
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -54,10 +73,25 @@ const redoMutation = gql`
 
 const isSuccessPayload = (payload: GQLUndoRedoItemPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
+const isErrorPayload = (payload: GQLUndoRedoItemPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
 export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
-  const [undo, { data: undoData }] = useMutation<GQLUndoData, GQLUndoVariables>(undoMutation);
-  const [redo, { data: redoData }] = useMutation<GQLRedoData, GQLUndoVariables>(redoMutation);
+  const [undo, { data: undoData, error: undoError }] = useMutation<GQLUndoData, GQLUndoVariables>(undoMutation);
+  const [redo, { data: redoData, error: redoError }] = useMutation<GQLRedoData, GQLRedoVariables>(redoMutation);
+
+  const { addErrorMessage, addMessages } = useMultiToast();
+  useEffect(() => {
+    if (undoError) {
+      addErrorMessage(undoError.message);
+    }
+  }, [undoError]);
+
+  useEffect(() => {
+    if (redoError) {
+      addErrorMessage(redoError.message);
+    }
+  }, [redoError]);
 
   const { project } = useCurrentProject();
 
@@ -100,6 +134,8 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
     if (undoData) {
       const { undo } = undoData;
       if (isSuccessPayload(undo)) {
+        addMessages(undo.messages);
+
         var storedUndoStack = sessionStorage.getItem('undoStack');
         var storedRedoStack = sessionStorage.getItem('redoStack');
 
@@ -111,6 +147,8 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
         //Put the element in the 1st position of the redo stack
         var redoStack = JSON.parse(storedRedoStack);
         sessionStorage.setItem('redoStack', JSON.stringify([lastElement, ...redoStack]));
+      } else if (isErrorPayload(undo)) {
+        addMessages(undo.messages);
       }
     }
   }, [undoData]);
@@ -119,6 +157,8 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
     if (redoData) {
       const { redo } = redoData;
       if (isSuccessPayload(redo)) {
+        addMessages(redo.messages);
+
         var storedUndoStack = sessionStorage.getItem('undoStack');
         var storedRedoStack = sessionStorage.getItem('redoStack');
 
@@ -130,6 +170,8 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
         //Put the element in the 1st position of the undo stack
         var undoStack = JSON.parse(storedUndoStack);
         sessionStorage.setItem('undoStack', JSON.stringify([lastElement, ...undoStack]));
+      } else if (isErrorPayload(redo)) {
+        addMessages(redo.messages);
       }
     }
   }, [redoData]);
