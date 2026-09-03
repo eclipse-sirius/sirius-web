@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.application.images.services.api.IImageApplicationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageSearchService;
+import org.eclipse.sirius.web.images.domain.Image;
+import org.eclipse.sirius.web.images.domain.services.api.IImageSearchService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

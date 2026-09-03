@@ -10,19 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.images.services.api;
+package org.eclipse.sirius.web.images.domain.architecture;
 
-import java.util.Optional;
-import java.util.UUID;
+import com.tngtech.archunit.core.domain.JavaClasses;
 
-import org.eclipse.sirius.web.images.domain.Image;
+import org.eclipse.sirius.components.spring.tests.architecture.AbstractConfigurationTests;
 
 /**
- * Application services used to manipulate images.
+ * Coding rules for configuration classes.
  *
  * @author sbegaudeau
  */
-public interface IImageApplicationService {
+public class ConfigurationTests extends AbstractConfigurationTests {
+    @Override
+    protected String getProjectRootPackage() {
+        return ArchitectureConstants.SIRIUS_WEB_IMAGES_DOMAIN;
+    }
 
-    Optional<Image> findById(UUID id);
+    @Override
+    protected JavaClasses getClasses() {
+        return ArchitectureConstants.CLASSES;
+    }
 }
+
+

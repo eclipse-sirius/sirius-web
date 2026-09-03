@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.services;
+package org.eclipse.sirius.web.images.domain.services;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,10 +23,10 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.repositories.IImageRepository;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageCreationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.images.domain.Image;
+import org.eclipse.sirius.web.images.domain.repositories.IImageRepository;
+import org.eclipse.sirius.web.images.domain.services.api.IImageCreationService;
 import org.springframework.stereotype.Service;
 
 /**

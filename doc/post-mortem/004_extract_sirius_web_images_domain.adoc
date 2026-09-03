@@ -1,0 +1,74 @@
+= 004 - Extracting the Sirius Web Images domain module
+
+This post-mortem records the third implementation step of xref:../adrs/237_improve_the_modularity_of_sirius_web_domain.adoc[ADR-237 - Improve the Modularity of Sirius Web Domain].
+It covers the issue https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868].
+
+
+== Goal
+
+After extracting the core and Library domains, the Image bounded context was still implemented inside `sirius-web-domain`.
+As a result, consumers of the Image aggregate and its services could not reuse that bounded context independently of the other remaining domain implementations.
+
+The goal was to extract the complete Image domain into a dedicated Maven module with the stable namespace `org.eclipse.sirius.web.images.domain`, while preserving the existing persistence model and behavior.
+
+
+== What changed
+
+The change introduced `sirius-web-images-domain` in `packages/images/backend` and registered its parent reactor in the top-level Maven build before the Sirius Web backend reactor.
+The module includes the standard Maven, Eclipse, Checkstyle, JaCoCo, resources, and architecture-test configuration established by the previous domain extractions.
+
+The Image aggregate, its created and deleted events, repository, creation, search, and deletion services, and their public service APIs moved from `org.eclipse.sirius.web.domain.boundedcontexts.image` to `org.eclipse.sirius.web.images.domain`.
+The former package no longer contains Image domain implementation types.
+
+The new module keeps an explicit dependency on `sirius-web-domain`.
+This is an intentional intermediate dependency: Image events still implement the shared `IDomainEvent` contract, and Image creation and deletion services still use the shared `IMessageService`.
+Neither type is owned by the Image bounded context, so moving them with Image would have widened the module's responsibility.
+
+All Java consumers were updated to use the new namespace.
+`sirius-web-application` and the JaCoCo coverage aggregation now declare direct dependencies on `sirius-web-images-domain`.
+`JDBCConfiguration` now scans `org.eclipse.sirius.web.images.domain`, preserving Spring Data JDBC repository discovery after the package move.
+The copyright headers of every Java source and test file changed by the extraction were updated to include 2026.
+
+The changelog and release notes document the breaking import migration for downstream consumers.
+
+
+== What worked well
+
+* The Library extraction provided a direct and repeatable module template, including reactor registration, architecture tests, and repository scanning.
+* Moving the full Image slice made its public API clear: consumers now use `Image`, its events, and its service APIs from one dedicated namespace.
+* Retaining the aggregate mapping and repository query avoided a database migration during a module-boundary refactoring.
+* Searching for the old package identified all consumer imports and confirmed that none remained after the extraction.
+
+
+== Lessons and follow-up
+
+Future bounded-context extractions should follow the established order:
+
+. Map the aggregate, events, repository, services, public APIs, and all consumers before moving code.
+. Identify outbound dependencies separately and keep only the dependencies on types not owned by the extracted bounded context.
+. Register the new reactor before its consumers and add direct Maven dependencies for each consumer.
+. Update Spring package scanning whenever a repository package moves.
+. Preserve the standard architecture-test and development metadata, then compile the module and its direct consumers from the top-level reactor.
+. Update the copyright header of every modified source and test file to include the current year.
+
+The Image domain remains temporarily coupled to `sirius-web-domain` for shared domain types.
+Later extractions should move those shared types to their owning reusable module, rather than duplicating them or introducing dependencies between unrelated bounded contexts.
+
+
+== Verification
+
+The new module and its reactor dependencies passed:
+
+[source,bash]
+----
+mvn -q -f packages/pom.xml -pl images/backend/sirius-web-images-domain -am test -DskipTests=false
+----
+
+The direct consumers were also compiled and tested with:
+
+[source,bash]
+----
+mvn -q -f packages/pom.xml -pl images/backend/sirius-web-images-domain,sirius-web/backend/sirius-web-application,sirius-web/backend/sirius-web-infrastructure,sirius-web/backend/sirius-web -am test -DskipTests=false
+----
+
+Before merging, search for `org.eclipse.sirius.web.domain.boundedcontexts.image` to confirm that no stale imports or package declarations remain.

@@ -23,6 +23,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJdbcRepositories(basePackages = { "org.eclipse.sirius.web.domain", "org.eclipse.sirius.web.library.domain" })
+@EnableJdbcRepositories(basePackages = { "org.eclipse.sirius.web.domain", "org.eclipse.sirius.web.images.domain", "org.eclipse.sirius.web.library.domain" })
 public class JDBCConfiguration {
 }

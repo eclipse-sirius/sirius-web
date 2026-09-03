@@ -34,12 +34,19 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.library.domain.services.api.ILibraryCreationService`
 * `org.eclipse.sirius.web.library.domain.events.LibraryCreatedEvent`
 - A list of required libraries must now be provided when creating a `ProjectTemplate`.
+- Classes from the image domain such as `Image`, `IImageSearchService`, `IImageCreationService` or `ImageCreatedEvent` have been moved to the new module `sirius-web-images-domain`.
+Imports of these classes must be updated to:
+* `org.eclipse.sirius.web.images.domain.Image`
+* `org.eclipse.sirius.web.images.domain.services.api.IImageSearchService`
+* `org.eclipse.sirius.web.images.domain.services.api.IImageCreationService`
+* `org.eclipse.sirius.web.images.domain.events.ImageCreatedEvent`
 
 
 == Bug fixes
 
 * Icon label nodes can now be moved inside free-form containers.
 * Border nodes can now display their configured child and border nodes.
+
 
 == New features
 
@@ -51,6 +58,7 @@ When users create a project from such a template, the required libraries are sel
 
 - Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
 - Update the backend documentation and add a first schema of the lifecycle of the backend with the creation of a project.
+
 
 == Deprecation warnings
 
@@ -65,6 +73,7 @@ At the moment, we have only deprecated `VariableManager.SELF` which has been rep
 We will not remove existing variable constants such as `VariableManager.SELF` and `IEditingContext.EDITING_CONTEXT` soon, but we will start using these new locations for the variables in our own codebase.
 When we will be satisfied with the use of these new variable declarations, we will change their annotation from `@Deprecated(since = "...")` to `@Deprecated(since = "...", forRemoval = true)` and warn downstream consumers in the CHANGELOG and release notes of that version that they should migrate to the new variable declarations.
 Then, we will remove the existing variable declarations in a future release.
+
 
 == Technical details
 

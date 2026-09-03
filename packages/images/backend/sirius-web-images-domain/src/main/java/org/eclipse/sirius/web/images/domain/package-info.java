@@ -14,11 +14,11 @@
     name = "Image",
     allowedDependencies = {},
     exposedPackages = {
-        "org.eclipse.sirius.web.domain.boundedcontexts.image",
-        "org.eclipse.sirius.web.domain.boundedcontexts.image.services.api",
-        "org.eclipse.sirius.web.domain.boundedcontexts.image.events"
+        "org.eclipse.sirius.web.images.domain",
+        "org.eclipse.sirius.web.images.domain.services.api",
+        "org.eclipse.sirius.web.images.domain.events"
     }
 )
-package org.eclipse.sirius.web.domain.boundedcontexts.image;
+package org.eclipse.sirius.web.images.domain;
 
 import org.eclipse.sirius.web.core.domain.annotations.Module;
