@@ -29,7 +29,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.TreeNode;
@@ -66,14 +66,14 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private static final String OUTGOING_REFERENCE_KIND = "siriusWeb://category/outgoing-references";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
     private final IMessageService messageService;
 
-    public OutgoingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, IMessageService messageService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public OutgoingTreeDescriptionProvider(IIdentityService identityService, ILabelService labelService, IMessageService messageService) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -82,7 +82,7 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
     public TreeDescription getTreeDescription() {
         return TreeDescription.newTreeDescription(WIDGET_ID)
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.identityService::getId).orElse(null))
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
@@ -108,7 +108,7 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
         if (self instanceof EReference eReference) {
             result = "reference/" + eReference.getName();
         } else if (self != null) {
-            result = this.objectService.getId(self);
+            result = this.identityService.getId(self);
         }
         return result;
     }
@@ -162,7 +162,7 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
         if (self instanceof EReference) {
             result = OUTGOING_REFERENCE_KIND;
         } else if (self != null) {
-            result = this.objectService.getKind(self);
+            result = this.identityService.getKind(self);
         }
         return result;
     }
