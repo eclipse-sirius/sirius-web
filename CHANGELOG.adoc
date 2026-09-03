@@ -73,7 +73,7 @@ Imports of these classes must be updated to:
 
 === Dependency update
 
-
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1[Spring Boot 4.1.1]
 
 
 === Bug fixes

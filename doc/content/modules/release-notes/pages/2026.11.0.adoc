@@ -40,6 +40,7 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.images.domain.services.api.IImageSearchService`
 * `org.eclipse.sirius.web.images.domain.services.api.IImageCreationService`
 * `org.eclipse.sirius.web.images.domain.events.ImageCreatedEvent`
+- Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1[Spring Boot 4.1.1]
 
 
 == Bug fixes
