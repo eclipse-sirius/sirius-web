@@ -19,7 +19,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.FadeDiagramElementInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.forms.ButtonStyle;
@@ -39,14 +39,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class RevealFadedElementsButtonDescriptionProvider implements IDiagramFilterActionContributionProvider {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final IDiagramFilterHelper diagramFilterHelper;
 
     private final IMessageService messageService;
 
-    public RevealFadedElementsButtonDescriptionProvider(IObjectService objectService, IDiagramFilterHelper diagramFilterHelper, IMessageService messageService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public RevealFadedElementsButtonDescriptionProvider(IIdentityService identityService, IDiagramFilterHelper diagramFilterHelper, IMessageService messageService) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.diagramFilterHelper = Objects.requireNonNull(diagramFilterHelper);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -55,7 +55,7 @@ public class RevealFadedElementsButtonDescriptionProvider implements IDiagramFil
     public ButtonDescription getButtonDescription() {
         return ButtonDescription.newButtonDescription("diagram-filter/split-button/reveal-faded-elements")
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.identityService::getId).orElse(null))
                 .labelProvider(variableManager -> this.messageService.diagramFilterRevealFadedElements())
                 .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(variableManager -> false)
