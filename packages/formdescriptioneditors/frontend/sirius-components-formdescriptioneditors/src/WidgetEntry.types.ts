@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,10 +78,6 @@ export type SliderWidgetProps = WidgetProps<GQLSlider>;
 export type TextareaWidgetProps = WidgetProps<GQLTextarea>;
 export type TextfieldWidgetProps = WidgetProps<GQLTextfield>;
 export type TreeWidgetProps = WidgetProps<GQLTree>;
-
-export interface WidgetEntryState {
-  message: string | null;
-}
 
 export interface WidgetEntryStyleProps {
   flexDirection: GQLFlexDirection;

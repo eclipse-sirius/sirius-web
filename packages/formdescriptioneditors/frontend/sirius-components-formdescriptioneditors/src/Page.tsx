@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { addGroupMutation, moveGroupMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -28,7 +28,7 @@ import {
   GQLMovePagePayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { Group } from './Group';
-import { PageProps, PageState } from './Page.types';
+import { PageProps } from './Page.types';
 import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
@@ -70,26 +70,7 @@ export const Page = ({ page }: PageProps) => {
   const noop = () => {};
   const { classes } = usePageStyles();
 
-  const initialState: PageState = { message: null, selected: false };
-  const [state, setState] = useState<PageState>(initialState);
-  const { message } = state;
-
-  const ref = useRef<HTMLInputElement | null>(null);
-
-  const { selection } = useSelection();
-
-  useEffect(() => {
-    if (ref.current && selection.entries.find((entry) => entry.id === page.id)) {
-      ref.current.focus();
-      setState((prevState) => {
-        return { ...prevState, selected: true };
-      });
-    } else {
-      setState((prevState) => {
-        return { ...prevState, selected: false };
-      });
-    }
-  }, [selection, page]);
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const [addGroup, { loading: addGroupLoading, data: addGroupData, error: addGroupError }] = useMutation<
     GQLAddGroupMutationData,
@@ -99,16 +80,12 @@ export const Page = ({ page }: PageProps) => {
   useEffect(() => {
     if (!addGroupLoading) {
       if (addGroupError) {
-        setState((prevState) => {
-          return { ...prevState, message: addGroupError.message };
-        });
+        addErrorMessage(addGroupError.message);
       }
       if (addGroupData) {
         const { addGroup } = addGroupData;
         if (isErrorPayload(addGroup)) {
-          setState((prevState) => {
-            return { ...prevState, message: addGroup.message };
-          });
+          addMessages(addGroup.messages);
         }
       }
     }
@@ -122,16 +99,12 @@ export const Page = ({ page }: PageProps) => {
   useEffect(() => {
     if (!moveGroupLoading) {
       if (moveGroupError) {
-        setState((prevState) => {
-          return { ...prevState, message: moveGroupError.message };
-        });
+        addErrorMessage(moveGroupError.message);
       }
       if (moveGroupData) {
         const { moveGroup } = moveGroupData;
         if (isErrorPayload(moveGroup)) {
-          setState((prevState) => {
-            return { ...prevState, message: moveGroup.message };
-          });
+          addMessages(moveGroup.messages);
         }
       }
     }
@@ -203,17 +176,6 @@ export const Page = ({ page }: PageProps) => {
         onDrop={readOnly ? noop : handleDrop}>
         <Typography variant="body1">{'Drag and drop a group here'}</Typography>
       </div>
-      {message ? (
-        <Toast
-          open
-          message={message}
-          onClose={() =>
-            setState((prevState) => {
-              return { ...prevState, message: null };
-            })
-          }
-        />
-      ) : null}
     </div>
   );
 };
