@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,24 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.events;
+package org.eclipse.sirius.web.images.domain.services.api;
 
-import java.time.Instant;
-import java.util.UUID;
+import java.io.InputStream;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.image.Image;
-
-import jakarta.validation.constraints.NotNull;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.images.domain.Image;
 
 /**
- * Event fired when images are updated.
+ * Used to create images.
  *
  * @author sbegaudeau
  */
-public record ImageCreatedEvent(
-        @NotNull UUID id,
-        @NotNull Instant createdOn,
-        @NotNull ICause causedBy,
-        @NotNull Image image) implements IImageEvent {
+public interface IImageCreationService {
+    IResult<Image> createImage(ICause cause, String label, String fileName, InputStream inputStream);
 }

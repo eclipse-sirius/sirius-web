@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.image.events;
+package org.eclipse.sirius.web.images.domain.events;
 
-import org.eclipse.sirius.web.domain.events.IDomainEvent;
+import java.time.Instant;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.images.domain.Image;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Interface implemented by all the domain events of the image bounded context.
+ * Event fired when images are deleted.
  *
  * @author sbegaudeau
  */
-public interface IImageEvent extends IDomainEvent {
+public record ImageDeletedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull ICause causedBy,
+        @NotNull Image image) implements IImageEvent {
 }
