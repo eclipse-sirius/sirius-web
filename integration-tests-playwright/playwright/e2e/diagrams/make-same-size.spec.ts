@@ -108,7 +108,9 @@ test.describe('diagram - make same size', () => {
 
     await nodeChild.click();
     await nodeChild.isLastOneSelected();
+
     await nodeParent.controlClick();
+    await nodeChild.isNotLastOneSelected();
     await nodeParent.isLastOneSelected();
 
     const nodeParentSizeBefore = await nodeParent.getReactFlowSize('Application Concern', false);
@@ -118,9 +120,6 @@ test.describe('diagram - make same size', () => {
     await page.getByTestId('toolSection-Layout').click();
     await page.getByTestId('Palette').getByTestId('tool-Make same size').click();
     await nodeParent.closePalette();
-    const nodeChildSizeAfter = await nodeChild.getReactFlowSize('Controller', false);
-
-    expect(nodeParentSizeBefore.width).toBe(nodeChildSizeAfter.width);
-    expect(nodeParentSizeBefore.height).toBe(nodeChildSizeAfter.height);
+    await expect.poll(() => nodeChild.getReactFlowSize('Controller', false)).toEqual(nodeParentSizeBefore);
   });
 });

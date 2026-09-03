@@ -93,7 +93,6 @@ test.describe('diagram - list', () => {
 
     const parentNodeSizeAfter = await parentNode.getReactFlowSize('List', false);
     await childNode.nodeLocator.click({ position: { x: 25, y: 25 } });
-    const childNodeSizeAfter = await childNode.getReactFlowSize(null, false);
 
     const borderWidth: number = 2;
     const margin: number = 2;
@@ -228,14 +227,14 @@ test.describe('diagram - list', () => {
 
     const nodeSizeBefore = await node.getReactFlowSize();
     await node.click();
-    await node.resize({ height: -50, width: -50 });
-    const nodeSizeAfter = await node.getReactFlowSize();
-    expect(nodeSizeAfter.width).toBeLessThan(nodeSizeBefore.width);
+    await node.resize({ height: 0, width: -5 }, 'right.line');
+    await expect
+      .poll(async () => (await node.getReactFlowSize('NewClass', false)).width)
+      .toBeLessThan(nodeSizeBefore.width);
 
     await node.openPalette();
     await page.getByTestId('Adjust size - Tool').click();
 
-    const nodeSizeAfterAdjustSize = await node.getReactFlowSize();
-    expect(nodeSizeAfterAdjustSize.width).toBe(nodeSizeBefore.width);
+    await expect.poll(async () => (await node.getReactFlowSize('NewClass', false)).width).toBe(nodeSizeBefore.width);
   });
 });
