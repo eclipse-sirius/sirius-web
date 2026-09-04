@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.Success;
 import org.junit.jupiter.api.Test;
 
@@ -101,6 +102,6 @@ public class InvokeEditingContextActionEventHandlerTests {
         assertThat(payload).isInstanceOf(ErrorPayload.class);
 
         ErrorPayload errorPayload = (ErrorPayload) payload;
-        assertThat(errorPayload.message()).isEqualTo("No handler could be found for action with id actionId");
+        assertThat(errorPayload.messages()).map(Message::body).contains("No handler could be found for action with id actionId");
     }
 }

@@ -38,7 +38,6 @@ public class CreateProjectMutationRunner implements IMutationRunner<ICreateProje
                   }
                 }
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

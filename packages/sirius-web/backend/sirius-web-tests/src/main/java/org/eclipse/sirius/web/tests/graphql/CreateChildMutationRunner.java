@@ -40,7 +40,6 @@ public class CreateChildMutationRunner implements IMutationRunner<CreateChildInp
                   }
                 }
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

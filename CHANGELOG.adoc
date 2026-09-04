@@ -69,6 +69,7 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.images.domain.services.api.IImageSearchService`
 * `org.eclipse.sirius.web.images.domain.services.api.IImageCreationService`
 * `org.eclipse.sirius.web.images.domain.events.ImageCreatedEvent`
+- https://github.com/eclipse-sirius/sirius-web/issues/6194[#6194] [core] Remove the field `ErrorPayload#message` in favor of `ErrorPayload#messages`.
 
 
 === Dependency update

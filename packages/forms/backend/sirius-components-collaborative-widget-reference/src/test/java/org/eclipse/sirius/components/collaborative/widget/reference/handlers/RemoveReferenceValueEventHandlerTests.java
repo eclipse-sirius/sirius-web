@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.widget.reference.ReferenceValue;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
@@ -209,7 +210,7 @@ public class RemoveReferenceValueEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(ErrorPayload.class);
-        assertThat(((ErrorPayload) payload).message()).isEqualTo("Read-only widget can not be edited");
+        assertThat(((ErrorPayload) payload).messages()).map(Message::body).contains("Read-only widget can not be edited");
         assertThat(hasBeenExecuted.get()).isFalse();
     }
 

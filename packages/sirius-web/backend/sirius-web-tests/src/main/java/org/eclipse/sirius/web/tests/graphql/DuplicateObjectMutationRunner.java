@@ -40,7 +40,6 @@ public class DuplicateObjectMutationRunner implements IMutationRunner<DuplicateO
                   }
                 }
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

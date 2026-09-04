@@ -36,7 +36,10 @@ public class AddPageMutationRunner implements IMutationRunner<AddPageInput> {
                     id
                   }
                   ... on ErrorPayload {
-                    message
+                    messages {
+                      body
+                      level
+                    }
                   }
                 }
             }

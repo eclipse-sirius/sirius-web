@@ -39,7 +39,6 @@ public class ImportLibrariesMutationRunner implements IMutationRunner<ImportLibr
                   }
                 }
                 ... on ErrorPayload {
-                  message
                   messages {
                     level
                     body

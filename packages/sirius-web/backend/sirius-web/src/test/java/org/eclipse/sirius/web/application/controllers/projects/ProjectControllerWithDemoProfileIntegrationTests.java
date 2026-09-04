@@ -146,7 +146,10 @@ public class ProjectControllerWithDemoProfileIntegrationTests extends AbstractIn
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }
@@ -183,8 +186,8 @@ public class ProjectControllerWithDemoProfileIntegrationTests extends AbstractIn
             var result = new ObjectMapper().writeValueAsString(response.getBody());
             var typename = JsonPath.read(result, "$.data.uploadProject.__typename");
             assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
-            var message = JsonPath.read(result, "$.data.uploadProject.message");
-            assertThat(message).isEqualTo(this.messageService.unauthorized());
+            List<String> messages = JsonPath.read(result, "$.data.uploadProject.messages[*].body");
+            assertThat(messages).contains(this.messageService.unauthorized());
         } catch (JacksonException exception) {
             fail(exception.getMessage());
         }

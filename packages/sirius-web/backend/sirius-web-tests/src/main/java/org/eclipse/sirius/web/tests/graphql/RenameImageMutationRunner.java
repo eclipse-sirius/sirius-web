@@ -33,7 +33,6 @@ public class RenameImageMutationRunner implements IMutationRunner<RenameImageInp
               renameImage(input: $input) {
                 __typename
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

@@ -112,14 +112,15 @@ public class DeckLaneService implements IDeckLaneService {
     private IPayload getPayload(UUID payloadId) {
         IPayload payload = null;
         List<Message> feedbackMessages = this.feedbackMessageService.getFeedbackMessages();
-        Optional<Message> optionalErrorMsg = feedbackMessages.stream().filter(msg -> MessageLevel.ERROR.equals(msg.level())).findFirst();
-        if (optionalErrorMsg.isPresent()) {
-            payload = new ErrorPayload(payloadId, optionalErrorMsg.get().body(), feedbackMessages);
+        var hasError = feedbackMessages.stream().anyMatch(message -> MessageLevel.ERROR.equals(message.level()));
+        if (hasError) {
+            payload = new ErrorPayload(payloadId, feedbackMessages);
         } else {
             payload = new SuccessPayload(payloadId, feedbackMessages);
         }
         return payload;
     }
+
     private Optional<Lane> findLane(Predicate<Lane> condition, Deck deck) {
         return deck.lanes().stream()
                 .filter(condition)

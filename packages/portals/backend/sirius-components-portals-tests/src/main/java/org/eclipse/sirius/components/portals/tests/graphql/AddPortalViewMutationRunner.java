@@ -37,7 +37,10 @@ public class AddPortalViewMutationRunner implements IMutationRunner<AddPortalVie
                     id
                   }
                   ... on ErrorPayload {
-                    message
+                    messages {
+                      body
+                      level
+                    }
                   }
                 }
               }

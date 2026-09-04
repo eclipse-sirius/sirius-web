@@ -217,7 +217,10 @@ public class ExportedRepresentationMigrationDataTests extends AbstractIntegratio
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }

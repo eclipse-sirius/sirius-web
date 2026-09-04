@@ -38,7 +38,10 @@ public class CreateRepresentationMutationRunner implements IMutationRunner<Creat
                   }
                 }
                 ... on ErrorPayload {
-                  message
+                  messages {
+                    body
+                    level
+                  }
                 }
               }
             }

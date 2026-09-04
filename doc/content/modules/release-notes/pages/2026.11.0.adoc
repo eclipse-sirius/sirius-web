@@ -40,6 +40,7 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.images.domain.services.api.IImageSearchService`
 * `org.eclipse.sirius.web.images.domain.services.api.IImageCreationService`
 * `org.eclipse.sirius.web.images.domain.events.ImageCreatedEvent`
+- Remove the field `ErrorPayload#message` in favor of `ErrorPayload#messages`.
 
 
 == Bug fixes
