@@ -163,9 +163,9 @@ public class GanttTaskService implements IGanttTaskService {
     private IPayload getPayload(UUID payloadId) {
         IPayload payload = null;
         List<Message> feedbackMessages = this.feedbackMessageService.getFeedbackMessages();
-        Optional<Message> errorMsgOpt = feedbackMessages.stream().filter(msg -> MessageLevel.ERROR.equals(msg.level())).findFirst();
-        if (errorMsgOpt.isPresent()) {
-            payload = new ErrorPayload(payloadId, errorMsgOpt.get().body(), feedbackMessages);
+        var hasError = feedbackMessages.stream().anyMatch(message -> MessageLevel.ERROR.equals(message.level()));
+        if (hasError) {
+            payload = new ErrorPayload(payloadId, feedbackMessages);
         } else {
             payload = new SuccessPayload(payloadId, feedbackMessages);
         }

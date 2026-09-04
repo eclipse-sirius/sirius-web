@@ -102,7 +102,6 @@ type Diagnostic {
 
 type ErrorPayload {
   id: ID!
-  message: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/6194")
   messages: [Message]!
 }
 

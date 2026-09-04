@@ -127,7 +127,10 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }

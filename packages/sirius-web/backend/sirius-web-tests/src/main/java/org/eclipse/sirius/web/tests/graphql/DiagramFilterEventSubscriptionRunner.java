@@ -35,7 +35,6 @@ public class DiagramFilterEventSubscriptionRunner implements ISubscriptionRunner
               diagramFilterEvent(input: $input) {
                 __typename
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

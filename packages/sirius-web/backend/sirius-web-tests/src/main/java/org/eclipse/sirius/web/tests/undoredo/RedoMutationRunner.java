@@ -37,7 +37,10 @@ public class RedoMutationRunner implements IMutationRunner<RedoInput> {
                     id
                   }
                   ... on ErrorPayload {
-                    message
+                    messages {
+                      body
+                      level
+                    }
                   }
                 }
             }
