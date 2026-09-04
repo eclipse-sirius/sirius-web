@@ -36,7 +36,10 @@ public class AddWidgetMutationRunner implements IMutationRunner<AddWidgetInput> 
                   id
                 }
                 ... on ErrorPayload {
-                  message
+                  messages {
+                    body
+                    level
+                  }
                 }
               }
             }

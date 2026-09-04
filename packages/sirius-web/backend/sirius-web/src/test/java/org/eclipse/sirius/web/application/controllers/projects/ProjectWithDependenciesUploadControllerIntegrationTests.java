@@ -112,7 +112,10 @@ public class ProjectWithDependenciesUploadControllerIntegrationTests extends Abs
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }

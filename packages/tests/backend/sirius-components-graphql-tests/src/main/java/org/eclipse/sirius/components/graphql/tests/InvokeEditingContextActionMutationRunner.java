@@ -33,7 +33,10 @@ public class InvokeEditingContextActionMutationRunner implements IMutationRunner
               invokeEditingContextAction(input: $input) {
                 __typename
                 ... on ErrorPayload {
-                  message
+                  messages {
+                    body
+                    level
+                  }
                 }
               }
             }

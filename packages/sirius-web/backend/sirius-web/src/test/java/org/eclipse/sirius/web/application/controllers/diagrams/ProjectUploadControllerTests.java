@@ -121,7 +121,10 @@ public class ProjectUploadControllerTests extends AbstractIntegrationTests {
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }

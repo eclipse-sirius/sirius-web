@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,8 +94,8 @@ public class RepresentationLifecycleControllerWithDemoProfileIntegrationTests ex
         String typename = JsonPath.read(result.data(), "$.data.createRepresentation.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        var errorMessage = JsonPath.read(result.data(), "$.data.createRepresentation.message");
-        assertThat(errorMessage).isEqualTo(this.messageService.unauthorized());
+        List<String> messages = JsonPath.read(result.data(), "$.data.createRepresentation.messages[*].body");
+        assertThat(messages).contains(this.messageService.unauthorized());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class RepresentationLifecycleControllerWithDemoProfileIntegrationTests ex
                 .filter(ErrorPayload.class::isInstance)
                 .map(ErrorPayload.class::cast)
                 .ifPresentOrElse(
-                        errorPayload -> assertThat(errorPayload.message()).isEqualTo(this.messageService.unauthorized()),
+                        errorPayload -> assertThat(errorPayload.messages().getFirst().body()).isEqualTo(this.messageService.unauthorized()),
                         () -> fail("It should not be authorized to subscribe")
                 );
 

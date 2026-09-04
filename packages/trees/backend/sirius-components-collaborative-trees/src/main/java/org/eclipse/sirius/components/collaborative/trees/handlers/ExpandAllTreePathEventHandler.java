@@ -72,9 +72,12 @@ public class ExpandAllTreePathEventHandler implements ITreeEventHandler {
             } else {
                 payload = this.defaultExpandAllTreePathHandler.handle(editingContext, tree, input);
             }
-            if (payload instanceof ErrorPayload errorPayload) {
+            if (payload instanceof ErrorPayload) {
                 this.logger.atWarn()
-                        .setMessage(errorPayload.message())
+                        .setMessage("Failed to compute the path to expand")
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .addKeyValue("representationId", tree.getId())
+                        .addKeyValue("treeItemId", input.treeItemId())
                         .log();
             }
         }
