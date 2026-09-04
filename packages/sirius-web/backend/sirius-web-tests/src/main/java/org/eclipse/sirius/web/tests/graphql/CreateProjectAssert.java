@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -80,8 +81,8 @@ public class CreateProjectAssert {
     }
 
     public CreateProjectAssert isCapabilityError() {
-        String message = JsonPath.read(result.data(), "$.data.createProject.message");
-        assertThat(message).isEqualTo(this.messageService.unauthorized());
+        List<String> messages = JsonPath.read(result.data(), "$.data.createProject.messages[*].body");
+        assertThat(messages).contains(this.messageService.unauthorized());
         return this;
     }
 }

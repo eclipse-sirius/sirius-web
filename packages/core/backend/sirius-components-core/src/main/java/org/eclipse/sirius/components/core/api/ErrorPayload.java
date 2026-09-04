@@ -21,24 +21,17 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 
 /**
  * General purpose error payload.
- * During an intermediate phase, to avoid breaking all frontend component interfaces,
- * we keep the two ways of broadcasting error messages, in a single String and in a more complex {@link Message} list.
  *
  * @author sbegaudeau
  */
-public record ErrorPayload(UUID id, @Deprecated(forRemoval = true) String message, List<Message> messages) implements IPayload {
+public record ErrorPayload(UUID id, List<Message> messages) implements IPayload {
 
     public ErrorPayload {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(message);
         Objects.requireNonNull(messages);
     }
 
     public ErrorPayload(UUID id, String message) {
-        this(id, message, List.of(new Message(message, MessageLevel.ERROR)));
-    }
-
-    public ErrorPayload(UUID id, List<Message> messages) {
-        this(id, messages.stream().findFirst().map(Message::body).orElse(""), messages);
+        this(id, List.of(new Message(message, MessageLevel.ERROR)));
     }
 }

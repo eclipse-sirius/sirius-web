@@ -33,7 +33,6 @@ public class DeleteTreeItemMutationRunner implements IMutationRunner<DeleteTreeI
               deleteTreeItem(input: $input) {
                 __typename
                 ... on ErrorPayload {
-                  message
                   messages {
                     level
                     body

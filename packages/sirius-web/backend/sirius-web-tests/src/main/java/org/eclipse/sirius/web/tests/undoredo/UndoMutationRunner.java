@@ -37,7 +37,10 @@ public class UndoMutationRunner implements IMutationRunner<UndoInput> {
                     id
                   }
                   ... on ErrorPayload {
-                    message
+                    messages {
+                      body
+                      level
+                    }
                   }
                 }
             }

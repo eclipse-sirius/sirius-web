@@ -33,7 +33,10 @@ public class InvokeToolMenuEntryMutationRunner implements IMutationRunner<Invoke
               invokeToolMenuEntry(input: $input) {
                 __typename
                 ... on ErrorPayload {
-                  message
+                  messages {
+                    body
+                    level
+                  }
                 }
               }
             }

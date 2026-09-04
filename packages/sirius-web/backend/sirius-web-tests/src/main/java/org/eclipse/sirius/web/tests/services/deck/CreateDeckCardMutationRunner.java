@@ -36,7 +36,10 @@ public class CreateDeckCardMutationRunner implements IMutationRunner<CreateDeckC
                   id
                 }
                 ... on ErrorPayload {
-                  message
+                  messages {
+                    body
+                    level
+                  }
                 }
               }
             }

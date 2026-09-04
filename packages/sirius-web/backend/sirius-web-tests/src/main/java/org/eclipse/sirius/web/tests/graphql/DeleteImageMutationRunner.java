@@ -33,7 +33,6 @@ public class DeleteImageMutationRunner implements IMutationRunner<DeleteImageInp
               deleteImage(input: $input) {
                 __typename
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

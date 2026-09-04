@@ -36,7 +36,10 @@ public class DeleteWidgetMutationRunner implements IMutationRunner<DeleteWidgetI
                   id
                 }
                 ... on ErrorPayload {
-                  message
+                  messages {
+                    body
+                    level
+                  }
                 }
               }
             }

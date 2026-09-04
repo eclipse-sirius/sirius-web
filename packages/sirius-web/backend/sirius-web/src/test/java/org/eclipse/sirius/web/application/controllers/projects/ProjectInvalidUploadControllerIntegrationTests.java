@@ -20,6 +20,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
@@ -86,8 +87,8 @@ public class ProjectInvalidUploadControllerIntegrationTests extends AbstractInte
         String typename = JsonPath.read(result, "$.data.uploadProject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        String message = JsonPath.read(result, "$.data.uploadProject.message");
-        assertThat(message).isEqualTo(this.messageService.unknownDependencies());
+        List<String> messages = JsonPath.read(result, "$.data.uploadProject.messages[*].body");
+        assertThat(messages).contains(this.messageService.unknownDependencies());
     }
 
     private String upload(byte[] zipByte) {
@@ -107,7 +108,10 @@ public class ProjectInvalidUploadControllerIntegrationTests extends AbstractInte
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }

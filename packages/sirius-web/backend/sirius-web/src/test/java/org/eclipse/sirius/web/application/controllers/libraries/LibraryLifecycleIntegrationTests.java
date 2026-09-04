@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.UUID;
@@ -31,8 +32,8 @@ import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.services.forms.FormWithViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
@@ -122,8 +123,8 @@ public class LibraryLifecycleIntegrationTests extends AbstractIntegrationTests {
         String typename = JsonPath.read(result.data(), "$.data.createRepresentation.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        var errorMessage = JsonPath.read(result.data(), "$.data.createRepresentation.message");
-        assertThat(errorMessage).isEqualTo(this.messageService.unauthorized());
+        List<String> messages = JsonPath.read(result.data(), "$.data.createRepresentation.messages[*].body");
+        assertThat(messages).contains(this.messageService.unauthorized());
     }
 
 }

@@ -35,7 +35,6 @@ public class ValidationEventSubscriptionRunner implements ISubscriptionRunner<Va
               validationEvent(input: $input) {
                 __typename
                 ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

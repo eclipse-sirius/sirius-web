@@ -33,7 +33,6 @@ public class RenameProjectMutationRunner implements IMutationRunner<RenameProjec
               renameProject(input: $input) {
                 __typename
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body
