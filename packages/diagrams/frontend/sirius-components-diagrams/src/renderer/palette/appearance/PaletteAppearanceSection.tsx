@@ -67,7 +67,7 @@ export const PaletteAppearanceSection = ({
     paletteAppearanceSectionExtensionPoint
   );
 
-  const paletteAppearanceSectionComponents: JSX.Element[] = paletteAppearanceSectionData.data
+  const paletteAppearanceSectionComponents: React.JSX.Element[] = paletteAppearanceSectionData.data
     .filter((data) => data.canHandle(diagramElementIds))
     .map((data) => data.component)
     .map((PaletteAppearanceSectionComponent, index) => (

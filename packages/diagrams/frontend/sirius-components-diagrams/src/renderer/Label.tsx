@@ -152,7 +152,7 @@ export const Label = memo(({ diagramElementId, label, faded, width, height }: La
     return { marginRight: theme.spacing(1) };
   }, []);
 
-  const content: JSX.Element =
+  const content: React.JSX.Element =
     label.id === currentlyEditedLabelId && !readOnly ? (
       <DiagramDirectEditInput
         editingKey={editingKey}

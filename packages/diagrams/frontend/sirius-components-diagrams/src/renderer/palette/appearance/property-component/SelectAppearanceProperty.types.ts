@@ -14,7 +14,7 @@
 import { SelectChangeEvent } from '@mui/material/Select';
 
 export interface SelectAppearancePropertyProps {
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   label: string;
   value: string;
   onChange: (event: SelectChangeEvent<string>) => void;

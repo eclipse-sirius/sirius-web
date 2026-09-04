@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 export interface AppearanceNumberTextfieldProps {
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   label: string;
   initialValue: number;
   disabled: boolean;

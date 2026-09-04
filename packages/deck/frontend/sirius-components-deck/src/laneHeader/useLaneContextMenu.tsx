@@ -44,7 +44,7 @@ export const useLaneContextMenu = (cards: Card[], id: string): UseLaneContextMen
     }
   };
 
-  let contextMenu: JSX.Element | null = null;
+  let contextMenu: React.JSX.Element | null = null;
   if (showContextMenu && menuAnchor) {
     const applyChanges = (visibleCardsIds) => {
       const hiddenCards = cards.map((card) => card.id).filter((cardId) => !visibleCardsIds.includes(cardId));

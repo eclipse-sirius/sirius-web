@@ -152,7 +152,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
   widget,
   readOnly,
 }: PropertySectionComponentProps<GQLTextfield | GQLTextarea>) => {
-  const inputElt = useRef<HTMLInputElement>();
+  const inputElt = useRef<HTMLInputElement | null>(null);
 
   const props: TextfieldStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,

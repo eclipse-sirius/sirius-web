@@ -28,7 +28,7 @@ const useToolStyle = makeStyles()((theme) => ({
 export const Tool = ({ tool, onClick }: ToolProps) => {
   const { id, label, iconURL } = tool;
   const { classes } = useToolStyle();
-  let image: JSX.Element | null = null;
+  let image: React.JSX.Element | null = null;
   if (iconURL.length > 0) {
     image = <IconOverlay iconURLs={iconURL} alt={label} title={label} />;
   }

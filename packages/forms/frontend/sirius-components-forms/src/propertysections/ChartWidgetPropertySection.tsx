@@ -33,7 +33,7 @@ export const ChartWidgetPropertySection: PropertySectionComponent<GQLChartWidget
   const { classes } = useStyles();
   const { chart } = widget;
 
-  let chartComponent: JSX.Element | null = null;
+  let chartComponent: React.JSX.Element | null = null;
   if (isBarChart(chart)) {
     chartComponent = (
       <div className={classes.chart}>

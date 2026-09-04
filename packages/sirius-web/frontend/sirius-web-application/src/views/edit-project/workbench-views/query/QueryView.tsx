@@ -159,7 +159,7 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
       />
     );
 
-    const contents: JSX.Element = (
+    const contents: React.JSX.Element = (
       <Box data-representation-kind="query" sx={queryViewStyle}>
         <ExpressionArea
           editingContextId={editingContextId}
@@ -539,7 +539,7 @@ const ResultArea = ({ loading, payload }: ResultAreaProps) => {
     flexDirection: 'column',
   };
 
-  let content: JSX.Element | null = null;
+  let content: React.JSX.Element | null = null;
   if (loading) {
     content = <LoadingViewer />;
   } else if (payload) {

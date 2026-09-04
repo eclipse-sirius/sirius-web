@@ -15,7 +15,7 @@ import { PortalRepresentationMode } from './PortalRepresentation.types';
 
 export interface PortalToolbarProps {
   representationId: string;
-  fullscreenNode: React.RefObject<HTMLDivElement>;
+  fullscreenNode: React.RefObject<HTMLDivElement | null>;
   portalMode: PortalRepresentationMode;
   setPortalMode: (portalMode: PortalRepresentationMode) => void;
 }

@@ -14,6 +14,9 @@ import { XYPosition } from '@xyflow/react';
 import { DraggableBounds } from 'react-draggable';
 
 export interface UseGetUpdatedModalPositionValue {
-  getUpdatedModalPosition: (initialPosition: XYPosition, modalRef: React.RefObject<HTMLDivElement>) => XYPosition;
-  getUpdatedBounds: (modalRef: React.RefObject<HTMLDivElement>) => DraggableBounds;
+  getUpdatedModalPosition: (
+    initialPosition: XYPosition,
+    modalRef: React.RefObject<HTMLDivElement | null>
+  ) => XYPosition;
+  getUpdatedBounds: (modalRef: React.RefObject<HTMLDivElement | null>) => DraggableBounds;
 }

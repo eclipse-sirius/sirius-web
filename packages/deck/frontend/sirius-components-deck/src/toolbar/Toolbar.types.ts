@@ -16,7 +16,7 @@ export interface ToolbarProps {
   onZoomOut: () => void;
   onFitToScreen: () => void;
   onResetZoom: () => void;
-  fullscreenNode: React.RefObject<HTMLDivElement>;
+  fullscreenNode: React.RefObject<HTMLDivElement | null>;
 }
 
 export interface ToolbarState {

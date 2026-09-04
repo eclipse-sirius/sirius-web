@@ -206,7 +206,7 @@ export const DeckRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
       dropDeckLane(newIndex, lane);
     };
 
-    let content: JSX.Element | null = null;
+    let content: React.JSX.Element | null = null;
     if (complete) {
       content = (
         <div className={classes.complete}>

@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 export interface CheckboxAppearancePropertyProps {
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;

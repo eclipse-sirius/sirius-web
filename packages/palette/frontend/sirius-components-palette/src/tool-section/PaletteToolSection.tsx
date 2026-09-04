@@ -115,7 +115,7 @@ export const PaletteToolSection = ({
           .flatMap((entry) => findToolsInToolSection(entry, state.currentSectionId));
 
   // Backend tools/tools section/dividers
-  const listItemsRendered: JSX.Element[] = currentEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
+  const listItemsRendered: React.JSX.Element[] = currentEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
     if (isTool(paletteEntry)) {
       const renderedTool = getRenderedTool(
         palette,
@@ -180,7 +180,7 @@ export const PaletteToolSection = ({
       });
   }
 
-  const lastToolRendered: JSX.Element | null = getRenderedTool(
+  const lastToolRendered: React.JSX.Element | null = getRenderedTool(
     palette,
     lastToolInvokedId,
     representationElementIds,
@@ -191,7 +191,7 @@ export const PaletteToolSection = ({
     onToolClick
   );
 
-  const lastUsedTool: JSX.Element = lastToolRendered ? (
+  const lastUsedTool: React.JSX.Element = lastToolRendered ? (
     <>
       {lastToolRendered}
       <Divider />

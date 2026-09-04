@@ -44,7 +44,7 @@ export const PapayaComponentLabelDetailNodeActionContribution = ({ diagramElemen
     setModal(null);
   };
 
-  let modalElement: JSX.Element | null = null;
+  let modalElement: React.JSX.Element | null = null;
   if (modal === 'dialog' && targetedNode) {
     modalElement = (
       <>

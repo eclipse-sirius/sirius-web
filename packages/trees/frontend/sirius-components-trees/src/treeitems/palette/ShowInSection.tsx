@@ -67,7 +67,7 @@ export const ShowInSection = ({ onBackToMainList }: PaletteExtensionSectionCompo
     onBackToMainList();
   };
 
-  const showInItems: JSX.Element[] = selectionTargets
+  const showInItems: React.JSX.Element[] = selectionTargets
     .filter((target) => target.id !== 'explorer')
     .map((target) => (
       <Tooltip

@@ -93,7 +93,7 @@ const useStyle = makeStyles()((theme) => ({
 interface ListItemProps {
   id: string;
   label: string;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   onClick: () => void;
 }
 

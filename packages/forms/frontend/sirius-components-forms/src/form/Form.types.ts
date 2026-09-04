@@ -37,4 +37,4 @@ export type PropertySectionComponentProps<W extends GQLWidget> = {
 
 export type PropertySectionComponent<W extends GQLWidget> = (
   props: PropertySectionComponentProps<W>
-) => JSX.Element | null;
+) => React.JSX.Element | null;

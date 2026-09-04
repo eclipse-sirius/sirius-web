@@ -50,7 +50,7 @@ export const OmniboxCommandList = forwardRef(
       onCommandClick(command);
     };
 
-    let listItems: JSX.Element[] = [];
+    let listItems: React.JSX.Element[] = [];
     if (loading) {
       listItems = [
         <ListItem key={'loading-action-key'}>

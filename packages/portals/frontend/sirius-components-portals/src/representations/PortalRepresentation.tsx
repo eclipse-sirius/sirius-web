@@ -142,7 +142,7 @@ export const PortalRepresentation = forwardRef<WorkbenchMainRepresentationHandle
       }
     };
 
-    let items: JSX.Element[] = [
+    let items: React.JSX.Element[] = [
       <div
         key="drop-area"
         className={classes.dropArea}

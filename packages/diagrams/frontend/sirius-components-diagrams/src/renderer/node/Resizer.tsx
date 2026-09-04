@@ -45,7 +45,7 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
     return null;
   }
 
-  let nodeResizeControl: JSX.Element | null = null;
+  let nodeResizeControl: React.JSX.Element | null = null;
   if (data.isListChild) {
     nodeResizeControl = (
       <NodeResizeControl

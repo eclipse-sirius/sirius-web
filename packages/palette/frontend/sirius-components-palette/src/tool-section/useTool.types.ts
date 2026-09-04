@@ -23,5 +23,5 @@ export interface useToolValue {
     isSelected: boolean,
     searchedValue: string | null,
     onToolClick: (tool: GQLTool) => void
-  ) => JSX.Element | null;
+  ) => React.JSX.Element | null;
 }

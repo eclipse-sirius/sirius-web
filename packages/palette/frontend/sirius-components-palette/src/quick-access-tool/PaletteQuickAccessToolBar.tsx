@@ -42,7 +42,7 @@ export const PaletteQuickAccessToolBar = ({
 }: PaletteQuickAccessToolBarProps) => {
   const { classes } = useStyle();
 
-  const quickAccessToolComponents: JSX.Element[] = [];
+  const quickAccessToolComponents: React.JSX.Element[] = [];
   quickAccessTools.forEach((tool) =>
     quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} key={'tool_' + tool.id} />)
   );

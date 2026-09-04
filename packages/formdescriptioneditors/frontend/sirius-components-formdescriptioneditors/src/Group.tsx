@@ -434,7 +434,7 @@ export const Group = ({ page, group }: GroupProps) => {
     setVisibleWidgetIds(group.widgets.map((widget: GQLWidget) => widget.id));
   }, [group]);
 
-  let widgetSelector: JSX.Element | null = null;
+  let widgetSelector: React.JSX.Element | null = null;
   if (group.displayMode === 'TOGGLEABLE_AREAS') {
     widgetSelector = (
       <ToggleButtonGroup

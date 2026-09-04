@@ -95,16 +95,16 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
     }
   }, [data]);
 
-  const cards: JSX.Element[] = [];
+  const cards: React.JSX.Element[] = [];
   if (state.projectTemplates) {
     state.projectTemplates
       .map((template) => (
         <NewProjectCard key={template.id} url={`/new/project?templateId=${template.id}`} template={template} />
       ))
-      .forEach((card: JSX.Element) => cards.push(card));
+      .forEach((card: React.JSX.Element) => cards.push(card));
   }
 
-  let content: JSX.Element;
+  let content: React.JSX.Element;
   if (loading) {
     content = <Typography>{t('messages.loading')}</Typography>;
   } else {

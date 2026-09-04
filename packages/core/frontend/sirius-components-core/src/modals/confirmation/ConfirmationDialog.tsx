@@ -75,7 +75,7 @@ export const ConfirmationDialog = ({
 }: ConfirmationDialogProps) => {
   const { classes } = useConfirmationDialogStyles();
 
-  let confirmationDisabledElement: JSX.Element | null = null;
+  let confirmationDisabledElement: React.JSX.Element | null = null;
   if (allowConfirmationDisabled) {
     confirmationDisabledElement = (
       <FormControlLabel

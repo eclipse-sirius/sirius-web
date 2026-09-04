@@ -13,7 +13,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { UseFullscreenValue } from './useFullscreen.types';
 
-export const useFullscreen = (domNode: React.RefObject<HTMLDivElement>): UseFullscreenValue => {
+export const useFullscreen = (domNode: React.RefObject<HTMLDivElement | null>): UseFullscreenValue => {
   const [fullscreen, setFullscreenState] = useState<boolean>(false);
 
   useEffect(() => {

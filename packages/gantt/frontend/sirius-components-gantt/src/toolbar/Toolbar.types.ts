@@ -21,7 +21,7 @@ export interface ToolbarProps {
   onChangeZoomLevel: (_: ViewMode) => any;
   onChangeDisplayColumns: () => any;
   onChangeColumns: (_: TaskListColumnEnum[]) => any;
-  fullscreenNode: React.RefObject<HTMLDivElement>;
+  fullscreenNode: React.RefObject<HTMLDivElement | null>;
 }
 
 export interface ToolbarState {

@@ -443,7 +443,7 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
     }
   };
 
-  let modal: JSX.Element | null = null;
+  let modal: React.JSX.Element | null = null;
   if (modalDisplayed === 'browse') {
     modal = widget.reference.manyValued ? (
       <TransferModal

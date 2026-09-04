@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 export interface TreeToolBarContributionProps {
-  component: (props: TreeToolBarContributionComponentProps) => JSX.Element | null;
+  component: (props: TreeToolBarContributionComponentProps) => React.JSX.Element | null;
 }
 
 export interface TreeToolBarContributionComponentProps {

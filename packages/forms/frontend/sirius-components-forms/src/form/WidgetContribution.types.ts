@@ -21,7 +21,7 @@ export interface PreviewWidgetProps {
 
 export interface WidgetContribution {
   name: string;
-  previewComponent: (props: PreviewWidgetProps) => JSX.Element | null;
+  previewComponent: (props: PreviewWidgetProps) => React.JSX.Element | null;
   icon: React.ReactElement;
   component: (widget: GQLWidget) => PropertySectionComponent<GQLWidget> | null;
 }
