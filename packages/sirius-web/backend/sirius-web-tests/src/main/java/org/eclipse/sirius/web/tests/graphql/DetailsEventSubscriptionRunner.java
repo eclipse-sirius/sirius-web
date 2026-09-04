@@ -35,7 +35,6 @@ public class DetailsEventSubscriptionRunner implements ISubscriptionRunner<Detai
               detailsEvent(input: $input) {
                 __typename
                 ... on ErrorPayload {
-                  message
                   messages {
                     level
                     body

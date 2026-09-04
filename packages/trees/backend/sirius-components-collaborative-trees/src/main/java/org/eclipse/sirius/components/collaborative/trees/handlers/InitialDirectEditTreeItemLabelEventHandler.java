@@ -68,9 +68,12 @@ public class InitialDirectEditTreeItemLabelEventHandler implements ITreeEventHan
                 IPayload resultPayload = optionalPathProvider.get().handle(editingContext, tree, input);
                 if (resultPayload instanceof InitialDirectEditElementLabelSuccessPayload) {
                     payload = resultPayload;
-                } else if (resultPayload instanceof ErrorPayload errorPayload) {
+                } else if (resultPayload instanceof ErrorPayload) {
                     this.logger.atWarn()
-                            .setMessage(errorPayload.message())
+                            .setMessage("Failed to edit the tree item label")
+                            .addKeyValue("editingContextId", editingContext.getId())
+                            .addKeyValue("representationId", tree.getId())
+                            .addKeyValue("treeItemId", input.treeItemId())
                             .log();
                 }
             }

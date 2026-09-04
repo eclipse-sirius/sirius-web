@@ -36,7 +36,10 @@ public class LayoutPortalMutationRunner implements IMutationRunner<LayoutPortalI
                     id
                   }
                   ... on ErrorPayload {
-                    message
+                    messages {
+                      body
+                      level
+                    }
                   }
                 }
               }

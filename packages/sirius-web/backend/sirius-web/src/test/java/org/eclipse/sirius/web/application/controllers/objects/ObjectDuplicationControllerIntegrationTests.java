@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -213,8 +213,8 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         String typename = JsonPath.read(result.data(), "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        String errorMessage = JsonPath.read(result.data(), "$.data.duplicateObject.message");
-        assertThat(errorMessage).isNotBlank();
+        List<String> messages = JsonPath.read(result.data(), "$.data.duplicateObject.messages[*].body");
+        assertThat(messages).isNotEmpty();
     }
 
     @Test
@@ -236,8 +236,8 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         String typename = JsonPath.read(result.data(), "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        String errorMessage = JsonPath.read(result.data(), "$.data.duplicateObject.message");
-        assertThat(errorMessage).isNotBlank();
+        List<String> messages = JsonPath.read(result.data(), "$.data.duplicateObject.messages[*].body");
+        assertThat(messages).isNotEmpty();
     }
 
     @Test

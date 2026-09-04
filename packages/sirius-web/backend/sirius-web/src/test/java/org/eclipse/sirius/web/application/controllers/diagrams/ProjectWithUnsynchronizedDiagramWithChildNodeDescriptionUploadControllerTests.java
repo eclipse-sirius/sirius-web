@@ -126,7 +126,10 @@ public class ProjectWithUnsynchronizedDiagramWithChildNodeDescriptionUploadContr
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }

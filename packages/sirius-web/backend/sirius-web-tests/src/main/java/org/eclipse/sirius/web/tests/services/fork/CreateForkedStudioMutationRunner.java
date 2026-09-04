@@ -39,7 +39,10 @@ public class CreateForkedStudioMutationRunner implements IMutationRunner<CreateF
                      }
                    }
                    ... on ErrorPayload {
-                     message
+                     messages {
+                       body
+                       level
+                     }
                    }
                  }
                }

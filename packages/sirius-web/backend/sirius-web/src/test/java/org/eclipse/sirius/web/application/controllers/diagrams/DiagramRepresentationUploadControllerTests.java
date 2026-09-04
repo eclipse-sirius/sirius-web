@@ -120,7 +120,10 @@ public class DiagramRepresentationUploadControllerTests extends AbstractIntegrat
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }

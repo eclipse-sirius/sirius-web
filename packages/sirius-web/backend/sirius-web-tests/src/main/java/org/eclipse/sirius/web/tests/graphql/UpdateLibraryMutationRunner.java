@@ -39,7 +39,6 @@ public class UpdateLibraryMutationRunner implements IMutationRunner<UpdateLibrar
                   }
                 }
                 ... on ErrorPayload {
-                  message
                   messages {
                     level
                     body

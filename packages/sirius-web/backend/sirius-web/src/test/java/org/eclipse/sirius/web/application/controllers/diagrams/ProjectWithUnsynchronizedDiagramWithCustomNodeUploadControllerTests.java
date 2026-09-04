@@ -128,7 +128,10 @@ public class ProjectWithUnsynchronizedDiagramWithCustomNodeUploadControllerTests
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }
