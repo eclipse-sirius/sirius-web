@@ -36,7 +36,10 @@ public class RemovePortalViewMutationRunner implements IMutationRunner<RemovePor
                   id
                 }
                 ... on ErrorPayload {
-                  message
+                  messages {
+                    body
+                    level
+                  }
                 }
               }
             }

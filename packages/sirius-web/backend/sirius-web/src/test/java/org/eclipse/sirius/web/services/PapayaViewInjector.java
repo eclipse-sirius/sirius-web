@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
@@ -47,6 +46,6 @@ public class PapayaViewInjector implements BiFunction<IEditingContext, IInput, I
 
             return new ExecuteEditingContextFunctionSuccessPayload(input.id(), null);
         }
-        return new ErrorPayload(input.id(), "Invalid editing context", List.of());
+        return new ErrorPayload(input.id(), "Invalid editing context");
     }
 }

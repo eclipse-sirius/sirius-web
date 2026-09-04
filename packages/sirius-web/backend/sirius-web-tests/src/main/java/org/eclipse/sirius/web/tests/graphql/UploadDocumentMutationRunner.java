@@ -37,7 +37,6 @@ public class UploadDocumentMutationRunner implements IMutationRunner<UploadDocum
                     report
                 }
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

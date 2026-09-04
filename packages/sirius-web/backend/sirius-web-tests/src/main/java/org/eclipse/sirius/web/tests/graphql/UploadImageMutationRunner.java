@@ -37,7 +37,6 @@ public class UploadImageMutationRunner implements IMutationRunner<UploadImageInp
                   imageId
                 }
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body
