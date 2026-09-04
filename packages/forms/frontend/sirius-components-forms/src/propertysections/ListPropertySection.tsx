@@ -251,7 +251,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
 
   const clickHandler = useClickHandler<GQLListItem>(onSimpleClick, onDoubleClick);
 
-  const getTableCellContent = (item: GQLListItem): JSX.Element => {
+  const getTableCellContent = (item: GQLListItem): React.JSX.Element => {
     return (
       <>
         <IconOverlay iconURLs={item.iconURL} alt={item.label} customIconStyle={{ marginRight: theme.spacing(2) }} />

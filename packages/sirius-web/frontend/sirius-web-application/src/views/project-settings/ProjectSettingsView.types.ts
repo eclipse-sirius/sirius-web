@@ -17,7 +17,7 @@ export interface ProjectSettingTabContribution {
   id: string;
   title: string;
   icon: React.ReactElement;
-  component: (props: ProjectSettingTabProps) => JSX.Element | null;
+  component: (props: ProjectSettingTabProps) => React.JSX.Element | null;
 }
 
 export interface ProjectSettingTabProps {}

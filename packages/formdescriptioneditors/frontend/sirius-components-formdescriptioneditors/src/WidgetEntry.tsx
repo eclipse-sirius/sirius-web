@@ -318,7 +318,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
     }
   };
 
-  let widgetElement: JSX.Element | null = null;
+  let widgetElement: React.JSX.Element | null = null;
   if (widget.__typename === 'Button') {
     widgetElement = (
       <ButtonWidget

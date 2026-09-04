@@ -32,7 +32,7 @@ export const useReporting = <T>(
         addErrorMessage(error.message);
       }
       if (data) {
-        const payload: GQLErrorPayload | GQLSuccessPayload = extractPayload(data);
+        const payload: GQLErrorPayload | GQLSuccessPayload = extractPayload(data as T);
         if (isSuccessPayload(payload) || isErrorPayload(payload)) {
           const { messages } = payload;
           if (messages) {

@@ -18,5 +18,5 @@ export interface DeckLaneHeaderStateValue {
 
 export interface UseLaneContextMenuValue {
   openContextMenu: (event) => void;
-  contextMenu: JSX.Element | null;
+  contextMenu: React.JSX.Element | null;
 }

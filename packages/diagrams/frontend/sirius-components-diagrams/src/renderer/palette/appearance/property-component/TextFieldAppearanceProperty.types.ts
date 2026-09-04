@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 export interface TextFieldAppearancePropertyProps {
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   label: string;
   value: string | number;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

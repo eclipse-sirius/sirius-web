@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,4 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-export interface AppearanceSelectProps {
-  icon: React.JSX.Element;
-  label: string;
-  options: { value: string; label: string }[];
-  initialValue: string;
-  disabled: boolean;
-  onEdit: (value: string) => void;
-  onReset: () => void;
-}
-
-export interface AppearanceSelectState {
-  value: string;
-}
+declare module '@ObeoNetwork/react-trello';

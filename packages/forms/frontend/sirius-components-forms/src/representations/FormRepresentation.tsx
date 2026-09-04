@@ -96,7 +96,7 @@ export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
 
     const { classes } = useFormRepresentationStyles();
 
-    let content: JSX.Element | null = null;
+    let content: React.JSX.Element | null = null;
     if (state.form) {
       const { id } = state.form;
       if (state.form.pages.length > 1) {
@@ -112,7 +112,7 @@ export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
         const page: GQLPage | null = state.form.pages[0] ?? null;
 
         if (page) {
-          let selectedPageToolbar: JSX.Element | null = null;
+          let selectedPageToolbar: React.JSX.Element | null = null;
           if (page.toolbarActions?.length ?? 0 > 0) {
             selectedPageToolbar = (
               <div className={classes.toolbar}>

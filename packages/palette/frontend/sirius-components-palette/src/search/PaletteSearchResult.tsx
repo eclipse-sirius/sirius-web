@@ -92,7 +92,7 @@ export const PaletteSearchResult = ({
 
   // Tools contributions
   const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
-  const filteredContributions: JSX.Element[] = paletteToolData.data
+  const filteredContributions: React.JSX.Element[] = paletteToolData.data
     .filter((contributedTool) => contributedTool.canHandle(representationKind))
     .map((contributedTool, index) => {
       const ContributedComponent = contributedTool.component;
@@ -130,7 +130,7 @@ export const PaletteSearchResult = ({
     };
   }, [selectedIndex, filteredToolList]);
 
-  const convertToListItem = (tool: GQLTool, index: number): JSX.Element | null => {
+  const convertToListItem = (tool: GQLTool, index: number): React.JSX.Element | null => {
     const selected = index === selectedIndex;
     return getRenderedTool(
       palette,
@@ -144,9 +144,10 @@ export const PaletteSearchResult = ({
     );
   };
 
-  const matchingTools: JSX.Element[] = [...filteredToolList.map(convertToListItem), ...filteredContributions].filter(
-    (tool) => tool !== null
-  ) as JSX.Element[];
+  const matchingTools: React.JSX.Element[] = [
+    ...filteredToolList.map(convertToListItem),
+    ...filteredContributions,
+  ].filter((tool) => tool !== null) as React.JSX.Element[];
 
   return (
     <Box className={classes.container}>

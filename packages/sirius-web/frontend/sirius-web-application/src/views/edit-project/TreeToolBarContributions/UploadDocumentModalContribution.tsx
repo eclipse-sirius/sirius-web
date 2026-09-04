@@ -33,7 +33,7 @@ export const UploadDocumentModalContribution = ({
     setModal(null);
   };
 
-  let modalElement: JSX.Element | null = null;
+  let modalElement: React.JSX.Element | null = null;
   if (modal === 'UploadDocument') {
     modalElement = <UploadDocumentModal editingContextId={editingContextId} onClose={onFinished} />;
   }

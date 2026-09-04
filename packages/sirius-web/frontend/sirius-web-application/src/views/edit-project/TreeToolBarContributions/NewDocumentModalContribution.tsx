@@ -24,7 +24,7 @@ export const NewDocumentModalContribution = ({ disabled, editingContextId }: Tre
 
   const [modal, setModal] = useState<Modal | null>(null);
 
-  let modalElement: JSX.Element | null = null;
+  let modalElement: React.JSX.Element | null = null;
   if (modal === 'NewDocument') {
     modalElement = <NewDocumentModal editingContextId={editingContextId} onClose={() => setModal(null)} />;
   }

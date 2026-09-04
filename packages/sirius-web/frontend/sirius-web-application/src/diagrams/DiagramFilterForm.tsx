@@ -61,7 +61,7 @@ export const DiagramFilterForm = ({ editingContextId, diagramId }: DiagramFilter
 
   const { classes } = useDiagramFilterViewStyles();
 
-  const extractFirstGroup = (editingContextId: string, form: GQLForm, readOnly: boolean): JSX.Element => {
+  const extractFirstGroup = (editingContextId: string, form: GQLForm, readOnly: boolean): React.JSX.Element => {
     const group = form.pages[0]?.groups[0];
     if (group) {
       return (

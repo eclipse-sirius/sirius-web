@@ -20,7 +20,7 @@ export interface HelpTooltipProps {
 
 export interface HelpTooltipState {
   open: boolean;
-  content: JSX.Element | null;
+  content: React.JSX.Element | null;
 }
 
 export interface GQLHelpTextQueryData {

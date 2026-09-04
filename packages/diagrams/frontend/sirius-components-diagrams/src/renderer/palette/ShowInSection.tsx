@@ -80,7 +80,7 @@ export const ShowInSection = ({ onBackToMainList, onClose }: PaletteExtensionSec
     target.applySelection({ entries: diagramSelection.map((id) => ({ id })) });
   };
 
-  const showInItems: JSX.Element[] = selectionTargets
+  const showInItems: React.JSX.Element[] = selectionTargets
     .filter((target) => target.id !== diagramId)
     .map((target) => (
       <Tooltip

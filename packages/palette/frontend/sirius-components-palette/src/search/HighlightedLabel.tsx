@@ -30,7 +30,7 @@ const useLabelStyles = makeStyles()((theme: Theme) => ({
 
 export const HighlightedLabel = ({ label, textIndicesToHighlight }: HighlightedLabelProps) => {
   const { classes } = useLabelStyles();
-  const itemLabel: JSX.Element = (
+  const itemLabel: React.JSX.Element = (
     <>
       {label.split('').map((value, index) => {
         const shouldHighlight = textIndicesToHighlight.includes(index);

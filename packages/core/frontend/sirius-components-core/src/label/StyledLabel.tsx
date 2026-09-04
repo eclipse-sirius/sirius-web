@@ -134,7 +134,7 @@ const getStyledString = (styledString: GQLStyledString) => {
 export const StyledLabel = ({ styledString, selected, textToHighlight, marked }: StyledLabelInputProps) => {
   const { classes } = useTreeItemStyle();
   const textLabel = getTextFromStyledString(styledString);
-  let itemLabel: JSX.Element;
+  let itemLabel: React.JSX.Element;
   const splitLabelWithTextToHighlight: string[] = splitText(textLabel, textToHighlight);
   if (
     textToHighlight === null ||

@@ -94,7 +94,7 @@ export const SearchResults = ({ loading, query, result, timestamp }: SearchResul
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'searchResults' });
   const matches = result?.matches || [];
 
-  let status: JSX.Element;
+  let status: React.JSX.Element;
   if (loading) {
     status = (
       <>

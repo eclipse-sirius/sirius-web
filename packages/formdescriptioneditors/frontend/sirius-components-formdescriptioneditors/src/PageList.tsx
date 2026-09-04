@@ -363,7 +363,7 @@ export const PageList = () => {
     }
   };
 
-  const selectedPageToolbar: JSX.Element | null = state.selectedPage ? (
+  const selectedPageToolbar: React.JSX.Element | null = state.selectedPage ? (
     <ToolbarActions
       data-testid={`Page-ToolbarActions-${state.selectedPage.id}`}
       toolbarActions={state.selectedPage.toolbarActions}

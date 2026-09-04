@@ -37,7 +37,7 @@ export type Kind =
 export type WidgetDescriptor = {
   name: string;
   label?: string | null;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
 };
 
 export type FormDescriptionEditorRepresentationState = {

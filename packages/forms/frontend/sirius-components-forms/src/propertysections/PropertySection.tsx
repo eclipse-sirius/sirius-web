@@ -75,7 +75,7 @@ const isRichText = (widget: GQLWidget): widget is GQLRichText => widget.__typena
 export const PropertySection = ({ editingContextId, formId, widget, readOnly }: PropertySectionProps) => {
   const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
 
-  let propertySection: JSX.Element | null = null;
+  let propertySection: React.JSX.Element | null = null;
   const CustomWidgetComponent = widgetContributions
     .map((widgetContribution) => widgetContribution.component(widget))
     .find((component) => component !== null);

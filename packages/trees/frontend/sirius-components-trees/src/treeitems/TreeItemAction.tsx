@@ -63,7 +63,7 @@ export const TreeItemAction = ({
     }
   };
 
-  let contextMenu: JSX.Element | null = null;
+  let contextMenu: React.JSX.Element | null = null;
   if (state.showContextMenu && state.menuAnchor) {
     const closeContextMenu = () => {
       setState((prevState) => ({

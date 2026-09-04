@@ -25,7 +25,7 @@ const xyFlowDomBoundsSelector = (state: ReactFlowState): DOMRect | undefined => 
 export const useGetUpdatedModalPosition = (): UseGetUpdatedModalPositionValue => {
   const xyFlowDomBounds = useStore(xyFlowDomBoundsSelector, equalityFunction);
 
-  const getUpdatedModalPosition = (initialPosition: XYPosition, modalRef: React.RefObject<HTMLDivElement>) => {
+  const getUpdatedModalPosition = (initialPosition: XYPosition, modalRef: React.RefObject<HTMLDivElement | null>) => {
     let position: XYPosition = { ...initialPosition };
     if (modalRef.current && xyFlowDomBounds) {
       const modalBounds: DOMRect = modalRef.current.getBoundingClientRect();
@@ -42,7 +42,7 @@ export const useGetUpdatedModalPosition = (): UseGetUpdatedModalPositionValue =>
     return position;
   };
 
-  const getUpdatedBounds = (modalRef: React.RefObject<HTMLDivElement>) => {
+  const getUpdatedBounds = (modalRef: React.RefObject<HTMLDivElement | null>) => {
     let draggableBounds = {
       left: 0,
       top: 0,

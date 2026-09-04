@@ -57,7 +57,7 @@ export const PapayaComponentLabelDetailQuickToolContribution = ({
     setModal(null);
   };
 
-  let modalElement: JSX.Element | null = null;
+  let modalElement: React.JSX.Element | null = null;
   if (modal === 'dialog') {
     modalElement = (
       <>

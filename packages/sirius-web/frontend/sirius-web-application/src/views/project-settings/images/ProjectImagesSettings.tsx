@@ -64,7 +64,7 @@ export const ProjectImagesSettings = ({}: ProjectSettingTabProps) => {
     refreshImages();
   };
 
-  let main: JSX.Element = null;
+  let main: React.JSX.Element = null;
   if (!loading && data) {
     const images: GQLImageMetadata[] = data?.viewer.project?.images ?? [];
     if (images.length > 0) {
