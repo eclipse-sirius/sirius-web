@@ -197,7 +197,10 @@ public class ProjectUploadWithCrossReferencingModelsControllerIntegrationTests e
                       }
                     }
                     ... on ErrorPayload {
-                      message
+                      messages {
+                        body
+                        level
+                      }
                     }
                   }
                 }

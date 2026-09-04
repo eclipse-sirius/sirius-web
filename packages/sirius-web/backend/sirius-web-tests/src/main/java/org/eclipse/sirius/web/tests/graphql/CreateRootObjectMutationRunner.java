@@ -40,7 +40,6 @@ public class CreateRootObjectMutationRunner implements IMutationRunner<CreateRoo
                   }
                 }
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

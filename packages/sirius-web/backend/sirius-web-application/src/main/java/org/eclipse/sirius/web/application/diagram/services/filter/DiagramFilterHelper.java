@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterHelper;
@@ -123,7 +124,11 @@ public class DiagramFilterHelper implements IDiagramFilterHelper {
                 if (handlerResult instanceof SuccessPayload) {
                     result = new Success();
                 } else if (handlerResult instanceof ErrorPayload errorPayload) {
-                    result = new Failure(errorPayload.message());
+                    var message = errorPayload.messages().stream()
+                            .findFirst()
+                            .map(Message::body)
+                            .orElse("");
+                    result = new Failure(message);
                 }
             }
             return result;

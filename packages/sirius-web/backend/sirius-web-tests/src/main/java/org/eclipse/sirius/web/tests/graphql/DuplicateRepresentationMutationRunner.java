@@ -40,7 +40,6 @@ public class DuplicateRepresentationMutationRunner implements IMutationRunner<Du
                   }
                 }
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body

@@ -40,7 +40,6 @@ public class CreateDocumentMutationRunner implements IMutationRunner<CreateDocum
                   }
                 }
                ... on ErrorPayload {
-                    message
                     messages {
                       level
                       body
