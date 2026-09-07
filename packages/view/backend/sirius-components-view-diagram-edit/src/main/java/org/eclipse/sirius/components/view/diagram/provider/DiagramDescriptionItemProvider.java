@@ -142,7 +142,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     /**
      * This returns DiagramDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
@@ -205,7 +205,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {

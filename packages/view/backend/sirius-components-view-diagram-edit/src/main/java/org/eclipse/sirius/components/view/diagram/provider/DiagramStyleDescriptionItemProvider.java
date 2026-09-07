@@ -77,7 +77,7 @@ public class DiagramStyleDescriptionItemProvider extends ItemProviderAdapter
     /**
      * This returns DiagramStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesFactory;
+import org.eclipse.sirius.components.view.diagram.customnodes.provider.spec.EllipseNodeStyleDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.diagram.customnodes.util.CustomnodesAdapterFactory;
 import org.eclipse.sirius.components.view.diagram.util.DiagramSwitch;
 
@@ -102,12 +103,12 @@ public class CustomnodesItemProviderAdapterFactory extends CustomnodesAdapterFac
      * {@link org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createEllipseNodeStyleDescriptionAdapter() {
         if (this.ellipseNodeStyleDescriptionItemProvider == null) {
-            this.ellipseNodeStyleDescriptionItemProvider = new EllipseNodeStyleDescriptionItemProvider(this);
+            this.ellipseNodeStyleDescriptionItemProvider = new EllipseNodeStyleDescriptionItemProviderSpec(this);
         }
 
         return this.ellipseNodeStyleDescriptionItemProvider;
