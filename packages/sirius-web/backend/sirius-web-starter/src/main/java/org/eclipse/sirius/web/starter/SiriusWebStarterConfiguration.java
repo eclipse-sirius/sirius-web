@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,6 +61,10 @@ import reactor.core.scheduler.Schedulers;
     "org.eclipse.sirius.components.domain.emf",
     "org.eclipse.sirius.components.view.emf",
     "org.eclipse.sirius.web.domain",
+    "org.eclipse.sirius.web.images.domain",
+    "org.eclipse.sirius.web.library.domain",
+    "org.eclipse.sirius.web.projects.images.domain",
+    "org.eclipse.sirius.web.projects.semanticdata.domain",
     "org.eclipse.sirius.web.application",
     "org.eclipse.sirius.web.infrastructure",
     "org.eclipse.sirius.web.starter"

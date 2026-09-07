@@ -40,5 +40,3 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
         super.noClassesShouldUseApacheCommons();
     }
 }
-
-
