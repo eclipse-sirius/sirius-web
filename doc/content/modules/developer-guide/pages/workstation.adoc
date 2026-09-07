@@ -34,7 +34,7 @@ It complements the server-side requirements listed in the installation guide and
 |`mvn -version`
 
 |Node.js & npm
-|Node.js 22.16.0 (npm 10.2.3). Use NVM for easy upgrades:
+|Node.js 24.20.0 (npm 11.19.0). Use NVM for easy upgrades:
 * Windows: https://github.com/coreybutler/nvm-windows
 * Linux/macOS: https://github.com/nvm-sh/nvm
 |`node -v` and `npm -v`
