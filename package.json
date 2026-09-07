@@ -29,5 +29,9 @@
   },
   "devDependencies": {
     "turbo": "2.10.5"
+  },
+  "allowScripts": {
+    "core-js-pure@3.49.0": true,
+    "esbuild@0.27.7": true
   }
 }
