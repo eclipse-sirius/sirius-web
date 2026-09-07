@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.application.images.listeners;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageDeletionService;
+import org.eclipse.sirius.web.projects.images.domain.services.api.IProjectImageDeletionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

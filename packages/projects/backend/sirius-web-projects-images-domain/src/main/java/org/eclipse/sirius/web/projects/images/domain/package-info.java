@@ -10,16 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.images.services.api;
+@Module(
+    name = "ProjectImage",
+    allowedDependencies = { "Project" },
+    exposedPackages = {
+        "org.eclipse.sirius.web.projects.images.domain",
+        "org.eclipse.sirius.web.projects.images.domain.services.api",
+        "org.eclipse.sirius.web.projects.images.domain.event"
+    }
+)
+package org.eclipse.sirius.web.projects.images.domain;
 
-import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
-import org.eclipse.sirius.web.projects.images.domain.ProjectImage;
-
-/**
- * Used to convert a project image to a DTO.
- *
- * @author sbegaudeau
- */
-public interface IProjectImageMapper {
-    ImageMetadata toDTO(ProjectImage projectImage);
-}
+import org.eclipse.sirius.web.core.domain.annotations.Module;
