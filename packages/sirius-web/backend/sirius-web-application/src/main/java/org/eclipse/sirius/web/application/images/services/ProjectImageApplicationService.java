@@ -28,11 +28,11 @@ import org.eclipse.sirius.web.application.images.services.api.IProjectImageAppli
 import org.eclipse.sirius.web.application.images.services.api.IProjectImageMapper;
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageCreationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageDeletionService;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageUpdateService;
+import org.eclipse.sirius.web.projects.images.domain.ProjectImage;
+import org.eclipse.sirius.web.projects.images.domain.services.api.IProjectImageCreationService;
+import org.eclipse.sirius.web.projects.images.domain.services.api.IProjectImageDeletionService;
+import org.eclipse.sirius.web.projects.images.domain.services.api.IProjectImageSearchService;
+import org.eclipse.sirius.web.projects.images.domain.services.api.IProjectImageUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

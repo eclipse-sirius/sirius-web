@@ -42,6 +42,8 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.images.domain.events.ImageCreatedEvent`
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1[Spring Boot 4.1.1]
 - Remove the field `ErrorPayload#message` in favor of `ErrorPayload#messages`.
+- The project images part of the Sirius Web domain has moved to the dedicated Maven module `sirius-web-projects-images-domain`.
+Downstream consumers must declare this dependency and replace the package prefix `org.eclipse.sirius.web.domain.boundedcontexts.projectimage` with `org.eclipse.sirius.web.projects.images.domain`, including its `event`, `repositories`, `services`, and `services.api` subpackages.
 
 
 == Bug fixes

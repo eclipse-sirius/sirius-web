@@ -71,6 +71,7 @@
 		<module>papaya/backend</module>
 		<module>images/backend</module>
 		<module>library/backend</module>
+		<module>projects/backend</module>
 		<module>sirius-web/backend</module>
 		<module>releng/backend</module>
 	</modules>
