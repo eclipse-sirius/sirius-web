@@ -17,7 +17,7 @@ See the xref:user-manual:sirius-approach.adoc#_specifier_profiles[Specifier prof
 
 [NOTE]
 ====
-Before you dive into the tutorials and APIs, verify your workstation meets the xref:developer-guide:workstation.adoc[local tooling requirements] (JDK 21, Maven, Node.js v22.16.0, Docker, Git, etc.).
+Before you dive into the tutorials and APIs, verify your workstation meets the xref:developer-guide:workstation.adoc[local tooling requirements] (JDK 21, Maven, Node.js v24.20.0, Docker, Git, etc.).
 ====
 
 include::developer-guide:partial$nav.adoc[]
