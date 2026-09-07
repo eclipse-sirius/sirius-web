@@ -33,5 +33,3 @@ public final class ArchitectureConstants {
         // Prevent instantiation
     }
 }
-
-

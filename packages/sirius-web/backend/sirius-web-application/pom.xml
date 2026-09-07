@@ -59,6 +59,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-projects-semanticdata-domain</artifactId>
+			<version>2026.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
 			<version>2026.9.0</version>
 		</dependency>

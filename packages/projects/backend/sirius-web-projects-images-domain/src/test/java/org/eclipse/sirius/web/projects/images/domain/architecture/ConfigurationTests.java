@@ -32,5 +32,3 @@ public class ConfigurationTests extends AbstractConfigurationTests {
         return ArchitectureConstants.CLASSES;
     }
 }
-
-
