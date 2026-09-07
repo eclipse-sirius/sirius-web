@@ -10,16 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.images.services.api;
+package org.eclipse.sirius.web.projects.images.domain.event;
 
-import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
-import org.eclipse.sirius.web.projects.images.domain.ProjectImage;
+import org.eclipse.sirius.web.domain.events.IDomainEvent;
 
 /**
- * Used to convert a project image to a DTO.
+ * Interface implemented by all the domain events of the project image bounded context.
  *
  * @author sbegaudeau
  */
-public interface IProjectImageMapper {
-    ImageMetadata toDTO(ProjectImage projectImage);
+public interface IProjectImageEvent extends IDomainEvent {
 }
