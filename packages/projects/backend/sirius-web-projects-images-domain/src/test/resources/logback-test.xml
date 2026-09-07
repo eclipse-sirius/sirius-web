@@ -1,0 +1,4 @@
+<configuration>
+  <logger name="com.tngtech.archunit" level="INFO" />
+</configuration>
+

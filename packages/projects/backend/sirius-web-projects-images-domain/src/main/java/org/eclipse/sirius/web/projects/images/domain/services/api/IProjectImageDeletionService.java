@@ -10,16 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.images.services.api;
+package org.eclipse.sirius.web.projects.images.domain.services.api;
 
-import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
-import org.eclipse.sirius.web.projects.images.domain.ProjectImage;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.IResult;
 
 /**
- * Used to convert a project image to a DTO.
+ * Used to delete project images.
  *
  * @author sbegaudeau
  */
-public interface IProjectImageMapper {
-    ImageMetadata toDTO(ProjectImage projectImage);
+public interface IProjectImageDeletionService {
+    IResult<Void> deleteProjectImage(ICause cause, UUID projectImageId);
+
+    IResult<Void> deleteAllProjectImages(ICause cause, String projectId);
 }
