@@ -10,22 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.images.services;
+package org.eclipse.sirius.web.projects.images.domain.event;
 
-import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
-import org.eclipse.sirius.web.application.images.services.api.IProjectImageMapper;
+import java.time.Instant;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.projects.images.domain.ProjectImage;
-import org.springframework.stereotype.Service;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to convert a project image to a DTO.
+ * Event fired when project images are updated.
  *
  * @author sbegaudeau
  */
-@Service
-public class ProjectImageMapper implements IProjectImageMapper {
-    @Override
-    public ImageMetadata toDTO(ProjectImage projectImage) {
-        return new ImageMetadata(projectImage.getId(), projectImage.getLabel(), projectImage.getId().toString());
-    }
+public record ProjectImageCreatedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull ICause causedBy,
+        @NotNull ProjectImage projectImage) implements IProjectImageEvent {
 }

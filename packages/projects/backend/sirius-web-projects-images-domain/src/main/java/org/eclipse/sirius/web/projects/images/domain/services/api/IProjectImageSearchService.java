@@ -10,34 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.images.services.api;
+package org.eclipse.sirius.web.projects.images.domain.services.api;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.images.dto.DeleteImageInput;
-import org.eclipse.sirius.web.application.images.dto.ImageMetadata;
-import org.eclipse.sirius.web.application.images.dto.RenameImageInput;
-import org.eclipse.sirius.web.application.images.dto.UploadImageInput;
 import org.eclipse.sirius.web.projects.images.domain.ProjectImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Application services used to manipulate project images.
+ * Used to find project images.
  *
  * @author sbegaudeau
  */
-public interface IProjectImageApplicationService {
-
+public interface IProjectImageSearchService {
     Optional<ProjectImage> findById(UUID id);
 
-    Page<ImageMetadata> findAll(String projectId, Pageable pageable);
+    Page<ProjectImage> findAll(String projectId, Pageable pageable);
 
-    IPayload uploadImage(UploadImageInput input);
-
-    IPayload renameImage(RenameImageInput input);
-
-    IPayload deleteImage(DeleteImageInput input);
+    List<ProjectImage> findAll(String projectId);
 }
