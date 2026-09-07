@@ -148,7 +148,7 @@ public class FreeFormLayoutStrategyDescriptionItemProvider extends ItemProviderA
     /**
      * This returns FreeFormLayoutStrategyDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
