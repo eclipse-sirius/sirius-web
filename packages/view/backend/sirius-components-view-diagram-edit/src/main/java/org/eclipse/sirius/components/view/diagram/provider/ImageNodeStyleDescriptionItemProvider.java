@@ -187,7 +187,7 @@ public class ImageNodeStyleDescriptionItemProvider extends ItemProviderAdapter
     /**
      * This returns ImageNodeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
