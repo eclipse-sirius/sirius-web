@@ -101,7 +101,7 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
 
     const { classes } = useRelatedElementsViewStyles();
 
-    const extractFirstGroup = (editingContextId: string, form: GQLForm, readOnly: boolean): JSX.Element => {
+    const extractFirstGroup = (editingContextId: string, form: GQLForm, readOnly: boolean): React.JSX.Element => {
       const group = form.pages[0]?.groups[0];
       if (group) {
         return <Group editingContextId={editingContextId} formId={form.id} readOnly={readOnly} group={group} />;
@@ -117,7 +117,7 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
       />
     );
 
-    let contents: JSX.Element = <></>;
+    let contents: React.JSX.Element = <></>;
 
     if (complete || skip) {
       contents = (

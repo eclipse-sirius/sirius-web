@@ -105,7 +105,7 @@ export const RelatedViewsView = forwardRef<WorkbenchViewHandle, WorkbenchViewCom
 
     const { classes } = useRepresentationsViewStyles();
 
-    const extractPlainList = (editingContextId: string, form: GQLForm, readOnly: boolean): JSX.Element => {
+    const extractPlainList = (editingContextId: string, form: GQLForm, readOnly: boolean): React.JSX.Element => {
       const widget: GQLWidget | undefined = form.pages[0]?.groups[0]?.widgets[0];
       if (isList(widget)) {
         return (
@@ -137,7 +137,7 @@ export const RelatedViewsView = forwardRef<WorkbenchViewHandle, WorkbenchViewCom
       />
     );
 
-    let contents: JSX.Element = <></>;
+    let contents: React.JSX.Element = <></>;
 
     if (complete || skip) {
       contents = (

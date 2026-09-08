@@ -17,7 +17,7 @@ export interface FormBasedViewProps {
   form: GQLForm;
   initialSelectedPageLabel: string | null;
   readOnly: boolean;
-  postProcessor?: (editingContextId: string, form: GQLForm, readOnly: boolean) => JSX.Element;
+  postProcessor?: (editingContextId: string, form: GQLForm, readOnly: boolean) => React.JSX.Element;
 }
 
 export interface FormConverter {

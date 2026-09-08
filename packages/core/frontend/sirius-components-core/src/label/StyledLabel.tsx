@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -134,7 +134,7 @@ const getStyledString = (styledString: GQLStyledString) => {
 export const StyledLabel = ({ styledString, selected, textToHighlight, marked }: StyledLabelInputProps) => {
   const { classes } = useTreeItemStyle();
   const textLabel = getTextFromStyledString(styledString);
-  let itemLabel: JSX.Element;
+  let itemLabel: React.JSX.Element;
   const splitLabelWithTextToHighlight: string[] = splitText(textLabel, textToHighlight);
   if (
     textToHighlight === null ||

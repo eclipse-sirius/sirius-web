@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo and others.
+ * Copyright (c) 2023, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ export interface TreeToolBarProps {
   onRevealSelection: () => void;
   onTreeFilterMenuItemClick: (filters: TreeFilter[]) => void;
   onFilter: () => void;
-  treeToolBarContributionComponents: ((props: TreeToolBarContributionComponentProps) => JSX.Element)[];
+  treeToolBarContributionComponents: ((props: TreeToolBarContributionComponentProps) => React.JSX.Element)[];
   readOnly: boolean;
   children: React.ReactNode;
 }

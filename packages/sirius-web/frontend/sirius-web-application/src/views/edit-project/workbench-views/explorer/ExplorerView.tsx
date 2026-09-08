@@ -149,7 +149,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       return null;
     }, [treeElement]);
 
-    let filterBar: JSX.Element = <div />;
+    let filterBar: React.JSX.Element = <div />;
     if (state.filterBar) {
       filterBar = (
         <div className={styles.treeFilter}>
@@ -178,7 +178,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       );
     }
 
-    const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
+    const treeDescriptionSelector: React.JSX.Element = explorerDescriptions.length > 1 && (
       <TreeDescriptionsMenu
         treeDescriptions={explorerDescriptions}
         activeTreeDescriptionId={activeTreeDescriptionId}
