@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -122,7 +122,7 @@ test('given a workbench, when we open a representation, then it should be render
 
   expect(screen.getByTestId('main-area')).not.toBeNull();
 
-  userEvent.click(screen.getByTestId('explorer-first-representation'));
+  await userEvent.click(screen.getByTestId('explorer-first-representation'));
   const firstRepresentation = await screen.findByTestId('first-representation');
   expect(firstRepresentation).not.toBeNull();
   expect(screen.queryByTestId('main-area')).toBeNull();
@@ -144,6 +144,6 @@ test('given a workbench, when ask for data across workbench views, then we can r
   expect(screen.getByTestId('explorer-view')).not.toBeNull();
   expect(screen.getByTestId('details-view')).not.toBeNull();
 
-  userEvent.click(screen.getByTestId('details-view-refresh'));
+  await userEvent.click(screen.getByTestId('details-view-refresh'));
   expect(screen.getByTestId('details-view-content').textContent).toContain('Value from the explorer');
 });
