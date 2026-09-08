@@ -86,7 +86,7 @@ Available default actions are:
 - Update the backend documentation and add a first schema of the lifecycle of the backend with the creation of a project.
 - Added more `AQL variables` available when computing the precondition of a tool in a palette, this includes for a `connector palette` : `environment`, `diagramServices`, `selectedNode`, `selectedEdge` and for a `diagram element palette` : `environment`, `diagramServices`.
 - Extract the appearance logic of nodes and edges in a dedicated service.
-- In forms, the _RichTextEditor_ widget can now insert links using a dedicated link popup.
+- In forms, the _RichTextEditor_ widget can now insert, open, edit, and delete links using a dedicated link popup.
 - Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
 
 
