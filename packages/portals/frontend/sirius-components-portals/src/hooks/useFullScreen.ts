@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { UseFullscreenValue } from './useFullscreen.types';
 
-export const useFullscreen = (domNode: React.RefObject<HTMLDivElement>): UseFullscreenValue => {
+export const useFullscreen = (domNode: React.RefObject<HTMLDivElement | null>): UseFullscreenValue => {
   const [fullscreen, setFullscreenState] = useState<boolean>(false);
 
   useEffect(() => {
