@@ -106,7 +106,7 @@ export const Form = forwardRef<FormHandle | null, FormProps>(
       });
     };
 
-    let selectedPageToolbar: JSX.Element | null = null;
+    let selectedPageToolbar: React.JSX.Element | null = null;
     if (state.selectedPage && state.selectedPage.toolbarActions?.length > 0) {
       selectedPageToolbar = (
         <div className={classes.toolbar}>
@@ -124,7 +124,7 @@ export const Form = forwardRef<FormHandle | null, FormProps>(
       );
     }
 
-    let page: JSX.Element | null = null;
+    let page: React.JSX.Element | null = null;
     if (state.selectedPage) {
       page = <Page editingContextId={editingContextId} formId={id} page={state.selectedPage} readOnly={readOnly} />;
     }

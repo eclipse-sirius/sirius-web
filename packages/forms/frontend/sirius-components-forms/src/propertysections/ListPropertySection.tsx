@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -251,7 +251,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
 
   const clickHandler = useClickHandler<GQLListItem>(onSimpleClick, onDoubleClick);
 
-  const getTableCellContent = (item: GQLListItem): JSX.Element => {
+  const getTableCellContent = (item: GQLListItem): React.JSX.Element => {
     return (
       <>
         <IconOverlay iconURLs={item.iconURL} alt={item.label} customIconStyle={{ marginRight: theme.spacing(2) }} />

@@ -20,7 +20,7 @@ export interface PanelsProps {
   leftPanelConfiguration: WorkbenchSidePanelConfiguration | null;
   rightContributions: WorkbenchViewContribution[];
   rightPanelConfiguration: WorkbenchSidePanelConfiguration | null;
-  mainArea: JSX.Element;
+  mainArea: React.JSX.Element;
   leftPanelInitialSize: number;
   rightPanelInitialSize: number;
 }
