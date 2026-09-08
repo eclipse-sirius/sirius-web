@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,9 @@ package org.eclipse.sirius.components.collaborative.forms.configuration;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
-import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -41,15 +39,12 @@ public class FormEventProcessorFactoryConfiguration {
 
     private final IFormCapabilitiesService formCapabilitiesService;
 
-    private final Optional<IFormPostProcessor> optionalFormProcessor;
-
     public FormEventProcessorFactoryConfiguration(IObjectService objectService, List<IFormEventHandler> formEventHandlers, List<ITableEventHandler> tableEventHandlers,
-            IFormCapabilitiesService formCapabilitiesService, Optional<IFormPostProcessor> optionalFormProcessor) {
+            IFormCapabilitiesService formCapabilitiesService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.tableEventHandlers = Objects.requireNonNull(tableEventHandlers);
         this.formCapabilitiesService = Objects.requireNonNull(formCapabilitiesService);
-        this.optionalFormProcessor = Objects.requireNonNull(optionalFormProcessor);
     }
 
     public IObjectService getObjectService() {
@@ -58,10 +53,6 @@ public class FormEventProcessorFactoryConfiguration {
 
     public List<IFormEventHandler> getFormEventHandlers() {
         return this.formEventHandlers;
-    }
-
-    public IFormPostProcessor getFormPostProcessor() {
-        return this.optionalFormProcessor.orElse(new IFormPostProcessor.NoOp());
     }
 
     public List<ITableEventHandler> getTableEventHandlers() {

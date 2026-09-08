@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,11 +24,10 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchServ
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.FormEventProcessor;
-import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
+import org.eclipse.sirius.components.collaborative.forms.FormContext;
+import org.eclipse.sirius.components.collaborative.forms.api.IFormCreationService;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
-import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRelatedElementsDescriptionProvider;
-import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
@@ -68,12 +67,13 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
 
     private final IFormCapabilitiesService formCapabilitiesService;
 
-    private final IFormPostProcessor formPostProcessor;
 
     private final IURLParser urlParser;
 
+    private final IFormCreationService formCreationService;
+
     public RelatedElementsEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRelatedElementsDescriptionProvider relatedElementsDescriptionProvider,
-            List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
+            List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration, IFormCreationService formCreationService, IURLParser urlParser) {
         this.relatedElementsDescriptionProvider = Objects.requireNonNull(relatedElementsDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
@@ -83,8 +83,8 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
         this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
-        this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
         this.formCapabilitiesService = Objects.requireNonNull(formConfiguration.getFormCapabilitiesService());
+        this.formCreationService = Objects.requireNonNull(formCreationService);
         this.urlParser = Objects.requireNonNull(urlParser);
     }
 
@@ -106,19 +106,13 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
 
         if (!objects.isEmpty()) {
             FormDescription formDescription = this.relatedElementsDescriptionProvider.getFormDescription();
-            FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationId)
-                    .formDescription(formDescription)
-                    .object(objects.get(0))
-                    .selection(objects)
-                    .build();
+            var formContext = new FormContext(representationId, null, formDescription, objects.get(0), objects);
+            var form = this.formCreationService.create(editingContext, formDescription, objects.get(0), formContext);
 
             IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
-                    new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
+                    editingContext, formContext.withForm(form), this.formEventHandlers, this.tableEventHandlers,
                     this.subscriptionManagerFactory.create(),
-                    this.representationSearchService,
                     this.representationDescriptionSearchService,
-                    this.representationRefreshPolicyRegistry,
-                    this.formPostProcessor,
                     this.formCapabilitiesService);
 
             return Optional.of(formEventProcessor);

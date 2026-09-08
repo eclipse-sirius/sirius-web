@@ -18,23 +18,16 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
-import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
-import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
-import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
-import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessorInitializer;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.Form;
-import org.eclipse.sirius.components.forms.description.FormDescription;
-import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -46,13 +39,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class FormEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
-    private final IObjectService objectService;
+    private final IFormEventProcessorInitializer formEventProcessorInitializer;
 
     private final IRepresentationSearchService representationSearchService;
 
-    private final List<IWidgetDescriptor> widgetDescriptors;
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final List<IFormEventHandler> formEventHandlers;
 
@@ -60,23 +51,17 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
-    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
-
-    private final IFormPostProcessor formPostProcessor;
-
     private final IFormCapabilitiesService formCapabilitiesService;
 
-    public FormEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, List<IWidgetDescriptor> widgetDescriptors,
+    public FormEventProcessorFactory(IFormEventProcessorInitializer formEventProcessorInitializer, IRepresentationSearchService representationSearchService,
+            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             FormEventProcessorFactoryConfiguration formConfiguration) {
-        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
-        this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
-        this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
-        this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
-        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
+        this.formEventProcessorInitializer = Objects.requireNonNull(formEventProcessorInitializer);
+        this.representationSearchService = Objects.requireNonNull(representationSearchService);
+        this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
         this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
-        this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
         this.formCapabilitiesService = Objects.requireNonNull(formConfiguration.getFormCapabilitiesService());
     }
 
@@ -87,38 +72,9 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
-        Optional<Form> optionalForm = this.representationSearchService.findById(editingContext, representationId, Form.class);
-        if (optionalForm.isPresent()) {
-            Form form = optionalForm.get();
-            Optional<FormDescription> optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId())
-                    .filter(FormDescription.class::isInstance)
-                    .map(FormDescription.class::cast);
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, form.getTargetObjectId());
-            if (optionalFormDescription.isPresent() && optionalObject.isPresent()) {
-                FormDescription formDescription = optionalFormDescription.get();
-                Object object = optionalObject.get();
-
-                FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationId)
-                        .formDescription(formDescription)
-                        .object(object)
-                        .selection(List.of())
-                        .build();
-
-                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
-                        new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
-                        this.subscriptionManagerFactory.create(),
-                        this.representationSearchService,
-                        this.representationDescriptionSearchService,
-                        this.representationRefreshPolicyRegistry,
-                        this.formPostProcessor,
-                        this.formCapabilitiesService
-                );
-
-                return Optional.of(formEventProcessor);
-            }
-        }
-
-        return Optional.empty();
+        return this.formEventProcessorInitializer.getRefreshedRepresentation(editingContext, representationId)
+                .map(formContext -> (IRepresentationEventProcessor) new FormEventProcessor(editingContext, formContext, this.formEventHandlers, this.tableEventHandlers,
+                        this.subscriptionManagerFactory.create(), this.representationDescriptionSearchService, this.formCapabilitiesService));
     }
 
 }
