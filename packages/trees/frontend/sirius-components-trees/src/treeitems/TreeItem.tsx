@@ -133,7 +133,7 @@ export const TreeItem = ({
     partHovered: null,
   });
 
-  const refDom = useRef() as any;
+  const refDom = useRef<HTMLDivElement | null>(null);
 
   const { classes } = useTreeItemStyle({ depth });
   const { onDropTreeItem } = useDropTreeItem(editingContextId, treeId);
@@ -173,12 +173,7 @@ export const TreeItem = ({
 
   useEffect(() => {
     if (selected) {
-      if (refDom.current?.scrollIntoViewIfNeeded) {
-        refDom.current.scrollIntoViewIfNeeded(true);
-      } else {
-        // Fallback for browsers not supporting the non-standard `scrollIntoViewIfNeeded`
-        refDom.current?.scrollIntoView({ behavior: 'smooth' });
-      }
+      refDom.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
     }
   }, [selected]);
 
@@ -186,12 +181,16 @@ export const TreeItem = ({
     setState((prevState) => {
       return { ...prevState, editingMode: false };
     });
-    refDom.current.focus();
+    if (refDom.current) {
+      refDom.current.focus();
+    }
   };
 
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!state.editingMode && event.currentTarget.contains(event.target as HTMLElement)) {
-      refDom.current.focus();
+      if (refDom.current) {
+        refDom.current.focus();
+      }
       if (!item.selectable) {
         return;
       }
@@ -261,7 +260,7 @@ export const TreeItem = ({
     event.preventDefault();
   };
 
-  const text: JSX.Element = state.editingMode ? (
+  const text: React.JSX.Element = state.editingMode ? (
     <TreeItemDirectEditInput
       editingContextId={editingContextId}
       treeId={treeId}
@@ -288,7 +287,7 @@ export const TreeItem = ({
     }
   };
 
-  let currentTreeItem: JSX.Element | null;
+  let currentTreeItem: React.JSX.Element | null;
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
     currentTreeItem = null;
   } else {
