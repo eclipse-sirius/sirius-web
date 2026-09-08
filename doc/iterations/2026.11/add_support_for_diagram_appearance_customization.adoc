@@ -1,0 +1,153 @@
+:author: Guillaume Coutable
+:date: 2026-09-08
+:status: proposed
+:consulted:
+:informed:
+:deciders:
+:issue:
+
+= (M) Add support for diagram appearance customization
+
+== Problem
+
+Currently, the only way to change the appearance of an element in a diagram is through the _Appearance_ menu of that element's palette.
+This approach requires users to select the graphical elements to customize and repeat the operation for newly created elements.
+It does not support persistent appearance rules that automatically apply to matching elements.
+
+== Key Result
+
+* End users should be able to easily customize the appearance of a set of elements in a diagram.
+* Style customizations can be provided by different sources.
+* Style customizations from any source have a lower priority than customizations made through the _Appearance_ menu in a graphical element's palette.
+* It should be possible to configure whether style customizations are enabled by default.
+When enabled by default, applicable style customizations are applied to graphical elements during the refresh that creates the diagram.
+
+=== Acceptance Criteria
+
+* An integration test should verify that a style customization from the server source is applied to a diagram when style customizations are enabled by default.
+* An integration test should verify that a style customization from the server source is not applied to a diagram when style customizations are disabled by default.
+* An integration test should verify that a style customization from the project source overrides a style customization from the server source.
+* An integration test should verify that a node's appearance, as customized through the _Appearance_ menu, is not overridden by a style customization from any source.
+
+== Solution
+
+=== Configuration Sources
+
+A source can provide multiple appearance customizations grouped into a configuration.
+For now, we will only support customizing the background color of graphical nodes.
+A configuration can apply to a project depending on the project's nature.
+
+Sirius Web will provide two sources: the server source and the project source.
+In Sirius Web, configurations from the project source will have a higher priority than configurations from the server source.
+The relative priority of these two sources will be hard-coded.
+
+The server source will use a backend extension point to provide a configuration.
+Each project can provide a configuration through a UI in the project settings.
+
+=== Applying a configuration
+
+When a customization is available for a diagram, end users can enable or disable it using a button in the diagram toolbar.
+When the button is active, the customization is applied.
+Whether customizations are enabled is persisted in the database and shared across all clients displaying the same diagram.
+
+When style customizations are enabled for a diagram, applicable customizations are applied to all newly created graphical nodes.
+Style customizations are computed each time the diagram is refreshed.
+This means that a style customization added to the project configuration will be applied the next time the diagram is refreshed.
+
+If the diagram is read-only for any reason, for example when displayed in a portal representation, end users cannot enable or disable customizations.
+
+=== Style Precedence
+
+Style properties that end users have customized through the _Appearance_ menu take precedence.
+For the remaining properties, customizations from the project source are considered first.
+If the project source does not provide a customization for a graphical node, customizations from the server source are applied.
+If neither source provides a customization, the style defined by the diagram description is used.
+
+=== Project Import/Export
+
+A project's configuration should be exported and imported along with the project.
+
+=== Default Activation of Style Customizations
+
+The application is responsible for determining whether style customizations are enabled by default.
+This setting determines whether style customizations are applied during the refresh that creates the diagram.
+
+=== Behavior Across Project Branches
+
+Style customizations from the project source apply to all branches of the project.
+Whether customizations are enabled for a diagram depends on how representations are handled across branches.
+If they are treated as separate representations, customizations may be enabled for the "same" diagram on one branch and disabled on another.
+
+=== Scenarios
+
+* **Scenario steps**
+  0. The server provides a configuration that sets the background color of graphical nodes representing classes in Papaya class diagrams to green.
+  1. The end user creates a Papaya project, opens a diagram, and adds several classes. All graphical nodes are green.
+  2. The end user opens the project settings and adds a customization that sets the background color for all classes (`papaya::class`) to blue.
+  3. The end user opens the diagram. All graphical nodes are blue.
+  4. The end user uses the _Appearance_ menu to set the background color of a specific graphical node representing a class to purple. That node is now purple.
+  5. The end user deletes the customization added in the project settings.
+  6. The end user opens the diagram. All graphical nodes are green except the one customized through the _Appearance_ menu, which remains purple.
+
+* **Scenario steps**
+  0. The server provides a configuration that sets the background color of graphical nodes representing interfaces (`Interface`) in Papaya class diagrams to green.
+  1. The end user creates a Papaya project and adds a customization in the project settings UI that sets the background color for all classes (`papaya::class`) to blue. All `Interface` nodes are green, and all `Class` nodes are blue.
+  2. The end user downloads the project.
+  3. The end user uploads the project to another server that does not provide any style customizations.
+  4. The end user opens the diagram in the uploaded project. All `Class` nodes are blue, and all `Interface` nodes use the style defined by the diagram description.
+
+
+=== Breadboarding
+
+// Image of the customization UI in the project settings
+
+We will use a table from MUI, with one row per customization.
+Each row describes which appearance customization applies to which element.
+An action opens a dialog where users can add a customization.
+
+We have not yet decided how to specify the set of elements to which a customization applies:
+
+* By matching the qualified name of an `EClass` against a string. This is the simplest option, but it may not meet all our needs.
+* By using an AQL query.
+* By specifying the diagram description, the semantic element, and other criteria. This may require loading the editing context from the project settings.
+
+The chosen approach will affect how easily we can validate the data and provide early feedback.
+Alternatively, we could implement a solution quickly without validation.
+
+// Image of the dialog
+
+// Image of the diagram toolbar with the button
+
+=== Cutting back
+
+The first contribution will focus on providing configurations from the server source only.
+It will also allow users to enable or disable style customizations for a diagram.
+
+The second contribution will add the project source without a UI, to verify the behavior with multiple sources.
+
+The third contribution will add the UI in the project settings.
+
+The fourth contribution should add support for exporting and importing the project configuration.
+
+* **Nice-to-have:** Support for customizing multiple style properties beyond the background color.
+* **Nice-to-have:** Support for multiple configurations from a single source for the same diagram.
+  In the project settings UI, users would be able to customize each configuration independently.
+  In the diagram toolbar, a menu would replace the button, allowing users to choose which configuration (which we could then call a theme) to apply.
+
+== Rabbit holes
+
+* Determining which style applies to which element may be difficult.
+It may be the responsibility of each downstream project to define how customizations are matched to graphical nodes.
+In that case, downstream projects would need to contribute their own configuration models and their own widgets for the project settings UI.
+Sirius Web would provide a simple mechanism for matching customizations to graphical nodes, along with the associated UI.
+* When applied, style customizations override conditional styles, including those that convey business information.
+
+
+== No-Gos
+
+* Customizing labels, edges, or edge styles is out of scope.
+* Style properties from different sources will not be merged.
+If a project configuration customizes only a graphical node's background color and a server configuration customizes its border width, only the background color will be customized because the project configuration has a higher priority.
+* Configuring the relative priority of sources is out of scope.
+* Updating a configuration does not need to trigger a diagram refresh.
+* Whether style customizations are enabled for a diagram will not be stored in local storage.
