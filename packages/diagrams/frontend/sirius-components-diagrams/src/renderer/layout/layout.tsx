@@ -76,11 +76,11 @@ export const prepareLayoutArea = (
   hiddenContainer.style.visibility = 'hidden';
   hiddenContainer.style.zIndex = '-1';
   document.body.appendChild(hiddenContainer);
-  const elements: JSX.Element[] = [];
+  const elements: React.JSX.Element[] = [];
   const visibleNodes = diagram.nodes.filter((node) => !node.hidden);
 
   // Render all label first
-  const labelElements: JSX.Element[] = [];
+  const labelElements: React.JSX.Element[] = [];
   visibleNodes.forEach((node) => {
     const borderWidth: number = getNodeBorderWidth(node, visibleNodes) ?? 0;
     let insideLabelConstraintWidth = (node.width ?? 0) - borderWidth * 2;
@@ -91,7 +91,7 @@ export const prepareLayoutArea = (
       }
     }
     if (hiddenContainer && node.data.insideLabel) {
-      const children: JSX.Element[] = [
+      const children: React.JSX.Element[] = [
         createElement(Label, {
           diagramElementId: node.id,
           label: node.data.insideLabel,
@@ -99,7 +99,7 @@ export const prepareLayoutArea = (
           key: node.data.insideLabel.id,
         }),
       ];
-      const element: JSX.Element = createElement('div', {
+      const element: React.JSX.Element = createElement('div', {
         id: `${node.data.insideLabel.id}-label`,
         key: `${node.data.insideLabel.id}-label`,
         style: {
@@ -111,7 +111,7 @@ export const prepareLayoutArea = (
     }
     if (hiddenContainer && node.data.outsideLabels.BOTTOM_MIDDLE) {
       const outsideLabel = node.data.outsideLabels.BOTTOM_MIDDLE;
-      const children: JSX.Element[] = [
+      const children: React.JSX.Element[] = [
         createElement(Label, {
           diagramElementId: node.id,
           label: outsideLabel,
@@ -119,7 +119,7 @@ export const prepareLayoutArea = (
           key: outsideLabel.id,
         }),
       ];
-      const element: JSX.Element = createElement('div', {
+      const element: React.JSX.Element = createElement('div', {
         id: `${outsideLabel.id}-label`,
         key: `${outsideLabel.id}-label`,
         style: { maxWidth: outsideLabel.overflowStrategy === 'NONE' ? undefined : node.width },
@@ -130,7 +130,7 @@ export const prepareLayoutArea = (
   });
   diagram.edges.forEach((edge: Edge<MultiLabelEdgeData>) => {
     if (hiddenContainer && edge.data?.label) {
-      const children: JSX.Element[] = [
+      const children: React.JSX.Element[] = [
         createElement(Label, {
           diagramElementId: edge.id,
           label: edge.data.label,
@@ -138,7 +138,7 @@ export const prepareLayoutArea = (
           key: edge.data.label.id,
         }),
       ];
-      const element: JSX.Element = createElement('div', {
+      const element: React.JSX.Element = createElement('div', {
         id: `${edge.data.label.id}-label`,
         key: `${edge.data.label.id}-label`,
         children,
@@ -146,7 +146,7 @@ export const prepareLayoutArea = (
       labelElements.push(element);
     }
     if (hiddenContainer && edge.data?.beginLabel) {
-      const children: JSX.Element[] = [
+      const children: React.JSX.Element[] = [
         createElement(Label, {
           diagramElementId: edge.id,
           label: edge.data.beginLabel,
@@ -154,7 +154,7 @@ export const prepareLayoutArea = (
           key: edge.data.beginLabel.id,
         }),
       ];
-      const element: JSX.Element = createElement('div', {
+      const element: React.JSX.Element = createElement('div', {
         id: `${edge.data.beginLabel.id}-label`,
         key: `${edge.data.beginLabel.id}-label`,
         children,
@@ -162,7 +162,7 @@ export const prepareLayoutArea = (
       labelElements.push(element);
     }
     if (hiddenContainer && edge.data?.endLabel) {
-      const children: JSX.Element[] = [
+      const children: React.JSX.Element[] = [
         createElement(Label, {
           diagramElementId: edge.id,
           label: edge.data.endLabel,
@@ -170,7 +170,7 @@ export const prepareLayoutArea = (
           key: edge.data.endLabel.id,
         }),
       ];
-      const element: JSX.Element = createElement('div', {
+      const element: React.JSX.Element = createElement('div', {
         id: `${edge.data.endLabel.id}-label`,
         key: `${edge.data.endLabel.id}-label`,
         children,
@@ -181,7 +181,7 @@ export const prepareLayoutArea = (
 
   // The container used to render label is a flex container authorizing wrapping.
   // It wrap direct children, and thus, prevent label to wrap (because their container will have always enough place to render on the line, unless the label is larger than the screen).
-  const labelContainerElement: JSX.Element = createElement('div', {
+  const labelContainerElement: React.JSX.Element = createElement('div', {
     id: 'hidden-label-container',
     key: 'hidden-label-container',
     style: {
@@ -193,10 +193,10 @@ export const prepareLayoutArea = (
   });
   elements.push(labelContainerElement);
 
-  const nodeElements: JSX.Element[] = [];
+  const nodeElements: React.JSX.Element[] = [];
   visibleNodes.forEach((node, index) => {
     if (hiddenContainer && node) {
-      const children: JSX.Element[] = [];
+      const children: React.JSX.Element[] = [];
       if (isFreeFormNode(node)) {
         const freeFormNodeProps: NodeProps<Node<FreeFormNodeData, 'freeFormNode'>> = {
           ...emptyNodeProps,
@@ -234,7 +234,7 @@ export const prepareLayoutArea = (
         children.push(element);
       }
       if (children.length > 0) {
-        const elementWrapper: JSX.Element = createElement('div', {
+        const elementWrapper: React.JSX.Element = createElement('div', {
           id: `${node.id}-${node.type}-${index}`,
           key: node.id,
           children,
@@ -244,7 +244,7 @@ export const prepareLayoutArea = (
     }
   });
 
-  const nodeContainerElement: JSX.Element = createElement('div', {
+  const nodeContainerElement: React.JSX.Element = createElement('div', {
     id: 'hidden-node-container',
     key: 'hidden-node-container',
     style: {
@@ -256,7 +256,7 @@ export const prepareLayoutArea = (
   });
   elements.push(nodeContainerElement);
 
-  const hiddenContainerContentElements: JSX.Element = createElement(Fragment, { children: elements });
+  const hiddenContainerContentElements: React.JSX.Element = createElement(Fragment, { children: elements });
 
   const Element = () => {
     useEffect(() => {

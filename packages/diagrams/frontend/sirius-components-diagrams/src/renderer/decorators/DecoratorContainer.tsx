@@ -50,7 +50,7 @@ export const DecoratorContainer = ({ decorators }: DecoratorContainerProps) => {
 
   const decoratorMap = decoratorListToMap(decorators);
 
-  const renderedDecorators: JSX.Element[] = [];
+  const renderedDecorators: React.JSX.Element[] = [];
 
   for (let entry of decoratorMap.entries()) {
     const position = entry[0];

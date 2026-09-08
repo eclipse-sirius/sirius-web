@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -152,7 +152,7 @@ export const Label = memo(({ diagramElementId, label, faded, width, height }: La
     return { marginRight: theme.spacing(1) };
   }, []);
 
-  const content: JSX.Element =
+  const content: React.JSX.Element =
     label.id === currentlyEditedLabelId && !readOnly ? (
       <DiagramDirectEditInput
         editingKey={editingKey}

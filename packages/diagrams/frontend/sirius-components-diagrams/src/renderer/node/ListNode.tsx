@@ -101,7 +101,7 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
 
     useRefreshConnectionHandles(id, data.connectionHandles);
 
-    let actionsSection: JSX.Element | null = null;
+    let actionsSection: React.JSX.Element | null = null;
     if (data.isHovered) {
       actionsSection = <ActionsContainer diagramElementId={id} />;
     }

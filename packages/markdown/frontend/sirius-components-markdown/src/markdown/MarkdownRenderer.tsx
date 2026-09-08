@@ -34,7 +34,7 @@ import {
 } from './MarkdownRenderer.types';
 import { ToolbarPlugin } from './ToolbarPlugin';
 
-const ContentEditable = ({ readOnly }: ContentEditableProps): JSX.Element => {
+const ContentEditable = ({ readOnly }: ContentEditableProps): React.JSX.Element => {
   const [editor] = useLexicalComposerContext();
   const ref = useCallback(
     (rootElement: null | HTMLElement) => {
@@ -45,7 +45,7 @@ const ContentEditable = ({ readOnly }: ContentEditableProps): JSX.Element => {
   return <div ref={ref} contentEditable={!readOnly} spellCheck={false}></div>;
 };
 
-const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): JSX.Element | null => {
+const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): React.JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
     editor.update(() => {
@@ -56,7 +56,7 @@ const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): JSX.Elemen
   return null;
 };
 
-const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): JSX.Element => {
+const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): React.JSX.Element => {
   const [editor] = useLexicalComposerContext();
   return (
     <div

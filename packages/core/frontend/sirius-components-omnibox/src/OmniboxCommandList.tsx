@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,7 +50,7 @@ export const OmniboxCommandList = forwardRef(
       onCommandClick(command);
     };
 
-    let listItems: JSX.Element[] = [];
+    let listItems: React.JSX.Element[] = [];
     if (loading) {
       listItems = [
         <ListItem key={'loading-action-key'}>
