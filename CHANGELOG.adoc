@@ -80,10 +80,10 @@ Downstream consumers must declare this dependency and replace the package prefix
 
 === Dependency update
 
-- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1[Spring Boot 4.1.1]
-- [releng] Switch to https://github.com/testing-library/user-event/releases/tag/v14.6.7[@testing-library/user-event 14.6.7]
-- [releng] Switch to https://github.com/testing-library/react-testing-library/releases/tag/v16.3.3[@testing-library/react 16.3.3]
-
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1[Spring Boot 4.1.1].
+- [releng] Switch to https://github.com/testing-library/user-event/releases/tag/v14.6.7[@testing-library/user-event 14.6.7].
+- [releng] Switch to https://github.com/testing-library/react-testing-library/releases/tag/v16.3.3[@testing-library/react 16.3.3].
+- [releng] Switch to https://github.com/vercel/turborepo/releases#release-v2.10.12[turbo 2.10.12].
 
 === Bug fixes
 
