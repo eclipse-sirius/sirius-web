@@ -10,12 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export type LinkEditorMode = 'closed' | 'insert';
+import { NodeKey } from 'lexical';
+
+export type LinkEditorMode = 'closed' | 'edit' | 'insert' | 'view';
 
 export type LinkAnchor = HTMLElement | { contextElement?: Element; getBoundingClientRect: () => DOMRect };
 
 export interface LinkEditorPluginState {
   anchor: LinkAnchor | null;
+  linkKey: NodeKey | null;
+  linkUrl: string;
   mode: LinkEditorMode;
   url: string;
 }
