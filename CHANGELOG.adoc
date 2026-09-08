@@ -109,6 +109,7 @@ These libraries are selected by default in the project creation's library table,
 - [releng] Run end-to-end tests on master and only on relevant pull requests.
 The `ci: run e2e` label can be added to a pull request to force end-to-end test execution.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [images] Extract the domain parts of the image bounded context into the `sirius-web-images-domain` module.
+- https://github.com/eclipse-sirius/sirius-web/issues/6824[#6824] [form] Add RichTextEditor link insertion.
 
 
 

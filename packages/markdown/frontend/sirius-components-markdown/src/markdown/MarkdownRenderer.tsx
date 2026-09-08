@@ -18,6 +18,7 @@ import { $convertFromMarkdownString, $convertToMarkdownString, TRANSFORMERS } fr
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
@@ -32,6 +33,7 @@ import {
   OnBlurPluginProps,
   UpdateValuePluginProps,
 } from './MarkdownRenderer.types';
+import { CLOSE_LINK_EDITOR_COMMAND, LinkEditorPlugin } from './LinkEditorPlugin';
 import { ToolbarPlugin } from './ToolbarPlugin';
 
 const ContentEditable = ({ readOnly }: ContentEditableProps): JSX.Element => {
@@ -52,6 +54,7 @@ const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): JSX.Elemen
       $convertFromMarkdownString(markdownText, TRANSFORMERS);
       $setSelection(null);
     });
+    editor.dispatchCommand(CLOSE_LINK_EDITOR_COMMAND, undefined);
   }, [editor, markdownText]);
   return null;
 };
@@ -61,7 +64,10 @@ const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): JSX.Element => {
   return (
     <div
       onBlur={(event: FocusEvent<HTMLDivElement, Element>) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) {
+        const focusMovedToLinkEditor =
+          event.relatedTarget instanceof Element && event.relatedTarget.closest('[data-testid="link-editor"]') !== null;
+        if (!event.currentTarget.contains(event.relatedTarget) && !focusMovedToLinkEditor) {
+          editor.dispatchCommand(CLOSE_LINK_EDITOR_COMMAND, undefined);
           editor.getEditorState().read(() => {
             const markdown = $convertToMarkdownString(TRANSFORMERS);
             onBlur(markdown);
@@ -207,6 +213,8 @@ export const MarkdownRenderer = ({ value, placeholder, readOnly, onBlur }: Markd
         {!readOnly ? <ToolbarPlugin readOnly={readOnly} /> : null}
         <div className={classes.editorContainer}>
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+          <LinkPlugin />
+          {!readOnly ? <LinkEditorPlugin /> : null}
           <ListPlugin />
           <RichTextPlugin
             contentEditable={<ContentEditable readOnly={readOnly} />}
