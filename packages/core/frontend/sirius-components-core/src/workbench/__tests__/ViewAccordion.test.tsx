@@ -67,7 +67,7 @@ test('given a view accordion, when its header is clicked, then it is collapsed',
   const toggle = screen.getByTestId('view-Test View-toggle');
   expect(toggle.getAttribute('aria-expanded')).toBe('true');
 
-  userEvent.click(toggle);
+  await userEvent.click(toggle);
 
   expect(onCollapseChange).toHaveBeenCalledTimes(1);
   expect(onCollapseChange).toHaveBeenCalledWith('view-id', true);
@@ -81,7 +81,7 @@ test('given a view accordion, when its header is clicked, then it is collapsed',
 test('given a collapsed view accordion, then its content is kept mounted but hidden', async () => {
   renderViewAccordion();
 
-  userEvent.click(screen.getByTestId('view-Test View-toggle'));
+  await userEvent.click(screen.getByTestId('view-Test View-toggle'));
 
   // The content stays mounted so that the state and the subscriptions of the view are preserved.
   const content = screen.getByTestId('content');
@@ -94,8 +94,8 @@ test('given a view accordion, when it is expanded again, then it is restored', a
   renderViewAccordion(onCollapseChange);
 
   const toggle = screen.getByTestId('view-Test View-toggle');
-  userEvent.click(toggle);
-  userEvent.click(toggle);
+  await userEvent.click(toggle);
+  await userEvent.click(toggle);
 
   expect(onCollapseChange).toHaveBeenNthCalledWith(2, 'view-id', false);
   expect(toggle.getAttribute('aria-expanded')).toBe('true');
