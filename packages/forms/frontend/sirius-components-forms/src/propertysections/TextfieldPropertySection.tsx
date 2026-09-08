@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -152,7 +152,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
   widget,
   readOnly,
 }: PropertySectionComponentProps<GQLTextfield | GQLTextarea>) => {
-  const inputElt = useRef<HTMLInputElement>();
+  const inputElt = useRef<HTMLInputElement | null>(null);
 
   const props: TextfieldStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
