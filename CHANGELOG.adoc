@@ -84,6 +84,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 - [releng] Switch to https://github.com/testing-library/user-event/releases/tag/v14.6.7[@testing-library/user-event 14.6.7].
 - [releng] Switch to https://github.com/testing-library/react-testing-library/releases/tag/v16.3.3[@testing-library/react 16.3.3].
 - [releng] Switch to https://github.com/vercel/turborepo/releases#release-v2.10.12[turbo 2.10.12].
+- [releng] Switch to https://github.com/vitejs/vite/releases/tag/v8.3.0[Vite 8.3.0] and https://github.com/vitejs/vite-plugin-react/releases/tag/plugin-react%406.1.1[@vitejs/plugin-react 6.1.1]
 
 === Bug fixes
 
