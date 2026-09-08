@@ -4,7 +4,7 @@
 :consulted:
 :informed: Axel Richard, Mélanie Bats, Stéphane Bégaudeau
 :deciders: Stéphane Bégaudeau
-:issue:
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6949
 
 = Add support for representation appearance customization
 

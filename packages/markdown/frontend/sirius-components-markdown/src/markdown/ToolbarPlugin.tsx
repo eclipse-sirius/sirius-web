@@ -26,6 +26,7 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import LinkIcon from '@mui/icons-material/Link';
 import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
 import SubjectIcon from '@mui/icons-material/Subject';
 import TitleIcon from '@mui/icons-material/Title';
@@ -44,6 +45,7 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import { makeStyles, withStyles } from 'tss-react/mui';
 import { ToolbarPluginProps } from './MarkdownRenderer.types';
+import { OPEN_LINK_EDITOR_COMMAND } from './LinkEditorPlugin';
 
 const useToolbarStyles = makeStyles()((theme) => ({
   paper: {
@@ -277,6 +279,23 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
           }}>
           <StrikethroughSIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={'link'}
+          key={'link'}
+          aria-label="Insert Link"
+          onMouseDown={(event) => {
+            event.preventDefault();
+            editor.dispatchCommand(OPEN_LINK_EDITOR_COMMAND, undefined);
+          }}
+          onClick={(event) => {
+            if (event.detail === 0) {
+              editor.dispatchCommand(OPEN_LINK_EDITOR_COMMAND, undefined);
+            }
+          }}>
+          <LinkIcon fontSize="small" />
         </ToggleButton>
       </StyledToggleButtonGroup>
     </Paper>
