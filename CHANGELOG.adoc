@@ -127,7 +127,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - [sirius-web] `IProjectSemanticDataSearchService` now supports retrieving a `ProjectSemanticData` by its own identifier through `findById(UUID projectSemanticDataId)`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6939[#6939] [diagram] Added more `AQL variables` available when computing the precondition of a tool in a palette, this includes for a `connector palette` : `environment`, `diagramServices`, `selectedNode`, `selectedEdge` and for a `diagram element palette` : `environment`, `diagramServices`.
 - [diagram] Extract the appearance logic of nodes and edges in a dedicated service.
-- https://github.com/eclipse-sirius/sirius-web/issues/6824[#6824] [form] Add RichTextEditor link insertion.
+- https://github.com/eclipse-sirius/sirius-web/issues/6824[#6824] [form] Add RichTextEditor link insertion and link edition.
 - https://github.com/eclipse-sirius/sirius-web/issues/6806[#6806] [diagram] Retrieve the list of `FilterSelectionMenuItems` (menu items shown on the manage selection tool from the diagram toolbar) from `filterSelectionMenuItems` field in GraphQL type `DiagramToolbar`.
 - [starters] Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
 
