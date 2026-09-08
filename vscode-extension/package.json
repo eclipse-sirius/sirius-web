@@ -124,7 +124,7 @@
   "dependencies": {
     "@ObeoNetwork/gantt-task-react": "0.6.6",
     "@ObeoNetwork/react-trello": "2.4.11",
-    "@apollo/client": "3.10.4",
+    "@apollo/client": "3.14.1",
     "@eclipse-sirius/sirius-components-browser": "*",
     "@eclipse-sirius/sirius-components-charts": "*",
     "@eclipse-sirius/sirius-components-core": "*",
