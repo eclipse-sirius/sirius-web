@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ export const NewDocumentModalContribution = ({ disabled, editingContextId }: Tre
 
   const [modal, setModal] = useState<Modal | null>(null);
 
-  let modalElement: JSX.Element | null = null;
+  let modalElement: React.JSX.Element | null = null;
   if (modal === 'NewDocument') {
     modalElement = <NewDocumentModal editingContextId={editingContextId} onClose={() => setModal(null)} />;
   }

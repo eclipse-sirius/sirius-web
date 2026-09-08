@@ -63,7 +63,7 @@ const useLabelStyles = makeStyles()((theme: Theme) => ({
 
 const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => {
   const { classes } = useLabelStyles();
-  let itemLabel: JSX.Element;
+  let itemLabel: React.JSX.Element;
   const splitLabelWithTextToHighlight: string[] = splitText(label, textToHighlight);
   if (
     textToHighlight === null ||

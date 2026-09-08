@@ -213,7 +213,7 @@ export const FormDescriptionEditorRepresentation = forwardRef<
       event.dataTransfer.setData('draggedElementType', 'Widget');
     };
 
-    let content: JSX.Element | null = null;
+    let content: React.JSX.Element | null = null;
     if (state.formDescriptionEditor) {
       content = (
         <div className={classes.main}>

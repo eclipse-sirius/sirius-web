@@ -28,7 +28,7 @@ export interface UpdateValuePluginProps {
 
 export interface OnBlurPluginProps {
   onBlur: (markdownText: string) => void;
-  children: JSX.Element | Array<JSX.Element | null> | null;
+  children: React.JSX.Element | Array<React.JSX.Element | null> | null;
 }
 
 export interface ToolbarPluginProps {

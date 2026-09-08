@@ -106,7 +106,7 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
       />
     );
 
-    let contents: JSX.Element = <></>;
+    let contents: React.JSX.Element = <></>;
 
     if (complete || skip) {
       contents = (

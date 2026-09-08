@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -117,7 +117,7 @@ export const ProjectSettingsView = () => {
     ? viewableTabContributions.filter((contribution) => contribution.id === selectedTabId)[0]
     : null;
 
-  const SettingContent: () => JSX.Element = () => {
+  const SettingContent: () => React.JSX.Element = () => {
     if (settingContentContribution) {
       const { component: Component } = settingContentContribution;
 

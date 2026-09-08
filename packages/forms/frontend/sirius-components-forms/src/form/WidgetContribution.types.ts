@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ export interface PreviewWidgetProps {
 
 export interface WidgetContribution {
   name: string;
-  previewComponent: (props: PreviewWidgetProps) => JSX.Element | null;
+  previewComponent: (props: PreviewWidgetProps) => React.JSX.Element | null;
   icon: React.ReactElement;
   component: (widget: GQLWidget) => PropertySectionComponent<GQLWidget> | null;
 }

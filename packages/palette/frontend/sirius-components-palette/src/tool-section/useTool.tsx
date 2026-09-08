@@ -50,7 +50,7 @@ export const useTool = (): useToolValue => {
     isSelected: boolean,
     searchedValue: string | null,
     onToolClick: (tool: GQLTool) => void
-  ): JSX.Element => {
+  ): React.JSX.Element => {
     const overriddenTool = paletteToolOverriddenData.data.find((contributedTool) =>
       contributedTool.canHandle(representationKind, tool)
     );
@@ -91,7 +91,7 @@ export const useTool = (): useToolValue => {
     isSelected: boolean,
     searchedValue: string | null,
     onToolClick: (tool: GQLTool) => void
-  ): JSX.Element | null => {
+  ): React.JSX.Element | null => {
     if (!toolId) {
       return null;
     }
