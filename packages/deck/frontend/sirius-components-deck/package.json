@@ -49,7 +49,7 @@
     "@mui/icons-material": "7.3.10",
     "@mui/material": "7.3.10",
     "@types/react": "18.3.3",
-    "@vitejs/plugin-react": "6.0.2",
+    "@vitejs/plugin-react": "6.1.1",
     "@ObeoNetwork/react-trello": "2.4.11",
     "graphql": "16.8.1",
     "prettier": "2.7.1",
@@ -58,7 +58,7 @@
     "react-i18next": "16.2.3",
     "tss-react": "4.9.16",
     "typescript": "5.4.5",
-    "vite": "8.1.5",
+    "vite": "8.2.2",
     "vitest": "3.2.4",
     "react-resizable-panels": "4.11.2"
   }
