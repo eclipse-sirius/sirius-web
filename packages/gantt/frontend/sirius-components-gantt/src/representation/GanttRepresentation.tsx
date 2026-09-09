@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
 import { ApolloError, OnDataOptions, useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
@@ -20,6 +19,7 @@ import {
   WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
+import { Task, TaskOrEmpty } from '@obeonetwork/gantt-task-react';
 import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { useTranslation } from 'react-i18next';

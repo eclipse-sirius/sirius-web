@@ -21,7 +21,7 @@ import {
   TaskOrEmpty,
   TaskType,
   TitleColumn,
-} from '@ObeoNetwork/gantt-task-react';
+} from '@obeonetwork/gantt-task-react';
 import {
   GQLColumn,
   GQLGantt,

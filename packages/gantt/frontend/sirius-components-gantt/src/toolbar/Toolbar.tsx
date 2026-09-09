@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
 import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
@@ -26,12 +25,13 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Tooltip from '@mui/material/Tooltip';
+import { Task, TaskOrEmpty, ViewMode } from '@obeonetwork/gantt-task-react';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
 import { useFullscreen } from './useFullScreen';
-import { useTranslation } from 'react-i18next';
 
 const useToolbarStyles = makeStyles()((theme) => ({
   toolbar: {

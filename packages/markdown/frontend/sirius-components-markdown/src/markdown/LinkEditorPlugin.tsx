@@ -33,7 +33,7 @@ import {
   createCommand,
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
-import { FocusEvent, FormEvent, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { FocusEvent, FormEvent, JSX, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { LinkAnchor, LinkEditorMode, LinkEditorPluginState } from './LinkEditorPlugin.types';
 

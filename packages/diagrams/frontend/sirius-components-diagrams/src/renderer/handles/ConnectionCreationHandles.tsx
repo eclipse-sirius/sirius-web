@@ -27,24 +27,17 @@ export const ConnectionCreationHandles = memo(
     const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, nodeId);
     const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
 
-    // Unmount/Mount while selected
+    // Unmount/Mount while selected or dragging the node
     useEffect(() => {
-      if (shouldRender) {
+      if (shouldRender && !isDraggedNode) {
         mountNodeHandles(nodeId, nodePosition, nodeWidth, nodeHeight);
+      } else {
+        unMountHandles();
       }
       return () => {
         unMountHandles();
       };
-    }, [shouldRender]);
-
-    // Unmount/Mount while dragging the node
-    useEffect(() => {
-      if (isDraggedNode) {
-        unMountHandles();
-      } else if (!isDraggedNode && shouldRender) {
-        mountNodeHandles(nodeId, nodePosition, nodeWidth, nodeHeight);
-      }
-    }, [isDraggedNode]);
+    }, [shouldRender, isDraggedNode]);
 
     // Set candidates in the context
     useEffect(() => {

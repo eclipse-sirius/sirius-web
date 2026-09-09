@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
+import { Task, TaskOrEmpty } from '@obeonetwork/gantt-task-react';
 import { GQLTaskDetail, StartOrEnd, TemporalType } from '../subscription/GanttSubscription.types';
 
 export interface UseGanttMutations {

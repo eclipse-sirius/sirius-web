@@ -17,7 +17,11 @@ The GraphQL queries and mutations have also been updated to leverage a matching 
 On the frontend, the new id should be treated as an opaque string just like the previous one.
 - Diagram layout configurations are now retrieved through the new `DiagramDescription.layoutConfigurations` GraphQL field instead of being hardcoded in the frontend.
 The `sirius-components-collaborative-diagrams` module provides the default configurations, applications can implement `ILayoutConfigurationsProvider` to contribute additional configurations.
-
+- Switch to https://github.com/react/react/releases#release-v19.2.8[React 19.2.8]
+- Switch to notistack 3.0.2
+- Switch to react-draggable 4.7.1
+- Switch to https://github.com/ObeoNetwork/react-trello/releases/tag/v2.5.2[@obeonetwork/react-trello 2.5.2]
+- Switch to https://github.com/ObeoNetwork/gantt-task-react/releases/tag/v0.7.2[@obeonetwork/gantt-task-react 0.7.2]
 
 == Bug fixes
 
