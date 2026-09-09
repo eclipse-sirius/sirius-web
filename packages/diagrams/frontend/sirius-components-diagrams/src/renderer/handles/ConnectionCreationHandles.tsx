@@ -49,7 +49,7 @@ export const ConnectionCreationHandles = memo(
     // Update handle position if needed (for resize)
     useEffect(() => {
       updateNodeHandles(nodeId, nodePosition, nodeWidth, nodeHeight);
-    }, [nodePosition, nodeWidth, nodeHeight]);
+    }, [nodeId, nodePosition.x, nodePosition.y, nodeWidth, nodeHeight]);
 
     // Set candidates in the context
     useEffect(() => {
