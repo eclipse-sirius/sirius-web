@@ -13,7 +13,7 @@
 import { RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
 import { FilterBar, FilterBarContext, FilterBarContextValue, TreeView } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { useContext } from 'react';
+import { JSX, useContext } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from './context-menu-contributions/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerContext } from './ExplorerContext';
