@@ -15,45 +15,27 @@ package org.eclipse.sirius.components.collaborative.forms;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
-import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
-import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
-import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.collaborative.tables.TableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
-import org.eclipse.sirius.components.core.api.variables.CoreVariables;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.forms.Form;
-import org.eclipse.sirius.components.forms.components.FormComponent;
-import org.eclipse.sirius.components.forms.components.FormComponentProps;
 import org.eclipse.sirius.components.forms.description.FormDescription;
-import org.eclipse.sirius.components.forms.renderer.FormRenderer;
-import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
-import org.eclipse.sirius.components.representations.Element;
-import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.RepresentationVariables;
-import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.widget.table.TableWidget;
@@ -78,13 +60,9 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final IEditingContext editingContext;
 
-    private final IObjectService objectService;
-
     private final IFormCapabilitiesService formCapabilitiesService;
 
-    private final FormCreationParameters formCreationParameters;
-
-    private final List<IWidgetDescriptor> widgetDescriptors;
+    private FormContext formContext;
 
     private final List<IFormEventHandler> formEventHandlers;
 
@@ -92,73 +70,38 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final ISubscriptionManager subscriptionManager;
 
-    private final IRepresentationSearchService representationSearchService;
-
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
-    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
-    private final AtomicReference<Form> currentForm = new AtomicReference<>();
-
-    private final IFormPostProcessor formPostProcessor;
-
-    private final VariableManager variableManager;
-
     private final Logger logger = LoggerFactory.getLogger(FormEventProcessor.class);
 
-    public FormEventProcessor(FormEventProcessorConfiguration configuration,
+    public FormEventProcessor(IEditingContext editingContext, FormContext formContext, List<IFormEventHandler> formEventHandlers, List<ITableEventHandler> tableEventHandlers,
             ISubscriptionManager subscriptionManager,
-            IRepresentationSearchService representationSearchService,
             IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
-            IFormPostProcessor formPostProcessor,
             IFormCapabilitiesService formCapabilitiesService) {
         this.logger.atTrace()
                 .setMessage("Creating the form event processor {}")
-                .addArgument(configuration.formCreationParameters().getId())
+                .addArgument(formContext.id())
                 .log();
 
-        this.editingContext = Objects.requireNonNull(configuration.editingContext());
-        this.objectService = Objects.requireNonNull(configuration.objectService());
-        this.formCreationParameters = Objects.requireNonNull(configuration.formCreationParameters());
-        this.widgetDescriptors = Objects.requireNonNull(configuration.widgetDescriptors());
-        this.formEventHandlers = Objects.requireNonNull(configuration.formEventHandlers());
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
+        this.editingContext = Objects.requireNonNull(editingContext);
+        this.formContext = Objects.requireNonNull(formContext);
+        this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
-        this.formPostProcessor = Objects.requireNonNull(formPostProcessor);
         this.formCapabilitiesService = Objects.requireNonNull(formCapabilitiesService);
-        this.tableEventHandlers = Objects.requireNonNull(configuration.tableEventHandlers());
-
-        this.variableManager = this.initializeVariableManager();
-
-        Form form = this.refreshForm();
-        this.currentForm.set(form);
-    }
-
-    private VariableManager initializeVariableManager() {
-        var formDescription = this.formCreationParameters.getFormDescription();
-        var self = this.formCreationParameters.getObject();
-        if (this.currentForm.get() != null) {
-            self = this.objectService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
-        }
-
-        VariableManager initialVariableManager = new VariableManager();
-        initialVariableManager.put(RepresentationVariables.SELF.name(), self);
-        initialVariableManager.put(CoreVariables.EDITING_CONTEXT.name(), this.editingContext);
-        initialVariableManager.put(FormVariableProvider.SELECTION.name(), this.formCreationParameters.getSelection());
-        initialVariableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
-
-        var initializer = formDescription.getVariableManagerInitializer();
-        return initializer.apply(initialVariableManager);
+        this.tableEventHandlers = Objects.requireNonNull(tableEventHandlers);
     }
 
     @Override
     public IRepresentation getRepresentation() {
-        return this.currentForm.get();
+        return this.formContext.form();
+    }
+
+    @Override
+    public FormContext getFormContext() {
+        return this.formContext;
     }
 
     @Override
@@ -175,7 +118,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
             if (optionalFormEventHandler.isPresent()) {
                 IFormEventHandler formEventHandler = optionalFormEventHandler.get();
-                formEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentForm.get(), formInput);
+                formEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.formContext.form(), formInput);
             } else {
                 this.logger.atWarn()
                         .setMessage("No handler found for event: {}")
@@ -189,9 +132,9 @@ public class FormEventProcessor implements IFormEventProcessor {
 
             if (optionalTableEventHandler.isPresent()) {
                 ITableEventHandler tableEventHandler = optionalTableEventHandler.get();
-                Optional<Table> tableOptional = this.getTable(this.currentForm.get(), tableInput.tableId());
+                Optional<Table> tableOptional = this.getTable(this.formContext.form(), tableInput.tableId());
                 if (tableOptional.isPresent()) {
-                    Optional<TableDescription> tableDescriptionOptional = this.getTableDescription(this.currentForm.get().getDescriptionId(), tableOptional.get().getDescriptionId());
+                    Optional<TableDescription> tableDescriptionOptional = this.getTableDescription(this.formContext.form().getDescriptionId(), tableOptional.get().getDescriptionId());
                     if (tableDescriptionOptional.isPresent()) {
                         tableEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, new TableContext(tableOptional.get()), tableDescriptionOptional.get(), tableInput);
                     } else {
@@ -244,19 +187,14 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
-        if (this.shouldReload(changeDescription)) {
-            this.representationSearchService.findById(this.editingContext, this.currentForm.get().getId(), Form.class).ifPresent(this.currentForm::set);
-        }
-        if (this.shouldRefresh(changeDescription) || this.shouldReload(changeDescription)) {
-            Form form = this.refreshForm();
-            this.currentForm.set(form);
-            this.emitNewForm(changeDescription);
-        }
+        // Do nothing
     }
 
-    private void emitNewForm(ChangeDescription changeDescription) {
+    @Override
+    public void update(ICause cause, Form form) {
+        this.formContext = this.formContext.withForm(form);
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getCause().id(), this.currentForm.get()));
+            EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(cause.id(), form));
             if (emitResult.isFailure()) {
                 this.logger.atWarn()
                         .setMessage("An error has occurred while emitting a FormRefreshedEventPayload: {}")
@@ -266,51 +204,15 @@ public class FormEventProcessor implements IFormEventProcessor {
         }
     }
 
-    private boolean shouldRefresh(ChangeDescription changeDescription) {
-        return this.representationRefreshPolicyRegistry.getRepresentationRefreshPolicy(this.formCreationParameters.getFormDescription())
-                .orElseGet(this::getDefaultRefreshPolicy)
-                .shouldRefresh(changeDescription);
-
-    }
-
-    private boolean shouldReload(ChangeDescription changeDescription) {
-        return changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.currentForm.get().getId());
-    }
-
-    private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
-        return (changeDescription) -> ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
-    }
-
-    private Form refreshForm() {
-        var self = this.formCreationParameters.getObject();
-        if (this.currentForm.get() != null) {
-            self = this.objectService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
-        }
-        this.variableManager.put(RepresentationVariables.SELF.name(), self);
-
-        FormComponentProps formComponentProps = new FormComponentProps(this.variableManager, this.formCreationParameters.getFormDescription(), this.widgetDescriptors);
-        Element element = new Element(FormComponent.class, formComponentProps);
-        Form form = new FormRenderer(this.widgetDescriptors).render(element);
-
-        form = this.formPostProcessor.postProcess(form, this.variableManager);
-
-        this.logger.atTrace()
-                .setMessage("Form refreshed: {}")
-                .addArgument(form.getId())
-                .log();
-
-        return form;
-    }
-
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        var formId = this.currentForm.get().getId();
+        var formId = this.formContext.form().getId();
 
         var capabilities = this.formCapabilitiesService.getFormCapabilities(this.editingContext.getId(), formId);
         var initialCapabilitiesRefresh = Mono.fromCallable(
-                () -> new FormCapabilitiesRefreshedEventPayload(input.id(), this.currentForm.get().getId(), capabilities)
+                () -> new FormCapabilitiesRefreshedEventPayload(input.id(), this.formContext.form().getId(), capabilities)
         );
-        var initialRefresh = Mono.fromCallable(() -> new FormRefreshedEventPayload(input.id(), this.currentForm.get()));
+        var initialRefresh = Mono.fromCallable(() -> new FormRefreshedEventPayload(input.id(), this.formContext.form()));
 
         var refreshEventFlux = Flux.concat(initialCapabilitiesRefresh, initialRefresh, this.sink.asFlux());
 
@@ -324,7 +226,7 @@ public class FormEventProcessor implements IFormEventProcessor {
     public void dispose() {
         this.logger.atTrace()
                 .setMessage("Disposing the form event processor {}")
-                .addArgument(this.formCreationParameters.getId())
+                .addArgument(this.formContext.id())
                 .log();
 
         this.subscriptionManager.dispose();

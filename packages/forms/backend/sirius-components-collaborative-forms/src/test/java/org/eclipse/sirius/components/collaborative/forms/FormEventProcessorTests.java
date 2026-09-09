@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,23 +16,15 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
-import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
-import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
-import org.eclipse.sirius.components.collaborative.representations.RepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.junit.jupiter.api.Test;
 
@@ -90,16 +82,16 @@ public class FormEventProcessorTests {
     }
 
     @Test
-    public void testEmitFormOnRefresh() {
+    public void testEmitFormOnUpdate() {
         FormEventInput input = new FormEventInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
         FormEventProcessor formEventProcessor = this.createFormEventProcessor();
 
-        Runnable performRefresh = () -> formEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formId(), input));
+        Runnable performUpdate = () -> formEventProcessor.update(input, (org.eclipse.sirius.components.forms.Form) formEventProcessor.getRepresentation());
 
         StepVerifier.create(formEventProcessor.getOutputEvents(input))
                 .expectNextMatches(this.getRefreshFormCapabilitiesEventPayloadPredicate())
                 .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
-                .then(performRefresh)
+                .then(performUpdate)
                 .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
                 .thenCancel()
                 .verify();
@@ -123,20 +115,13 @@ public class FormEventProcessorTests {
     private FormEventProcessor createFormEventProcessor() {
         IEditingContext editingContext = new IEditingContext.NoOp();
 
-        FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
-                .formDescription(this.getFormDescription())
-                .object(new Object())
-                .selection(List.of())
-                .build();
-
-        FormEventProcessor formEventProcessor = new FormEventProcessor(
-                new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of(), List.of()),
-                new SubscriptionManager(),
-                new IRepresentationSearchService.NoOp(),
-                new IRepresentationDescriptionSearchService.NoOp(),
-                new RepresentationRefreshPolicyRegistry(List.of()),
-                new IFormPostProcessor.NoOp(),
-                new IFormCapabilitiesService.NoOp());
+        var formDescription = this.getFormDescription();
+        var object = new Object();
+        var formContext = new FormContext(FORM_ID, null, formDescription, object, List.of());
+        var form = new FormCreationService(List.of(), java.util.Optional.of(new IFormPostProcessor.NoOp()))
+                .create(editingContext, formDescription, object, formContext);
+        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formContext.withForm(form), List.of(), List.of(), new SubscriptionManager(),
+                new org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService.NoOp(), new IFormCapabilitiesService.NoOp());
         return formEventProcessor;
     }
 }

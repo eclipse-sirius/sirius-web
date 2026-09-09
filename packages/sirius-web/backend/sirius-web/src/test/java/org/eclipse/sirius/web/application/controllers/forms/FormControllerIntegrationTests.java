@@ -29,10 +29,12 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.FormRefresher;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditSelectInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
@@ -88,6 +90,12 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IRepresentationMetadataRepository representationMetadataRepository;
+
+    @Autowired
+    private FormRefresher formRefresher;
+
+    @Autowired
+    private IEditingContextSearchService editingContextSearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -228,7 +236,8 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                         .findFirst()
                         .ifPresentOrElse(representationEventProcessor -> {
                             IInput reloadInput = UUID::randomUUID;
-                            representationEventProcessor.refresh(new ChangeDescription(ChangeKind.RELOAD_REPRESENTATION, formId.get(), reloadInput));
+                            this.formRefresher.refresh(this.editingContextSearchService.findById(editingContextEventProcessor.getEditingContextId()).orElseThrow(), representationEventProcessor,
+                                    new ChangeDescription(ChangeKind.RELOAD_REPRESENTATION, formId.get(), reloadInput));
                         }, () -> fail("Missing representation event processor"));
             };
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
