@@ -10,6 +10,7 @@
 === Architectural decision records
 
 - [ADR-237] Improve the modularity of Sirius Web domain
+- [ADR-238] Improve create object tool UI/UX on tree representation
 
 
 === Deprecation warning
