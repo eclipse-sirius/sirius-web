@@ -77,7 +77,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1[Spring Boot 4.1.1]
-
+- [releng] Update the version of `turbo` used for the frontend from 2.4.5 to 2.10.12.
 
 === Bug fixes
 
