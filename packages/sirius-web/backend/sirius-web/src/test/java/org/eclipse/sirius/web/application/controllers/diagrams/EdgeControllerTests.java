@@ -19,7 +19,6 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -30,7 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInp
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
-import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ReconnectEdgeMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -70,7 +69,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
     private EdgeDiagramDescriptionProvider edgeDiagramDescriptionProvider;
 
     @Autowired
-    private ConnectorToolsQueryRunner connectorToolsQueryRunner;
+    private ConnectorPaletteExecutor connectorPaletteExecutor;
 
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
@@ -101,15 +100,11 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
 
         var diagramId = new AtomicReference<String>();
-        var siriusWebDomainNodeId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
         var siriusWebInfrastructureNodeId = new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
-
-            var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
-            siriusWebDomainNodeId.set(siriusWebDomainNode.getId());
 
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
             siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
@@ -118,20 +113,13 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
             siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
         });
 
-        Runnable requestValidConnectorTools = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", diagramId.get(),
-                    "sourceDiagramElementId", siriusWebInfrastructureNodeId.get(),
-                    "targetDiagramElementId", siriusWebApplicationNodeId.get()
-            );
-            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> connectorToolsLabel = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorTools[*].label");
-        };
+        Runnable requestConnectorPalette = () -> this.connectorPaletteExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), siriusWebInfrastructureNodeId.get(), siriusWebApplicationNodeId.get())
+                .hasPaletteEntriesLabel(paletteEntries -> assertThat(paletteEntries).contains("New dependencies"));
+
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(requestValidConnectorTools)
+                .then(requestConnectorPalette)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

@@ -74,6 +74,7 @@ Imports of these classes must be updated to:
 Downstream consumers must declare this dependency and replace the package prefix `org.eclipse.sirius.web.domain.boundedcontexts.projectimage` with `org.eclipse.sirius.web.projects.images.domain`, including its `event`, `repositories`, `services`, and `services.api` subpackages.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] The project semantic data domain has moved to the dedicated Maven module `sirius-web-projects-semanticdata-domain`.
 Downstream consumers must declare this dependency and replace the package prefix `org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata` with `org.eclipse.sirius.web.projects.semanticdata.domain`, including its `events`, `repositories`, `services`, and `services.api` subpackages.
+- https://github.com/eclipse-sirius/sirius-web/issues/6931[#6931] Remove `connectorTools` field from GraphQL type `DiagramDescription` and related DTO, use `connectorPalette` instead, `IConnectorToolsProvider` & `GetConnectorToolsEventHandler` have been removed too.
 
 
 === Dependency update
