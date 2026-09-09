@@ -50,6 +50,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 
 * Icon label nodes can now be moved inside free-form containers.
 * Border nodes can now display their configured child and border nodes.
+* The connector palette correctly opens when an `EdgeDescription` defined with the view DSL uses the `self` variable.
 
 
 == New features
