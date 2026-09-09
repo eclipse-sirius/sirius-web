@@ -1,0 +1,51 @@
+/*******************************************************************************
+ * Copyright (c) 2026 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.components.diagrams.tests.graphql;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
+
+import com.jayway.jsonpath.JsonPath;
+
+/**
+ * Custom assertion class used to perform tests on a connector palette query result.
+ *
+ * @author mcharfadi
+ */
+public class ConnectorPaletteAssert {
+
+    private final String result;
+
+    public ConnectorPaletteAssert(String result) {
+        this.result = Objects.requireNonNull(result);
+    }
+
+    public ConnectorPaletteAssert hasQuickAccessToolLabel(Consumer<List<String>> consumer) {
+        List<String> quickAccessToolLabels = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.connectorPalette.quickAccessTools[*].label");
+        consumer.accept(quickAccessToolLabels);
+        return this;
+    }
+
+    public ConnectorPaletteAssert hasPaletteEntriesLabel(Consumer<List<String>> consumer) {
+        List<String> paletteEntryLabels = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries[*].label");
+        consumer.accept(paletteEntryLabels);
+        return this;
+    }
+
+    public ConnectorPaletteAssert hasPaletteEntriesId(Consumer<List<String>> consumer) {
+        List<String> paletteEntryIds = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries[*].id");
+        consumer.accept(paletteEntryIds);
+        return this;
+    }
+}
