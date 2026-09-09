@@ -9,7 +9,9 @@
 
 - `ISingleClickOnTwoDiagramElementHandler.execute` now takes a `DiagramContext` instead of a `Diagram`.
 Custom implementations must reuse the provided context during connector tool execution.
-
+- Switch to https://github.com/react/react/releases#release-v19.2.8[React 19.2.8]
+- Switch to notistack 3.0.2
+- Switch to react-draggable 4.7.1
 
 == Bug fixes
 

@@ -14,7 +14,7 @@ import { RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-component
 import { FilterBar, FilterBarContext, FilterBarContextValue, TreeView } from '@eclipse-sirius/sirius-components-trees';
 import Box from '@mui/material/Box';
 import { Theme } from '@mui/material/styles';
-import { useContext, useRef } from 'react';
+import { JSX, useContext, useRef } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from './context-menu-contributions/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerContext } from './ExplorerContext';
