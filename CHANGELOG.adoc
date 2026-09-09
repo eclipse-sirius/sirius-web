@@ -83,7 +83,9 @@ Downstream consumers must declare this dependency and replace the package prefix
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3914[#3914] [diagram] Allow icon label nodes to be moved inside free-form containers.
 - https://github.com/eclipse-sirius/sirius-web/issues/3712[#3712] [diagram] Render child and border nodes declared under a border node.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6933[#6933] [palette] Ensure `ViewPaletteProvider` and `ViewConnectorPaletteProvider` define consistent `self` variables.
+`self` is now the selected element when opening the palette, and the source element when retrieving the connectors.
+This ensures that an edge defined with a precondition is correctly evaluated in both scenarios.
 
 === New Features
 

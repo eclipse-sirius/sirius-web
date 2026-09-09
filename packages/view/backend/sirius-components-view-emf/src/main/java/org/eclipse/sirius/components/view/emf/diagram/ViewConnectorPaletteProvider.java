@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescript
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -73,19 +74,23 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
 
     private final IViewAQLInterpreterFactory aqlInterpreterFactory;
 
+    private final IObjectSearchService objectSearchService;
+
     public ViewConnectorPaletteProvider(
             IURLParser urlParser,
             IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate,
             IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService,
             IDiagramDescriptionService diagramDescriptionService,
             IDiagramIdProvider diagramIdProvider,
-            IViewAQLInterpreterFactory aqlInterpreterFactory) {
+            IViewAQLInterpreterFactory aqlInterpreterFactory,
+            IObjectSearchService objectSearchService) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
     @Override
@@ -96,14 +101,17 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
     @Override
     public Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object sourceDiagramElement, Object targetDiagramElement, Object sourceElementDescription, Object targetElementDescription) {
         Palette palette = null;
-        VariableManager variableManager = new VariableManager();
-        variableManager.put(RepresentationVariables.SELF.name(), targetDiagramElement);
-        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
-        variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
-
+        var optionalSourceElement = this.findTargetElement(editingContext, sourceDiagramElement);
         var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
-        if (optionalDiagramDescription.isPresent()) {
+
+        if (optionalSourceElement.isPresent() && optionalDiagramDescription.isPresent()) {
             org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
+
+            VariableManager variableManager = new VariableManager();
+            variableManager.put(RepresentationVariables.SELF.name(), optionalSourceElement.get());
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
+            variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
+
             var interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewDiagramDescription.eContainer());
             if (sourceDiagramElement instanceof Node && sourceElementDescription instanceof NodeDescription nodeDescription) {
                 variableManager.put(Node.SELECTED_NODE, sourceDiagramElement);
@@ -251,5 +259,18 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .toList();
+    }
+
+    private Optional<Object> findTargetElement(IEditingContext editingContext, Object diagramElement) {
+        String targetObjectId = null;
+        if (diagramElement instanceof Node node) {
+            targetObjectId = node.getTargetObjectId();
+        } else if (diagramElement instanceof Edge edge) {
+            targetObjectId = edge.getTargetObjectId();
+        }
+        if (targetObjectId != null) {
+            return this.objectSearchService.getObject(editingContext, targetObjectId);
+        }
+        return Optional.empty();
     }
 }
