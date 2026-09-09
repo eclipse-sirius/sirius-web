@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Column, Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Column, Task, TaskOrEmpty, ViewMode } from '@obeonetwork/gantt-task-react';
 import { GQLColumn, GQLGanttDateRounding, StartOrEnd } from '../graphql/subscription/GanttSubscription.types';
 
 export enum TaskListColumnEnum {

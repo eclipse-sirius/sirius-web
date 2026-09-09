@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { EmptyTask, Task } from '@ObeoNetwork/gantt-task-react';
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { EmptyTask, Task } from '@obeonetwork/gantt-task-react';
 
 export interface GQLGanttEventSubscription {
   ganttEvent: GQLGanttEventPayload;

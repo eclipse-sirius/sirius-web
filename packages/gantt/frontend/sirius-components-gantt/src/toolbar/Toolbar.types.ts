@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
+import { TaskOrEmpty, ViewMode } from '@obeonetwork/gantt-task-react';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 
 export interface ToolbarProps {

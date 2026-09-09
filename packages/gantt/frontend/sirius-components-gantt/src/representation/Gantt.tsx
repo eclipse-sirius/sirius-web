@@ -10,7 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import '@ObeoNetwork/gantt-task-react';
+import { Selection } from '@eclipse-sirius/sirius-components-core';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Theme, useTheme } from '@mui/material/styles';
+import '@obeonetwork/gantt-task-react';
 import {
   BarMoveAction,
   ColorStyles,
@@ -27,12 +31,8 @@ import {
   Task,
   TaskOrEmpty,
   ViewMode,
-} from '@ObeoNetwork/gantt-task-react';
-import '@ObeoNetwork/gantt-task-react/dist/style.css';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Theme, useTheme } from '@mui/material/styles';
+} from '@obeonetwork/gantt-task-react';
+import '@obeonetwork/gantt-task-react/dist/gantt-task-react.css';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import {

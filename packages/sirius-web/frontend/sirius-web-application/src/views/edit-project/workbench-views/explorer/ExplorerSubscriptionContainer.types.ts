@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLTree } from '@eclipse-sirius/sirius-components-trees';
+import { JSX } from 'react';
 
 export interface ExplorerSubscriptionContainerProps {
   editingContextId: string;

@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
 import { useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
+import { Task, TaskOrEmpty } from '@obeonetwork/gantt-task-react';
 import { GQLTaskDetail, StartOrEnd } from '../subscription/GanttSubscription.types';
 import {
   GQLChangeColumnData,
