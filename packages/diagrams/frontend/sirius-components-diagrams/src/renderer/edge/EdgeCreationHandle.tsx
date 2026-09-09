@@ -26,24 +26,17 @@ export const EdgeCreationHandle = ({ edgeId, edgePath, isPathDragged }: EdgeCrea
   const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
   const { setCandidateDescriptionIds } = useConnectorPalette();
 
-  // Unmount/Mount around the center of the edge while selected
+  // Unmount/Mount around the center of the edge while selected or moving a bending point or segment
   useEffect(() => {
-    if (shouldRender) {
+    if (shouldRender && !isPathDragged) {
       mountEdgeHandles(edgeId, edgePath);
+    } else {
+      unMountHandles();
     }
     return () => {
       unMountHandles();
     };
-  }, [shouldRender]);
-
-  // Unmount/Mount while moving bending point or segment
-  useEffect(() => {
-    if (isPathDragged) {
-      unMountHandles();
-    } else if (!isPathDragged && shouldRender) {
-      mountEdgeHandles(edgeId, edgePath);
-    }
-  }, [isPathDragged]);
+  }, [shouldRender, isPathDragged]);
 
   // Set candidates in the context
   useEffect(() => {
