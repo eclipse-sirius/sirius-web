@@ -42,8 +42,8 @@
     "@mui/icons-material": "7.3.10",
     "@mui/material": "7.3.10",
     "lexical": "0.42.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "tss-react": "4.9.16"
   },
   "devDependencies": {
@@ -60,10 +60,10 @@
     "lexical": "0.42.0",
     "@mui/material": "7.3.10",
     "@mui/icons-material": "7.3.10",
-    "@types/react": "18.3.3",
+    "@types/react": "19.2.0",
     "prettier": "2.7.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "tss-react": "4.9.16",
     "typescript": "5.4.5",
     "vite": "8.1.5"

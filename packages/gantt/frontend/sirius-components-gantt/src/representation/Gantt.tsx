@@ -28,7 +28,7 @@ import {
   TaskOrEmpty,
   ViewMode,
 } from '@ObeoNetwork/gantt-task-react';
-import '@ObeoNetwork/gantt-task-react/dist/style.css';
+import '@ObeoNetwork/gantt-task-react/dist/gantt-task-react.css';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

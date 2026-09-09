@@ -31,15 +31,15 @@
   },
   "peerDependencies": {
     "d3": "7.0.0",
-    "react": "18.3.1"
+    "react": "19.2.8"
   },
   "devDependencies": {
     "@eclipse-sirius/sirius-components-tsconfig": "*",
-    "@types/react": "18.3.3",
+    "@types/react": "19.2.0",
     "@vitejs/plugin-react": "6.0.2",
     "d3": "7.0.0",
     "prettier": "2.7.1",
-    "react": "18.3.1",
+    "react": "19.2.8",
     "typescript": "5.4.5",
     "vite": "8.1.5"
   }

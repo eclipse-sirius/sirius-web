@@ -79,6 +79,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1[Spring Boot 4.1.1]
 - [releng] Switch to https://github.com/testing-library/user-event/releases/tag/v14.6.7[@testing-library/user-event 14.6.7]
 - [releng] Switch to https://github.com/testing-library/react-testing-library/releases/tag/v16.3.3[@testing-library/react 16.3.3]
+- [releng] Switch to https://github.com/apollographql/apollo-client/releases/tag/v3.14.1[apollo-client 3.14.1]
 
 
 === Bug fixes

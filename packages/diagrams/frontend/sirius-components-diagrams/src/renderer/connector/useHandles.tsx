@@ -142,18 +142,25 @@ export const useHandles = (): UseHandlesValue => {
   };
 
   const updateNodeHandles = (nodeId: string, nodeXYPosition: XYPosition, nodeWidth: number, nodeHeight: number) => {
-    setNodes((previousNodes) =>
-      previousNodes.map((previousNode) => {
+    let hasChanged = false;
+    setNodes((previousNodes) => {
+      const updatedNodes = previousNodes.map((previousNode) => {
         if (isHandleNode(previousNode) && previousNode.data.nodeId === nodeId) {
+          const position = getHandlePosition(previousNode.data.position, nodeXYPosition, nodeWidth, nodeHeight);
+          if (position.x === previousNode.position.x && position.y === previousNode.position.y) {
+            return previousNode;
+          }
+
+          hasChanged = true;
           return {
             ...previousNode,
-            position: getHandlePosition(previousNode.data.position, nodeXYPosition, nodeWidth, nodeHeight),
+            position,
           };
         }
-
         return previousNode;
-      })
-    );
+      });
+      return hasChanged ? updatedNodes : previousNodes;
+    });
   };
 
   const unMountHandles = () => {
