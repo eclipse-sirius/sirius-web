@@ -19,7 +19,6 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
-import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -27,13 +26,12 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.representations.RepresentationVariables;
-import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IDiagramElementPaletteProvider;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.IDiagramElementPaletteVariableManagerProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -59,13 +57,16 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
     private final IDiagramElementPaletteProvider diagramElementPaletteProvider;
 
-    public ViewPaletteProvider(IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IObjectSearchService objectSearchService, IViewAQLInterpreterFactory aqlInterpreterFactory, IDiagramElementPaletteProvider diagramElementPaletteProvider) {
+    private final IDiagramElementPaletteVariableManagerProvider diagramElementPaletteVariableManagerProvider;
+
+    public ViewPaletteProvider(IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IObjectSearchService objectSearchService, IViewAQLInterpreterFactory aqlInterpreterFactory, IDiagramElementPaletteProvider diagramElementPaletteProvider, IDiagramElementPaletteVariableManagerProvider diagramElementPaletteVariableManagerProvider) {
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
         this.diagramElementPaletteProvider = Objects.requireNonNull(diagramElementPaletteProvider);
+        this.diagramElementPaletteVariableManagerProvider = Objects.requireNonNull(diagramElementPaletteVariableManagerProvider);
     }
 
     @Override
@@ -82,17 +83,14 @@ public class ViewPaletteProvider implements IPaletteProvider {
         var optionalDiagramElementDescription = optionalDiagramElement.flatMap(diagramElement -> this.findDiagramElementDescription(diagramDescription, diagramElement));
 
         if (optionalDiagramElement.isPresent() && optionalTargetElement.isPresent() && optionalDiagramElementDescription.isPresent()) {
+            var optionalVariableManager = this.diagramElementPaletteVariableManagerProvider.getVariableManager(editingContext, diagramContext, optionalDiagramElement.get(), optionalTargetElement.get());
+
             var diagramElement = optionalDiagramElement.get();
-            var targetElement = optionalTargetElement.get();
             var diagramElementDescription = optionalDiagramElementDescription.get();
 
-            VariableManager variableManager = new VariableManager();
-            variableManager.put(RepresentationVariables.SELF.name(), targetElement);
-            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
-            variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
-
             var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
-            if (optionalDiagramDescription.isPresent()) {
+            if (optionalDiagramDescription.isPresent() && optionalVariableManager.isPresent()) {
+                var variableManager = optionalVariableManager.get();
                 org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
                 var interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewDiagramDescription.eContainer());
                 palette = this.diagramElementPaletteProvider.getPalette(editingContext, interpreter, diagramDescription, diagramContext, diagramElementDescription, diagramElement, variableManager);
