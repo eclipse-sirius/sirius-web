@@ -131,7 +131,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - https://github.com/eclipse-sirius/sirius-web/issues/6806[#6806] [diagram] Retrieve the list of `FilterSelectionMenuItems` (menu items shown on the manage selection tool from the diagram toolbar) from `filterSelectionMenuItems` field in GraphQL type `DiagramToolbar`.
 - [starters] Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
 - https://github.com/eclipse-sirius/sirius-web/issues/6957[#6957] [diagram] Add translations support to manage selection diagram toolbar tool
-
+- [releng] Run end-to-end tests in a dedicated job so that their failures do not prevent Docker images from being published.
 
 
 == 2026.9.0
