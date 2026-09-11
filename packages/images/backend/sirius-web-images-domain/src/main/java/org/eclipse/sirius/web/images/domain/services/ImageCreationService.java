@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.images.domain.messages.api.IImagesDomainMessageService;
 import org.eclipse.sirius.web.images.domain.Image;
 import org.eclipse.sirius.web.images.domain.repositories.IImageRepository;
 import org.eclipse.sirius.web.images.domain.services.api.IImageCreationService;
@@ -39,9 +39,9 @@ public class ImageCreationService implements IImageCreationService {
 
     private final IImageRepository imageRepository;
 
-    private final IMessageService messageService;
+    private final IImagesDomainMessageService messageService;
 
-    public ImageCreationService(IImageRepository imageRepository, IMessageService messageService) {
+    public ImageCreationService(IImageRepository imageRepository, IImagesDomainMessageService messageService) {
         this.imageRepository = Objects.requireNonNull(imageRepository);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -72,7 +72,7 @@ public class ImageCreationService implements IImageCreationService {
 
             result = new Success<>(image);
         } else {
-            result = new Failure<>(this.messageService.unexpectedError());
+            result = new Failure<>(this.messageService.invalidImage());
         }
         return result;
     }

@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.images.domain.messages.api.IImagesDomainMessageService;
 import org.eclipse.sirius.web.images.domain.repositories.IImageRepository;
 import org.eclipse.sirius.web.images.domain.services.api.IImageDeletionService;
 import org.springframework.stereotype.Service;
@@ -34,9 +34,9 @@ public class ImageDeletionService implements IImageDeletionService {
 
     private final IImageRepository imageRepository;
 
-    private final IMessageService messageService;
+    private final IImagesDomainMessageService messageService;
 
-    public ImageDeletionService(IImageRepository imageRepository, IMessageService messageService) {
+    public ImageDeletionService(IImageRepository imageRepository, IImagesDomainMessageService messageService) {
         this.imageRepository = Objects.requireNonNull(imageRepository);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -53,7 +53,7 @@ public class ImageDeletionService implements IImageDeletionService {
             this.imageRepository.delete(image);
             result = new Success<>(null);
         } else {
-            result = new Failure<>(this.messageService.notFound());
+            result = new Failure<>(this.messageService.imageNotFound());
         }
 
         return result;
