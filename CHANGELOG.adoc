@@ -87,6 +87,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3914[#3914] [diagram] Allow icon label nodes to be moved inside free-form containers.
 - https://github.com/eclipse-sirius/sirius-web/issues/3712[#3712] [diagram] Render child and border nodes declared under a border node.
+- https://github.com/eclipse-sirius/sirius-web/issues/6939[#6939] [diagram] The available `self` variable for the `precondition` of the `connector palette` is now set to the `semantic source` of connection (it was previously the target).
 
 
 === New Features
@@ -113,6 +114,7 @@ These libraries are selected by default in the project creation's library table,
 - [releng] Run end-to-end tests on master and only on relevant pull requests.
 The `ci: run e2e` label can be added to a pull request to force end-to-end test execution.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [images] Extract the domain parts of the image bounded context into the `sirius-web-images-domain` module.
+- https://github.com/eclipse-sirius/sirius-web/issues/6939[#6939] [diagram] Added more `AQL variables` available when computing the precondition of a tool in a palette, this includes for a `connector palette` : `environment`, `diagramServices`, `selectedNode`, `selectedEdge` and for a `diagram element palette` : `environment`, `diagramServices`.
 
 
 

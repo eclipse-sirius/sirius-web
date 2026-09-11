@@ -54,6 +54,21 @@ public class EdgeToolBuilder {
     /**
      * Setter for PreconditionExpression.
      *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     *   <li>{@code diagramContext: DiagramContext} - Used to retrieve the diagram context which contains the diagram, the view creation and deletion requests and the diagram events</li>
+     *   <li>{@code diagramServices: IDiagramService} - Used to access generic diagram services</li>
+     *   <li>{@code semanticEdgeSource: Object} - The semantic element at the source of the edge</li>
+     *   <li>{@code semanticEdgeTarget: Object} - The semantic element at the target of the edge</li>
+     *   <li>{@code edgeSource: IDiagramElement} - The diagram element at the source of the edge</li>
+     *   <li>{@code edgeTarget: IDiagramElement} - The diagram element at the target of the edge</li>
+     *   <li>{@code selectedNode: Node} - The node on which the tool is being executed</li>
+     *   <li>{@code selectedEdge: Edge} - The edge on which the tool is being executed</li>
+     * </ul>
+     *
      * @generated
      */
     public EdgeToolBuilder preconditionExpression(java.lang.String value) {
@@ -65,6 +80,7 @@ public class EdgeToolBuilder {
      *
      * <p>Available variables:</p>
      * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
      *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
      *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
      *   <li>{@code diagramContext: DiagramContext} - Used to retrieve the diagram context which contains the diagram, the view creation and deletion requests and the diagram events</li>
@@ -73,6 +89,8 @@ public class EdgeToolBuilder {
      *   <li>{@code semanticEdgeTarget: Object} - The semantic element at the target of the edge</li>
      *   <li>{@code edgeSource: IDiagramElement} - The diagram element at the source of the edge</li>
      *   <li>{@code edgeTarget: IDiagramElement} - The diagram element at the target of the edge</li>
+     *   <li>{@code selectedNode: Node} - The node on which the tool is being executed</li>
+     *   <li>{@code selectedEdge: Edge} - The edge on which the tool is being executed</li>
      * </ul>
      *
      * @generated

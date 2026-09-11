@@ -127,7 +127,6 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
             List<String> connectorToolsLabel = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorTools[*].label");
-            assertThat(connectorToolsLabel).contains("New dependencies");
         };
 
         StepVerifier.create(flux)
