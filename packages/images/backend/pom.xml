@@ -33,6 +33,6 @@
 
     <modules>
         <module>sirius-web-images-domain</module>
+        <module>sirius-web-images-infrastructure</module>
     </modules>
 </project>
-
