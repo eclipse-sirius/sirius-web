@@ -1,8 +1,8 @@
 :author: Guillaume Coutable
 :date: 2026-09-08
 :status: proposed
-:consulted:
-:informed:
+:consulted: Axel Richard
+:informed: Axel Richard, Mélanie Bats, Stéphane Begaudeau
 :deciders:
 :issue:
 
@@ -17,37 +17,47 @@ It does not support persistent appearance rules that automatically apply to matc
 == Key Result
 
 * End users should be able to easily customize the appearance of a set of elements in a diagram.
-* Style customizations can be provided by different sources.
-* Style customizations from any source have a lower priority than customizations made through the _Appearance_ menu in a graphical element's palette.
+* Style customizations can be provided by different kinds of sources.
+Sirius Web will provide two kinds of sources:
+** The server kind of source: a server source allows providing style customization for the whole application.
+** The project kind of source: A project source allows providing style customization for one project.
+* Style customizations from any kinds of sources have a lower priority than customizations made through the _Appearance_ menu in a graphical element's palette.
 * It should be possible to configure whether style customizations are enabled by default.
 When enabled by default, applicable style customizations are applied to graphical elements during the refresh that creates the diagram.
 
 === Acceptance Criteria
 
-* An integration test should verify that a style customization from the server source is applied to a diagram when style customizations are enabled by default.
-* An integration test should verify that a style customization from the server source is not applied to a diagram when style customizations are disabled by default.
-* An integration test should verify that a style customization from the project source overrides a style customization from the server source.
+* An integration test should verify that a style customization from a server source is applied to a diagram when style customizations are enabled by default.
+* An integration test should verify that a style customization from a server source is not applied to a diagram when style customizations are disabled by default.
+* An integration test should verify that a style customization from a project source overrides a style customization from a server source.
 * An integration test should verify that a node's appearance, as customized through the _Appearance_ menu, is not overridden by a style customization from any source.
 
 == Solution
 
 === Configuration Sources
 
-A source can provide multiple appearance customizations grouped into a configuration.
-For now, we will only support customizing the background color of graphical nodes.
-A configuration can apply to a project depending on the project's nature.
+A source can provide style customization for multiple diagram descriptions, grouped into a configuration.
+Optionally, the project nature can be used by a source, to apply style customizations to diagrams in a subset of projects.
+A diagram description cannot receive style customizations from more than one server configuration, even when the contributing sources target different project natures.
+Two different server sources cannot contribute style customizations to the same diagram description.
 
-Sirius Web will provide two sources: the server source and the project source.
-In Sirius Web, configurations from the project source will have a higher priority than configurations from the server source.
-The relative priority of these two sources will be hard-coded.
+Each project has its own configuration, which may customize multiple diagram descriptions.
+Different projects may independently customize the same diagram description.
 
-The server source will use a backend extension point to provide a configuration.
+Sirius Web will provide two kinds of sources: the server kind of source and the project kind of source.
+A server source will provide style customizations for the whole application.
+A project source will provide style customizations for one project.
+In Sirius Web, configurations from the project kind of source will have a higher priority than configurations from the server kind of source.
+The relative priority of both kinds of sources will be hard-coded.
+
+The server kind of source will use a backend extension point to provide a configuration.
 Each project can provide a configuration through a UI in the project settings.
 
 === Applying a configuration
 
 When a customization is available for a diagram, end users can enable or disable it using a button in the diagram toolbar.
 When the button is active, the customization is applied.
+Disabling style customizations restores the appearance defined by the diagram description, while preserving properties customized through the _Appearance_ menu.
 Whether customizations are enabled is persisted in the database and shared across all clients displaying the same diagram.
 
 When style customizations are enabled for a diagram, applicable customizations are applied to all newly created graphical nodes.
@@ -103,13 +113,14 @@ If they are treated as separate representations, customizations may be enabled f
 
 We will use a table from MUI, with one row per customization.
 Each row describes which appearance customization applies to which element.
+A row can be removed.
 An action opens a dialog where users can add a customization.
 
 We have not yet decided how to specify the set of elements to which a customization applies:
 
 * By matching the qualified name of an `EClass` against a string. This is the simplest option, but it may not meet all our needs.
 * By using an AQL query.
-* By specifying the diagram description, the semantic element, and other criteria. This may require loading the editing context from the project settings.
+* By specifying the diagram description, the node description, the semantic element, and other criteria. This may require loading the editing context from the project settings.
 
 The chosen approach will affect how easily we can validate the data and provide early feedback.
 Alternatively, we could implement a solution quickly without validation.
@@ -145,7 +156,8 @@ Sirius Web would provide a simple mechanism for matching customizations to graph
 
 == No-Gos
 
-* Customizing labels, edges, or edge styles is out of scope.
+* Only the background color of graphical nodes can be customized.
+Other node style properties, labels, and edges are out of scope.
 * Style properties from different sources will not be merged.
 If a project configuration customizes only a graphical node's background color and a server configuration customizes its border width, only the background color will be customized because the project configuration has a higher priority.
 * Configuring the relative priority of sources is out of scope.
