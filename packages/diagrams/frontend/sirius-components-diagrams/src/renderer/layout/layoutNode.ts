@@ -70,10 +70,6 @@ const getBoundsOfBoxes = (box1: Box, box2: Box): Box => {
   };
 };
 
-export const findNodeIndex = (nodes: Node<NodeData>[], nodeId: string): number => {
-  return nodes.findIndex((node) => node.id === nodeId);
-};
-
 export const getDefaultOrMinWidth = (minWidth: number | undefined, node: Node<NodeData>): number => {
   return Math.max(minWidth ?? -Infinity, node.data.defaultWidth ?? defaultWidth);
 };
