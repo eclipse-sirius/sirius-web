@@ -46,6 +46,7 @@ Imports of these classes must be updated to:
 Downstream consumers must declare this dependency and replace the package prefix `org.eclipse.sirius.web.domain.boundedcontexts.projectimage` with `org.eclipse.sirius.web.projects.images.domain`, including its `event`, `repositories`, `services`, and `services.api` subpackages.
 - The project semantic data part of the Sirius Web domain has moved to the dedicated Maven module `sirius-web-projects-semanticdata-domain`.
 Downstream consumers must declare this dependency and replace the package prefix `org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata` with `org.eclipse.sirius.web.projects.semanticdata.domain`, including its `events`, `repositories`, `services`, and `services.api` subpackages.
+- Reduce the dependency of the images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-images-infrastructure`, for its internationalization support.
 
 
 == Bug fixes
