@@ -19,7 +19,6 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -30,7 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInp
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
-import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ReconnectEdgeMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -68,7 +67,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private ConnectorPaletteQueryRunner connectorPaletteQueryRunner;
+    private ConnectorPaletteExecutor connectorPaletteExecutor;
 
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
@@ -145,18 +144,11 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
             assertThat(edgeCount).isEqualTo(3);
         });
 
-        Runnable requestConnectorTools = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", diagramId.get(),
-                    "sourceDiagramElementId", channelNodeId,
-                    "targetDiagramElementId", subscriptionEdgeId
-            );
-            var connectorToolsResult = this.connectorPaletteQueryRunner.run(variables);
-            List<String> connectorToolsId = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description..connectorPalette.paletteEntries.[*].id");
-            assertThat(connectorToolsId).hasSize(1);
-            connectorToolId.set(connectorToolsId.get(0));
-        };
+        Runnable requestConnectorTools = () -> this.connectorPaletteExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), channelNodeId.get(), subscriptionEdgeId.get())
+                .hasPaletteEntriesId(id -> {
+                    assertThat(id).hasSize(2);
+                    connectorToolId.set(id.get(0));
+                });
 
         Runnable createEdge = () -> {
             var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(
@@ -215,18 +207,11 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
             assertThat(edgeCount).isEqualTo(3);
         });
 
-        Runnable requestConnectorTools = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", diagramId.get(),
-                    "sourceDiagramElementId", subscriptionEdgeId,
-                    "targetDiagramElementId", channelNodeId
-            );
-            var connectorToolsResult = this.connectorPaletteQueryRunner.run(variables);
-            List<String> connectorToolsId = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries.[*].id");
-            assertThat(connectorToolsId).hasSize(1);
-            connectorToolId.set(connectorToolsId.get(0));
-        };
+        Runnable requestConnectorTools = () -> this.connectorPaletteExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), subscriptionEdgeId.get(), channelNodeId.get())
+                .hasPaletteEntriesId(id -> {
+                    assertThat(id).hasSize(2);
+                    connectorToolId.set(id.get(0));
+                });
 
         Runnable createEdge = () -> {
             var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(

@@ -121,6 +121,6 @@ public class DiagramVariableProvider implements IVariableProvider {
     }
 
     private List<Variable> edgeTool() {
-        return List.of(CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.EDGE_SOURCE, DiagramVariables.EDGE_TARGET);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.EDGE_SOURCE, DiagramVariables.EDGE_TARGET, DiagramVariables.SELECTED_NODE, DiagramVariables.SELECTED_EDGE);
     }
 }
