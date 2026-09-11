@@ -121,7 +121,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [images] Extract the domain parts of the image bounded context into the `sirius-web-images-domain` module.
 - [sirius-web] `IProjectSemanticDataSearchService` now supports retrieving a `ProjectSemanticData` by its own identifier through `findById(UUID projectSemanticDataId)`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6939[#6939] [diagram] Added more `AQL variables` available when computing the precondition of a tool in a palette, this includes for a `connector palette` : `environment`, `diagramServices`, `selectedNode`, `selectedEdge` and for a `diagram element palette` : `environment`, `diagramServices`.
-
+- [releng] Run end-to-end tests in a dedicated job so that their failures do not prevent Docker images from being published.
 
 
 == 2026.9.0
