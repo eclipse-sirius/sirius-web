@@ -106,7 +106,7 @@ describe('Explorer', () => {
 
       it('Then newly created top-level elements are automatically selected', () => {
         const explorer = new Explorer();
-        explorer.select('robot');
+
         const actions = explorer.openTreeItemAction('robot');
 
         actions.getNewObjectButton().click();
