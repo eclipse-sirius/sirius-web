@@ -42,6 +42,10 @@ public class ConnectorPaletteQueryRunner implements IQueryRunner {
                           }
                           paletteEntries {
                             ...ToolFields
+                            ... on PaletteDivider {
+                              __typename
+                              id
+                            }
                             ... on ToolSection {
                               id
                               label

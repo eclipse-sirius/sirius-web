@@ -31,9 +31,21 @@ public class ConnectorPaletteAssert {
         this.result = Objects.requireNonNull(result);
     }
 
+    public ConnectorPaletteAssert hasQuickAccessToolLabel(Consumer<List<String>> consumer) {
+        List<String> quickAccessToolLabels = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.connectorPalette.quickAccessTools[*].label");
+        consumer.accept(quickAccessToolLabels);
+        return this;
+    }
+
     public ConnectorPaletteAssert hasPaletteEntriesLabel(Consumer<List<String>> consumer) {
         List<String> paletteEntryLabels = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries[*].label");
         consumer.accept(paletteEntryLabels);
+        return this;
+    }
+
+    public ConnectorPaletteAssert hasPaletteEntriesId(Consumer<List<String>> consumer) {
+        List<String> paletteEntryIds = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries[*].id");
+        consumer.accept(paletteEntryIds);
         return this;
     }
 }

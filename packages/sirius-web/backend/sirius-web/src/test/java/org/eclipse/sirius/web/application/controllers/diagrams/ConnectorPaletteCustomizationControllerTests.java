@@ -16,17 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.web.services.diagrams.DiagramConnectorPaletteCustomizer.CUSTOMIZED_DIAGRAM_CONNECTOR_TOOL_LABEL;
 
-import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteExecutor;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -64,7 +61,7 @@ public class ConnectorPaletteCustomizationControllerTests extends AbstractIntegr
     private EdgeDiagramDescriptionProvider edgeDiagramDescriptionProvider;
 
     @Autowired
-    private ConnectorPaletteQueryRunner connectorPaletteQueryRunner;
+    private ConnectorPaletteExecutor connectorPaletteExecutor;
 
     @BeforeEach
     public void beforeEach() {
@@ -102,17 +99,9 @@ public class ConnectorPaletteCustomizationControllerTests extends AbstractIntegr
             siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
         });
 
-        Runnable requestConnectorPalette = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", diagramId.get(),
-                    "sourceDiagramElementId", siriusWebInfrastructureNodeId.get(),
-                    "targetDiagramElementId", siriusWebApplicationNodeId.get()
-            );
-            var connectorToolsResult = this.connectorPaletteQueryRunner.run(variables);
-            List<String> quickAccessToolLabels = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorPalette.quickAccessTools[*].label");
-            assertThat(quickAccessToolLabels).contains(CUSTOMIZED_DIAGRAM_CONNECTOR_TOOL_LABEL);
-        };
+
+        Runnable requestConnectorPalette = () -> this.connectorPaletteExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), siriusWebInfrastructureNodeId.get(), siriusWebApplicationNodeId.get())
+                .hasQuickAccessToolLabel(quickAccessToolLabels -> assertThat(quickAccessToolLabels).contains(CUSTOMIZED_DIAGRAM_CONNECTOR_TOOL_LABEL));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
