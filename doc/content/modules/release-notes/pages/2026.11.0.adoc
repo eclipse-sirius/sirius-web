@@ -58,6 +58,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 
 * Project templates can now define required libraries by namespace, name, and version.
 When users create a project from such a template, the required libraries are selected automatically and cannot be unselected.
+* Add a new menu button in the diagram panel to manage the current selection, you can for example select all nodes or unselect child nodes.
 
 
 == Improvements

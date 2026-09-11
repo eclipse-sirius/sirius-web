@@ -91,7 +91,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6810[#6810] [diagram] Add a new toolbar menu button to manage the select or unselect diagram elements
 
 
 === Improvements

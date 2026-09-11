@@ -65,6 +65,7 @@ export const createEdgeAnchorNode = (
     position,
     height: 5, // The size is fixed for this type of node
     width: 5, // The size is fixed for this type of node
+    selectable: false,
     data: {
       targetObjectId: '',
       targetObjectKind: '',
