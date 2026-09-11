@@ -88,6 +88,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - https://github.com/eclipse-sirius/sirius-web/issues/7178[#7178] [diagram] Improve refresh performance of View DSL diagrams by reusing edge endpoint description identifiers.
 - [doc] Add a minimal documentation requirement for every pull request to ensure that the documentation is kept up to date with the code changes.
 At least 10 to 25 lines of documentation must be added in every pull request depending on the size of the changes.
+- [releng] Run end-to-end tests at the end of the main build job so that their failures do not prevent Docker images from being published.
 
 
 
@@ -374,7 +375,6 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - https://github.com/eclipse-sirius/sirius-web/issues/6761[#6761] [sirius-web] Extract the explorer subscription in a dedicated component in order to reduce the number of rerender.
 - https://github.com/eclipse-sirius/sirius-web/issues/7056[#7056] [form] Reference widget in View DSL now have a dedicated body for add: `Add`.
 - https://github.com/eclipse-sirius/sirius-web/issues/7075[#7075] [form] Introduce documentation for the reference widget.
-
 
 
 == 2026.9.0
