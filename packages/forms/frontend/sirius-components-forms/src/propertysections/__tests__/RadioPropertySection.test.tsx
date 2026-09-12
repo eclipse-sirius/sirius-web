@@ -23,7 +23,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
+const mockEnqueue = vi.fn<(body: string, options?: MessageOptions) => void>();
 
 const toastContextMock: ToastContextValue = {
   enqueueSnackbar: mockEnqueue,
@@ -44,7 +44,7 @@ test('should send mutation when clicked', async () => {
   const active: HTMLInputElement | null = screen.getByTestId('active').querySelector('input');
   expect(active && active.checked).toBe(false);
 
-  await userEvent.click(active);
+  await userEvent.click(active!);
   await waitFor(() => {
     expect(editRadioSuccessMock.result).toHaveBeenCalledTimes(1);
   });
@@ -65,7 +65,7 @@ test('should display the error received', async () => {
   const active: HTMLInputElement | null = screen.getByTestId('active').querySelector('input');
   expect(active && active.checked).toBe(false);
 
-  await userEvent.click(active);
+  await userEvent.click(active!);
 
   await waitFor(() => {
     expect(editRadioErrorMock.result).toHaveBeenCalledTimes(1);
