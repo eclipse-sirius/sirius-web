@@ -152,8 +152,6 @@ public class ToolExecutionLabelProviderTests {
         return Node.newNode(id)
                 .type(NodeType.NODE_RECTANGLE)
                 .targetObjectId(id)
-                .targetObjectKind("")
-                .targetObjectLabel(label)
                 .descriptionId("nodeDescriptionId")
                 .initialBorderNodePosition(BorderNodePosition.EAST)
                 .modifiers(Set.of())

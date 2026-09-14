@@ -48,6 +48,8 @@ Downstream consumers must declare this dependency and replace the package prefix
 Downstream consumers must declare this dependency and replace the package prefix `org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata` with `org.eclipse.sirius.web.projects.semanticdata.domain`, including its `events`, `repositories`, `services`, and `services.api` subpackages.
 - Remove the deprecated types `IObjectService` and `ObjectService` since they have been replaced a long time ago by smaller services such as `IIdentityService`, `IObjectSearchService`, `ILabelService`, etc.
 - Reduce the dependency of the images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-images-infrastructure`, for its internationalization support.
+- Remove the long deprecated properties `targetObjectLabel` and `targetObjectKind` from diagram elements
+
 
 == Dependency updates
 

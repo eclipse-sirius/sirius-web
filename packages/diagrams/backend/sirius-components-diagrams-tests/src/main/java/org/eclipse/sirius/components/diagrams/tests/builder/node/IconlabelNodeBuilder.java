@@ -96,8 +96,6 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
                 .childNodes(childNodes)
                 .descriptionId(descriptionId)
                 .targetObjectId(labelText)
-                .targetObjectKind("")
-                .targetObjectLabel(labelText)
                 .style(Objects.requireNonNull(style))
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)

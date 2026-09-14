@@ -41,32 +41,6 @@ public class NodeAssert extends DiagramElementAssert<NodeAssert, Node> {
         return this;
     }
 
-    /**
-     * Used to assert that the current node has the given target object kind.
-     *
-     * @param targetObjectKind The target object kind
-     * @return This current node assert
-     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
-     */
-    @Deprecated(forRemoval = true)
-    public NodeAssert hasTargetObjectKind(String targetObjectKind) {
-        assertThat(this.actual.getTargetObjectKind()).isEqualTo(targetObjectKind);
-        return this;
-    }
-
-    /**
-     * Used to assert that the current node has the given target object label.
-     *
-     * @param targetObjectLabel The target object label
-     * @return This current node assert
-     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
-     */
-    @Deprecated(forRemoval = true)
-    public NodeAssert hasTargetObjectLabel(String targetObjectLabel) {
-        assertThat(this.actual.getTargetObjectLabel()).isEqualTo(targetObjectLabel);
-        return this;
-    }
-
     public NodeAssert isBorderNode() {
         assertThat(this.actual.isBorderNode()).isTrue();
         return this;

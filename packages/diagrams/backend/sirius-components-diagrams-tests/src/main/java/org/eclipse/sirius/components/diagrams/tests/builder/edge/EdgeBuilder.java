@@ -52,13 +52,13 @@ public final class EdgeBuilder {
         this.edgeIdPrefixToCount = edgeIdPrefixToCount;
     }
 
-    public EdgeEndBuilder from(String sourceTargetObjectLabel) {
-        this.sourceEdgeBuilder = EdgeEnd.newEdgeEnd(sourceTargetObjectLabel);
+    public EdgeEndBuilder from(String sourceTargetObjectId) {
+        this.sourceEdgeBuilder = EdgeEnd.newEdgeEnd(sourceTargetObjectId);
         return this.sourceEdgeBuilder;
     }
 
-    public EdgeEndBuilder to(String targetTargetObjectLabel) {
-        this.targetEdgeBuilder = EdgeEnd.newEdgeEnd(targetTargetObjectLabel);
+    public EdgeEndBuilder to(String targetTargetObjectId) {
+        this.targetEdgeBuilder = EdgeEnd.newEdgeEnd(targetTargetObjectId);
         return this.targetEdgeBuilder;
     }
 
@@ -105,8 +105,6 @@ public final class EdgeBuilder {
                 .descriptionId(TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID)
                 .style(edgeStyle)
                 .targetObjectId(sourceEdgeEnd.getEndId())
-                .targetObjectKind("")
-                .targetObjectLabel(this.centerLabel.text())
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .build();

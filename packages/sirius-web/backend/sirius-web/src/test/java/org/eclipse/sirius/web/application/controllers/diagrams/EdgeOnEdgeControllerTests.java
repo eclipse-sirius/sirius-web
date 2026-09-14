@@ -110,9 +110,9 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
             var edgeSource = edgeOnEdgeTarget.sourceNode().getNode();
             var targetEdge = edgeOnEdgeTarget.targetNode().getNode();
 
-            assertThat(edgeOnEdgeSource.getTargetObjectLabel()).isEqualTo("HTTP");
-            assertThat(edgeSource.getTargetObjectLabel()).isEqualTo("Controller1");
-            assertThat(targetEdge.getTargetObjectLabel()).isEqualTo("Command1");
+            assertThat(edgeOnEdgeSource.getInsideLabel().getText()).isEqualTo("HTTP");
+            assertThat(edgeSource.getInsideLabel().getText()).isEqualTo("Controller1");
+            assertThat(targetEdge.getInsideLabel().getText()).isEqualTo("Command1");
         });
 
         StepVerifier.create(flux)
@@ -309,9 +309,9 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
             var edgeSource = edgeOnEdgeTarget.sourceNode().getNode();
             var targetEdge = edgeOnEdgeTarget.targetNode().getNode();
 
-            assertThat(edgeOnEdgeSource.getTargetObjectLabel()).isEqualTo("HTTP");
-            assertThat(edgeSource.getTargetObjectLabel()).isEqualTo("Controller2");
-            assertThat(targetEdge.getTargetObjectLabel()).isEqualTo("Command2");
+            assertThat(edgeOnEdgeSource.getInsideLabel().getText()).isEqualTo("HTTP");
+            assertThat(edgeSource.getInsideLabel().getText()).isEqualTo("Controller2");
+            assertThat(targetEdge.getInsideLabel().getText()).isEqualTo("Command2");
         });
 
         StepVerifier.create(flux)

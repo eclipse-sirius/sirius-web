@@ -119,8 +119,6 @@ public class GetConnectorToolsEventHandlerTests {
         return Node.newNode(id)
                 .type(NodeType.NODE_RECTANGLE)
                 .targetObjectId(targetObjectId)
-                .targetObjectKind("")
-                .targetObjectLabel("")
                 .descriptionId(NODE_DESCRIPTION_ID)
                 .insideLabel(insideLabel)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())

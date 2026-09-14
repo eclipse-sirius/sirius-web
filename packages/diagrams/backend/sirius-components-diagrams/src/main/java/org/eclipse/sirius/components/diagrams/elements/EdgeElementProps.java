@@ -40,10 +40,6 @@ public final class EdgeElementProps implements IProps {
 
     private String targetObjectId;
 
-    private String targetObjectKind;
-
-    private String targetObjectLabel;
-
     private String descriptionId;
 
     private String sourceId;
@@ -82,14 +78,6 @@ public final class EdgeElementProps implements IProps {
 
     public String getTargetObjectId() {
         return this.targetObjectId;
-    }
-
-    public String getTargetObjectKind() {
-        return this.targetObjectKind;
-    }
-
-    public String getTargetObjectLabel() {
-        return this.targetObjectLabel;
     }
 
     public String getDescriptionId() {
@@ -153,10 +141,6 @@ public final class EdgeElementProps implements IProps {
 
         private String targetObjectId;
 
-        private String targetObjectKind;
-
-        private String targetObjectLabel;
-
         private String descriptionId;
 
         private String sourceId;
@@ -188,16 +172,6 @@ public final class EdgeElementProps implements IProps {
 
         public Builder targetObjectId(String targetObjectId) {
             this.targetObjectId = Objects.requireNonNull(targetObjectId);
-            return this;
-        }
-
-        public Builder targetObjectKind(String targetObjectKind) {
-            this.targetObjectKind = Objects.requireNonNull(targetObjectKind);
-            return this;
-        }
-
-        public Builder targetObjectLabel(String targetObjectLabel) {
-            this.targetObjectLabel = Objects.requireNonNull(targetObjectLabel);
             return this;
         }
 
@@ -256,8 +230,6 @@ public final class EdgeElementProps implements IProps {
             edgeElementProps.id = Objects.requireNonNull(this.id);
             edgeElementProps.type = Objects.requireNonNull(this.type);
             edgeElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
-            edgeElementProps.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
-            edgeElementProps.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             edgeElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             edgeElementProps.sourceId = Objects.requireNonNull(this.sourceId);
             edgeElementProps.targetId = Objects.requireNonNull(this.targetId);

@@ -63,10 +63,6 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
-    private Function<VariableManager, String> targetObjectKindProvider;
-
-    private Function<VariableManager, String> targetObjectLabelProvider;
-
     private Function<VariableManager, List<?>> semanticElementsProvider;
 
     private Predicate<VariableManager> shouldRenderPredicate;
@@ -110,14 +106,6 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
         return this.targetObjectIdProvider;
-    }
-
-    public Function<VariableManager, String> getTargetObjectKindProvider() {
-        return this.targetObjectKindProvider;
-    }
-
-    public Function<VariableManager, String> getTargetObjectLabelProvider() {
-        return this.targetObjectLabelProvider;
     }
 
     public Function<VariableManager, List<?>> getSemanticElementsProvider() {
@@ -188,10 +176,6 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
-        private Function<VariableManager, String> targetObjectKindProvider;
-
-        private Function<VariableManager, String> targetObjectLabelProvider;
-
         private Function<VariableManager, List<?>> semanticElementsProvider;
 
         private Predicate<VariableManager> shouldRenderPredicate = variableManager -> true;
@@ -227,16 +211,6 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
         public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
             this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
-            return this;
-        }
-
-        public Builder targetObjectKindProvider(Function<VariableManager, String> targetObjectKindProvider) {
-            this.targetObjectKindProvider = Objects.requireNonNull(targetObjectKindProvider);
-            return this;
-        }
-
-        public Builder targetObjectLabelProvider(Function<VariableManager, String> targetObjectLabelProvider) {
-            this.targetObjectLabelProvider = Objects.requireNonNull(targetObjectLabelProvider);
             return this;
         }
 
@@ -306,8 +280,6 @@ public final class EdgeDescription implements IDiagramElementDescription {
             edgeDescription.id = Objects.requireNonNull(this.id);
             edgeDescription.synchronizationPolicy = this.synchronizationPolicy;
             edgeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            edgeDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
-            edgeDescription.targetObjectLabelProvider = Objects.requireNonNull(this.targetObjectLabelProvider);
             edgeDescription.sourceDescriptions = Objects.requireNonNull(this.sourceDescriptions);
             edgeDescription.targetDescriptions = Objects.requireNonNull(this.targetDescriptions);
             edgeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);

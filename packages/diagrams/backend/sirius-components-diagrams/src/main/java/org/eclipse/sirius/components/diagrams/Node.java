@@ -38,10 +38,6 @@ public final class Node implements IDiagramElement {
 
     private String targetObjectId;
 
-    private String targetObjectKind;
-
-    private String targetObjectLabel;
-
     private String descriptionId;
 
     private boolean borderNode;
@@ -101,30 +97,6 @@ public final class Node implements IDiagramElement {
 
     public String getTargetObjectId() {
         return this.targetObjectId;
-    }
-
-    /**
-     * Returns the kind of the semantic element used as the target of the node.
-     *
-     * @return The kind of the semantic element
-     * @technical-debt This method should be removed since this requirement was caused by some technical debt
-     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
-     */
-    @Deprecated(forRemoval = true)
-    public String getTargetObjectKind() {
-        return this.targetObjectKind;
-    }
-
-    /**
-     * Returns the label of the semantic element used as the target of the node.
-     *
-     * @return The label of the semantic element
-     * @technical-debt This method should be removed since this requirement was caused by some technical debt
-     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
-     */
-    @Deprecated(forRemoval = true)
-    public String getTargetObjectLabel() {
-        return this.targetObjectLabel;
     }
 
     @Override
@@ -206,9 +178,8 @@ public final class Node implements IDiagramElement {
         if (this.insideLabel != null) {
             insideLabelText = this.insideLabel.getText();
         }
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, state: {6}, label: {7}, styleType: {8}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.state,
-                insideLabelText, this.style.getClass().getSimpleName());
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, state: {4}, label: {5}, styleType: {6}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId, this.state, insideLabelText, this.style.getClass().getSimpleName());
     }
 
     /**
@@ -224,10 +195,6 @@ public final class Node implements IDiagramElement {
         private String type;
 
         private String targetObjectId;
-
-        private String targetObjectKind;
-
-        private String targetObjectLabel;
 
         private String descriptionId;
 
@@ -273,8 +240,6 @@ public final class Node implements IDiagramElement {
             this.id = node.getId();
             this.type = node.getType();
             this.targetObjectId = node.getTargetObjectId();
-            this.targetObjectKind = node.getTargetObjectKind();
-            this.targetObjectLabel = node.getTargetObjectLabel();
             this.descriptionId = node.getDescriptionId();
             this.borderNode = node.isBorderNode();
             this.initialBorderNodePosition = node.getInitialBorderNodePosition();
@@ -302,16 +267,6 @@ public final class Node implements IDiagramElement {
 
         public Builder targetObjectId(String targetObjectId) {
             this.targetObjectId = Objects.requireNonNull(targetObjectId);
-            return this;
-        }
-
-        public Builder targetObjectKind(String targetObjectKind) {
-            this.targetObjectKind = Objects.requireNonNull(targetObjectKind);
-            return this;
-        }
-
-        public Builder targetObjectLabel(String targetObjectLabel) {
-            this.targetObjectLabel = Objects.requireNonNull(targetObjectLabel);
             return this;
         }
 
@@ -410,8 +365,6 @@ public final class Node implements IDiagramElement {
             node.id = Objects.requireNonNull(this.id);
             node.type = Objects.requireNonNull(this.type);
             node.targetObjectId = Objects.requireNonNull(this.targetObjectId);
-            node.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
-            node.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             node.descriptionId = Objects.requireNonNull(this.descriptionId);
             node.borderNode = this.borderNode;
             node.initialBorderNodePosition = Objects.requireNonNull(this.initialBorderNodePosition);

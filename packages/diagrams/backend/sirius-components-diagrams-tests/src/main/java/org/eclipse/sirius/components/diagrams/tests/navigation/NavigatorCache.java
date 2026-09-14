@@ -35,10 +35,6 @@ public class NavigatorCache {
 
     private Map<String, List<Node>> labelToNodes = new HashMap<>();
 
-    private Map<String, List<Node>> targetObjectLabelToNodes = new HashMap<>();
-
-    private Map<String, List<Edge>> targetObjectLabelToEdges = new HashMap<>();
-
     private Map<String, List<Node>> targetObjectIdToNodes = new HashMap<>();
 
     private Map<String, List<Edge>> targetObjectIdToEdges = new HashMap<>();
@@ -73,16 +69,8 @@ public class NavigatorCache {
         return this.labelToNodes;
     }
 
-    public Map<String, List<Node>> getTargetObjectLabelToNodes() {
-        return this.targetObjectLabelToNodes;
-    }
-
     public Map<String, List<Node>> getTargetObjectIdToNodes() {
         return this.targetObjectIdToNodes;
-    }
-
-    public Map<String, List<Edge>> getTargetObjectLabelToEdges() {
-        return this.targetObjectLabelToEdges;
     }
 
     public Map<String, List<Edge>> getTargetObjectIdToEdges() {
@@ -137,8 +125,6 @@ public class NavigatorCache {
             List<Node> nodesWithLabel = this.labelToNodes.computeIfAbsent(outsideLabel.text(), k -> new ArrayList<>());
             nodesWithLabel.add(node);
         });
-        List<Node> nodesWithTargetObjectLabel = this.targetObjectLabelToNodes.computeIfAbsent(node.getTargetObjectLabel(), k -> new ArrayList<>());
-        nodesWithTargetObjectLabel.add(node);
         List<Node> nodesWithTargetObjectId = this.targetObjectIdToNodes.computeIfAbsent(node.getTargetObjectId(), k -> new ArrayList<>());
         nodesWithTargetObjectId.add(node);
 
@@ -159,8 +145,6 @@ public class NavigatorCache {
         edgesConnectedToSourceNode.add(edge);
         List<Edge> edgesConnectedToTargetNode = this.nodeIdToEdges.computeIfAbsent(edge.getTargetId(), k -> new ArrayList<>());
         edgesConnectedToTargetNode.add(edge);
-        List<Edge> edgesWithTargetObjectLabel = this.targetObjectLabelToEdges.computeIfAbsent(edge.getTargetObjectLabel(), k -> new ArrayList<>());
-        edgesWithTargetObjectLabel.add(edge);
         List<Edge> edgesWithTargetObjectId = this.targetObjectIdToEdges.computeIfAbsent(edge.getTargetObjectId(), k -> new ArrayList<>());
         edgesWithTargetObjectId.add(edge);
         if (edge.getCenterLabel() != null) {
