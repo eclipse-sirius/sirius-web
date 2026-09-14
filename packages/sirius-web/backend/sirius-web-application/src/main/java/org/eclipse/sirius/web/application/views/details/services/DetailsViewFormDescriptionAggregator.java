@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,16 +14,20 @@ package org.eclipse.sirius.web.application.views.details.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.web.application.views.details.services.api.IDetailsViewFormDescriptionAggregator;
+import org.springframework.stereotype.Service;
 
 /**
  * Aggregates all pages that can be created from the provided {@link FormDescription}s, according to all the given
@@ -31,12 +35,21 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author fbarbin
  */
-public class DetailsViewFormDescriptionAggregator {
+@Service
+public class DetailsViewFormDescriptionAggregator implements IDetailsViewFormDescriptionAggregator {
 
+    private final IIdentityService identityService;
 
-    public Optional<FormDescription> aggregate(List<PageDescription> pageDescriptions, List<Object> objects, IObjectService objectService) {
+    private final ILabelService labelService;
+
+    public DetailsViewFormDescriptionAggregator(IIdentityService identityService, ILabelService labelService) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.labelService = Objects.requireNonNull(labelService);
+    }
+
+    @Override
+    public Optional<FormDescription> aggregate(List<PageDescription> pageDescriptions, List<Object> objects) {
         List<PageDescription> eligiblePageDescriptions = new ArrayList<>();
-
 
         if (!objects.isEmpty()) {
             VariableManager pageVariableManager = new VariableManager();
@@ -48,18 +61,17 @@ public class DetailsViewFormDescriptionAggregator {
                     .toList());
         }
 
-
         if (eligiblePageDescriptions.isEmpty()) {
             return Optional.empty();
         }
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(objectService::getStyledLabel)
+                .map(this.labelService::getStyledLabel)
                 .map(StyledString::toString)
                 .orElse("Properties");
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         return Optional.of(FormDescription.newFormDescription(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)

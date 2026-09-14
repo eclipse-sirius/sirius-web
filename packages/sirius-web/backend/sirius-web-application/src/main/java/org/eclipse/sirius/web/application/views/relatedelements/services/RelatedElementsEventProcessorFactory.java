@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ import org.eclipse.sirius.components.collaborative.forms.configuration.FormEvent
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -50,7 +50,7 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
 
     private final IRelatedElementsDescriptionProvider relatedElementsDescriptionProvider;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -75,7 +75,7 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
     public RelatedElementsEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRelatedElementsDescriptionProvider relatedElementsDescriptionProvider,
             List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
         this.relatedElementsDescriptionProvider = Objects.requireNonNull(relatedElementsDescriptionProvider);
-        this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
+        this.objectSearchService = Objects.requireNonNull(formConfiguration.getObjectSearchService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
@@ -100,7 +100,7 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
 
         var objectIds = this.urlParser.getParameterEntries(objectIdsParam);
         var objects = objectIds.stream()
-                .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                .map(objectId -> this.objectSearchService.getObject(editingContext, objectId))
                 .flatMap(Optional::stream)
                 .toList();
 
@@ -113,7 +113,7 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
                     .build();
 
             IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
-                    new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
+                    new FormEventProcessorConfiguration(editingContext, this.objectSearchService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
                     this.subscriptionManagerFactory.create(),
                     this.representationSearchService,
                     this.representationDescriptionSearchService,
