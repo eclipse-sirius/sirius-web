@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,11 +20,10 @@ import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IObjectSearchServiceDelegate;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of {@link IObjectService} which delegates to {@link IObjectSearchServiceDelegate} or fallback to
+ * Implementation of {@link IObjectSearchService} which delegates to {@link IObjectSearchServiceDelegate} or fallback to
  * {@link IDefaultObjectSearchService}.
  *
  * @author arichard
