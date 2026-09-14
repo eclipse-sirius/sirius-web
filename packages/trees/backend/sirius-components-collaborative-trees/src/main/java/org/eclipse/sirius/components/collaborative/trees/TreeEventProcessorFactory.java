@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.trees.Tree;
@@ -49,7 +49,7 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final ITreeService treeService;
 
@@ -61,11 +61,11 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IURLParser urlParser;
 
-    public TreeEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IObjectService objectService, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers,
-            IURLParser urlParser) {
+    public TreeEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IObjectSearchService objectSearchService, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers,
+                                     IURLParser urlParser) {
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.treeService = Objects.requireNonNull(treeService);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
@@ -86,7 +86,7 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
             Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, tree.getDescriptionId())
                     .filter(TreeDescription.class::isInstance)
                     .map(TreeDescription.class::cast);
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, tree.getTargetObjectId());
+            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, tree.getTargetObjectId());
             if (optionalTreeDescription.isPresent() && optionalObject.isPresent()) {
                 TreeDescription treeDescription = optionalTreeDescription.get();
                 Object object = optionalObject.get();

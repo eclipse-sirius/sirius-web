@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -47,8 +48,8 @@ public class DetailsViewFormDescriptionAggregatorTests {
         pageDescriptions.addAll(formDescription.getPageDescriptions());
         pageDescriptions.addAll(formDescription2.getPageDescriptions());
 
-        DetailsViewFormDescriptionAggregator aggregator = new DetailsViewFormDescriptionAggregator();
-        Optional<FormDescription> optional = aggregator.aggregate(pageDescriptions, List.of(object), new IObjectService.NoOp());
+        DetailsViewFormDescriptionAggregator aggregator = new DetailsViewFormDescriptionAggregator(new IIdentityService.NoOp(), new ILabelService.NoOp());
+        Optional<FormDescription> optional = aggregator.aggregate(pageDescriptions, List.of(object));
 
         assertThat(optional).isPresent();
         assertThat(optional.get().getPageDescriptions()).hasSize(3);
@@ -65,8 +66,8 @@ public class DetailsViewFormDescriptionAggregatorTests {
         pageDescriptions.addAll(formDescription.getPageDescriptions());
         pageDescriptions.addAll(formDescription2.getPageDescriptions());
 
-        DetailsViewFormDescriptionAggregator aggregator = new DetailsViewFormDescriptionAggregator();
-        Optional<FormDescription> optional = aggregator.aggregate(pageDescriptions, List.of(object), new IObjectService.NoOp());
+        DetailsViewFormDescriptionAggregator aggregator = new DetailsViewFormDescriptionAggregator(new IIdentityService.NoOp(), new ILabelService.NoOp());
+        Optional<FormDescription> optional = aggregator.aggregate(pageDescriptions, List.of(object));
 
         assertThat(optional).isEmpty();
     }

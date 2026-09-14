@@ -38,7 +38,7 @@ import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
@@ -78,7 +78,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final IEditingContext editingContext;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IFormCapabilitiesService formCapabilitiesService;
 
@@ -121,7 +121,7 @@ public class FormEventProcessor implements IFormEventProcessor {
                 .log();
 
         this.editingContext = Objects.requireNonNull(configuration.editingContext());
-        this.objectService = Objects.requireNonNull(configuration.objectService());
+        this.objectSearchService = Objects.requireNonNull(configuration.objectSearchService());
         this.formCreationParameters = Objects.requireNonNull(configuration.formCreationParameters());
         this.widgetDescriptors = Objects.requireNonNull(configuration.widgetDescriptors());
         this.formEventHandlers = Objects.requireNonNull(configuration.formEventHandlers());
@@ -143,7 +143,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         var formDescription = this.formCreationParameters.getFormDescription();
         var self = this.formCreationParameters.getObject();
         if (this.currentForm.get() != null) {
-            self = this.objectService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
+            self = this.objectSearchService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
         }
 
         VariableManager initialVariableManager = new VariableManager();
@@ -284,7 +284,7 @@ public class FormEventProcessor implements IFormEventProcessor {
     private Form refreshForm() {
         var self = this.formCreationParameters.getObject();
         if (this.currentForm.get() != null) {
-            self = this.objectService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
+            self = this.objectSearchService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
         }
         this.variableManager.put(RepresentationVariables.SELF.name(), self);
 

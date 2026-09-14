@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,12 +35,13 @@ import org.eclipse.sirius.components.collaborative.forms.configuration.FormEvent
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
+import org.eclipse.sirius.web.application.views.details.services.api.IDetailsViewFormDescriptionAggregator;
 import org.springframework.stereotype.Service;
 
 /**
@@ -57,7 +58,9 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider;
 
-    private final IObjectService objectService;
+    private final IDetailsViewFormDescriptionAggregator detailsViewFormDescriptionAggregator;
+
+    private final IObjectSearchService objectSearchService;
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -80,11 +83,12 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
-            List<IWidgetDescriptor> widgetDescriptors,
+            IDetailsViewFormDescriptionAggregator detailsViewFormDescriptionAggregator, List<IWidgetDescriptor> widgetDescriptors,
             RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
         this.propertiesDescriptionService = Objects.requireNonNull(propertiesDescriptionService);
         this.propertiesDefaultDescriptionProvider = Objects.requireNonNull(propertiesDefaultDescriptionProvider);
-        this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
+        this.detailsViewFormDescriptionAggregator = Objects.requireNonNull(detailsViewFormDescriptionAggregator);
+        this.objectSearchService = Objects.requireNonNull(formConfiguration.getObjectSearchService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
@@ -111,14 +115,14 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
         var objectIds = this.urlParser.getParameterEntries(objectIdsParam);
         var objects = objectIds.stream()
-                .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                .map(objectId -> this.objectSearchService.getObject(editingContext, objectId))
                 .flatMap(Optional::stream)
                 .toList();
 
         if (!objects.isEmpty()) {
             Optional<FormDescription> optionalFormDescription = Optional.empty();
             if (!pageDescriptions.isEmpty()) {
-                optionalFormDescription = new DetailsViewFormDescriptionAggregator().aggregate(pageDescriptions, objects, this.objectService);
+                optionalFormDescription = this.detailsViewFormDescriptionAggregator.aggregate(pageDescriptions, objects);
             }
             FormDescription formDescription = optionalFormDescription.orElse(this.propertiesDefaultDescriptionProvider.getFormDescription());
 
@@ -129,7 +133,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                     .build();
 
             IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
-                    new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
+                    new FormEventProcessorConfiguration(editingContext, this.objectSearchService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
                     this.subscriptionManagerFactory.create(),
                     this.representationSearchService,
                     this.representationDescriptionSearchService,

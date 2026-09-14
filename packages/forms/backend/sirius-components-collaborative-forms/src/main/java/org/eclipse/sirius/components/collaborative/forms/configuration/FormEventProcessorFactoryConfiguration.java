@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FormEventProcessorFactoryConfiguration {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final List<IFormEventHandler> formEventHandlers;
 
@@ -43,17 +43,17 @@ public class FormEventProcessorFactoryConfiguration {
 
     private final Optional<IFormPostProcessor> optionalFormProcessor;
 
-    public FormEventProcessorFactoryConfiguration(IObjectService objectService, List<IFormEventHandler> formEventHandlers, List<ITableEventHandler> tableEventHandlers,
+    public FormEventProcessorFactoryConfiguration(IObjectSearchService objectSearchService, List<IFormEventHandler> formEventHandlers, List<ITableEventHandler> tableEventHandlers,
             IFormCapabilitiesService formCapabilitiesService, Optional<IFormPostProcessor> optionalFormProcessor) {
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
         this.tableEventHandlers = Objects.requireNonNull(tableEventHandlers);
         this.formCapabilitiesService = Objects.requireNonNull(formCapabilitiesService);
         this.optionalFormProcessor = Objects.requireNonNull(optionalFormProcessor);
     }
 
-    public IObjectService getObjectService() {
-        return this.objectService;
+    public IObjectSearchService getObjectSearchService() {
+        return this.objectSearchService;
     }
 
     public List<IFormEventHandler> getFormEventHandlers() {
