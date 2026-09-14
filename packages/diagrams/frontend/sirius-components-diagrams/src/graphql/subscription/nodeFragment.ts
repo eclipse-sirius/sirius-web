@@ -16,8 +16,6 @@ fragment nodeFragment on Node {
   id
   type
   targetObjectId
-  targetObjectKind
-  targetObjectLabel
   descriptionId
   state
   pinned

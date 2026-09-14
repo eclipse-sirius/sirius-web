@@ -16,8 +16,6 @@ export interface GQLNode<T extends GQLNodeStyle> {
   id: string;
   type: string;
   targetObjectId: string;
-  targetObjectKind: string;
-  targetObjectLabel: string;
   descriptionId: string;
   state: GQLViewModifier;
   pinned: boolean;

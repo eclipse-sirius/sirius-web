@@ -37,8 +37,6 @@ const toImageNode = (
 ): Node<FreeFormNodeData> => {
   const {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     insideLabel,
     outsideLabels,
@@ -67,8 +65,6 @@ const toImageNode = (
 
   const data: FreeFormNodeData = {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels, gqlDiagram.layoutData.labelLayoutData),

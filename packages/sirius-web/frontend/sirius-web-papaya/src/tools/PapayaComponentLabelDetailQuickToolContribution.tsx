@@ -43,10 +43,7 @@ export const PapayaComponentLabelDetailQuickToolContribution = ({
   const { classes } = useToolStyle();
 
   const shouldRender = representationElementIds.every((elementId) =>
-    store
-      .getState()
-      .nodeLookup.get(elementId)
-      ?.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component')
+    store.getState().nodeLookup.get(elementId)?.data.insideLabel?.text.includes('Papaya Component')
   );
 
   const targetedNodes: InternalNode<Node<NodeData>>[] = representationElementIds

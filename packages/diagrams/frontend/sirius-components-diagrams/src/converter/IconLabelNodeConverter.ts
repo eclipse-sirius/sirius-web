@@ -42,8 +42,6 @@ const toIconLabelNode = (
 ): Node<IconLabelNodeData> => {
   const {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     id,
     insideLabel,
@@ -69,8 +67,6 @@ const toIconLabelNode = (
 
   const data: IconLabelNodeData = {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     style: {
       textAlign: 'left',

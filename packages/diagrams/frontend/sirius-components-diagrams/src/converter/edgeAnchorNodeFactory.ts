@@ -67,8 +67,6 @@ export const createEdgeAnchorNode = (
     width: 5, // The size is fixed for this type of node
     data: {
       targetObjectId: '',
-      targetObjectKind: '',
-      targetObjectLabel: '',
       descriptionId: '',
       insideLabel: null,
       outsideLabels: {},

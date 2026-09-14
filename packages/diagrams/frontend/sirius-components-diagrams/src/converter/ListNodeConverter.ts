@@ -43,8 +43,6 @@ const toListNode = (
 ): Node<ListNodeData> => {
   const {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     insideLabel,
     outsideLabels,
@@ -73,8 +71,6 @@ const toListNode = (
 
   const data: ListNodeData = {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     style: {
       background: style.background,

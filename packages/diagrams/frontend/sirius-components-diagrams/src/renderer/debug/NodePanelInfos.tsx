@@ -91,12 +91,6 @@ export const NodePanelInfos = ({ title, node }: NodePanelInfosProps) => {
             primary={`TargetObjectId : ${node?.data.targetObjectId}`}
           />
         </ListItem>
-        <ListItem classes={{ root: classes.listItem }}>
-          <ListItemText
-            classes={{ root: classes.listItemText }}
-            primary={`TargetObjectKind : ${node?.data.targetObjectKind}`}
-          />
-        </ListItem>
       </List>
     </Box>
   );
