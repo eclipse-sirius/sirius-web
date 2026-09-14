@@ -369,9 +369,39 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
-    onPaneClick: () => {
-      // Select the diagram itself when the user left-clicks on the background
-      setSelection({ entries: [{ id: diagramRefreshedEventPayload.diagram.id }] });
+    onPaneClick: (event) => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey) {
+        /*
+         * A modified click is how a selection is built, and there is nothing to add on the
+         * background: the click changes nothing. React Flow clears the marks of the elements before
+         * anything can be done about it - it resets them right after this handler has returned - so
+         * they are put back once it has, and the editor goes on pointing at the same objects.
+         */
+        const selectedElements = new Set(selectedElementsIds);
+        window.setTimeout(() => {
+          setNodes((previousNodes) =>
+            previousNodes.map((node) =>
+              selectedElements.has(node.id) && !node.selected ? { ...node, selected: true } : node
+            )
+          );
+          setEdges((previousEdges) =>
+            previousEdges.map((edge) =>
+              selectedElements.has(edge.id) && !edge.selected ? { ...edge, selected: true } : edge
+            )
+          );
+        }, 0);
+        return;
+      }
+      // Select the object the diagram represents when the user left-clicks on the background, so
+      // that the editor keeps pointing at something the other views can show: the diagram itself
+      // has no properties of its own, and is kept in the selection for the views addressing the
+      // representation rather than its object.
+      setSelection({
+        entries: [
+          { id: diagramRefreshedEventPayload.diagram.targetObjectId },
+          { id: diagramRefreshedEventPayload.diagram.id },
+        ],
+      });
     },
     onPaneContextMenu: onPaneContextMenu,
     onEdgeContextMenu: onEdgeContextMenu,
