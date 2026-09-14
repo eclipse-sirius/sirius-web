@@ -40,6 +40,11 @@ public class ProjectSemanticDataSearchService implements IProjectSemanticDataSea
     }
 
     @Override
+    public Optional<ProjectSemanticData> findById(UUID projectSemanticDataId) {
+        return this.projectSemanticDataRepository.findById(projectSemanticDataId);
+    }
+
+    @Override
     public Optional<ProjectSemanticData> findByProjectId(AggregateReference<Project, String> project) {
         return this.findByProjectIdAndName(project, "main");
     }

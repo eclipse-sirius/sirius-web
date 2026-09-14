@@ -28,6 +28,8 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  */
 public interface IProjectSemanticDataSearchService {
 
+    Optional<ProjectSemanticData> findById(UUID projectSemanticDataId);
+
     Optional<ProjectSemanticData> findByProjectId(AggregateReference<Project, String> project);
 
     List<ProjectSemanticData> findAllByProjectId(AggregateReference<Project, String> project);
