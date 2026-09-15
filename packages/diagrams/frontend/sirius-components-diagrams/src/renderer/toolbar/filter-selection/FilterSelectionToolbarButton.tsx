@@ -37,11 +37,10 @@ export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonPro
   const { invokeFilterSelection } = useInvokeFilterSelection();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { getNodes, getEdges } = useStore();
-  const { fetchFilterMenuItems } = useFilterContents();
+  const { fetchFilterMenuItems, filterSelectionMenuItems } = useFilterContents();
 
   const [state, setState] = React.useState<FilterSelectionToolbarButtonStates>({
     anchorEl: null,
-    filterMenuItems: [],
   });
   const isOpen = Boolean(state.anchorEl);
 
@@ -59,12 +58,11 @@ export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonPro
   };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    const filterSelectionMenuItems = fetchFilterMenuItems(getSelectedElementsIds());
     setState((prevState) => ({
       ...prevState,
       anchorEl: event.currentTarget,
-      filterMenuItems: filterSelectionMenuItems,
     }));
+    fetchFilterMenuItems(getSelectedElementsIds());
   };
 
   const handleClose = () => {
@@ -132,10 +130,10 @@ export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonPro
         }}
         slots={{ transition: Fade }}
         anchorEl={state.anchorEl}
-        open={isOpen}
+        open={isOpen && filterSelectionMenuItems.length > 0}
         onClose={handleClose}>
-        {state.filterMenuItems.length > 0
-          ? state.filterMenuItems.map((filterSelectionMenuItem) => {
+        {filterSelectionMenuItems.length > 0
+          ? filterSelectionMenuItems.map((filterSelectionMenuItem) => {
               return (
                 <MenuItem
                   key={filterSelectionMenuItem.id}
