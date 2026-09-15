@@ -105,10 +105,13 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     directChildren: Node<NodeData, DiagramNodeType>[],
     forceWidth?: number
   ) {
+    const borderWidth = getNodeBorderWidth(node.data.style);
     // ...
   }
 }
 ----
++
+Use `getNodeBorderWidth` from `@eclipse-sirius/sirius-components-diagrams` when the layout depends on the node border.
 5. Extend the GraphQL document with the extra fields required by your node (for example through a `DocumentTransform` contributed to Apollo).
 6. Finally, register everything in the `NodeTypeRegistry` passed to `DiagramRepresentationConfiguration`:
 +
