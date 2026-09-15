@@ -234,8 +234,6 @@ export const convertDiagram = (
 
     const data: MultiLabelEdgeData = {
       targetObjectId: gqlEdge.targetObjectId,
-      targetObjectKind: gqlEdge.targetObjectKind,
-      targetObjectLabel: gqlEdge.targetObjectLabel,
       descriptionId: gqlEdge.descriptionId,
       label: null,
       faded: gqlEdge.state === GQLViewModifier.Faded,

@@ -38,8 +38,6 @@ export type OutsideLabels = Partial<Record<OutsideLabelLocation, OutsideLabel>>;
 
 export interface NodeData extends Record<string, unknown> {
   targetObjectId: string;
-  targetObjectKind: string;
-  targetObjectLabel: string;
   descriptionId: string;
   insideLabel: InsideLabel | null;
   outsideLabels: OutsideLabels;
@@ -93,8 +91,6 @@ export enum BorderNodePosition {
 
 export interface EdgeData extends Record<string, unknown> {
   targetObjectId: string;
-  targetObjectKind: string;
-  targetObjectLabel: string;
   descriptionId: string;
   label: EdgeLabel | null;
   faded: boolean;

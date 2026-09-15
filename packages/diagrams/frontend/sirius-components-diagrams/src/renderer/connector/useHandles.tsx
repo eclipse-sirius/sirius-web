@@ -69,8 +69,6 @@ const createHandleNode = (
     style: { zIndex: 3000 },
     data: {
       targetObjectId: '',
-      targetObjectKind: '',
-      targetObjectLabel: '',
       descriptionId: '',
       insideLabel: null,
       outsideLabels: {},

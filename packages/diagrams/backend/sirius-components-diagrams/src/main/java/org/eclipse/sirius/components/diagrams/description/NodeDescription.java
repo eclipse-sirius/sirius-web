@@ -50,10 +50,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
-    private Function<VariableManager, String> targetObjectKindProvider;
-
-    private Function<VariableManager, String> targetObjectLabelProvider;
-
     private Function<VariableManager, List<?>> semanticElementsProvider;
 
     private Predicate<VariableManager> shouldRenderPredicate;
@@ -123,28 +119,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
         return this.targetObjectIdProvider;
-    }
-
-    /**
-     * Provides a function used to compute the kind of the semantic element used as the target of the node.
-     *
-     * @return A function used to return the kind of the semantic element.
-     *
-     * @technical-debt This method should be removed since its addition was caused by some technical debt in the explorer.
-     */
-    public Function<VariableManager, String> getTargetObjectKindProvider() {
-        return this.targetObjectKindProvider;
-    }
-
-    /**
-     * Provides a function used to compute the label of the semantic element used as the target of the node.
-     *
-     * @return A function used to return the label of the semantic element.
-     *
-     * @technical-debt This method should be removed since its addition was caused by some technical debt in the explorer.
-     */
-    public Function<VariableManager, String> getTargetObjectLabelProvider() {
-        return this.targetObjectLabelProvider;
     }
 
     /**
@@ -330,10 +304,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
-        private Function<VariableManager, String> targetObjectKindProvider;
-
-        private Function<VariableManager, String> targetObjectLabelProvider;
-
         private Function<VariableManager, List<?>> semanticElementsProvider;
 
         private Predicate<VariableManager> shouldRenderPredicate = variableManager -> true;
@@ -385,8 +355,6 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.synchronizationPolicy = nodeDescription.getSynchronizationPolicy();
             this.typeProvider = nodeDescription.getTypeProvider();
             this.targetObjectIdProvider = nodeDescription.getTargetObjectIdProvider();
-            this.targetObjectKindProvider = nodeDescription.getTargetObjectKindProvider();
-            this.targetObjectLabelProvider = nodeDescription.getTargetObjectLabelProvider();
             this.semanticElementsProvider = nodeDescription.getSemanticElementsProvider();
             this.insideLabelDescription = nodeDescription.getInsideLabelDescription();
             this.outsideLabelDescriptions = nodeDescription.getOutsideLabelDescriptions();
@@ -421,16 +389,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
             this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
-            return this;
-        }
-
-        public Builder targetObjectKindProvider(Function<VariableManager, String> targetObjectKindProvider) {
-            this.targetObjectKindProvider = Objects.requireNonNull(targetObjectKindProvider);
-            return this;
-        }
-
-        public Builder targetObjectLabelProvider(Function<VariableManager, String> targetObjectLabelProvider) {
-            this.targetObjectLabelProvider = Objects.requireNonNull(targetObjectLabelProvider);
             return this;
         }
 
@@ -545,8 +503,6 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.synchronizationPolicy = this.synchronizationPolicy;
             nodeDescription.typeProvider = Objects.requireNonNull(this.typeProvider);
             nodeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            nodeDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
-            nodeDescription.targetObjectLabelProvider = Objects.requireNonNull(this.targetObjectLabelProvider);
             nodeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             nodeDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
             nodeDescription.insideLabelDescription = this.insideLabelDescription; // Optional on purpose

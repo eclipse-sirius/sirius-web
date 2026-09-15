@@ -134,8 +134,6 @@ public class PapayaDashboardDiagramDescriptionProvider implements IEditingContex
                 .typeProvider(variableManager -> "")
                 .semanticElementsProvider(this::projectNodeSemanticElementsProvider)
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.identityService::getId).orElse(null))
-                .targetObjectKindProvider(variableManager -> "")
-                .targetObjectLabelProvider(variableManager -> "")
                 .styleProvider(variableManager -> nodeStyle)
                 .insideLabelDescription(insideLabelDescription)
                 .borderNodeDescriptions(new ArrayList<>())

@@ -40,16 +40,6 @@ public class EdgeAssert extends DiagramElementAssert<EdgeAssert, Edge> {
         return this;
     }
 
-    public EdgeAssert hasTargetObjectKind(String targetObjectKind) {
-        assertThat(this.actual.getTargetObjectKind()).isEqualTo(targetObjectKind);
-        return this;
-    }
-
-    public EdgeAssert hasTargetObjectLabel(String targetObjectLabel) {
-        assertThat(this.actual.getTargetObjectLabel()).isEqualTo(targetObjectLabel);
-        return this;
-    }
-
     public EdgeAssert hasSourceId(String sourceId) {
         assertThat(this.actual.getSourceId()).isEqualTo(sourceId);
         return this;

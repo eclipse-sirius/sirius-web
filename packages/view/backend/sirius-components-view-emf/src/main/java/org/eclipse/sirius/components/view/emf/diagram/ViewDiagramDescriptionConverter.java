@@ -330,8 +330,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         NodeDescription.Builder builder = NodeDescription.newNodeDescription(this.diagramIdProvider.getId(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .targetObjectKindProvider(this.semanticTargetKindProvider)
-                .targetObjectLabelProvider(this.semanticTargetLabelProvider)
                 .semanticElementsProvider(this.getSemanticElementsProvider(viewNodeDescription, interpreter))
                 .synchronizationPolicy(synchronizationPolicy)
                 .typeProvider(typeProvider)
@@ -661,8 +659,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         var builder = EdgeDescription.newEdgeDescription(this.diagramIdProvider.getId(viewEdgeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .targetObjectKindProvider(this.semanticTargetKindProvider)
-                .targetObjectLabelProvider(this.semanticTargetLabelProvider)
                 .sourceDescriptions(viewEdgeDescription.getSourceDescriptions().stream().map(converterContext.getConvertedElements()::get).toList())
                 .targetDescriptions(viewEdgeDescription.getTargetDescriptions().stream().map(converterContext.getConvertedElements()::get).toList())
                 .semanticElementsProvider(semanticElementsProvider)

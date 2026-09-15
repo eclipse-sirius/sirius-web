@@ -43,10 +43,6 @@ public final class Edge implements IDiagramElement {
 
     private String targetObjectId;
 
-    private String targetObjectKind;
-
-    private String targetObjectLabel;
-
     private String descriptionId;
 
     private Label beginLabel;
@@ -94,16 +90,6 @@ public final class Edge implements IDiagramElement {
 
     public String getTargetObjectId() {
         return this.targetObjectId;
-    }
-
-    @Deprecated(forRemoval = true)
-    public String getTargetObjectKind() {
-        return this.targetObjectKind;
-    }
-
-    @Deprecated(forRemoval = true)
-    public String getTargetObjectLabel() {
-        return this.targetObjectLabel;
     }
 
     @Override
@@ -157,9 +143,8 @@ public final class Edge implements IDiagramElement {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, sourceId: {6}, targetId: {7}, state: {8}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.sourceId,
-                this.targetId, this.state.name());
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, sourceId: {4}, targetId: {5}, state: {6}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId, this.sourceId, this.targetId, this.state.name());
     }
 
     /**
@@ -175,10 +160,6 @@ public final class Edge implements IDiagramElement {
         private String type;
 
         private String targetObjectId;
-
-        private String targetObjectKind;
-
-        private String targetObjectLabel;
 
         private String descriptionId;
 
@@ -212,8 +193,6 @@ public final class Edge implements IDiagramElement {
             this.id = edge.getId();
             this.type = edge.getType();
             this.targetObjectId = edge.getTargetObjectId();
-            this.targetObjectKind = edge.getTargetObjectKind();
-            this.targetObjectLabel = edge.getTargetObjectLabel();
             this.descriptionId = edge.getDescriptionId();
             this.beginLabel = edge.getBeginLabel();
             this.centerLabel = edge.getCenterLabel();
@@ -235,16 +214,6 @@ public final class Edge implements IDiagramElement {
 
         public Builder targetObjectId(String targetObjectId) {
             this.targetObjectId = Objects.requireNonNull(targetObjectId);
-            return this;
-        }
-
-        public Builder targetObjectKind(String targetObjectKind) {
-            this.targetObjectKind = Objects.requireNonNull(targetObjectKind);
-            return this;
-        }
-
-        public Builder targetObjectLabel(String targetObjectLabel) {
-            this.targetObjectLabel = Objects.requireNonNull(targetObjectLabel);
             return this;
         }
 
@@ -313,8 +282,6 @@ public final class Edge implements IDiagramElement {
             edge.id = Objects.requireNonNull(this.id);
             edge.type = Objects.requireNonNull(this.type);
             edge.targetObjectId = Objects.requireNonNull(this.targetObjectId);
-            edge.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
-            edge.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             edge.descriptionId = Objects.requireNonNull(this.descriptionId);
             edge.beginLabel = this.beginLabel;
             edge.centerLabel = this.centerLabel;

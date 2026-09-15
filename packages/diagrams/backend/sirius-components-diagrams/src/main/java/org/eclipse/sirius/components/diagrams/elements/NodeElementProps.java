@@ -42,10 +42,6 @@ public final class NodeElementProps implements IProps {
 
     private String targetObjectId;
 
-    private String targetObjectKind;
-
-    private String targetObjectLabel;
-
     private String descriptionId;
 
     private boolean borderNode;
@@ -94,14 +90,6 @@ public final class NodeElementProps implements IProps {
 
     public String getTargetObjectId() {
         return this.targetObjectId;
-    }
-
-    public String getTargetObjectKind() {
-        return this.targetObjectKind;
-    }
-
-    public String getTargetObjectLabel() {
-        return this.targetObjectLabel;
     }
 
     public String getDescriptionId() {
@@ -167,8 +155,8 @@ public final class NodeElementProps implements IProps {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId);
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {5}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId);
     }
 
     /**
@@ -184,10 +172,6 @@ public final class NodeElementProps implements IProps {
         private String type;
 
         private String targetObjectId;
-
-        private String targetObjectKind;
-
-        private String targetObjectLabel;
 
         private String descriptionId;
 
@@ -230,16 +214,6 @@ public final class NodeElementProps implements IProps {
 
         public Builder targetObjectId(String targetObjectId) {
             this.targetObjectId = Objects.requireNonNull(targetObjectId);
-            return this;
-        }
-
-        public Builder targetObjectKind(String targetObjectKind) {
-            this.targetObjectKind = Objects.requireNonNull(targetObjectKind);
-            return this;
-        }
-
-        public Builder targetObjectLabel(String targetObjectLabel) {
-            this.targetObjectLabel = Objects.requireNonNull(targetObjectLabel);
             return this;
         }
 
@@ -323,8 +297,6 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.id = Objects.requireNonNull(this.id);
             nodeElementProps.type = Objects.requireNonNull(this.type);
             nodeElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
-            nodeElementProps.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
-            nodeElementProps.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             nodeElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             nodeElementProps.borderNode = this.borderNode;
             nodeElementProps.initialBorderNodePosition = Objects.requireNonNull(this.initialBorderNodePosition);

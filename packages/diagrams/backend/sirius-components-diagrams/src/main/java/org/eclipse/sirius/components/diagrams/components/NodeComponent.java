@@ -168,8 +168,6 @@ public class NodeComponent implements IComponent {
         nodeVariableManager.put(NodeComponent.IS_BORDER_NODE, isBorderNode);
 
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
-        String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
-        String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
 
         Optional<NodeAppearance> optionalPreviousAppearance = optionalPreviousNode.map(previousNode ->
                 new NodeAppearance(previousNode.getStyle(), previousNode.getCustomizedStyleProperties())
@@ -220,8 +218,6 @@ public class NodeComponent implements IComponent {
         var nodeElementProps = NodeElementProps.newNodeElementProps(nodeId)
                 .type(type)
                 .targetObjectId(targetObjectId)
-                .targetObjectKind(targetObjectKind)
-                .targetObjectLabel(targetObjectLabel)
                 .descriptionId(nodeDescription.getId())
                 .borderNode(isBorderNode)
                 .initialBorderNodePosition(initialBorderNodePosition)

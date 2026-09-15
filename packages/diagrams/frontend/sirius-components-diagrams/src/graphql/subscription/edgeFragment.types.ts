@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ export interface GQLEdge {
   id: string;
   type: string;
   targetObjectId: string;
-  targetObjectKind: string;
-  targetObjectLabel: string;
   descriptionId: string;
   sourceId: string;
   targetId: string;

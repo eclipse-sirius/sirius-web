@@ -50,23 +50,6 @@ public class DiagramNavigator {
         return new NodeNavigator(node, this.cache);
     }
 
-    /**
-     * Used to find a node with the given target object label.
-     *
-     * @param targetObjectLabel The label of the target object
-     * @return The node navigator for the node found.
-     * @throws IllegalArgumentException If the node does not exist
-     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
-     */
-    @Deprecated(forRemoval = true)
-    public NodeNavigator nodeWithTargetObjectLabel(String targetObjectLabel) {
-        List<Node> nodes = this.cache.getTargetObjectLabelToNodes().get(targetObjectLabel);
-        if (nodes == null || nodes.isEmpty()) {
-            throw new IllegalArgumentException(MessageFormat.format("No node found with target object label \"{0}\"", targetObjectLabel));
-        }
-        return new NodeNavigator(nodes.get(0), this.cache);
-    }
-
     public NodeNavigator nodeWithTargetObjectId(String targetObjectId) {
         List<Node> nodes = this.cache.getTargetObjectIdToNodes().get(targetObjectId);
         if (nodes == null || nodes.isEmpty()) {
@@ -95,23 +78,6 @@ public class DiagramNavigator {
         List<Edge> edges = this.cache.getLabelToEdges().get(label);
         if (edges == null || edges.isEmpty()) {
             throw new IllegalArgumentException(MessageFormat.format("No edge found with label \"{0}\"", label));
-        }
-        return new EdgeNavigator(edges.get(0), this.cache);
-    }
-
-    /**
-     * Used to find an edge with the given target object label.
-     *
-     * @param targetObjectLabel The label of the target object
-     * @return The edge navigator for the node found.
-     * @throws IllegalArgumentException If the edge does not exist
-     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
-     */
-    @Deprecated(forRemoval = true)
-    public EdgeNavigator edgeWithTargetObjectLabel(String targetObjectLabel) {
-        List<Edge> edges = this.cache.getTargetObjectLabelToEdges().get(targetObjectLabel);
-        if (edges == null || edges.isEmpty()) {
-            throw new IllegalArgumentException(MessageFormat.format("No edge found with target object label \"{0}\"", targetObjectLabel));
         }
         return new EdgeNavigator(edges.get(0), this.cache);
     }

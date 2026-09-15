@@ -26,8 +26,8 @@ public final class EdgeEnd {
         // Prevent instantiation
     }
 
-    public static EdgeEndBuilder newEdgeEnd(String targetObjectLabel) {
-        return new EdgeEndBuilder(targetObjectLabel);
+    public static EdgeEndBuilder newEdgeEnd(String targetObjectId) {
+        return new EdgeEndBuilder(targetObjectId);
     }
 
     public String getEndId() {
@@ -42,8 +42,8 @@ public final class EdgeEnd {
     public static final class EdgeEndBuilder {
         private String endId;
 
-        private EdgeEndBuilder(String targetObjectLabel) {
-            this.endId = targetObjectLabel;
+        private EdgeEndBuilder(String targetObjectId) {
+            this.endId = targetObjectId;
         }
 
         public EdgeEnd build() {

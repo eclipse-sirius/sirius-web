@@ -141,8 +141,6 @@ public class EdgeComponent implements IComponent {
     private Optional<Element> doRenderEdge(VariableManager edgeVariableManager, EdgeDescription edgeDescription, Element sourceElement, Element targetElement, List<IDiagramEvent> diagramEvents,
             Map<String, Integer> edgeIdPrefixToCount, List<String> lastPreviousRenderedEdgeIds) {
         String targetObjectId = edgeDescription.getTargetObjectIdProvider().apply(edgeVariableManager);
-        String targetObjectKind = edgeDescription.getTargetObjectKindProvider().apply(edgeVariableManager);
-        String targetObjectLabel = edgeDescription.getTargetObjectLabelProvider().apply(edgeVariableManager);
 
         String edgeIdPrefix = this.computeEdgeIdPrefix(edgeDescription, sourceElement, targetElement);
         int count = edgeIdPrefixToCount.getOrDefault(edgeIdPrefix, 0);
@@ -202,8 +200,6 @@ public class EdgeComponent implements IComponent {
                     .type(edgeType)
                     .descriptionId(edgeDescription.getId())
                     .targetObjectId(targetObjectId)
-                    .targetObjectKind(targetObjectKind)
-                    .targetObjectLabel(targetObjectLabel)
                     .sourceId(sourceId)
                     .targetId(targetId)
                     .style(appearance.style())

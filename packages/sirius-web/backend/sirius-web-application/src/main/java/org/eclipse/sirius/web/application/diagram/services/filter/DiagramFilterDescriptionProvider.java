@@ -278,8 +278,8 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     }
 
-    private String getNodeId(VariableManager vm) {
-        var self = vm.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
+    private String getNodeId(VariableManager variableManager) {
+        var self = variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         if (self instanceof Node node) {
             return node.getId();
         } else {
@@ -287,26 +287,24 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
         }
     }
 
-    private String getNodeLabel(VariableManager vm) {
-        var self = vm.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
+    private String getNodeLabel(VariableManager variableManager) {
+        var self = variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         String result = "";
         if (self instanceof Node node) {
             if (node.getInsideLabel() != null) {
                 result = node.getInsideLabel().getText();
             } else if (!node.getOutsideLabels().isEmpty()) {
                 result = node.getOutsideLabels().get(0).text();
-            } else if (node.getTargetObjectLabel() != null) {
-                result = node.getTargetObjectLabel();
             }
         }
         return result;
     }
 
-    private List<Node> getNodeChildren(VariableManager vm) {
-        var self = vm.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
+    private List<Node> getNodeChildren(VariableManager variableManager) {
+        var self = variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         List<Node> result = new ArrayList<>();
         if (self instanceof RepresentationMetadata) {
-            var diagramEventProcessor = vm.get(DIAGRAM_EVENT_PROCESSOR, DiagramEventProcessor.class).orElse(null);
+            var diagramEventProcessor = variableManager.get(DIAGRAM_EVENT_PROCESSOR, DiagramEventProcessor.class).orElse(null);
             if (diagramEventProcessor != null && diagramEventProcessor.getRepresentation() instanceof Diagram diagram) {
                 result = diagram.getNodes();
             }
@@ -318,8 +316,8 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
         return result;
     }
 
-    private List<List<String>> computeNodeEndIcons(VariableManager vm) {
-        var node = vm.get(RepresentationVariables.SELF.name(), Object.class)
+    private List<List<String>> computeNodeEndIcons(VariableManager variableManager) {
+        var node = variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .filter(Node.class::isInstance)
                 .map(Node.class::cast)
                 .orElse(null);

@@ -47,20 +47,6 @@ public class NodeNavigator {
                 .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("No child node found with label \"{0}\"", label)));
     }
 
-    /**
-     * Used to find a child node with the given target object label.
-     *
-     * @param targetObjectLabel The label of the target object
-     * @return The node navigator for the node found.
-     * @throws IllegalArgumentException If the node does not exist
-     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
-     */
-    @Deprecated(forRemoval = true)
-    public NodeNavigator childNodeWithTargetObjectLabel(String targetObjectLabel) {
-        return this.findNodeMatching(this.node.getChildNodes(), n -> n.getTargetObjectLabel().equals(targetObjectLabel))
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("No child node found with target object label \"{0}\"", targetObjectLabel)));
-    }
-
     public NodeNavigator childNodeWithTargetObjectId(String targetObjectId) {
         return this.findNodeMatching(this.node.getChildNodes(), n -> n.getTargetObjectId().equals(targetObjectId))
                 .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("No child node found with target object id \"{0}\"", targetObjectId)));
@@ -74,20 +60,6 @@ public class NodeNavigator {
     public NodeNavigator borderNodeWithLabel(String label) {
         return this.findNodeMatching(this.node.getBorderNodes(), n -> n.getInsideLabel().getText().equals(label))
                 .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("No border node found with label \"{0}\"", label)));
-    }
-
-    /**
-     * Used to find a border node with the given target object label.
-     *
-     * @param targetObjectLabel The label of the target object
-     * @return The node navigator for the node found.
-     * @throws IllegalArgumentException If the node does not exist
-     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
-     */
-    @Deprecated(forRemoval = true)
-    public NodeNavigator borderNodeWithTargetObjectLabel(String targetObjectLabel) {
-        return this.findNodeMatching(this.node.getBorderNodes(), n -> n.getTargetObjectLabel().equals(targetObjectLabel))
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("No border node found with target object label \"{0}\"", targetObjectLabel)));
     }
 
     public NodeNavigator borderNodeWithTargetObjectId(String targetObjectId) {
@@ -114,20 +86,6 @@ public class NodeNavigator {
     public EdgeNavigator edgeWithLabel(String label) {
         return this.findConnectedEdgeMatching(e -> e.getCenterLabel().text().equals(label))
             .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("No edge found with label \"{0}\"", label)));
-    }
-
-    /**
-     * Used to find an edge with the given target object label.
-     *
-     * @param targetObjectLabel The label of the target object
-     * @return The edge navigator for the node found.
-     * @throws IllegalArgumentException If the edge does not exist
-     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
-     */
-    @Deprecated(forRemoval = true)
-    public EdgeNavigator edgeWithTargetObjectLabel(String targetObjectLabel) {
-        return this.findConnectedEdgeMatching(e -> e.getTargetObjectLabel().equals(targetObjectLabel))
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("No edge found with target object label \"{0}\"", targetObjectLabel)));
     }
 
     public EdgeNavigator edgeWithTargetObjectId(String targetObjectId) {

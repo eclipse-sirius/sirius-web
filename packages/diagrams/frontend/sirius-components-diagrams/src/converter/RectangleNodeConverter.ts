@@ -42,8 +42,6 @@ const toRectangularNode = (
 ): Node<FreeFormNodeData> => {
   const {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     id,
     insideLabel,
@@ -71,8 +69,6 @@ const toRectangularNode = (
 
   const data: FreeFormNodeData = {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     style: {
       display: 'flex',

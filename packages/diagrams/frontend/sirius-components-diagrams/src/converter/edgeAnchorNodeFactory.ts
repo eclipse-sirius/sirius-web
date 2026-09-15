@@ -68,8 +68,6 @@ export const createEdgeAnchorNode = (
     selectable: false,
     data: {
       targetObjectId: '',
-      targetObjectKind: '',
-      targetObjectLabel: '',
       descriptionId: '',
       insideLabel: null,
       outsideLabels: {},

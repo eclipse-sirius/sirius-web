@@ -112,8 +112,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                 .childNodes(childNodes)
                 .descriptionId(descriptionId)
                 .targetObjectId(labeltext)
-                .targetObjectKind("")
-                .targetObjectLabel(this.insideLabel.getText())
                 .style(Objects.requireNonNull(style))
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)

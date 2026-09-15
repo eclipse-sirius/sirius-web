@@ -228,8 +228,6 @@ public class DiagramRendererNodeTests {
                 .typeProvider(typeProvider)
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .targetObjectIdProvider(variableManager -> "targetObjectId")
-                .targetObjectKindProvider(variableManager -> "")
-                .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLbelDescription)
                 .styleProvider(styleProvider)
                 .borderNodeDescriptions(new ArrayList<>())

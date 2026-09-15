@@ -47,8 +47,6 @@ const toEllipseNode = (
 ): Node<EllipseNodeData> => {
   const {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     id,
     insideLabel,
@@ -77,8 +75,6 @@ const toEllipseNode = (
 
   const data: EllipseNodeData = {
     targetObjectId,
-    targetObjectLabel,
-    targetObjectKind,
     descriptionId,
     style: {
       display: 'flex',

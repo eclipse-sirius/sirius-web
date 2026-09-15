@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,6 @@ type TestNode = Node<NodeData>;
 const buildEdgeData = (overrides: Partial<MultiLabelEdgeData> = {}): MultiLabelEdgeData => {
   const baseData: MultiLabelEdgeData = {
     targetObjectId: overrides.targetObjectId ?? 'edge',
-    targetObjectKind: overrides.targetObjectKind ?? 'Edge',
-    targetObjectLabel: overrides.targetObjectLabel ?? 'Edge',
     descriptionId: overrides.descriptionId ?? 'edge-description',
     label: overrides.label ?? null,
     beginLabel: overrides.beginLabel,
@@ -44,6 +42,8 @@ const buildEdgeData = (overrides: Partial<MultiLabelEdgeData> = {}): MultiLabelE
         gqlStyle: {} as never,
       } as MultiLabelEdgeData['edgeAppearanceData']),
     crossingGaps: overrides.crossingGaps,
+    deletable: overrides.deletable ?? false,
+    relativePositionBendingPoints: overrides.relativePositionBendingPoints ?? null,
   };
   return baseData;
 };
@@ -74,8 +74,6 @@ const buildEdge = (
 const buildNode = (id: string, x: number, y: number, width = 40, height = 40): TestNode => {
   const baseData: NodeData = {
     targetObjectId: id,
-    targetObjectKind: 'Node',
-    targetObjectLabel: id,
     descriptionId: 'node-description',
     insideLabel: null,
     outsideLabels: {},
@@ -102,6 +100,13 @@ const buildNode = (id: string, x: number, y: number, width = 40, height = 40): T
       gqlStyle: {} as never,
     },
     movedByUser: false,
+    deletable: false,
+    decorators: [],
+    isDragNodeSource: false,
+    isLastNodeSelected: false,
+    minComputedHeight: null,
+    minComputedWidth: null,
+    moving: false,
   };
 
   return {
