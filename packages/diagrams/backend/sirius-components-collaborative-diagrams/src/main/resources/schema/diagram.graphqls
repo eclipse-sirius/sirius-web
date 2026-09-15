@@ -438,6 +438,12 @@ type DiagramDescription implements RepresentationDescription {
 
 type DiagramToolbar {
   expandedByDefault: Boolean!
+  filterSelectionMenuItems(diagramElementIds: [ID!]!) : [FilterSelectionMenuItem!]!
+}
+
+type FilterSelectionMenuItem {
+  id: ID!
+  label: String!
 }
 
 enum ArrangeLayoutDirection {
