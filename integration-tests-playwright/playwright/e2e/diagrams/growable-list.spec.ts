@@ -69,9 +69,8 @@ test.describe('diagram - growable list', () => {
     await page.getByTestId('tool-Hide').click();
     await expect(list2Node.nodeLocator).not.toBeAttached();
 
-    const growableListNodeSizeAfterHide = await growableListNode.getReactFlowSize();
-    expect(growableListNodeSizeAfterHide.height).toBe(400);
-    expect(growableListNodeSizeAfterHide.width).toBe(152);
+    await expect(growableListNode.nodeLocator).toHaveCSS('height', '400px');
+    await expect(growableListNode.nodeLocator).toHaveCSS('width', '152px');
   });
 
   test('when a sub node is resize,  then growable nodes are properly layout', async ({ page }) => {
