@@ -12,7 +12,43 @@
  *******************************************************************************/
 
 export interface UseFilterContentValue {
-  fetchFilterMenuItems: (diagramElementIds: string[]) => GQLFilterSelectionMenuItem[];
+  filterSelectionMenuItems: GQLFilterSelectionMenuItem[];
+  fetchFilterMenuItems: (diagramElementIds: string[]) => void;
+  loading: boolean;
+}
+
+export interface GQLDiagramDescription extends GQLRepresentationDescription {
+  toolbar?: GQLDiagramToolbar;
+}
+
+export interface GQLRepresentationDescription {
+  __typename: string;
+}
+
+export interface GQLFilterContentsVariables {
+  editingContextId: string;
+  representationId: string;
+  diagramElementIds: string[];
+}
+
+export interface GQLFilterContentsData {
+  viewer: GQLViewer;
+}
+
+export interface GQLViewer {
+  editingContext: GQLEditingContext;
+}
+
+export interface GQLEditingContext {
+  representation: GQLRepresentationMetadata;
+}
+
+export interface GQLRepresentationMetadata {
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLDiagramToolbar {
+  filterSelectionMenuItems: GQLFilterSelectionMenuItem[];
 }
 
 export interface GQLFilterSelectionMenuItem {
