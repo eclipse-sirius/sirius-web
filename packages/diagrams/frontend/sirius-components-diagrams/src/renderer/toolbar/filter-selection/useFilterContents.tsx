@@ -11,55 +11,72 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, useStoreApi } from '@xyflow/react';
-import { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import { GQLFilterSelectionMenuItem, UseFilterContentValue } from './useFilterContents.types';
+import { gql, useLazyQuery } from '@apollo/client';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useContext, useEffect } from 'react';
+import { DiagramContext } from './../../../contexts/DiagramContext';
+import { DiagramContextValue } from './../../../contexts/DiagramContext.types';
+import {
+  GQLDiagramDescription,
+  GQLFilterContentsData,
+  GQLFilterContentsVariables,
+  GQLFilterSelectionMenuItem,
+  GQLRepresentationDescription,
+  UseFilterContentValue,
+} from './useFilterContents.types';
 
-const selectAllNodes: GQLFilterSelectionMenuItem = {
-  id: 'select_all_nodes',
-  label: 'Select all nodes',
-};
-const selectAllEdges: GQLFilterSelectionMenuItem = {
-  id: 'select_all_edges',
-  label: 'Select all edges',
-};
-const unselectNodes: GQLFilterSelectionMenuItem = {
-  id: 'unselect_all_nodes',
-  label: 'Unselect all nodes',
-};
-const unselectChildNodes: GQLFilterSelectionMenuItem = {
-  id: 'unselect_child_nodes',
-  label: 'Unselect child nodes',
-};
-const unselectEdges: GQLFilterSelectionMenuItem = {
-  id: 'unselect_all_edges',
-  label: 'Unselect edges',
-};
+export const getFilterSelectionMenuItems = gql`
+  query getDiagramDescription($editingContextId: ID!, $representationId: ID!, $diagramElementIds: [ID!]!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          description {
+            ... on DiagramDescription {
+              id
+              toolbar {
+                filterSelectionMenuItems(diagramElementIds: $diagramElementIds) {
+                  id
+                  label
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const isDiagramDescription = (
+  representationDescription: GQLRepresentationDescription
+): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
 export const useFilterContents = (): UseFilterContentValue => {
-  const { edgeLookup, nodeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
+  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { addErrorMessage } = useMultiToast();
 
-  const fetchFilterMenuItems = (diagramElementIds: string[]): GQLFilterSelectionMenuItem[] => {
-    const filterSelectionMenuItems: GQLFilterSelectionMenuItem[] = [];
-    if (diagramElementIds.length > 0) {
-      const containsSelectedEdge = diagramElementIds.find((id) => !!edgeLookup.get(id));
-      if (containsSelectedEdge) {
-        filterSelectionMenuItems.push(unselectEdges);
-      }
-      const containsSelectedNode = diagramElementIds.find((id) => !!nodeLookup.get(id));
-      if (containsSelectedNode) {
-        filterSelectionMenuItems.push(unselectNodes);
-      }
-      const containsSelectedChildNode = diagramElementIds.find((id) => !!nodeLookup.get(id)?.parentId);
-      if (containsSelectedChildNode) {
-        filterSelectionMenuItems.push(unselectChildNodes);
-      }
-    } else {
-      filterSelectionMenuItems.push(selectAllNodes, selectAllEdges);
+  const [loadFilterMenuItems, { data: filterData, error: filterError, loading }] = useLazyQuery<
+    GQLFilterContentsData,
+    GQLFilterContentsVariables
+  >(getFilterSelectionMenuItems);
+
+  const description: GQLRepresentationDescription | undefined =
+    filterData?.viewer.editingContext.representation.description;
+
+  const filterSelectionMenuItems: GQLFilterSelectionMenuItem[] =
+    description && isDiagramDescription(description) && description.toolbar?.filterSelectionMenuItems
+      ? description.toolbar?.filterSelectionMenuItems
+      : [];
+
+  useEffect(() => {
+    if (filterError) {
+      addErrorMessage(filterError.message);
     }
+  }, [filterError]);
 
-    return filterSelectionMenuItems;
+  const fetchFilterMenuItems = (diagramElementIds: string[]) => {
+    loadFilterMenuItems({ variables: { editingContextId, representationId: diagramId, diagramElementIds } });
   };
 
-  return { fetchFilterMenuItems };
+  return { fetchFilterMenuItems, filterSelectionMenuItems, loading };
 };
