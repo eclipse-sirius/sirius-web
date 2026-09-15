@@ -28,7 +28,8 @@
     "collapse": "Collapse toolbar"
   },
   "filterSelectionToolbarButton": {
-    "filterSelectedElement": "Manage selection"
+    "filterSelectedElement": "Manage selection",
+    "noAvailableTools": "No available tools"
   },
   "exportImageButton": {
     "exportDiagram": "Export the diagram as an image",

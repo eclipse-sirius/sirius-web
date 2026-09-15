@@ -10,9 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools;
 
-export interface FilterSelectionToolbarButtonProps {}
+import java.util.Objects;
 
-export interface FilterSelectionToolbarButtonStates {
-  anchorEl: HTMLElement | null;
+/**
+ * The FilterSelectionMenuItem of the toolbar of a diagram.
+ *
+ * @author mcharfadi
+ */
+public record FilterSelectionMenuItem(String id, String label) {
+
+    public FilterSelectionMenuItem {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(label);
+    }
+
 }

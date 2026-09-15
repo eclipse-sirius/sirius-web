@@ -11,8 +11,44 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface UseFilterContentValue {
-  fetchFilterMenuItems: (diagramElementIds: string[]) => GQLFilterSelectionMenuItem[];
+export interface UseFilterContentsValue {
+  filterSelectionMenuItems: GQLFilterSelectionMenuItem[];
+  fetchFilterMenuItems: (diagramElementIds: string[]) => void;
+  loading: boolean;
+}
+
+export interface GQLDiagramDescription extends GQLRepresentationDescription {
+  toolbar: GQLDiagramToolbar | null;
+}
+
+export interface GQLRepresentationDescription {
+  __typename: string;
+}
+
+export interface GQLFilterContentsVariables {
+  editingContextId: string;
+  representationId: string;
+  diagramElementIds: string[];
+}
+
+export interface GQLFilterContentsData {
+  viewer: GQLViewer;
+}
+
+export interface GQLViewer {
+  editingContext: GQLEditingContext | null;
+}
+
+export interface GQLEditingContext {
+  representation: GQLRepresentationMetadata | null;
+}
+
+export interface GQLRepresentationMetadata {
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLDiagramToolbar {
+  filterSelectionMenuItems: GQLFilterSelectionMenuItem[];
 }
 
 export interface GQLFilterSelectionMenuItem {

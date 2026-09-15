@@ -37,11 +37,10 @@ export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonPro
   const { invokeFilterSelection } = useInvokeFilterSelection();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { getNodes, getEdges } = useStore();
-  const { fetchFilterMenuItems } = useFilterContents();
+  const { fetchFilterMenuItems, filterSelectionMenuItems, loading } = useFilterContents();
 
   const [state, setState] = React.useState<FilterSelectionToolbarButtonStates>({
     anchorEl: null,
-    filterMenuItems: [],
   });
   const isOpen = Boolean(state.anchorEl);
 
@@ -59,12 +58,11 @@ export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonPro
   };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    const filterSelectionMenuItems = fetchFilterMenuItems(getSelectedElementsIds());
     setState((prevState) => ({
       ...prevState,
       anchorEl: event.currentTarget,
-      filterMenuItems: filterSelectionMenuItems,
     }));
+    fetchFilterMenuItems(getSelectedElementsIds());
   };
 
   const handleClose = () => {
@@ -109,12 +107,14 @@ export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonPro
     setState((prevState) => ({ ...prevState, anchorEl: null }));
   };
 
+  const isEmpty = !loading && filterSelectionMenuItems.length === 0;
+
   return (
     <div>
       <Tooltip title={t('filterSelectedElement')}>
         <IconButton
-          id="manage-selection-IconButton"
-          aria-controls={isOpen ? 'manage-selection-menu' : undefined}
+          id="filter-selection-IconButton"
+          aria-controls={isOpen ? 'filter-selection-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={isOpen ? 'true' : undefined}
           onClick={handleClick}
@@ -124,28 +124,32 @@ export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonPro
         </IconButton>
       </Tooltip>
       <Menu
-        id="manage-selection-menu"
+        id="filter-selection-menu"
         slotProps={{
           list: {
-            'aria-labelledby': 'manage-selection-button',
+            'aria-labelledby': 'filter-selection-IconButton',
           },
         }}
         slots={{ transition: Fade }}
         anchorEl={state.anchorEl}
         open={isOpen}
         onClose={handleClose}>
-        {state.filterMenuItems.length > 0
-          ? state.filterMenuItems.map((filterSelectionMenuItem) => {
-              return (
-                <MenuItem
-                  key={filterSelectionMenuItem.id}
-                  data-testid={`filter_selection_${filterSelectionMenuItem.id}`}
-                  onClick={() => onMenuItemClick(filterSelectionMenuItem.id)}>
-                  <ListItemText primary={filterSelectionMenuItem.label} />
-                </MenuItem>
-              );
-            })
-          : null}
+        {!isEmpty ? (
+          filterSelectionMenuItems.map((filterSelectionMenuItem) => {
+            return (
+              <MenuItem
+                key={filterSelectionMenuItem.id}
+                data-testid={`filter_selection_${filterSelectionMenuItem.id}`}
+                onClick={() => onMenuItemClick(filterSelectionMenuItem.id)}>
+                <ListItemText primary={filterSelectionMenuItem.label} />
+              </MenuItem>
+            );
+          })
+        ) : (
+          <MenuItem>
+            <ListItemText primary={t('noAvailableTools')} />
+          </MenuItem>
+        )}
       </Menu>
     </div>
   );
