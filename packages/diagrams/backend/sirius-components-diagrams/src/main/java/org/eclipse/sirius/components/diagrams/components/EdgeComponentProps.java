@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo and others.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
-import org.eclipse.sirius.components.diagrams.renderer.IEdgeAppearanceHandler;
+import org.eclipse.sirius.components.diagrams.renderer.IDiagramAppearanceHandler;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -42,16 +42,16 @@ public class EdgeComponentProps implements IProps {
 
     private final List<IDiagramEvent> diagramEvents;
 
-    private List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
+    private final IDiagramAppearanceHandler diagramAppearanceHandler;
 
-    public EdgeComponentProps(VariableManager variableManager, EdgeDescription edgeDescription, IEdgesRequestor edgesRequestor, DiagramRenderingCache cache, IOperationValidator operationValidator, List<IDiagramEvent> diagramEvents, List<IEdgeAppearanceHandler> edgeAppearanceHandlers) {
+    public EdgeComponentProps(VariableManager variableManager, EdgeDescription edgeDescription, IEdgesRequestor edgesRequestor, DiagramRenderingCache cache, IOperationValidator operationValidator, List<IDiagramEvent> diagramEvents, IDiagramAppearanceHandler diagramAppearanceHandler) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.edgeDescription = Objects.requireNonNull(edgeDescription);
         this.edgesRequestor = Objects.requireNonNull(edgesRequestor);
         this.cache = Objects.requireNonNull(cache);
         this.operationValidator = Objects.requireNonNull(operationValidator);
         this.diagramEvents = Objects.requireNonNull(diagramEvents);
-        this.edgeAppearanceHandlers = Objects.requireNonNull(edgeAppearanceHandlers);
+        this.diagramAppearanceHandler = Objects.requireNonNull(diagramAppearanceHandler);
     }
 
     public VariableManager getVariableManager() {
@@ -78,7 +78,7 @@ public class EdgeComponentProps implements IProps {
         return this.diagramEvents;
     }
 
-    public List<IEdgeAppearanceHandler> getEdgeAppearanceHandlers() {
-        return this.edgeAppearanceHandlers;
+    public IDiagramAppearanceHandler getDiagramAppearanceHandler() {
+        return this.diagramAppearanceHandler;
     }
 }

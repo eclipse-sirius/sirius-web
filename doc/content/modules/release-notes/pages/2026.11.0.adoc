@@ -84,6 +84,7 @@ Available default actions are:
 - Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
 - Update the backend documentation and add a first schema of the lifecycle of the backend with the creation of a project.
 - Added more `AQL variables` available when computing the precondition of a tool in a palette, this includes for a `connector palette` : `environment`, `diagramServices`, `selectedNode`, `selectedEdge` and for a `diagram element palette` : `environment`, `diagramServices`.
+- Extract the appearance logic of nodes and edges in a dedicated service.
 
 
 == Deprecation warnings

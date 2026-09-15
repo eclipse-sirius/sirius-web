@@ -168,8 +168,7 @@ public class DiagramRendererEdgeTests {
                 .previousDiagram(Optional.empty())
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvents(List.of())
-                .nodeAppearanceHandlers(List.of())
-                .edgeAppearanceHandlers(List.of())
+                .diagramAppearanceHandler(new IDiagramAppearanceHandler.NoOp())
                 .build();
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer().render(element);
