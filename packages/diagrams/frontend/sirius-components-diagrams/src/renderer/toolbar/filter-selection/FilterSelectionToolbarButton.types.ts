@@ -11,11 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLFilterSelectionMenuItem } from './useFilterContents.types';
-
 export interface FilterSelectionToolbarButtonProps {}
 
 export interface FilterSelectionToolbarButtonStates {
   anchorEl: HTMLElement | null;
-  filterMenuItems: GQLFilterSelectionMenuItem[];
 }
