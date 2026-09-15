@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -26,7 +25,6 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.Edge;
-import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -41,8 +39,6 @@ import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeEvent;
 import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
-import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
-import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.IEdgeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations;
 import org.eclipse.sirius.components.representations.Element;
@@ -172,26 +168,7 @@ public class EdgeComponent implements IComponent {
         boolean shouldRender = synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED || (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED && optionalPreviousEdge.isPresent());
 
         if (shouldRender) {
-            Optional<EdgeAppearance> optionalPreviousAppearance = optionalPreviousEdge.map(previousEdge ->
-                    new EdgeAppearance(previousEdge.getStyle(), previousEdge.getCustomizedStyleProperties())
-            );
-
-            EdgeStyle providedStyle = edgeDescription.getStyleProvider().apply(edgeVariableManager);
-
-            List<IEdgeAppearanceChange> appearanceChanges = diagramEvents.stream()
-                    .filter(EditAppearanceEvent.class::isInstance)
-                    .map(EditAppearanceEvent.class::cast)
-                    .flatMap(appearanceEvent -> appearanceEvent.changes().stream())
-                    .filter(IEdgeAppearanceChange.class::isInstance)
-                    .map(IEdgeAppearanceChange.class::cast)
-                    .filter(appearanceChange -> Objects.equals(id, appearanceChange.edgeId()))
-                    .toList();
-
-            EdgeAppearance appearance = this.props.getEdgeAppearanceHandlers().stream()
-                    .filter(handler -> handler.canHandle(providedStyle))
-                    .findFirst()
-                    .map(handler -> handler.handle(providedStyle, appearanceChanges, optionalPreviousAppearance))
-                    .orElse(new EdgeAppearance(providedStyle, new LinkedHashSet<>()));
+            var appearance = this.props.getDiagramAppearanceHandler().getEdgeAppearance(edgeVariableManager, edgeDescription, diagramEvents, id, optionalPreviousEdge);
 
             String edgeType = optionalPreviousEdge
                     .map(Edge::getType)

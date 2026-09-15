@@ -115,7 +115,7 @@ public class NodeChildrenComponent implements IComponent {
                     .diagramEvents(this.props.getNodeComponentProps().getDiagramEvents())
                     .parentElementState(this.props.getState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
-                    .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
+                    .diagramAppearanceHandler(this.props.getNodeComponentProps().getDiagramAppearanceHandler())
                     .initialBorderNodePosition(initialBorderNodePosition)
                     .decoratorDescriptionRequestor(this.props.getNodeComponentProps().getDecoratorDescriptionRequestor())
                     .build();
@@ -154,7 +154,7 @@ public class NodeChildrenComponent implements IComponent {
                     .diagramEvents(this.props.getNodeComponentProps().getDiagramEvents())
                     .parentElementState(this.props.getParentState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
-                    .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
+                    .diagramAppearanceHandler(this.props.getNodeComponentProps().getDiagramAppearanceHandler())
                     .initialBorderNodePosition(BorderNodePosition.NONE)
                     .decoratorDescriptionRequestor(this.props.getNodeComponentProps().getDecoratorDescriptionRequestor())
                     .build();

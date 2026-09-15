@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo and others.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,8 +22,7 @@ import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.renderer.IEdgeAppearanceHandler;
-import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
+import org.eclipse.sirius.components.diagrams.renderer.IDiagramAppearanceHandler;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -54,9 +53,7 @@ public final class DiagramComponentProps implements IProps {
 
     private List<IDiagramEvent> diagramEvents;
 
-    private List<INodeAppearanceHandler> nodeAppearanceHandlers;
-
-    private List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
+    private IDiagramAppearanceHandler diagramAppearanceHandler;
 
     private DiagramComponentProps() {
         // Prevent instantiation
@@ -94,12 +91,8 @@ public final class DiagramComponentProps implements IProps {
         return this.diagramEvents;
     }
 
-    public List<INodeAppearanceHandler> getNodeAppearanceHandlers() {
-        return this.nodeAppearanceHandlers;
-    }
-
-    public List<IEdgeAppearanceHandler> getEdgeAppearanceHandlers() {
-        return this.edgeAppearanceHandlers;
+    public IDiagramAppearanceHandler getDiagramAppearanceHandler() {
+        return this.diagramAppearanceHandler;
     }
 
     public static Builder newDiagramComponentProps() {
@@ -130,9 +123,7 @@ public final class DiagramComponentProps implements IProps {
 
         private List<IDiagramEvent> diagramEvents;
 
-        private List<INodeAppearanceHandler> nodeAppearanceHandlers;
-
-        private List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
+        private IDiagramAppearanceHandler diagramAppearanceHandler;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -174,13 +165,8 @@ public final class DiagramComponentProps implements IProps {
             return this;
         }
 
-        public Builder nodeAppearanceHandlers(List<INodeAppearanceHandler> nodeAppearanceHandlers) {
-            this.nodeAppearanceHandlers = Objects.requireNonNull(nodeAppearanceHandlers);
-            return this;
-        }
-
-        public Builder edgeAppearanceHandlers(List<IEdgeAppearanceHandler> edgeAppearanceHandlers) {
-            this.edgeAppearanceHandlers = Objects.requireNonNull(edgeAppearanceHandlers);
+        public Builder diagramAppearanceHandler(IDiagramAppearanceHandler diagramAppearanceHandler) {
+            this.diagramAppearanceHandler = Objects.requireNonNull(diagramAppearanceHandler);
             return this;
         }
 
@@ -194,8 +180,7 @@ public final class DiagramComponentProps implements IProps {
             diagramComponentProps.viewCreationRequests = List.copyOf(Objects.requireNonNull(this.viewCreationRequests));
             diagramComponentProps.viewDeletionRequests = List.copyOf(Objects.requireNonNull(this.viewDeletionRequests));
             diagramComponentProps.diagramEvents = Objects.requireNonNull(this.diagramEvents);
-            diagramComponentProps.nodeAppearanceHandlers = Objects.requireNonNull(this.nodeAppearanceHandlers);
-            diagramComponentProps.edgeAppearanceHandlers = Objects.requireNonNull(this.edgeAppearanceHandlers);
+            diagramComponentProps.diagramAppearanceHandler = Objects.requireNonNull(this.diagramAppearanceHandler);
             return diagramComponentProps;
         }
     }

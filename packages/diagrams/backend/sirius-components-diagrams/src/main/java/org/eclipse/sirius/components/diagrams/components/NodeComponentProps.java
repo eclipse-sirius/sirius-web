@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
-import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
+import org.eclipse.sirius.components.diagrams.renderer.IDiagramAppearanceHandler;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -61,7 +61,7 @@ public final class NodeComponentProps implements IProps {
 
     private List<IDiagramEvent> diagramEvents;
 
-    private List<INodeAppearanceHandler> nodeAppearanceHandlers;
+    private IDiagramAppearanceHandler diagramAppearanceHandler;
 
     private BorderNodePosition initialBorderNodePosition;
 
@@ -123,8 +123,8 @@ public final class NodeComponentProps implements IProps {
         return this.operationValidator;
     }
 
-    public List<INodeAppearanceHandler> getNodeAppearanceHandlers() {
-        return this.nodeAppearanceHandlers;
+    public IDiagramAppearanceHandler getDiagramAppearanceHandler() {
+        return this.diagramAppearanceHandler;
     }
 
     public BorderNodePosition getInitialBorderNodePosition() {
@@ -173,7 +173,7 @@ public final class NodeComponentProps implements IProps {
 
         private List<IDiagramEvent> diagramEvents;
 
-        private List<INodeAppearanceHandler> nodeAppearanceHandlers;
+        private IDiagramAppearanceHandler diagramAppearanceHandler;
 
         private BorderNodePosition initialBorderNodePosition;
 
@@ -244,8 +244,8 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
-        public Builder nodeAppearanceHandlers(List<INodeAppearanceHandler> nodeAppearanceHandlers) {
-            this.nodeAppearanceHandlers = Objects.requireNonNull(nodeAppearanceHandlers);
+        public Builder diagramAppearanceHandler(IDiagramAppearanceHandler diagramAppearanceHandler) {
+            this.diagramAppearanceHandler = Objects.requireNonNull(diagramAppearanceHandler);
             return this;
         }
 
@@ -274,7 +274,7 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.diagramEvents = Objects.requireNonNull(this.diagramEvents);
             nodeComponentProps.operationValidator = Objects.requireNonNull(this.operationValidator);
             nodeComponentProps.parentElementState = Objects.requireNonNull(this.parentElementState);
-            nodeComponentProps.nodeAppearanceHandlers = Objects.requireNonNull(this.nodeAppearanceHandlers);
+            nodeComponentProps.diagramAppearanceHandler = Objects.requireNonNull(this.diagramAppearanceHandler);
             nodeComponentProps.initialBorderNodePosition = Objects.requireNonNull(this.initialBorderNodePosition);
             nodeComponentProps.decoratorDescriptionRequestor = Objects.requireNonNull(this.decoratorDescriptionRequestor);
             return nodeComponentProps;
