@@ -97,7 +97,8 @@ Downstream consumers must declare this dependency and replace the package prefix
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6810[#6810] [diagram] Add a new toolbar menu button to manage diagram elements selection
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6806[#6806] [diagram] Add `IDiagramToolbarFilterSelectionProvider` API & `filterSelectionMenuItems` field in GraphQL type `DiagramToolbar`.
+This API can be used to add menu items to the Manage Selection diagram toolbar button.
 
 === Improvements
 

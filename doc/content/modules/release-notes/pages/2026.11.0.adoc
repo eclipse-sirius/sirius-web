@@ -76,6 +76,8 @@ Available default actions are:
 - Unselect child nodes
 - Unselect nodes
 - Unselect edges
+* Add `IDiagramToolbarFilterSelectionProvider` API & `filterSelectionMenuItems` field in GraphQL type `DiagramToolbar`.
+This API can be used to add menu items to the Manage Selection diagram toolbar button.
 
 
 == Improvements
