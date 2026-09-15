@@ -119,6 +119,7 @@ These libraries are selected by default in the project creation's library table,
 The `ci: run e2e` label can be added to a pull request to force end-to-end test execution.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [images] Extract the domain parts of the image bounded context into the `sirius-web-images-domain` module.
 - [sirius-web] `IProjectSemanticDataSearchService` now supports retrieving a `ProjectSemanticData` by its own identifier through `findById(UUID projectSemanticDataId)`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6806[#6806] [diagram] Retrieve the list of `FilterSelectionMenuItems` (menu items shown on the manage selection tool from the diagram toolbar) from `filterSelectionMenuItems` field in GraphQL type `DiagramToolbar`.
 
 
 == 2026.9.0

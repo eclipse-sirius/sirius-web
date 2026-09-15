@@ -82,6 +82,7 @@ Available default actions are:
 
 - Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
 - Update the backend documentation and add a first schema of the lifecycle of the backend with the creation of a project.
+- Retrieve the list of `FilterSelectionMenuItems` (menu items shown on the manage selection tool from the diagram toolbar) from `filterSelectionMenuItems` field in GraphQL type `DiagramToolbar`.
 
 
 == Deprecation warnings
