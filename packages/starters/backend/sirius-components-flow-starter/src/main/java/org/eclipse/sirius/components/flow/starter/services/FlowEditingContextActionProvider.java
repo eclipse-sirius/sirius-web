@@ -18,12 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextActionProvider;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextAction;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
-import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,26 +37,15 @@ public class FlowEditingContextActionProvider implements IEditingContextActionPr
 
     private static final EditingContextAction ROBOT_FLOW_EDITING_CONTEXT_ACTION = new EditingContextAction(ROBOT_FLOW_ID, "Robot Flow");
 
-    private final IProjectSearchService projectSearchService;
+    private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
 
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
-
-    public FlowEditingContextActionProvider(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
-        this.projectSearchService = Objects.requireNonNull(projectSearchService);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
+    public FlowEditingContextActionProvider(IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
+        this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
     }
 
     @Override
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {
-        var isFlowProject = new UUIDParser().parse(editingContext.getId())
-                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
-                .map(ProjectSemanticData::getProject)
-                .map(AggregateReference::getId)
-                .flatMap(this.projectSearchService::findById)
-                .filter(project -> project.getNatures().stream()
-                        .map(Nature::name)
-                        .anyMatch(FlowProjectTemplatesProvider.FLOW_NATURE::equals))
-                .isPresent();
+        var isFlowProject = this.flowCapableEditingContextPredicate.test(editingContext.getId());
 
         if (isFlowProject) {
             return List.of(EMPTY_FLOW_EDITING_CONTEXT_ACTION, ROBOT_FLOW_EDITING_CONTEXT_ACTION);

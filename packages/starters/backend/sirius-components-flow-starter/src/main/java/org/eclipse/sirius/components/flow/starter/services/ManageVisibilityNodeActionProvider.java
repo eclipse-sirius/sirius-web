@@ -21,12 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
-import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,27 +35,16 @@ public class ManageVisibilityNodeActionProvider implements IActionsProvider {
 
     private static final String ACTION_ID = "siriusweb_manage_visibility";
 
-    private final IProjectSearchService projectSearchService;
+    private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
 
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
-
-    public ManageVisibilityNodeActionProvider(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
-        this.projectSearchService = Objects.requireNonNull(projectSearchService);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
+    public ManageVisibilityNodeActionProvider(IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
+        this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean canHandle(IEditingContext editingContext, DiagramDescription diagramDescription, IDiagramElement diagramElement) {
-        var isFlowProject = new UUIDParser().parse(editingContext.getId())
-                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
-                .map(ProjectSemanticData::getProject)
-                .map(AggregateReference::getId)
-                .flatMap(this.projectSearchService::findById)
-                .filter(project -> project.getNatures().stream()
-                        .map(Nature::name)
-                        .anyMatch(FlowProjectTemplatesProvider.FLOW_NATURE::equals))
-                .isPresent();
+        var isFlowProject = this.flowCapableEditingContextPredicate.test(editingContext.getId());
 
         return isFlowProject && diagramElement instanceof Node node && !node.getChildNodes().isEmpty();
     }

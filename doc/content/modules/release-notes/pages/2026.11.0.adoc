@@ -86,6 +86,7 @@ Available default actions are:
 - Added more `AQL variables` available when computing the precondition of a tool in a palette, this includes for a `connector palette` : `environment`, `diagramServices`, `selectedNode`, `selectedEdge` and for a `diagram element palette` : `environment`, `diagramServices`.
 - Extract the appearance logic of nodes and edges in a dedicated service.
 - In forms, the _RichTextEditor_ widget can now insert links using a dedicated link popup.
+- Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
 
 
 == Deprecation warnings

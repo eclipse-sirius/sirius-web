@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.flow.starter.helper.ColorProvider;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
 import org.eclipse.sirius.components.flow.starter.view.FlowTopographyUnsynchronizedViewDiagramDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.FlowTopographyViewDiagramDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.FlowTopographyWithAutoLayoutViewDiagramDescriptionProvider;
@@ -34,13 +35,7 @@ import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
-import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -51,26 +46,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlowEditingContextInitializer implements IEditingContextProcessor {
 
-    private final IProjectSearchService projectSearchService;
+    private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
 
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
-
-    public FlowEditingContextInitializer(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
-        this.projectSearchService = Objects.requireNonNull(projectSearchService);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
+    public FlowEditingContextInitializer(IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
+        this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        var isFlowProject = new UUIDParser().parse(editingContext.getId())
-                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
-                .map(ProjectSemanticData::getProject)
-                .map(AggregateReference::getId)
-                .flatMap(this.projectSearchService::findById)
-                .filter(project -> project.getNatures().stream()
-                        .map(Nature::name)
-                        .anyMatch(FlowProjectTemplatesProvider.FLOW_NATURE::equals))
-                .isPresent();
+        var isFlowProject = this.flowCapableEditingContextPredicate.test(editingContext.getId());
 
         if (isFlowProject && editingContext instanceof EditingContext emfEditingContext) {
             var packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
