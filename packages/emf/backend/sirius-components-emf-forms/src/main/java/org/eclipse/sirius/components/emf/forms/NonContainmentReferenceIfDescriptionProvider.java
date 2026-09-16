@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.springframework.stereotype.Service;
@@ -104,6 +105,8 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .map(this.identityService::getId)
                 .orElse(null);
 
+        var clearButton = ReferenceWidgetClearButtonDescription.newReferenceWidgetClearButtonDescription().build();
+
         return ReferenceWidgetDescription.newReferenceWidgetDescription(REFERENCE_WIDGET_DESCRIPTION_ID)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .idProvider(new WidgetIdProvider())
@@ -121,6 +124,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .isContainmentProvider(this::isContainment)
                 .isManyProvider(this::isMany)
                 .styleProvider(variableManager -> null)
+                .clearButtonDescription(clearButton)
                 .ownerIdProvider(this::getOwnerId)
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())

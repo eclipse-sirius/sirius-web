@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
@@ -69,6 +70,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
                 return this.createReferenceWidgetDescriptionStyle();
             case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE:
                 return this.createConditionalReferenceWidgetDescriptionStyle();
+            case ReferencePackage.REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION:
+                return this.createReferenceWidgetClearButtonDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -113,6 +116,17 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
      * @generated
      */
     @Override
+    public ReferenceWidgetClearButtonDescription createReferenceWidgetClearButtonDescription() {
+        ReferenceWidgetClearButtonDescriptionImpl referenceWidgetClearButtonDescription = new ReferenceWidgetClearButtonDescriptionImpl();
+        return referenceWidgetClearButtonDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public ReferencePackage getReferencePackage() {
         return (ReferencePackage) this.getEPackage();
     }
@@ -120,8 +134,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @deprecated
      * @generated
+     * @deprecated
      */
     @Deprecated
     public static ReferencePackage getPackage() {

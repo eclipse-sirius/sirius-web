@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,5 +49,14 @@ public class ReferenceBuilders {
         return new ConditionalReferenceWidgetDescriptionStyleBuilder();
     }
 
+    /**
+     * Instantiate a ReferenceWidgetClearButtonDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ReferenceWidgetClearButtonDescriptionBuilder newReferenceWidgetClearButtonDescription() {
+        return new ReferenceWidgetClearButtonDescriptionBuilder();
+    }
 
 }

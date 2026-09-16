@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference.provider;
+package org.eclipse.sirius.components.view.widget.reference.provider;
 
 import java.util.Collection;
 import java.util.List;
@@ -139,7 +139,7 @@ public class ReferenceWidgetDescriptionStyleItemProvider extends WidgetDescripti
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Style.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ReferenceWidgetDescriptionStyle"));
     }
 
     /**

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.widget.reference;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -72,7 +73,10 @@ public class ReferenceWidgetComponent implements IComponent {
 
         List<ReferenceValue> items = this.getItems(variableManager, referenceDescription);
 
-        List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(referenceDescription, variableManager)));
+        List<Element> children = new ArrayList<>(List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(referenceDescription, variableManager))));
+        if (referenceDescription.getClearButtonDescription() != null) {
+            children.add(new Element(ReferenceWidgetClearButtonComponent.class, new ReferenceWidgetClearButtonComponentProps(id)));
+        }
 
         var builder = ReferenceElementProps.newReferenceElementProps(id)
                 .label(label)

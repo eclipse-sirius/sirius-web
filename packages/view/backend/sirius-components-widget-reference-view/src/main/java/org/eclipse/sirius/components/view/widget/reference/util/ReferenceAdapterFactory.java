@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
@@ -30,7 +31,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescri
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
  *
- * @see ReferencePackage
+ * @see org.eclipse.sirius.components.view.widget.reference.ReferencePackage
  * @generated
  */
 public class ReferenceAdapterFactory extends AdapterFactoryImpl {
@@ -61,6 +62,11 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalReferenceWidgetDescriptionStyle(ConditionalReferenceWidgetDescriptionStyle object) {
             return ReferenceAdapterFactory.this.createConditionalReferenceWidgetDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseReferenceWidgetClearButtonDescription(ReferenceWidgetClearButtonDescription object) {
+            return ReferenceAdapterFactory.this.createReferenceWidgetClearButtonDescriptionAdapter();
         }
 
         @Override
@@ -139,12 +145,12 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class
-     * '{@link ReferenceWidgetDescription <em>Widget Description</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription <em>Widget
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see ReferenceWidgetDescription
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription
      * @generated
      */
     public Adapter createReferenceWidgetDescriptionAdapter() {
@@ -153,12 +159,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class
-     * '{@link ReferenceWidgetDescriptionStyle <em>Widget Description
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle <em>Widget
+     * Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
      *
      * @return the new adapter.
-     * @see ReferenceWidgetDescriptionStyle
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle
      * @generated
      */
     public Adapter createReferenceWidgetDescriptionStyleAdapter() {
@@ -167,16 +174,31 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class
-     * '{@link ConditionalReferenceWidgetDescriptionStyle
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle
      * <em>Conditional Reference Widget Description Style</em>}'. <!-- begin-user-doc --> This default implementation
      * returns null so that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the
      * cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see ConditionalReferenceWidgetDescriptionStyle
+     * @see org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle
      * @generated
      */
     public Adapter createConditionalReferenceWidgetDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription <em>Widget
+     * Clear Button Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription
+     * @generated
+     */
+    public Adapter createReferenceWidgetClearButtonDescriptionAdapter() {
         return null;
     }
 
