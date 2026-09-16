@@ -4,12 +4,13 @@
 
 === Pitches
 
-- Add support for diagram appearance customization
+- Add support for representation appearance customization
 
 
 === Architectural decision records
 
 - [ADR-237] Improve the modularity of Sirius Web domain
+- [ADR-238] Add support for application-wide representation style customization
 
 
 === Deprecation warning
