@@ -27,7 +27,7 @@ import { useTreeSubscription } from './useTreeSubscription';
 
 export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
   (
-    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    { editingContextId, representationId, readOnly, onRepresentationUnavailable }: RepresentationComponentProps,
     ref: ForwardedRef<WorkbenchMainRepresentationHandle>
   ) => {
     const [state, setState] = useState<TreeRepresentationState>({
@@ -35,7 +35,19 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
       expanded: [],
       maxDepth: 1,
     });
-    const { tree, loading } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
+    const { tree, loading, complete } = useTreeSubscription(
+      editingContextId,
+      representationId,
+      state.expanded,
+      state.maxDepth
+    );
+
+    useEffect(() => {
+      if (complete) {
+        onRepresentationUnavailable();
+      }
+    }, [complete, onRepresentationUnavailable]);
+
     useEffect(() => {
       if (tree && !loading) {
         setState((prevState) => ({ ...prevState, tree }));

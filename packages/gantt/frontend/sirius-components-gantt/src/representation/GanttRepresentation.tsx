@@ -20,7 +20,7 @@ import {
   WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
@@ -73,7 +73,7 @@ const isErrorPayload = (payload: GQLGanttEventPayload): payload is GQLErrorPaylo
  */
 export const GanttRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
   (
-    { editingContextId, representationId }: RepresentationComponentProps,
+    { editingContextId, representationId, onRepresentationUnavailable }: RepresentationComponentProps,
     ref: ForwardedRef<WorkbenchMainRepresentationHandle>
   ) => {
     const { classes } = useGanttRepresentationStyles();
@@ -96,6 +96,11 @@ export const GanttRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
       gantt: null,
       complete: false,
     });
+    useEffect(() => {
+      if (complete) {
+        onRepresentationUnavailable();
+      }
+    }, [complete, onRepresentationUnavailable]);
 
     const onError = ({ message }: ApolloError) => {
       addErrorMessage(message);
