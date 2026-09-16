@@ -66,7 +66,7 @@ const isFormCapabilitiesRefreshedEventPayload = (
 
 export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
   (
-    { editingContextId, representationId }: RepresentationComponentProps,
+    { editingContextId, representationId, onRepresentationUnavailable }: RepresentationComponentProps,
     ref: ForwardedRef<WorkbenchMainRepresentationHandle>
   ) => {
     const [state, setState] = useState<FormRepresentationState>({
@@ -93,6 +93,12 @@ export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
         setState((prevState) => ({ ...prevState, canEdit: payload.capabilities.canEdit }));
       }
     }, [payload]);
+
+    useEffect(() => {
+      if (complete) {
+        onRepresentationUnavailable();
+      }
+    }, [complete, onRepresentationUnavailable]);
 
     const { classes } = useFormRepresentationStyles();
 

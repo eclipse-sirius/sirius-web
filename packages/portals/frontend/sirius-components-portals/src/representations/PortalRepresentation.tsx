@@ -68,7 +68,7 @@ const getFirstDroppedElementId = (event): string | null => {
 
 export const PortalRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
   (
-    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    { editingContextId, representationId, readOnly, onRepresentationUnavailable }: RepresentationComponentProps,
     ref: ForwardedRef<WorkbenchMainRepresentationHandle>
   ) => {
     const theme = useTheme();
@@ -76,6 +76,13 @@ export const PortalRepresentation = forwardRef<WorkbenchMainRepresentationHandle
     const domNode = useRef<HTMLDivElement>(null);
     const { addErrorMessage } = useMultiToast();
     const { portal, complete, message } = usePortal(editingContextId, representationId);
+
+    useEffect(() => {
+      if (complete) {
+        onRepresentationUnavailable();
+      }
+    }, [complete, onRepresentationUnavailable]);
+
     const { addPortalView, removePortalView, layoutPortal, layoutInProgress } = usePortalMutations(
       editingContextId,
       representationId

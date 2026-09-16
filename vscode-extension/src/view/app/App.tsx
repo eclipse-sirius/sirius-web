@@ -132,6 +132,7 @@ export const App = ({
         editingContextId={state.editingContextId}
         representationId={state.representationId}
         readOnly={false}
+        onRepresentationUnavailable={() => {}}
       />
     );
   } else if (representationKind.startsWith('siriusComponents://representation?type=FormDescriptionEditor')) {
@@ -140,6 +141,7 @@ export const App = ({
         editingContextId={state.editingContextId}
         representationId={state.representationId}
         readOnly={false}
+        onRepresentationUnavailable={() => {}}
       />
     );
   } else if (representationKind.startsWith('siriusComponents://representation?type=Form')) {
@@ -148,6 +150,7 @@ export const App = ({
         editingContextId={state.editingContextId}
         representationId={state.representationId}
         readOnly={false}
+        onRepresentationUnavailable={() => {}}
       />
     );
   } else {

@@ -143,7 +143,7 @@ export const FormDescriptionEditorRepresentation = forwardRef<
   RepresentationComponentProps
 >(
   (
-    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    { editingContextId, representationId, readOnly, onRepresentationUnavailable }: RepresentationComponentProps,
     ref: ForwardedRef<WorkbenchMainRepresentationHandle>
   ) => {
     const { classes } = useFormDescriptionEditorStyles();
@@ -173,6 +173,12 @@ export const FormDescriptionEditorRepresentation = forwardRef<
       payload: formDescriptionEditorEventPayload,
       complete,
     } = useFormDescriptionEditorEventSubscription(editingContextId, representationId);
+
+    useEffect(() => {
+      if (complete) {
+        onRepresentationUnavailable();
+      }
+    }, [complete, onRepresentationUnavailable]);
 
     useEffect(() => {
       if (formDescriptionEditorEventPayload) {

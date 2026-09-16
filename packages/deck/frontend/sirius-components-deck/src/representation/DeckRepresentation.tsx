@@ -63,7 +63,7 @@ const isErrorPayload = (payload: GQLDeckEventPayload): payload is GQLErrorPayloa
 
 export const DeckRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
   (
-    { editingContextId, representationId }: RepresentationComponentProps,
+    { editingContextId, representationId, onRepresentationUnavailable }: RepresentationComponentProps,
     ref: ForwardedRef<WorkbenchMainRepresentationHandle>
   ) => {
     const theme: Theme = useTheme();
@@ -76,6 +76,12 @@ export const DeckRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
       deck: undefined,
       complete: false,
     });
+
+    useEffect(() => {
+      if (complete) {
+        onRepresentationUnavailable();
+      }
+    }, [complete, onRepresentationUnavailable]);
 
     useImperativeHandle(
       ref,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA List.
+ * Copyright (c) 2024, 2026 CEA List and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ const defaultPagination: TableRepresentationPagination = {
 
 export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
   (
-    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    { editingContextId, representationId, readOnly, onRepresentationUnavailable }: RepresentationComponentProps,
     ref: ForwardedRef<WorkbenchMainRepresentationHandle>
   ) => {
     const { classes } = useTableRepresentationStyles();
@@ -107,6 +107,11 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
       state.expandAll
     );
     const { complete, table } = useTableSubscription(editingContextId, representationFullId);
+    useEffect(() => {
+      if (complete) {
+        onRepresentationUnavailable();
+      }
+    }, [complete, onRepresentationUnavailable]);
 
     const { rowFilters, activeRowFilterIds } = useTableRowFilters(editingContextId, representationId, table === null);
 

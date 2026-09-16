@@ -128,6 +128,28 @@ test('given a workbench, when we open a representation, then it should be render
   expect(screen.queryByTestId('main-area')).toBeNull();
 });
 
+test('given a workbench with an opened representation, when it becomes unavailable, then it should be closed', async () => {
+  render(
+    <WorkbenchTestEnvironment initialSelection={null}>
+      <Workbench
+        editingContextId="editing-context-id"
+        initialRepresentationSelected={null}
+        initialWorkbenchConfiguration={defaultWorkbenchConfiguration}
+        onRepresentationSelected={() => {}}
+        readOnly={false}
+      />
+    </WorkbenchTestEnvironment>
+  );
+
+  await userEvent.click(screen.getByTestId('explorer-first-representation'));
+  await screen.findByTestId('first-representation');
+
+  await userEvent.click(screen.getByTestId('first-representation-unavailable'));
+
+  expect(screen.getByTestId('main-area')).not.toBeNull();
+  expect(screen.queryByTestId('first-representation')).toBeNull();
+});
+
 test('given a workbench, when ask for data across workbench views, then we can retrieve it', async () => {
   render(
     <WorkbenchTestEnvironment initialSelection={null}>
