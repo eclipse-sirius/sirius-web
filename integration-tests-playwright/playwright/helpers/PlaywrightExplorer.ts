@@ -57,6 +57,12 @@ export class PlaywrightExplorer {
     await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).click();
   }
 
+  async delete(treeItemLabel: string): Promise<void> {
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.page.getByTestId('delete').click();
+    await this.page.getByTestId('confirmation-dialog-button-ok').click();
+  }
+
   async getTreeItemLabel(treeItemLabel: string) {
     return await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`);
   }

@@ -51,6 +51,15 @@ test.describe('diagram', () => {
     expect(reactFlowXYPositionAfter.y).toBeGreaterThan(reactFlowXYPositionBefore.y);
   });
 
+  test('when the active diagram is deleted, then its tab is closed', async ({ page }) => {
+    await expect(page.getByTestId('representation-tab-Topography')).toBeAttached();
+
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.delete('Topography');
+
+    await expect(page.getByTestId('representation-tab-Topography')).not.toBeAttached();
+  });
+
   test('when the mini map is shown or hidden, then mini map is available or not', async ({ page }) => {
     // by default, the mini map is shown
     await expect(page.getByTestId('hide-mini-map')).toBeAttached();
