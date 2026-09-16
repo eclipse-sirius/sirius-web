@@ -4,6 +4,7 @@
 
 * Project templates can now declare required libraries.
 These libraries are automatically selected during project creation and cannot be unselected.
+* Downstream projects can now customize node styles without modifying the diagram descriptions.
 
 
 == Breaking changes
@@ -82,6 +83,11 @@ Available default actions are:
 - Unselect edges
 * Add `IDiagramToolbarFilterSelectionProvider` to add options to the manage diagram selection diagram toolbar tool.
 * Add `IDiagramToolbarFilterSelectionHandler` to add handlers to the manage diagram selection diagram toolbar tool.
+* Add support for node style customization.
+Implement `INodeStyleCustomizer` to customize node styles.
+Each customizer determines which nodes it applies to.
+All applicable customizers are applied, but their order is unspecified.
+If multiple customizers modify the same style property, the last one wins.
 
 
 == Improvements

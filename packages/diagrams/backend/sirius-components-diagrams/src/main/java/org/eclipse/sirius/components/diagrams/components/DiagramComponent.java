@@ -73,6 +73,7 @@ public class DiagramComponent implements IComponent {
                     INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
                     var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                             .variableManager(nodeVariableManager)
+                            .diagramDescription(diagramDescription)
                             .nodeDescription(nodeDescription)
                             .nodesRequestor(nodesRequestor)
                             .nodeDescriptionRequestor(nodeDescriptionRequestor)
