@@ -13,11 +13,13 @@
 package org.eclipse.sirius.web.application.diagram.services.toolbar;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramToolbarFilterSelectionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.FilterSelectionMenuItem;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,6 +32,12 @@ public class SelectEdgesFilterSelectionProvider implements IDiagramToolbarFilter
 
     public static final String ID = "select_all_edges";
 
+    private final ISiriusWebApplicationMessageService messageService;
+
+    public SelectEdgesFilterSelectionProvider(ISiriusWebApplicationMessageService messageService) {
+        this.messageService = Objects.requireNonNull(messageService);
+    }
+
     @Override
     public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, List<String> diagramElementIds) {
         return diagramElementIds.isEmpty();
@@ -37,6 +45,6 @@ public class SelectEdgesFilterSelectionProvider implements IDiagramToolbarFilter
 
     @Override
     public FilterSelectionMenuItem getDiagramToolbarFilterSelectionMenuItem(IEditingContext editingContext, DiagramContext diagramContext, List<String> diagramElementIds) {
-        return new FilterSelectionMenuItem(ID, "Select edges");
+        return new FilterSelectionMenuItem(ID, this.messageService.filterSelectionProviderSelectEdges());
     }
 }

@@ -28,7 +28,7 @@
     "collapse": "Plier la barre d'outils"
   },
   "filterSelectionToolbarButton": {
-    "filterSelectedElement": "Gestion de la selection",
+    "filterSelectedElement": "Gestion de la sélection",
     "noAvailableTools": "Aucun outil disponible"
   },
   "exportImageButton": {

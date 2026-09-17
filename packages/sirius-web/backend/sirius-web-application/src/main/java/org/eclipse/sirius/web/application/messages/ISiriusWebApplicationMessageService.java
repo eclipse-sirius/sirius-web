@@ -35,4 +35,14 @@ public interface ISiriusWebApplicationMessageService {
     String treeToolUpdateLibrary();
 
     String treeToolRemoveLibrary();
+
+    String filterSelectionProviderSelectEdges();
+
+    String filterSelectionProviderSelectNodes();
+
+    String filterSelectionProviderUnSelectEdges();
+
+    String filterSelectionProviderUnSelectNodes();
+
+    String filterSelectionProviderUnSelectChildNodes();
 }

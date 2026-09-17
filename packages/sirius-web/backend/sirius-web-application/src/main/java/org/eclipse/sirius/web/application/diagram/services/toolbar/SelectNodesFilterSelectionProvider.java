@@ -13,11 +13,13 @@
 package org.eclipse.sirius.web.application.diagram.services.toolbar;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramToolbarFilterSelectionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.FilterSelectionMenuItem;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,6 +32,12 @@ public class SelectNodesFilterSelectionProvider implements IDiagramToolbarFilter
 
     public static final String ID = "select_all_nodes";
 
+    private final ISiriusWebApplicationMessageService messageService;
+
+    public SelectNodesFilterSelectionProvider(ISiriusWebApplicationMessageService messageService) {
+        this.messageService = Objects.requireNonNull(messageService);
+    }
+
     @Override
     public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, List<String> diagramElementIds) {
         return diagramElementIds.isEmpty();
@@ -37,6 +45,6 @@ public class SelectNodesFilterSelectionProvider implements IDiagramToolbarFilter
 
     @Override
     public FilterSelectionMenuItem getDiagramToolbarFilterSelectionMenuItem(IEditingContext editingContext, DiagramContext diagramContext,  List<String> diagramElementIds) {
-        return new FilterSelectionMenuItem(ID, "Select nodes");
+        return new FilterSelectionMenuItem(ID, this.messageService.filterSelectionProviderSelectNodes());
     }
 }

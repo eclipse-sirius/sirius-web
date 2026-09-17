@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramToolbarFilterSelectionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.FilterSelectionMenuItem;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,8 +35,11 @@ public class UnselectChildNodesFilterSelectionProvider implements IDiagramToolba
 
     private final DiagramQueryService diagramQueryService;
 
-    public UnselectChildNodesFilterSelectionProvider(DiagramQueryService diagramQueryService) {
+    private final ISiriusWebApplicationMessageService messageService;
+
+    public UnselectChildNodesFilterSelectionProvider(DiagramQueryService diagramQueryService, ISiriusWebApplicationMessageService messageService) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -45,7 +49,7 @@ public class UnselectChildNodesFilterSelectionProvider implements IDiagramToolba
 
     @Override
     public FilterSelectionMenuItem getDiagramToolbarFilterSelectionMenuItem(IEditingContext editingContext, DiagramContext diagramContext, List<String> diagramElementIds) {
-        return new FilterSelectionMenuItem(ID, "Unselect child nodes");
+        return new FilterSelectionMenuItem(ID, this.messageService.filterSelectionProviderUnSelectChildNodes());
     }
 
     private boolean containsChildNode(DiagramContext diagramContext, List<String> diagramElementIds) {

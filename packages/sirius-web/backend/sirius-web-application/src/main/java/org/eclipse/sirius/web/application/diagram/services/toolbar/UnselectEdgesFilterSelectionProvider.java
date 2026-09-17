@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramToolbarFilterSelectionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.FilterSelectionMenuItem;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,8 +35,11 @@ public class UnselectEdgesFilterSelectionProvider implements IDiagramToolbarFilt
 
     private final DiagramQueryService diagramQueryService;
 
-    public UnselectEdgesFilterSelectionProvider(DiagramQueryService diagramQueryService) {
+    private final ISiriusWebApplicationMessageService messageService;
+
+    public UnselectEdgesFilterSelectionProvider(DiagramQueryService diagramQueryService, ISiriusWebApplicationMessageService messageService) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -45,6 +49,6 @@ public class UnselectEdgesFilterSelectionProvider implements IDiagramToolbarFilt
 
     @Override
     public FilterSelectionMenuItem getDiagramToolbarFilterSelectionMenuItem(IEditingContext editingContext, DiagramContext diagramContext, List<String> diagramElementIds) {
-        return new FilterSelectionMenuItem(ID, "Unselect edges");
+        return new FilterSelectionMenuItem(ID, this.messageService.filterSelectionProviderUnSelectEdges());
     }
 }
