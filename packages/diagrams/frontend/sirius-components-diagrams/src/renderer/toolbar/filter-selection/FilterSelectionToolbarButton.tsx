@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import DeselectIcon from '@mui/icons-material/Deselect';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Fade from '@mui/material/Fade';
@@ -20,7 +21,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, EdgeSelectionChange, Node, NodeSelectionChange, useStoreApi } from '@xyflow/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from '../../../representation/useStore';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
@@ -34,10 +35,11 @@ import { useInvokeFilterSelection } from './useInvokeFilterSelection';
 
 export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonProps) => {
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'filterSelectionToolbarButton' });
-  const { invokeFilterSelection } = useInvokeFilterSelection();
+  const { invokeFilterSelection, invokeFilterSelectionData } = useInvokeFilterSelection();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-  const { getNodes, getEdges } = useStore();
+  const { getEdges, getNodes } = useStore();
   const { fetchFilterMenuItems, filterSelectionMenuItems, loading } = useFilterContents();
+  const { setSelection } = useSelection();
 
   const [state, setState] = React.useState<FilterSelectionToolbarButtonStates>({
     anchorEl: null,
@@ -45,14 +47,12 @@ export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonPro
   const isOpen = Boolean(state.anchorEl);
 
   const getSelectedElementsIds = (): string[] => {
-    return store
-      .getState()
-      .nodes.filter((node) => !!node.selected)
+    return getNodes()
+      .filter((node) => !!node.selected)
       .map((node) => node.id)
       .concat(
-        store
-          .getState()
-          .edges.filter((edge) => !!edge.selected)
+        getEdges()
+          .filter((edge) => !!edge.selected)
           .map((edge) => edge.id)
       );
   };
@@ -70,42 +70,65 @@ export const FilterSelectionToolbarButton = ({}: FilterSelectionToolbarButtonPro
   };
 
   const onMenuItemClick = (filterSelectionMenuItem: string) => {
-    const currentSelectedElementsIds = getSelectedElementsIds();
-    const newlySelectedElementsIds = invokeFilterSelection(currentSelectedElementsIds, filterSelectionMenuItem);
-
-    const selectedEdgeIds = newlySelectedElementsIds.filter(
-      (newSelectedElementId) => !!store.getState().edgeLookup.get(newSelectedElementId)
-    );
-    const selectedNodeIds = newlySelectedElementsIds.filter((newSelectedElementId) => {
-      const node = store.getState().nodeLookup.get(newSelectedElementId);
-      return node && isNotUtilityNode(node);
-    });
-
-    const selectedNodeIdSet = new Set(selectedNodeIds);
-    const selectedEdgeIdSet = new Set(selectedEdgeIds);
-
-    const nodeChanges: NodeSelectionChange[] = [];
-    getNodes().forEach((node) => {
-      if (node.selected && !selectedNodeIdSet.has(node.id)) {
-        nodeChanges.push({ id: node.id, selected: false, type: 'select' });
-      } else if (!node.selected && selectedNodeIdSet.has(node.id)) {
-        nodeChanges.push({ id: node.id, selected: true, type: 'select' });
-      }
-    });
-    store.getState().triggerNodeChanges(nodeChanges);
-
-    const edgeChanges: EdgeSelectionChange[] = [];
-    getEdges().forEach((edge) => {
-      if (edge.selected && !selectedEdgeIdSet.has(edge.id)) {
-        edgeChanges.push({ id: edge.id, selected: false, type: 'select' });
-      } else if (!edge.selected && selectedEdgeIdSet.has(edge.id)) {
-        edgeChanges.push({ id: edge.id, selected: true, type: 'select' });
-      }
-    });
-    store.getState().triggerEdgeChanges(edgeChanges);
-
-    setState((prevState) => ({ ...prevState, anchorEl: null }));
+    const selectedElementsIds = getSelectedElementsIds();
+    invokeFilterSelection(selectedElementsIds, filterSelectionMenuItem);
+    handleClose();
   };
+
+  useEffect(() => {
+    if (!!invokeFilterSelectionData) {
+      const { newSelection } = invokeFilterSelectionData;
+      const selectedEdgeIds = newSelection.filter(
+        (newSelectedElementId) => !!store.getState().edgeLookup.get(newSelectedElementId)
+      );
+      const selectedNodeIds = newSelection.filter((newSelectedElementId) => {
+        const node = store.getState().nodeLookup.get(newSelectedElementId);
+        return !!node && isNotUtilityNode(node);
+      });
+
+      const nodesSelectChanges: NodeSelectionChange[] = [];
+      const edgesSelectChanges: EdgeSelectionChange[] = [];
+
+      getNodes().forEach((node) => {
+        if (node.selected && !selectedNodeIds.find((nodeId) => nodeId === node.id)) {
+          nodesSelectChanges.push({
+            id: node.id,
+            selected: false,
+            type: 'select',
+          });
+        } else if (selectedNodeIds.find((nodeId) => nodeId === node.id)) {
+          nodesSelectChanges.push({
+            id: node.id,
+            selected: true,
+            type: 'select',
+          });
+        }
+      });
+
+      getEdges().forEach((edge) => {
+        if (edge.selected && !selectedEdgeIds.find((edgeId) => edgeId === edge.id)) {
+          edgesSelectChanges.push({
+            id: edge.id,
+            selected: false,
+            type: 'select',
+          });
+        } else if (selectedEdgeIds.find((edgeId) => edgeId === edge.id)) {
+          edgesSelectChanges.push({
+            id: edge.id,
+            selected: true,
+            type: 'select',
+          });
+        }
+      });
+
+      store.getState().triggerEdgeChanges(edgesSelectChanges);
+      store.getState().triggerNodeChanges(nodesSelectChanges);
+
+      if (newSelection.length === 0) {
+        setSelection({ entries: [] });
+      }
+    }
+  }, [invokeFilterSelectionData, store, setSelection]);
 
   const isEmpty = !loading && filterSelectionMenuItems.length === 0;
 

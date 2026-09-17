@@ -10,30 +10,82 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, Node, useStoreApi } from '@xyflow/react';
-import { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import { UseInvokeFilterSelectionValue } from './useInvokeFilterSelection.types';
+import { gql, useMutation } from '@apollo/client';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useContext, useEffect } from 'react';
+import { DiagramContext } from '../../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../../contexts/DiagramContext.types';
+import {
+  GQLErrorPayload,
+  GQLInvokeFilterSelectionData,
+  GQLInvokeFilterSelectionInput,
+  GQLInvokeFilterSelectionPayload,
+  GQLInvokeFilterSelectionSuccessPayload,
+  GQLInvokeFilterSelectionVariables,
+  UseInvokeFilterSelectionValue,
+} from './useInvokeFilterSelection.types';
+
+const invokeFilterSelectionMutation = gql`
+  mutation invokeFilterSelection($input: InvokeFilterSelectionInput!) {
+    invokeFilterSelection(input: $input) {
+      __typename
+      ... on InvokeFilterSelectionSuccessPayload {
+        id
+        newSelection
+      }
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
+const isErrorPayload = (payload: GQLInvokeFilterSelectionPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (
+  payload: GQLInvokeFilterSelectionPayload
+): payload is GQLInvokeFilterSelectionSuccessPayload => payload.__typename === 'InvokeFilterSelectionSuccessPayload';
 
 export const useInvokeFilterSelection = (): UseInvokeFilterSelectionValue => {
-  const { nodes, edges, edgeLookup, nodeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
+  const { addMessages, addErrorMessage } = useMultiToast();
+  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const invokeFilterSelection = (diagramElementIds: string[], filterSelectionId: string): string[] => {
-    if (filterSelectionId === 'select_all_nodes') {
-      return nodes.map((node) => node.id);
-    } else if (filterSelectionId === 'select_all_edges') {
-      return edges.map((edge) => edge.id);
-    } else if (filterSelectionId === 'unselect_all_edges') {
-      return diagramElementIds.filter((id) => !edgeLookup.has(id));
-    } else if (filterSelectionId === 'unselect_all_nodes') {
-      return diagramElementIds.filter((id) => !nodeLookup.has(id));
-    } else if (filterSelectionId === 'unselect_child_nodes') {
-      return diagramElementIds.filter((id) => !nodeLookup.get(id)?.parentId);
-    } else {
-      return [];
+  const [invokeFilterSelectionFrom, { data: invokeFilterSelectionData, error: invokeFilterSelectionError }] =
+    useMutation<GQLInvokeFilterSelectionData, GQLInvokeFilterSelectionVariables>(invokeFilterSelectionMutation);
+
+  useEffect(() => {
+    if (invokeFilterSelectionError) {
+      addErrorMessage(invokeFilterSelectionError.message);
     }
+    if (invokeFilterSelectionData) {
+      const { invokeFilterSelection } = invokeFilterSelectionData;
+      if (isErrorPayload(invokeFilterSelection)) {
+        addMessages(invokeFilterSelection.messages);
+      }
+    }
+  }, [invokeFilterSelectionData, invokeFilterSelectionError]);
+
+  const invokeFilterSelection = (diagramElementIds: string[], filterSelectionId: string) => {
+    const input: GQLInvokeFilterSelectionInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId: diagramId,
+      diagramElementIds,
+      filterSelectionId,
+    };
+    invokeFilterSelectionFrom({
+      variables: { input },
+    });
   };
 
   return {
     invokeFilterSelection,
+    invokeFilterSelectionData:
+      !!invokeFilterSelectionData && isSuccessPayload(invokeFilterSelectionData.invokeFilterSelection)
+        ? invokeFilterSelectionData.invokeFilterSelection
+        : null,
   };
 };
