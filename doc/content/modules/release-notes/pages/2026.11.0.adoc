@@ -59,6 +59,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 - Switch to https://github.com/vitejs/vite/releases/tag/v8.3.0[Vite 8.3.0] and https://github.com/vitejs/vite-plugin-react/releases/tag/plugin-react%406.1.1[@vitejs/plugin-react 6.1.1]
 - Switch to https://github.com/nodejs/node/releases/tag/v24.20.0[node.js 24.20.0] and https://docs.npmjs.com/cli/v11/using-npm/changelog#11190-2026-07-28[npm 11.19.0] for our development environment.
 - Remove `connectorTools` field from GraphQL type `DiagramDescription` and related DTO, use `connectorPalette` instead, `IConnectorToolsProvider` & `GetConnectorToolsEventHandler` have been removed too.
+- Switch to https://github.com/TNG/ArchUnit/releases/tag/v1.5.0[ArchUnit 1.5.0] and https://github.com/xmolecules/jmolecules/releases/tag/2.0.1[jmolecules 2.0.1] for our backend architecture tests
 
 
 == Bug fixes
