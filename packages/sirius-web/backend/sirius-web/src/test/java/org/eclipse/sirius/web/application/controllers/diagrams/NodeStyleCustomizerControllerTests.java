@@ -52,7 +52,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.components.diagram.node.customization.enabled=true" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.style.customization.enabled=true" })
 public class NodeStyleCustomizerControllerTests  extends AbstractIntegrationTests {
 
     @Autowired

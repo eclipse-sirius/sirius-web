@@ -41,7 +41,7 @@ public class BlueNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
 
-    public BlueNodeStyleCustomizer(@Value("${sirius.components.diagram.node.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
+    public BlueNodeStyleCustomizer(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
         this.nodeCustomizationEnabled = nodeCustomizationEnabled;
         this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
     }

@@ -137,6 +137,10 @@
   "projectActionButton": {
     "more": "More"
   },
+  "projectAppearancesSettings":  {
+    "title": "Appearances",
+    "description": "Enable or disable style customizations to change the appearance of elements in representations"
+  },
   "projectImagesSettings": {
     "empty": "No project images available, start by uploading one",
     "title": "Project Images",
@@ -280,6 +284,10 @@
     "version": "Version",
     "createdOn": "Created On",
     "namespace": "Namespace",
+    "description": "Description"
+  },
+  "styleCustomizationTable": {
+    "name": "Name",
     "description": "Description"
   },
   "detailsView": {

@@ -42,7 +42,7 @@ public class DabediNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
 
-    public DabediNodeStyleCustomizer(@Value("${sirius.components.diagram.node.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
+    public DabediNodeStyleCustomizer(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
         this.nodeCustomizationEnabled = nodeCustomizationEnabled;
         this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
     }
