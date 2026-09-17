@@ -518,6 +518,7 @@ extend type Mutation {
   layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
   invokeAction(input: InvokeActionInput!): InvokeActionPayload!
   invokeManageVisibilityAction(input: InvokeManageVisibilityActionInput!): InvokeManageVisibilityActionPayload!
+  invokeFilterSelection(input: InvokeFilterSelectionInput!): InvokeFilterSelectionPayload!
 }
 
 input DropNodesInput {
@@ -614,6 +615,16 @@ input InvokeManageVisibilityActionInput {
   actionId: ID!
 }
 
+input InvokeFilterSelectionInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementIds: [ID!]!
+  filterSelectionId: ID!
+}
+
+union InvokeFilterSelectionPayload = ErrorPayload | InvokeFilterSelectionSuccessPayload
+
 union InvokeActionPayload = ErrorPayload | SuccessPayload
 
 union InvokeManageVisibilityActionPayload = ErrorPayload | SuccessPayload
@@ -624,6 +635,11 @@ type InvokeSingleClickOnDiagramElementToolSuccessPayload {
   id: ID!
   newSelection: WorkbenchSelection
   messages: [Message]!
+}
+
+type InvokeFilterSelectionSuccessPayload {
+  id: ID!
+  newSelection: [ID!]!
 }
 
 input DropOnDiagramInput {

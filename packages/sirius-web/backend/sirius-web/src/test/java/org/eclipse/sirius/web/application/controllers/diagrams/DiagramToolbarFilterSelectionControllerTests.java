@@ -16,13 +16,18 @@ import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAss
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.graphql.FilterSelectionMenuItemsExecutor;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeFilterSelectionMenuItemsExecutor;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -50,7 +55,7 @@ import reactor.test.StepVerifier;
 public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegrationTests {
 
     public static final String REPRESENTATION_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38";
-    
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -59,6 +64,9 @@ public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegr
 
     @Autowired
     private FilterSelectionMenuItemsExecutor filterSelectionMenuItemsExecutor;
+
+    @Autowired
+    private InvokeFilterSelectionMenuItemsExecutor invokeFilterSelectionMenuItemsExecutor;
 
     @BeforeEach
     public void beforeEach() {
@@ -71,7 +79,7 @@ public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegr
                 FlowIdentifier.FLOW_EDITING_CONTEXT_ID,
                 REPRESENTATION_DESCRIPTION_ID,
                 FlowIdentifier.FLOW_ROOT_SYSTEM_OBJECT,
-            "FilterSelectionDiagram"
+                "FilterSelectionDiagram"
         );
 
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
@@ -79,21 +87,69 @@ public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegr
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a diagram with filter selection actions, when the actions are requested with an empty selection, then the actions are retrieved")
-    public void givenDiagramWithFilterSelectionActionsWhenTheActionsAreRequestedOnThisEmptySelectionThenTheActionsAreRetrieved() {
+    @DisplayName("Given a diagram with filter selection actions, when the actions are requested with an empty selection, then the actions can be executed")
+    public void givenDiagramWithFilterSelectionActionsWhenTheActionsAreRequestedOnThisEmptySelectionThenTheActionsCanBeExecuted() {
         var flux = this.givenSubscriptionToActionDiagram();
         var diagramId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
-            diagramId.set(diagram.getId());
-        });
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> diagramId.set(diagram.getId()));
 
         Runnable getFilterMenuItems = () -> this.filterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), List.of())
                 .hasMenuItemIds(ids -> assertThat(ids).contains("select_all_nodes", "select_all_edges"));
 
+        Runnable invokeSelectAllNodesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), List.of(), "select_all_nodes")
+                .isSuccess()
+                .hasNewSelection(newSelection -> assertThat(newSelection).hasSize(5));
+
+        Runnable invokeSelectAllEdgesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), List.of(), "select_all_edges")
+                .isSuccess()
+                .hasNewSelection(newSelection -> assertThat(newSelection).hasSize(2));
+
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(getFilterMenuItems)
+                .then(invokeSelectAllNodesAction)
+                .then(invokeSelectAllEdgesAction)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with filter selection actions, when the actions are requested with a selection, then the actions can be executed")
+    public void givenDiagramWithFilterSelectionActionsWhenTheActionsAreRequestedOnThisSelectionThenTheCanBeExecuted() {
+        var flux = this.givenSubscriptionToActionDiagram();
+        var diagramId = new AtomicReference<String>();
+        List<String> diagramElementsIds = new ArrayList<>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            // Contains 3 root nodes, 2 child nodes & 2 edges
+            diagramId.set(diagram.getId());
+            new DiagramNavigator(diagram).findAllNodes().stream().map(Node::getId).forEach(diagramElementsIds::add);
+            diagram.getEdges().stream().map(Edge::getId).forEach(diagramElementsIds::add);
+        });
+
+        Runnable getFilterMenuItems = () -> this.filterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds)
+                .hasMenuItemIds(ids -> assertThat(ids).contains("unselect_child_nodes", "unselect_all_edges", "unselect_all_nodes"));
+
+        Runnable invokeUnselectAllNodesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds, "unselect_all_nodes")
+                .isSuccess()
+                .hasNewSelection(newSelection -> assertThat(newSelection).hasSize(2));
+
+        Runnable invokeUnselectAllEdgesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds, "unselect_all_edges")
+                .isSuccess()
+                .hasNewSelection(newSelection -> assertThat(newSelection).hasSize(5));
+
+        Runnable invokeUnselectChildNodesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds, "unselect_child_nodes")
+                .isSuccess()
+                .hasNewSelection(newSelection -> assertThat(newSelection).hasSize(5));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(getFilterMenuItems)
+                .then(invokeUnselectChildNodesAction)
+                .then(invokeUnselectAllEdgesAction)
+                .then(invokeUnselectAllNodesAction)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

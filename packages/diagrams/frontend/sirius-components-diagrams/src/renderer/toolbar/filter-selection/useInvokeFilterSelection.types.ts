@@ -10,7 +10,38 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseInvokeFilterSelectionValue {
-  invokeFilterSelection: (diagramElementIds: string[], filterSelectionId: string) => string[];
+  invokeFilterSelection: (diagramElementIds: string[], filterSelectionId: string) => void;
+  invokeFilterSelectionData: GQLInvokeFilterSelectionSuccessPayload | null;
+}
+
+export interface GQLInvokeFilterSelectionPayload {
+  __typename: string;
+}
+
+export interface GQLInvokeFilterSelectionSuccessPayload extends GQLInvokeFilterSelectionPayload {
+  id: string;
+  newSelection: string[];
+}
+
+export interface GQLErrorPayload extends GQLInvokeFilterSelectionPayload {
+  messages: GQLMessage[];
+}
+
+export interface GQLInvokeFilterSelectionData {
+  invokeFilterSelection: GQLInvokeFilterSelectionPayload;
+}
+
+export interface GQLInvokeFilterSelectionVariables {
+  input: GQLInvokeFilterSelectionInput;
+}
+
+export interface GQLInvokeFilterSelectionInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  diagramElementIds: string[];
+  filterSelectionId: string;
 }
