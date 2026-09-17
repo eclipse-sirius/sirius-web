@@ -73,4 +73,29 @@ public class SiriusWebApplicationMessageService implements ISiriusWebApplication
         return this.messageSourceAccessor.getMessage("TREE_TOOL_REMOVE_LIBRARY");
     }
 
+    @Override
+    public String filterSelectionProviderSelectEdges() {
+        return this.messageSourceAccessor.getMessage("FILTER_SELECTION_PROVIDER_SELECT_EDGES");
+    }
+
+    @Override
+    public String filterSelectionProviderSelectNodes() {
+        return this.messageSourceAccessor.getMessage("FILTER_SELECTION_PROVIDER_SELECT_NODES");
+    }
+
+    @Override
+    public String filterSelectionProviderUnSelectEdges() {
+        return this.messageSourceAccessor.getMessage("FILTER_SELECTION_PROVIDER_UNSELECT_EDGES");
+    }
+
+    @Override
+    public String filterSelectionProviderUnSelectNodes() {
+        return this.messageSourceAccessor.getMessage("FILTER_SELECTION_PROVIDER_UNSELECT_NODES");
+    }
+
+    @Override
+    public String filterSelectionProviderUnSelectChildNodes() {
+        return this.messageSourceAccessor.getMessage("FILTER_SELECTION_PROVIDER_UNSELECT_CHILD_NODES");
+    }
+
 }
