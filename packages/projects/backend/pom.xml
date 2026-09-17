@@ -17,7 +17,7 @@
 
     <groupId>org.eclipse.sirius</groupId>
     <artifactId>sirius-web-projects-root</artifactId>
-    <version>2026.9.0</version>
+    <version>2026.9.1</version>
 
     <name>Sirius Web Projects Root</name>
     <description>Sirius Web Projects Root</description>
