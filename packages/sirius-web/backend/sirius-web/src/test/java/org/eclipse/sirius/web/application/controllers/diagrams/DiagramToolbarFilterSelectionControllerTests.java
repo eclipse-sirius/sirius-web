@@ -29,6 +29,11 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.FilterSelectionMenuI
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeFilterSelectionMenuItemsExecutor;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.diagram.services.toolbar.SelectEdgesFilterSelectionProvider;
+import org.eclipse.sirius.web.application.diagram.services.toolbar.SelectNodesFilterSelectionProvider;
+import org.eclipse.sirius.web.application.diagram.services.toolbar.UnselectChildNodesFilterSelectionProvider;
+import org.eclipse.sirius.web.application.diagram.services.toolbar.UnselectEdgesFilterSelectionProvider;
+import org.eclipse.sirius.web.application.diagram.services.toolbar.UnselectNodesFilterSelectionProvider;
 import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
@@ -95,7 +100,7 @@ public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegr
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> diagramId.set(diagram.getId()));
 
         Runnable getFilterMenuItems = () -> this.filterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), List.of())
-                .hasMenuItemIds(ids -> assertThat(ids).contains("select_all_nodes", "select_all_edges"));
+                .hasMenuItemIds(ids -> assertThat(ids).contains(SelectNodesFilterSelectionProvider.ID, SelectEdgesFilterSelectionProvider.ID));
 
         Runnable invokeSelectAllNodesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), List.of(), "select_all_nodes")
                 .isSuccess()
@@ -127,20 +132,21 @@ public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegr
             diagramId.set(diagram.getId());
             new DiagramNavigator(diagram).findAllNodes().stream().map(Node::getId).forEach(diagramElementsIds::add);
             diagram.getEdges().stream().map(Edge::getId).forEach(diagramElementsIds::add);
+            new DiagramNavigator(diagram).findAllNodes().stream().flatMap(node -> node.getChildNodes().stream()).map(Node::getId).forEach(diagramElementsIds::add);
         });
 
         Runnable getFilterMenuItems = () -> this.filterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds)
-                .hasMenuItemIds(ids -> assertThat(ids).contains("unselect_child_nodes", "unselect_all_edges", "unselect_all_nodes"));
+                .hasMenuItemIds(ids -> assertThat(ids).contains(UnselectNodesFilterSelectionProvider.ID, UnselectEdgesFilterSelectionProvider.ID, UnselectChildNodesFilterSelectionProvider.ID));
 
-        Runnable invokeUnselectAllNodesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds, "unselect_all_nodes")
+        Runnable invokeUnselectAllNodesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds, UnselectNodesFilterSelectionProvider.ID)
                 .isSuccess()
                 .hasNewSelection(newSelection -> assertThat(newSelection).hasSize(2));
 
-        Runnable invokeUnselectAllEdgesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds, "unselect_all_edges")
+        Runnable invokeUnselectAllEdgesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds, UnselectEdgesFilterSelectionProvider.ID)
                 .isSuccess()
-                .hasNewSelection(newSelection -> assertThat(newSelection).hasSize(5));
+                .hasNewSelection(newSelection -> assertThat(newSelection).hasSize(7));
 
-        Runnable invokeUnselectChildNodesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds, "unselect_child_nodes")
+        Runnable invokeUnselectChildNodesAction = () -> this.invokeFilterSelectionMenuItemsExecutor.execute(FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), diagramElementsIds, UnselectChildNodesFilterSelectionProvider.ID)
                 .isSuccess()
                 .hasNewSelection(newSelection -> assertThat(newSelection).hasSize(5));
 

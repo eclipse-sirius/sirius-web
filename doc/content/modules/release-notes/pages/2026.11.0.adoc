@@ -78,6 +78,7 @@ Available default actions are:
 - Unselect nodes
 - Unselect edges
 * Add `IDiagramToolbarFilterSelectionProvider` to add options to the manage diagram selection diagram toolbar tool.
+* Add `IDiagramToolbarFilterSelectionHandler` to add handlers to the manage diagram selection diagram toolbar tool.
 
 
 == Improvements
