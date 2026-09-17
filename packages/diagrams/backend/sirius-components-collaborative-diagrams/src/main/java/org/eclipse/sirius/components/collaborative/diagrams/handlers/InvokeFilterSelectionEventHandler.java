@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,15 +21,13 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.InvokeFilterSelectionInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.InvokeFilterSelectionSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.handlers.api.IDiagramToolbarFilterSelectionHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.diagrams.Edge;
-import org.eclipse.sirius.components.diagrams.Node;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -45,14 +42,14 @@ import reactor.core.publisher.Sinks;
 @Service
 public class InvokeFilterSelectionEventHandler implements IDiagramEventHandler {
 
-    private final IDiagramQueryService diagramQueryService;
+    private final List<IDiagramToolbarFilterSelectionHandler> diagramToolBarFilterSelectionHandlers;
 
     private final ICollaborativeDiagramMessageService messageService;
 
     private final Counter counter;
 
-    public InvokeFilterSelectionEventHandler(IDiagramQueryService diagramQueryService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
-        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
+    public InvokeFilterSelectionEventHandler(List<IDiagramToolbarFilterSelectionHandler> diagramToolBarFilterSelectionHandlers, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
+        this.diagramToolBarFilterSelectionHandlers = Objects.requireNonNull(diagramToolBarFilterSelectionHandlers);
         this.messageService = Objects.requireNonNull(messageService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -73,38 +70,16 @@ public class InvokeFilterSelectionEventHandler implements IDiagramEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof InvokeFilterSelectionInput invokeFilterSelectionInput) {
-            switch (invokeFilterSelectionInput.filterSelectionId()) {
-                case "select_all_nodes" -> {
-                    var newSelection = this.getAllNodesIDs(diagramContext.diagram().getNodes());
-                    payload = new InvokeFilterSelectionSuccessPayload(invokeFilterSelectionInput.id(), newSelection);
-                }
-                case "select_all_edges" -> {
-                    var newSelection = diagramContext.diagram().getEdges().stream().map(Edge::getId).toList();
-                    payload = new InvokeFilterSelectionSuccessPayload(invokeFilterSelectionInput.id(), newSelection);
-                }
-                case "unselect_all_nodes" -> {
-                    var newSelection = invokeFilterSelectionInput.diagramElementIds().stream()
-                            .filter(diagramElementId -> this.diagramQueryService.findNodeById(diagramContext.diagram(), diagramElementId).isEmpty())
-                            .toList();
-                    payload = new InvokeFilterSelectionSuccessPayload(invokeFilterSelectionInput.id(), newSelection);
-                }
-                case "unselect_child_nodes" -> {
-                    var newSelection = invokeFilterSelectionInput.diagramElementIds().stream()
-                            .filter(diagramElementId -> isRootNode(diagramContext, diagramElementId)
-                                    || this.diagramQueryService.findEdgeById(diagramContext.diagram(), diagramElementId).isPresent())
-                            .toList();
-                    payload = new InvokeFilterSelectionSuccessPayload(invokeFilterSelectionInput.id(), newSelection);
-                }
-                case "unselect_all_edges" -> {
-                    var newSelection = invokeFilterSelectionInput.diagramElementIds().stream()
-                            .filter(diagramElementId -> this.diagramQueryService.findEdgeById(diagramContext.diagram(), diagramElementId).isEmpty())
-                            .toList();
-                    payload = new InvokeFilterSelectionSuccessPayload(invokeFilterSelectionInput.id(), newSelection);
-                }
-                default -> {
-                    message = this.messageService.actionHandlerNotFound(invokeFilterSelectionInput.filterSelectionId());
-                    payload = new ErrorPayload(diagramInput.id(), message);
-                }
+            var optionalHandler = this.diagramToolBarFilterSelectionHandlers.stream()
+                    .filter(handler -> handler.canHandle(editingContext, diagramContext, invokeFilterSelectionInput.filterSelectionId(), invokeFilterSelectionInput.diagramElementIds()))
+                    .findFirst();
+
+            if (optionalHandler.isEmpty()) {
+                message = this.messageService.actionHandlerNotFound(invokeFilterSelectionInput.filterSelectionId());
+                payload = new ErrorPayload(diagramInput.id(), message);
+            } else {
+                var newSelection = optionalHandler.get().getNewSelection(editingContext, diagramContext,  invokeFilterSelectionInput.filterSelectionId(), invokeFilterSelectionInput.diagramElementIds());
+                payload = new InvokeFilterSelectionSuccessPayload(invokeFilterSelectionInput.id(), newSelection);
             }
         }
 
@@ -112,19 +87,4 @@ public class InvokeFilterSelectionEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    public List<String> getAllNodesIDs(List<Node> nodes) {
-        var allNodes = new LinkedList<String>();
-        for (Node node : nodes) {
-            allNodes.add(node.getId());
-            var children = new LinkedList<>(node.getChildNodes());
-            allNodes.addAll(this.getAllNodesIDs(children));
-        }
-        return allNodes;
-    }
-
-    private boolean isRootNode(DiagramContext diagramContext, String diagramElementId) {
-        return diagramContext.diagram().getNodes().stream()
-                .map(Node::getId)
-                .anyMatch(nodeId -> nodeId.equals(diagramElementId));
-    }
 }
