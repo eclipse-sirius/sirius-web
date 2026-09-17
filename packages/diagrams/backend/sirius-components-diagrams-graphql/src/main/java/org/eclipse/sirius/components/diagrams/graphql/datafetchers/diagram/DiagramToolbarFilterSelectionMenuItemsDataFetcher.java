@@ -12,15 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.graphql.datafetchers.diagram;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.FilterSelectionMenuItem;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.GetFilterSelectionMenuItemsInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.GetFilterSelectionMenuItemsSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
+import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -36,6 +41,15 @@ public class DiagramToolbarFilterSelectionMenuItemsDataFetcher implements IDataF
 
     private static final String DIAGRAM_ELEMENT_IDS = "diagramElementIds";
 
+    private final IEditingContextDispatcher editingContextDispatcher;
+
+    private final IExceptionWrapper exceptionWrapper;
+
+    public DiagramToolbarFilterSelectionMenuItemsDataFetcher(IEditingContextDispatcher editingContextDispatcher, IExceptionWrapper exceptionWrapper) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
+        this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
+    }
+
     @Override
     public CompletableFuture<List<FilterSelectionMenuItem>> get(DataFetchingEnvironment environment) throws Exception {
         Map<String, Object> localContext = environment.getLocalContext();
@@ -43,17 +57,13 @@ public class DiagramToolbarFilterSelectionMenuItemsDataFetcher implements IDataF
         String representationId = Optional.ofNullable(localContext.get(LocalContextConstants.REPRESENTATION_ID)).map(Object::toString).orElse(null);
         List<String> diagramElementIds = environment.getArgument(DIAGRAM_ELEMENT_IDS);
         if (editingContextId != null && representationId != null) {
-            List<FilterSelectionMenuItem> mockedFilteredMenuItems = new ArrayList<>();
-            if (diagramElementIds != null && diagramElementIds.isEmpty()) {
-                mockedFilteredMenuItems.addAll(List.of(new FilterSelectionMenuItem("select_all_edges", "Select edges"),
-                        new FilterSelectionMenuItem("select_all_nodes", "Select nodes")));
-            } else {
-                mockedFilteredMenuItems.addAll(List.of(new FilterSelectionMenuItem("unselect_child_nodes", "Unselect child nodes"),
-                        new FilterSelectionMenuItem("unselect_all_edges", "Unselect edges"),
-                        new FilterSelectionMenuItem("unselect_all_nodes", "Unselect nodes")));
-            }
+            var input = new GetFilterSelectionMenuItemsInput(UUID.randomUUID(), editingContextId, representationId, diagramElementIds);
 
-            return Mono.just(mockedFilteredMenuItems).toFuture();
+            return this.exceptionWrapper.wrapMono(() -> this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input), input)
+                    .filter(GetFilterSelectionMenuItemsSuccessPayload.class::isInstance)
+                    .map(GetFilterSelectionMenuItemsSuccessPayload.class::cast)
+                    .map(GetFilterSelectionMenuItemsSuccessPayload::filterSelectionMenuItems)
+                    .toFuture();
         }
 
         return Mono.just(List.<FilterSelectionMenuItem> of()).toFuture();
