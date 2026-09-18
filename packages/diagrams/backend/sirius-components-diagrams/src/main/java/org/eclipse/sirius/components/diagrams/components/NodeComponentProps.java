@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -36,6 +37,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public final class NodeComponentProps implements IProps {
 
     private VariableManager variableManager;
+
+    private DiagramDescription diagramDescription;
 
     private NodeDescription nodeDescription;
 
@@ -73,6 +76,10 @@ public final class NodeComponentProps implements IProps {
 
     public VariableManager getVariableManager() {
         return this.variableManager;
+    }
+
+    public DiagramDescription getDiagramDescription() {
+        return this.diagramDescription;
     }
 
     public NodeDescription getNodeDescription() {
@@ -149,6 +156,8 @@ public final class NodeComponentProps implements IProps {
 
         private VariableManager variableManager;
 
+        private DiagramDescription diagramDescription;
+
         private NodeDescription nodeDescription;
 
         private INodesRequestor nodesRequestor;
@@ -191,6 +200,11 @@ public final class NodeComponentProps implements IProps {
 
         public Builder nodesRequestor(INodesRequestor nodesRequestor) {
             this.nodesRequestor = Objects.requireNonNull(nodesRequestor);
+            return this;
+        }
+
+        public Builder diagramDescription(DiagramDescription diagramDescription) {
+            this.diagramDescription = Objects.requireNonNull(diagramDescription);
             return this;
         }
 
@@ -262,6 +276,7 @@ public final class NodeComponentProps implements IProps {
         public NodeComponentProps build() {
             NodeComponentProps nodeComponentProps = new NodeComponentProps();
             nodeComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
+            nodeComponentProps.diagramDescription = Objects.requireNonNull(this.diagramDescription);
             nodeComponentProps.nodeDescription = Objects.requireNonNull(this.nodeDescription);
             nodeComponentProps.nodesRequestor = Objects.requireNonNull(this.nodesRequestor);
             nodeComponentProps.nodeDescriptionRequestor = Objects.requireNonNull(this.nodeDescriptionRequestor);
