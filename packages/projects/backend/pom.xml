@@ -35,5 +35,6 @@
         <module>sirius-web-projects-images-domain</module>
         <module>sirius-web-projects-images-infrastructure</module>
         <module>sirius-web-projects-semanticdata-domain</module>
+        <module>sirius-web-projects-semanticdata-infrastructure</module>
     </modules>
 </project>
