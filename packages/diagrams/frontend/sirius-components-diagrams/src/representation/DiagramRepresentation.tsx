@@ -106,7 +106,7 @@ const ApplySelectionWrapper = forwardRef(
 export const DiagramRepresentation = memo(
   forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
     (
-      { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+      { editingContextId, representationId, readOnly, onRepresentationUnavailable }: RepresentationComponentProps,
       ref: ForwardedRef<WorkbenchMainRepresentationHandle>
     ) => {
       const [state, setState] = useState<DiagramRepresentationState>({
@@ -198,6 +198,7 @@ export const DiagramRepresentation = memo(
                                   diagramId={representationId}
                                   editingContextId={editingContextId}
                                   readOnly={readOnly}
+                                  onRepresentationUnavailable={onRepresentationUnavailable}
                                 />
                               </DialogContextProvider>
                             </ManageVisibilityContextProvider>

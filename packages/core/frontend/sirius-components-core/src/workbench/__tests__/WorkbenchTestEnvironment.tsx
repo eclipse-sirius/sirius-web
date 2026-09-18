@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -175,6 +175,16 @@ const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>
   }
 );
 
-const Representation = ({ representationId }: RepresentationComponentProps) => {
-  return <div data-testid={representationId}>{representationId}</div>;
+const Representation = ({
+  representationId,
+  onRepresentationUnavailable,
+}: RepresentationComponentProps): React.JSX.Element => {
+  return (
+    <div data-testid={representationId}>
+      {representationId}
+      <button data-testid={`${representationId}-unavailable`} onClick={onRepresentationUnavailable}>
+        Unavailable
+      </button>
+    </div>
+  );
 };

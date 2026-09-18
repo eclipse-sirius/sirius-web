@@ -36,7 +36,8 @@ const isDiagramRefreshedEventPayload = (
 const isErrorPayload = (payload: GQLDiagramEventPayload | null): payload is GQLErrorPayload =>
   !!payload && payload.__typename === 'ErrorPayload';
 
-export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }: DiagramSubscriptionProviderProps) => {
+export const DiagramSubscriptionProvider = memo((props: DiagramSubscriptionProviderProps) => {
+  const { diagramId, editingContextId } = props;
   const [state, setState] = useState<DiagramSubscriptionState>({
     id: crypto.randomUUID(),
     diagramRefreshedEventPayload: null,
@@ -55,6 +56,12 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
       addMessages(payload.messages);
     }
   }, [payload]);
+
+  useEffect(() => {
+    if (complete) {
+      props.onRepresentationUnavailable?.();
+    }
+  }, [complete, props.onRepresentationUnavailable]);
 
   if (complete) {
     return (
