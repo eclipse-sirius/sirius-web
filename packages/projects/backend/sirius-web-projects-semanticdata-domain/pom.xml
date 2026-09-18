@@ -18,13 +18,13 @@
     <parent>
         <groupId>org.eclipse.sirius</groupId>
         <artifactId>sirius-web-parent</artifactId>
-        <version>2026.9.1</version>
+        <version>2026.9.2</version>
         <relativePath>../../../releng/backend/sirius-web-parent</relativePath>
     </parent>
 
     <groupId>org.eclipse.sirius</groupId>
     <artifactId>sirius-web-projects-semanticdata-domain</artifactId>
-    <version>2026.9.1</version>
+    <version>2026.9.2</version>
     <name>sirius-web-projects-semanticdata-domain</name>
     <description>Sirius Web Projects Semantic Data Domain</description>
 
@@ -32,24 +32,24 @@
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-web-core-domain</artifactId>
-            <version>2026.9.1</version>
+            <version>2026.9.2</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-web-domain</artifactId>
-            <version>2026.9.1</version>
+            <version>2026.9.2</version>
         </dependency>
 
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-components-tests</artifactId>
-            <version>2026.9.1</version>
+            <version>2026.9.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-components-spring-tests</artifactId>
-            <version>2026.9.1</version>
+            <version>2026.9.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
