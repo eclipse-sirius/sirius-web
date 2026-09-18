@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.projects.images.domain.messages.api.IProjectsImagesDomainMessageService;
 import org.eclipse.sirius.web.projects.images.domain.ProjectImage;
 import org.eclipse.sirius.web.projects.images.domain.repositories.IProjectImageRepository;
 import org.eclipse.sirius.web.projects.images.domain.services.api.IProjectImageDeletionService;
@@ -36,9 +36,9 @@ public class ProjectImageDeletionService implements IProjectImageDeletionService
 
     private final IProjectImageRepository projectImageRepository;
 
-    private final IMessageService messageService;
+    private final IProjectsImagesDomainMessageService messageService;
 
-    public ProjectImageDeletionService(IProjectImageRepository projectImageRepository, IMessageService messageService) {
+    public ProjectImageDeletionService(IProjectImageRepository projectImageRepository, IProjectsImagesDomainMessageService messageService) {
         this.projectImageRepository = Objects.requireNonNull(projectImageRepository);
         this.messageService = Objects.requireNonNull(messageService);
     }

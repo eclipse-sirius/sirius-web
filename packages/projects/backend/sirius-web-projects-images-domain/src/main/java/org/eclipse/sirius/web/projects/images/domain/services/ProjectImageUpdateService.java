@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.projects.images.domain.messages.api.IProjectsImagesDomainMessageService;
 import org.eclipse.sirius.web.projects.images.domain.repositories.IProjectImageRepository;
 import org.eclipse.sirius.web.projects.images.domain.services.api.IProjectImageUpdateService;
 import org.springframework.stereotype.Service;
@@ -34,9 +34,9 @@ public class ProjectImageUpdateService implements IProjectImageUpdateService {
 
     private final IProjectImageRepository projectImageRepository;
 
-    private final IMessageService messageService;
+    private final IProjectsImagesDomainMessageService messageService;
 
-    public ProjectImageUpdateService(IProjectImageRepository projectImageRepository, IMessageService messageService) {
+    public ProjectImageUpdateService(IProjectImageRepository projectImageRepository, IProjectsImagesDomainMessageService messageService) {
         this.projectImageRepository = Objects.requireNonNull(projectImageRepository);
         this.messageService = Objects.requireNonNull(messageService);
     }

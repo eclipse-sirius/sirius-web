@@ -79,6 +79,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 - https://github.com/eclipse-sirius/sirius-web/issues/2770[#2770] [diagram] Remove `findNodeIndex` from `@eclipse-sirius/sirius-components-diagrams`.
 Custom node layout handlers should use `getNodeBorderWidth(node.data.style)` instead of inspecting hidden rendered nodes.
 Consumers that still need a node index can use `nodes.findIndex((node) => node.id === nodeId)`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Reduce the dependency of the project images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-images-infrastructure`, for its internationalization support.
 
 
 === Dependency update

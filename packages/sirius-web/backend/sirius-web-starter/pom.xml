@@ -45,6 +45,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-projects-images-infrastructure</artifactId>
+			<version>2026.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-browser-graphql</artifactId>
 			<version>2026.9.2</version>
 		</dependency>
