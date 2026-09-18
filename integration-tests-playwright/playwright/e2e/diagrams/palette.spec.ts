@@ -75,6 +75,25 @@ test.describe('diagram - palette', () => {
     await expect(playwrightNode.nodeStyleLocator).toHaveCSS('opacity', '0.4');
   });
 
+  test('when the diagram palette is opened, then the global selection is updated with the diagram', async ({
+    page,
+  }) => {
+    const playwrightNode = new PlaywrightNode(page, 'DataSource1');
+    const details = new PlaywrightDetails(page);
+
+    await playwrightNode.click();
+    await expect(details.detailsLocator.getByTestId('input-Name')).toHaveValue('DataSource1');
+    const diagramId = new URL(page.url()).pathname.split('/').at(-1);
+    if (!diagramId) {
+      throw new Error('The diagram identifier should be present in the URL');
+    }
+
+    await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 1, y: 1 } });
+
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await expect.poll(() => new URL(page.url()).searchParams.get('selection')).toBe(diagramId);
+  });
+
   test('when several elements are selected with the rectangular selection, we can open the group palette and hide both elements', async ({
     page,
   }) => {

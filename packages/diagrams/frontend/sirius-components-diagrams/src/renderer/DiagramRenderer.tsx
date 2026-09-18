@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useData, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useData } from '@eclipse-sirius/sirius-components-core';
 import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import {
   applyNodeChanges,
@@ -84,7 +84,7 @@ import { useMultiSelectResizeChange } from './resize/useMultiSelectResizeChange'
 import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useLastElementSelectedChange } from './selection/useLastElementSelectedChange';
-import { useOnRightClickElement } from './selection/useOnRightClickElement';
+import { useOnClickElement } from './selection/useOnClickElement';
 import { usePostToolSelection } from './selection/usePostToolSelection';
 import { useRectangleSelection } from './selection/useRectangleSelection';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
@@ -114,7 +114,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onNodesDragStart, onNodesDrag, onNodesDragStop } = useDropNodes();
   const { background, setBackground, largeGridColor, smallGridColor } = useDropDiagramStyle();
   const { nodeTypes } = useNodeType();
-  const { setSelection } = useSelection();
   const { onRectangleSelectionStart, onRectangleSelectionEnd } = useRectangleSelection();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
@@ -351,8 +350,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { isOpened: isDiagramPaletteOpened } = usePalette();
   const { isOpened: isConnectorPaletteOpened } = useConnectorPalette();
 
-  const { onEdgeContextMenu, onNodeContextMenu, onPaneContextMenu, onSelectionContextMenu } =
-    useOnRightClickElement(selectedElementsIds);
+  const { onEdgeContextMenu, onNodeContextMenu, onPaneContextMenu, onPaneClick, onSelectionContextMenu } =
+    useOnClickElement(selectedElementsIds);
 
   let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
     nodes: nodes,
@@ -369,11 +368,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
-    onPaneClick: () => {
-      // Select the diagram itself when the user left-clicks on the background
-      store.getState().resetSelectedElements();
-      setSelection({ entries: [{ id: diagramRefreshedEventPayload.diagram.id }] });
-    },
+    onPaneClick: onPaneClick,
     onPaneContextMenu: onPaneContextMenu,
     onEdgeContextMenu: onEdgeContextMenu,
     onNodeContextMenu: onNodeContextMenu,

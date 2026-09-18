@@ -10,11 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useStoreApi, XYPosition } from '@xyflow/react';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { UseOnRightClickElementValue } from './useOnRightClickElement.types';
+import { UseOnClickElementValue } from './useOnClickElement.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined): XYPosition => {
   return {
@@ -23,8 +26,10 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DO
   };
 };
 
-export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRightClickElementValue => {
+export const useOnClickElement = (selectedElementsIds: string[]): UseOnClickElementValue => {
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { diagramId } = useContext<DiagramContextValue>(DiagramContext);
+  const { setSelection } = useSelection();
   const { showPalette } = usePalette();
 
   const openPalette = useCallback((event: React.MouseEvent<Element, MouseEvent> | MouseEvent, elements: string[]) => {
@@ -78,12 +83,22 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
     [selectedElementsIds]
   );
 
-  const onPaneContextMenu = useCallback((event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
-    if (!event.shiftKey) {
-      store.getState().resetSelectedElements();
-      openPalette(event, []);
-    }
-  }, []);
+  const onPaneClick = useCallback(() => {
+    // Select the diagram itself when the user left-clicks on the background
+    store.getState().resetSelectedElements();
+    setSelection({ entries: [{ id: diagramId }] });
+  }, [diagramId]);
+
+  const onPaneContextMenu = useCallback(
+    (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
+      if (!event.shiftKey) {
+        store.getState().resetSelectedElements();
+        setSelection({ entries: [{ id: diagramId }] });
+        openPalette(event, []);
+      }
+    },
+    [diagramId]
+  );
 
   const onSelectionContextMenu = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>) => {
@@ -107,5 +122,6 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
     onEdgeContextMenu,
     onPaneContextMenu,
     onSelectionContextMenu,
+    onPaneClick,
   };
 };
