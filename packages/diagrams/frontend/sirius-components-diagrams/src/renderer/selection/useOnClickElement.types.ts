@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,10 @@
 import { Edge, EdgeMouseHandler, Node, NodeMouseHandler } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
-export interface UseOnRightClickElementValue {
+export interface UseOnClickElementValue {
   onPaneContextMenu: (event: React.MouseEvent | MouseEvent) => void;
   onEdgeContextMenu: EdgeMouseHandler<Edge<EdgeData>>;
   onNodeContextMenu: NodeMouseHandler<Node<NodeData>>;
   onSelectionContextMenu: (event: React.MouseEvent, nodes: Node<NodeData>[]) => void;
+  onPaneClick: (event: React.MouseEvent) => void;
 }
