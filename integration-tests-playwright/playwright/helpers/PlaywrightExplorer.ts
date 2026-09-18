@@ -39,6 +39,15 @@ export class PlaywrightExplorer {
     await this.page.getByTestId('create-object').click();
   }
 
+  async createNewModel(modelName: string, stereotypeId: string): Promise<void> {
+    await this.page.getByTestId('new-model').click();
+    const dialog = this.page.getByTestId('create-new-model');
+    await dialog.getByTestId('name-input').fill(modelName);
+    await dialog.getByTestId('stereotype').click();
+    await this.page.locator(`[data-value="${stereotypeId}"]`).click();
+    await dialog.getByTestId('create-document').click();
+  }
+
   async createRepresentation(
     treeItemLabel: string,
     representationDescriptionName: string,
@@ -71,6 +80,10 @@ export class PlaywrightExplorer {
     await this.page.getByTestId('expand-all').click();
   }
 
+  async openPalette(treeItemLabel: string) {
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+  }
+
   async uploadDocument(fileName: string) {
     await this.page.getByTestId('upload-document-icon').click();
     await this.page.locator('input[name="file"]').setInputFiles(`./playwright/resources/${fileName}`);
@@ -87,8 +100,8 @@ export class PlaywrightExplorer {
   }
 
   async showIn(treeItemLabel: string, selectionTargetLabel: string) {
-    await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).click();
-    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.openPalette(treeItemLabel);
+    await this.page.getByTestId(`toolSection-Show in`).click();
     await this.page.getByTestId(`push-selection-to-${selectionTargetLabel}`).click();
   }
 
