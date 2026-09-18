@@ -11,7 +11,7 @@ on:
     tags:
       - "*"
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
+    types: [ opened, synchronize, reopened, labeled ]
   workflow_dispatch:
 
 env:
@@ -246,7 +246,7 @@ jobs:
       - name: Publish the frontend packages
         if: startsWith(env.GITHUB_REF, 'refs/tags/v')
         run: |
-          npm publish --workspaces
+          npm publish --workspaces --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
