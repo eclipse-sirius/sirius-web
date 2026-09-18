@@ -1,0 +1,68 @@
+= 005 - Extracting the Sirius Web Images infrastructure module
+
+This post-mortem records a follow-up implementation step of xref:../adrs/237_improve_the_modularity_of_sirius_web_domain.adoc[ADR-237 - Improve the Modularity of Sirius Web Domain].
+It covers the issue https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868].
+
+
+== Goal
+
+The initial Image bounded-context extraction placed the message-service API, its Spring implementation, message-source configuration, and localized resource bundles in `sirius-web-images-domain`.
+The API belongs to the Image domain because its services use it to report domain failures.
+The implementation, however, depends on Spring's `MessageSourceAccessor` and resource-bundle loading, which are infrastructure concerns.
+
+The goal was to keep the Image domain independent of that technical adapter while preserving the localized messages and the application's runtime behavior.
+
+
+== What changed
+
+The change introduced `sirius-web-images-infrastructure` in `packages/images/backend` and registered it in the Images Maven reactor.
+The module has an explicit dependency on `sirius-web-images-domain` and follows the standard Maven, Eclipse, Checkstyle, JaCoCo, source-archive, and workspace-metadata conventions.
+
+`IImagesDomainMessageService` remains in `org.eclipse.sirius.web.images.domain.messages.api`.
+The Image creation and deletion domain services continue to depend only on that interface.
+
+`ImagesDomainMessageService` moved to `org.eclipse.sirius.web.images.infrastructure.messages`, and `ImagesDomainMessageServiceConfiguration` moved to `org.eclipse.sirius.web.images.infrastructure.configuration`.
+The configuration owns the qualified `MessageSourceAccessor` and loads the English and French bundles from the infrastructure module.
+
+The localized error keys now describe the Image use cases precisely:
+
+* `INVALID_IMAGE` reports that an image could not be added because it is invalid.
+* `IMAGE_NOT_FOUND` reports that an image cannot be found.
+
+The Sirius Web starter now declares a direct dependency on the new module and scans `org.eclipse.sirius.web.images`, ensuring that the moved `@Service` and `@Configuration` classes remain available at runtime.
+The JaCoCo coverage aggregation also declares the new artifact.
+
+
+== What worked well
+
+* The domain-owned interface made the extraction mechanical: Image services did not need to change their dependency direction or expose Spring types.
+* The dedicated qualified message source avoided collisions with the other bounded contexts' resource bundles.
+* Registering the infrastructure module in both the Images reactor and the starter made the build-time and runtime relationships explicit.
+* Copying the established Eclipse project metadata keeps the new module usable in the same local development workflows as the existing backend modules.
+
+
+== Lessons and follow-up
+
+When moving a Spring adapter out of a bounded-context domain module, keep the port in the domain and move only the adapter, configuration, and technical resources to infrastructure.
+The infrastructure artifact must depend on the domain artifact; the domain artifact must never depend back on infrastructure.
+
+For future bounded-context infrastructure extractions:
+
+. Separate domain APIs from Spring implementations before moving files.
+. Move the implementation, configuration, and resource bundles together so the module owns the complete adapter.
+. Add the new artifact to its local reactor, the runtime entry point, and coverage aggregation as applicable.
+. Update component scanning whenever the implementation package leaves an already scanned domain namespace.
+. Verify the source-built domain and infrastructure artifacts together to catch stale imports, missing resources, and absent Spring dependencies.
+
+
+== Verification
+
+The Image domain and its infrastructure module passed the focused reactor build:
+
+[source,bash]
+----
+mvn -f packages/pom.xml -pl images/backend/sirius-web-images-infrastructure -am test
+----
+
+Before merging, search the Image domain for `MessageSourceAccessor`, `ResourceBundleMessageSource`, and `org.eclipse.sirius.web.images.domain.messages.ImagesDomainMessageService`.
+None should remain: the domain should retain only the message-service API and its use by domain services.
