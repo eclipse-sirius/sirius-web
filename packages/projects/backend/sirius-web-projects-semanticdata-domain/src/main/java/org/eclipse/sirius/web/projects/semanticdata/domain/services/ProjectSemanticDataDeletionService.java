@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.projects.semanticdata.domain.messages.api.IProjectsSemanticDataDomainMessageService;
 import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
 import org.eclipse.sirius.web.projects.semanticdata.domain.repositories.IProjectSemanticDataRepository;
 import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataDeletionService;
@@ -36,9 +36,9 @@ public class ProjectSemanticDataDeletionService implements IProjectSemanticDataD
 
     private final IProjectSemanticDataRepository projectSemanticDataRepository;
 
-    private final IMessageService messageService;
+    private final IProjectsSemanticDataDomainMessageService messageService;
 
-    public ProjectSemanticDataDeletionService(IProjectSemanticDataRepository projectSemanticDataRepository, IMessageService messageService) {
+    public ProjectSemanticDataDeletionService(IProjectSemanticDataRepository projectSemanticDataRepository, IProjectsSemanticDataDomainMessageService messageService) {
         this.projectSemanticDataRepository = Objects.requireNonNull(projectSemanticDataRepository);
         this.messageService = Objects.requireNonNull(messageService);
     }

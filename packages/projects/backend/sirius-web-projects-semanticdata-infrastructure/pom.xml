@@ -23,20 +23,15 @@
     </parent>
 
     <groupId>org.eclipse.sirius</groupId>
-    <artifactId>sirius-web-projects-semanticdata-domain</artifactId>
+    <artifactId>sirius-web-projects-semanticdata-infrastructure</artifactId>
     <version>2026.9.2</version>
-    <name>sirius-web-projects-semanticdata-domain</name>
-    <description>Sirius Web Projects Semantic Data Domain</description>
+    <name>sirius-web-projects-semanticdata-infrastructure</name>
+    <description>Sirius Web Projects Semantic Data Infrastructure</description>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
-            <artifactId>sirius-web-core-domain</artifactId>
-            <version>2026.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.sirius</groupId>
-            <artifactId>sirius-web-domain</artifactId>
+            <artifactId>sirius-web-projects-semanticdata-domain</artifactId>
             <version>2026.9.2</version>
         </dependency>
 
