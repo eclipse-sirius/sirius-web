@@ -103,6 +103,8 @@ Consumers that still need a node index can use `nodes.findIndex((node) => node.i
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6810[#6810] [diagram] Add a new toolbar menu button to manage diagram elements selection
 - https://github.com/eclipse-sirius/sirius-web/issues/6952[#6952] [diagram] Add `IDiagramToolbarFilterSelectionProvider` to add options to the manage diagram selection diagram toolbar tool.
+- https://github.com/eclipse-sirius/sirius-web/issues/6964[#6964] [sirius-web] Add the appearance project settings view.
+The UI is disabled for now.
 
 
 === Improvements
