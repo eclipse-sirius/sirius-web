@@ -32,7 +32,9 @@ test('render image widget with maxWidth', () => {
       />
     </MockedProvider>
   );
-  const containerStyle = window.getComputedStyle(document.querySelectorAll('div[class$="container"]')[0]);
+  const element = document.querySelectorAll('div[class$="container"]')[0];
+  expect(element).toBeDefined();
+  const containerStyle = window.getComputedStyle(element!);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');
 });
@@ -48,7 +50,9 @@ test('render image widget without maxWidth', () => {
       />
     </MockedProvider>
   );
-  const containerStyle = window.getComputedStyle(document.querySelectorAll('div[class$="container"]')[0]);
+  const element = document.querySelectorAll('div[class$="container"]')[0];
+  expect(element).toBeDefined();
+  const containerStyle = window.getComputedStyle(element!);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('1fr');
 });
@@ -64,7 +68,9 @@ test('render image widget with help hint', () => {
       />
     </MockedProvider>
   );
-  const containerStyle = window.getComputedStyle(document.querySelectorAll('div[class$="container"]')[0]);
+  const element = document.querySelectorAll('div[class$="container"]')[0];
+  expect(element).toBeDefined();
+  const containerStyle = window.getComputedStyle(element!);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');
 });
