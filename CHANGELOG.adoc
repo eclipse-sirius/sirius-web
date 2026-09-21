@@ -11,11 +11,12 @@
 
 - [ADR-237] Improve the modularity of Sirius Web domain
 - [ADR-238] Add support for application-wide representation style customization
+- [ADR-239] Make reference widget more configurable
 
 
 === Deprecation warning
 
-- https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [core] Improve the consitency of the variables used.
+- https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [core] Improve the consistency of the variables used.
 For that, the available variables will be found in dedicated variables classes such as:
 * `org.eclipse.sirius.components.representations.RepresentationVariables`
 * `org.eclipse.sirius.components.core.api.variables.CoreVariables`
