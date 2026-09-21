@@ -121,6 +121,7 @@ public class PullRequestSizeChecker {
                 "package.json",
                 "doc/",
                 "tests/",
+                "src/test/",
                 "org.eclipse.core.resources.prefs",
                 "org.eclipse.core.runtime.prefs",
                 "org.eclipse.jdt.apt.core.prefs",
@@ -161,7 +162,6 @@ public class PullRequestSizeChecker {
                 "packages/view/backend/sirius-components-widget-reference-view-edit",
                 "packages/view/backend/sirius-components-widget-table-view",
                 "packages/view/backend/sirius-components-widget-table-view-edit",
-                "packages/sirius-web/backend/sirius-web/src/test",
                 "packages/sirius-web/backend/sirius-web-e2e-tests",
                 "packages/sirius-web/backend/sirius-web-tests-data",
                 "integration-tests"
