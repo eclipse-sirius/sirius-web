@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.eclipse.sirius.components.widget.table.TableWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
@@ -239,10 +240,19 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("TableWidget", TableWidget.class);
     }
 
-    private void givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated(String widgetKind, Class<? extends AbstractWidget> expectedWidgetClass) {
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a form description editor, when we add a reference, then it has a default clear button")
+    public void givenFormDescriptionEditorWhenWeAddAReferenceThenItHasADefaultClearButton() {
+        var referenceWidget = this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("ReferenceWidget", ReferenceWidget.class);
+        assertThat(referenceWidget.getClearButton()).isNotNull();
+    }
+
+    private <T extends AbstractWidget> T givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated(String widgetKind, Class<T> expectedWidgetClass) {
         var flux = this.givenSubscriptionToFormDescriptionEditor();
 
         var formDescriptionEditorId = new AtomicReference<String>();
+        var addedWidget = new AtomicReference<T>();
 
         Consumer<Object> initialFormDescriptionEditorContentConsumer = payload -> Optional.of(payload)
                 .filter(FormDescriptionEditorRefreshedEventPayload.class::isInstance)
@@ -277,7 +287,9 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
                 .ifPresentOrElse(formDescriptionEditor -> {
                     var firstGroup = formDescriptionEditor.getPages().get(0).getGroups().get(0);
                     assertThat(firstGroup.getWidgets()).hasSize(5);
-                    assertThat(firstGroup.getWidgets().get(0)).isInstanceOf(expectedWidgetClass);
+                    var widget = firstGroup.getWidgets().get(0);
+                    assertThat(widget).isInstanceOf(expectedWidgetClass);
+                    addedWidget.set(expectedWidgetClass.cast(widget));
                 }, () -> fail("Missing form description editor"));
 
         StepVerifier.create(flux)
@@ -286,6 +298,8 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
                 .consumeNextWith(addedWidgetConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+
+        return addedWidget.get();
     }
 
     @Test

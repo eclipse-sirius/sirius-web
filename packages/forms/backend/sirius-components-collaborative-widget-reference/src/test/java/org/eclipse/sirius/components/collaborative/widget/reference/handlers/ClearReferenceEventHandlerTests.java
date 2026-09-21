@@ -171,7 +171,7 @@ public class ClearReferenceEventHandlerTests {
     private IReferenceWidgetClearHandler createReferenceWidgetClearHandler(AtomicBoolean hasBeenExecuted, String referenceValueId) {
         return new IReferenceWidgetClearHandler.NoOp() {
             @Override
-            public boolean canHandle(String descriptionId) {
+            public boolean canHandle(IEditingContext editingContext, String descriptionId) {
                 return true;
             }
 

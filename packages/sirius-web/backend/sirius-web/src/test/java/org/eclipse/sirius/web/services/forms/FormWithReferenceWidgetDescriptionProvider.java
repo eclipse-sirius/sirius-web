@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,14 +22,18 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.generated.form.FormDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.PageDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionStyleBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
@@ -101,12 +105,27 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .helpExpression("aql:'Specify the super-types of ' + self.name")
                 .style(superTypesReferenceStyle)
                 .build();
+        var clearButton = ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription();
+        clearButton.getBody().add(new SetValueBuilder()
+                .featureName("name")
+                .valueExpression("Cleared by custom action")
+                .build());
+        var clearOperation = ViewFactory.eINSTANCE.createChangeContext();
+        clearOperation.setExpression("aql:referenceOwner.defaultClearReference(referenceName)");
+        clearButton.getBody().add(clearOperation);
+        superTypesReference.setClearButton(clearButton);
+
+        var nameTextfield = new TextfieldDescriptionBuilder()
+                .name("Name")
+                .labelExpression("Name")
+                .valueExpression("aql:self.name")
+                .build();
 
         var groupDescription = new GroupDescriptionBuilder()
                 .name("Group")
                 .labelExpression("Group")
                 .semanticCandidatesExpression("aql:self")
-                .children(superTypesReference)
+                .children(nameTextfield, superTypesReference)
                 .build();
 
         var pageDescription = new PageDescriptionBuilder()
@@ -119,7 +138,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
 
         this.formDescription = new FormDescriptionBuilder()
                 .name("Form")
-                .titleExpression("aql:'FormWithReferenceWidget'")
+                .titleExpression("FormWithReferenceWidget")
                 .domainType("domain:Entity")
                 .pages(pageDescription)
                 .build();

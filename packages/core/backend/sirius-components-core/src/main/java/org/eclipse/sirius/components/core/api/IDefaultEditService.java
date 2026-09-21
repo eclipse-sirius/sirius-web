@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,8 @@ public interface IDefaultEditService {
 
     void delete(Object object);
 
+    void clearReference(Object object, String referenceName);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -62,6 +64,10 @@ public interface IDefaultEditService {
 
         @Override
         public void delete(Object object) {
+        }
+
+        @Override
+        public void clearReference(Object object, String referenceName) {
         }
 
     }

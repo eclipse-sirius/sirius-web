@@ -50,4 +50,9 @@ public class ReferenceMessageService implements IReferenceMessageService {
     public String unableToClearReference() {
         return this.messageSourceAccessor.getMessage(MessageConstants.UNABLE_TO_CLEAR_REFERENCE);
     }
+
+    @Override
+    public String failedToExecuteClearReferenceAction() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.FAILED_TO_EXECUTE_CLEAR_REFERENCE_ACTION);
+    }
 }

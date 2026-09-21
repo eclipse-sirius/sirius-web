@@ -29,17 +29,22 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ClearReferenceInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.RemoveReferenceValueInput;
+import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceClearMutationRunner;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceRemoveMutationRunner;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceValueOptionsQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithReferenceWidgetDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,7 +61,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -76,6 +81,12 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private ReferenceRemoveMutationRunner referenceRemoveMutationRunner;
+
+    @Autowired
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
 
     @BeforeEach
     public void beforeEach() {
@@ -99,6 +110,9 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var nameTextfield = groupNavigator.findWidget("Name", Textfield.class);
+            assertThat(nameTextfield.getValue()).isEqualTo("Human");
+
             var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
 
             assertThat(referenceWidget)
@@ -168,8 +182,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a reference widget, when the clear mutation is trigger, then values are removed")
-    public void givenReferenceWidgetWhenClearMutationIsTriggerThenValuesAreRemoved() {
+    @DisplayName("Given a reference widget with a custom clear action, when it is cleared, then its body is executed and reference values are removed")
+    public void givenAReferenceWidgetWithACustomClearActionWhenItIsClearedThenItsBodyIsExecutedAndReferenceValuesAreRemoved() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
@@ -205,15 +219,58 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> afterClearContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var nameTextfield = groupNavigator.findWidget("Name", Textfield.class);
+            assertThat(nameTextfield.getValue()).isEqualTo("Cleared by custom action");
+
             var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
             assertThat(referenceWidget).hasNoValue();
         });
-
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
                 .then(clearValueMutation)
                 .consumeNextWith(afterClearContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget in node style details, when it is cleared, then its value is removed")
+    public void givenReferenceWidgetInNodeStyleDetailsWhenItIsClearedThenItsValueIsRemoved() {
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.RECTANGULAR_NODE_STYLE_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
+
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var backgroundReferenceWidget = this.findBackgroundReferenceWidget(form);
+            assertThat(backgroundReferenceWidget.isMany()).isFalse();
+            assertThat(backgroundReferenceWidget.getReferenceValues()).hasSize(1);
+            referenceWidgetId.set(backgroundReferenceWidget.getId());
+        });
+
+        Runnable clearReference = () -> {
+            var clearReferenceInput = new ClearReferenceInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get());
+            var result = this.referenceClearMutationRunner.run(clearReferenceInput);
+            String typename = JsonPath.read(result.data(), "$.data.clearReference.__typename");
+            assertThat(typename).isEqualTo("SuccessPayload");
+        };
+
+        Consumer<Object> clearedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var backgroundReferenceWidget = this.findBackgroundReferenceWidget(form);
+            assertThat(backgroundReferenceWidget.getReferenceValues()).isEmpty();
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(clearReference)
+                .consumeNextWith(clearedFormContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -263,12 +320,22 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             assertThat(referenceWidget).hasNoValue();
         });
 
-
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
                 .then(removeReferenceValueMutation)
                 .consumeNextWith(afterRemoveReferenceContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    private ReferenceWidget findBackgroundReferenceWidget(Form form) {
+        return form.getPages().stream()
+                .flatMap(page -> page.getGroups().stream())
+                .flatMap(group -> group.getWidgets().stream())
+                .filter(ReferenceWidget.class::isInstance)
+                .map(ReferenceWidget.class::cast)
+                .filter(referenceWidget -> "background".equals(referenceWidget.getReferenceName()))
+                .findFirst()
+                .orElseThrow();
     }
 }

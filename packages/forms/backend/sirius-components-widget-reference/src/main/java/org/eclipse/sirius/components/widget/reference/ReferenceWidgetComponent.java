@@ -74,7 +74,7 @@ public class ReferenceWidgetComponent implements IComponent {
         List<ReferenceValue> items = this.getItems(variableManager, referenceDescription);
 
         List<Element> children = new ArrayList<>(List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(referenceDescription, variableManager))));
-        if (referenceDescription.getClearButtonDescription() != null) {
+        if (referenceDescription.getClearButtonDescription() != null && referenceDescription.getClearButtonDescription().getPreconditionProvider().apply(variableManager)) {
             children.add(new Element(ReferenceWidgetClearButtonComponent.class, new ReferenceWidgetClearButtonComponentProps(id)));
         }
 

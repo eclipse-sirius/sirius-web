@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
  */
 public interface IReferenceWidgetClearHandler {
 
-    boolean canHandle(String descriptionId);
+    boolean canHandle(IEditingContext editingContext, String descriptionId);
 
     IStatus clear(IEditingContext editingContext, ReferenceWidget referenceWidget);
 
@@ -37,7 +37,7 @@ public interface IReferenceWidgetClearHandler {
     class NoOp implements IReferenceWidgetClearHandler {
 
         @Override
-        public boolean canHandle(String descriptionId) {
+        public boolean canHandle(IEditingContext editingContext, String descriptionId) {
             return false;
         }
 
