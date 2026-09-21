@@ -27,6 +27,8 @@ public interface IReferenceMessageService {
 
     String unableToClearReference();
 
+    String failedToExecuteClearReferenceAction();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -51,6 +53,11 @@ public interface IReferenceMessageService {
 
         @Override
         public String unableToClearReference() {
+            return "";
+        }
+
+        @Override
+        public String failedToExecuteClearReferenceAction() {
             return "";
         }
 

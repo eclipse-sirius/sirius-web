@@ -13,7 +13,11 @@
 
 package org.eclipse.sirius.components.widget.reference;
 
+import java.util.Objects;
+import java.util.function.Function;
+
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
  * Describes the presence of a clear button on a reference widget.
@@ -23,12 +27,18 @@ import org.eclipse.sirius.components.annotations.Immutable;
 @Immutable
 public final class ReferenceWidgetClearButtonDescription {
 
+    private Function<VariableManager, Boolean> preconditionProvider;
+
     private ReferenceWidgetClearButtonDescription() {
         // Prevent instantiation
     }
 
     public static Builder newReferenceWidgetClearButtonDescription() {
         return new Builder();
+    }
+
+    public Function<VariableManager, Boolean> getPreconditionProvider() {
+        return this.preconditionProvider;
     }
 
     /**
@@ -38,12 +48,21 @@ public final class ReferenceWidgetClearButtonDescription {
      */
     public static final class Builder {
 
+        private Function<VariableManager, Boolean> preconditionProvider = variableManager -> true;
+
         private Builder() {
             // Prevent instantiation
         }
 
+        public Builder preconditionProvider(Function<VariableManager, Boolean> preconditionProvider) {
+            this.preconditionProvider = Objects.requireNonNull(preconditionProvider);
+            return this;
+        }
+
         public ReferenceWidgetClearButtonDescription build() {
-            return new ReferenceWidgetClearButtonDescription();
+            var referenceWidgetClearButtonDescription = new ReferenceWidgetClearButtonDescription();
+            referenceWidgetClearButtonDescription.preconditionProvider = this.preconditionProvider;
+            return referenceWidgetClearButtonDescription;
         }
     }
 

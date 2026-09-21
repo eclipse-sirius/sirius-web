@@ -143,7 +143,11 @@ public class ComponentPageDescriptionProvider implements IPageDescriptionProvide
                 .labelExpression("Dependencies")
                 .referenceOwnerExpression("aql:self")
                 .referenceNameExpression("aql:'dependencies'")
-                .clearButton(new ReferenceBuilders().newReferenceWidgetClearButtonDescription().build())
+                .clearButton(
+                        new ReferenceBuilders().newReferenceWidgetClearButtonDescription()
+                                .body(new ViewBuilders().newChangeContext().expression("aql:referenceOwner.defaultClearReference(referenceName)").build())
+                                .build()
+                )
                 .style(dependenciesStyle)
                 .body(
                         new ViewBuilders().newChangeContext()

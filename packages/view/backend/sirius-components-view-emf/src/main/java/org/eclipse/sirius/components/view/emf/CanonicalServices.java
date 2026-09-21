@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,6 +77,14 @@ public class CanonicalServices {
      */
     public EObject defaultDelete(EObject self) {
         this.editService.delete(self);
+        return self;
+    }
+
+    /**
+     * Invoke as aql:self.defaultClearReference(referenceName).
+     */
+    public EObject defaultClearReference(EObject self, String referenceName) {
+        this.editService.clearReference(self, referenceName);
         return self;
     }
 

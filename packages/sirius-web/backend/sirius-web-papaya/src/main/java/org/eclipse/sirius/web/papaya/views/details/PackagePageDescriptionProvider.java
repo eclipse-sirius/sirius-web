@@ -116,7 +116,11 @@ public class PackagePageDescriptionProvider implements IPageDescriptionProvider 
                 .labelExpression("Annotations")
                 .referenceOwnerExpression("aql:self")
                 .referenceNameExpression("aql:'annotations'")
-                .clearButton(new ReferenceBuilders().newReferenceWidgetClearButtonDescription().build())
+                .clearButton(
+                        new ReferenceBuilders().newReferenceWidgetClearButtonDescription()
+                                .body(new ViewBuilders().newChangeContext().expression("aql:referenceOwner.defaultClearReference(referenceName)").build())
+                                .build()
+                )
                 .style(dependenciesStyle)
                 .body(
                         new ViewBuilders().newChangeContext()
