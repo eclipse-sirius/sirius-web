@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.form.ButtonDescription;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
@@ -121,7 +122,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                 if (newElement instanceof FormElementDescription formElementDescription) {
                     if (newElement instanceof WidgetDescription widgetDescription) {
                         this.createWidgetChild(widgetDescription, "style");
-                        this.createWidgetChild(widgetDescription, "clearButton");
+                        this.createClearButton(widgetDescription);
                     }
                     if (container instanceof GroupDescription groupDescription) {
                         groupDescription.getChildren().add(index, formElementDescription);
@@ -188,6 +189,23 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                 var child = EcoreUtil.create(eClass);
                 if (eClassifier.isInstance(child)) {
                     widgetDescription.eSet(feature, child);
+                }
+            }
+        }
+    }
+
+    private void createClearButton(WidgetDescription widgetDescription) {
+        EStructuralFeature feature = widgetDescription.eClass().getEStructuralFeature("clearButton");
+        if (feature instanceof EReference) {
+            EClassifier eClassifier = feature.getEType();
+            if (eClassifier instanceof EClass eClass) {
+                var clearButton = EcoreUtil.create(eClass);
+                EStructuralFeature bodyFeature = clearButton.eClass().getEStructuralFeature("body");
+                if (bodyFeature instanceof EReference) {
+                    var clearOperation = ViewFactory.eINSTANCE.createChangeContext();
+                    clearOperation.setExpression("aql:referenceOwner.defaultClearReference(referenceName)");
+                    clearButton.eSet(bodyFeature, List.of(clearOperation));
+                    widgetDescription.eSet(feature, clearButton);
                 }
             }
         }

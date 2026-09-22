@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.widget.reference;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.function.Function;
 
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.junit.jupiter.api.DisplayName;
@@ -49,7 +50,22 @@ public class ReferenceWidgetComponentTests {
                 .noneSatisfy(element -> assertThat(element.getType()).isEqualTo(ReferenceWidgetClearButtonComponent.class));
     }
 
+    @Test
+    @DisplayName("Given a reference widget, when its clear button precondition is false, then it is not rendered")
+    public void givenReferenceWidgetWhenItsClearButtonPreconditionIsFalseThenItIsNotRendered() {
+        var component = new ReferenceWidgetComponent(new ReferenceWidgetComponentProps(new VariableManager(), this.newReferenceWidgetDescription(true, variableManager -> false)));
+
+        var props = (ReferenceElementProps) component.render().getProps();
+
+        assertThat(props.getChildren())
+                .noneSatisfy(element -> assertThat(element.getType()).isEqualTo(ReferenceWidgetClearButtonComponent.class));
+    }
+
     private ReferenceWidgetDescription newReferenceWidgetDescription(boolean hasClearButton) {
+        return this.newReferenceWidgetDescription(hasClearButton, null);
+    }
+
+    private ReferenceWidgetDescription newReferenceWidgetDescription(boolean hasClearButton, Function<VariableManager, Boolean> clearButtonPreconditionProvider) {
         var builder = ReferenceWidgetDescription.newReferenceWidgetDescription("referenceWidgetDescriptionId")
                 .idProvider(variableManager -> "referenceWidgetId")
                 .targetObjectIdProvider(variableManager -> "targetObjectId")
@@ -71,7 +87,11 @@ public class ReferenceWidgetComponentTests {
                 .kindProvider(object -> "")
                 .messageProvider(object -> "");
         if (hasClearButton) {
-            builder.clearButtonDescription(ReferenceWidgetClearButtonDescription.newReferenceWidgetClearButtonDescription().build());
+            var clearButtonDescriptionBuilder = ReferenceWidgetClearButtonDescription.newReferenceWidgetClearButtonDescription();
+            if (clearButtonPreconditionProvider != null) {
+                clearButtonDescriptionBuilder.preconditionProvider(clearButtonPreconditionProvider);
+            }
+            builder.clearButtonDescription(clearButtonDescriptionBuilder.build());
         }
         return builder.build();
     }

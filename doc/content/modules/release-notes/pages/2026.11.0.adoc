@@ -55,9 +55,11 @@ Downstream consumers must declare this dependency and replace the package prefix
   Therefore, it isn't possible anymore to specify the clear handler as a lambda in the `ReferenceWidgetDescription`.
   Instead, a new API has been added: `IReferenceWidgetClearHandler`, a candidate to handle the clear event; and `IDefaultReferenceWidgetClearHandler` the default implementation used when no candidate is able to handle the clear event.
   An implementation of `IDefaultReferenceWidgetClearHandler`, `ReferenceWidgetDefaultClearHandler`, is by default provided by Sirius Web, but it can be replaced by a custom implementation using the Spring priority annotation mechanism.
-- The clear button of the widget reference is now driven by a dedicated EClass in the View DSL.
- All existing representations are automatically migrated as well as the details view of Sirius Web.
- However, programmatic form descriptions should manually add it through `ReferenceWidgetDescription.Builder#clearButtonDescription`.
+- The reference widget clear button is now driven by a dedicated View DSL EClass.
+  Its body defines the clear behavior; an empty body does nothing.
+  New Studio widgets contain a default clear operation.
+  All existing representations and the Sirius Web details view are automatically migrated.
+  Programmatic form descriptions should manually add it through `ReferenceWidgetDescription.Builder#clearButtonDescription`.
 - Reference widget EMF edit classes have been moved from `org.eclipse.sirius.components.widgets` to `org.eclipse.sirius.components.view.widget` to match their domain classes.
 
 == Dependency updates
@@ -97,6 +99,7 @@ Each customizer determines which nodes it applies to.
 All applicable customizers are applied, but their order is unspecified.
 If multiple customizers modify the same style property, the last one wins.
 * In forms, specifiers can now configure whether reference widgets show a clear button in the View DSL.
+* In forms, specifiers can now configure reference-widget clear-button behavior through its View DSL operation body.
 
 
 == Improvements

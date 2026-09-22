@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.BooleanValueProvider;
 import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.widget.reference.api.IReferenceWidgetBehaviorConverter;
@@ -70,7 +71,12 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
                 this.referenceWidgetPropertiesConverter.convert(builder, referenceDescription, interpreter);
                 this.referenceWidgetBehaviorConverter.convert(builder, referenceDescription, interpreter);
                 if (referenceDescription.getClearButton() != null) {
-                    builder.clearButtonDescription(org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription.newReferenceWidgetClearButtonDescription().build());
+                    var clearButtonDescriptionBuilder = org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription.newReferenceWidgetClearButtonDescription();
+                    var preconditionExpression = referenceDescription.getClearButton().getPreconditionExpression();
+                    if (preconditionExpression != null && !preconditionExpression.isBlank()) {
+                        clearButtonDescriptionBuilder.preconditionProvider(new BooleanValueProvider(interpreter, preconditionExpression));
+                    }
+                    builder.clearButtonDescription(clearButtonDescriptionBuilder.build());
                 }
 
                 var referenceWidgetDescription = builder.build();
