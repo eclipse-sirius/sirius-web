@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,8 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private String referenceKind;
 
+    private String referenceName;
+
     private boolean containment;
 
     private boolean many;
@@ -47,8 +49,6 @@ public final class ReferenceWidget extends AbstractWidget {
     private ReferenceWidgetStyle style;
 
     private String ownerId;
-
-    private Supplier<IStatus> clearHandler;
 
     private Function<Object, IStatus> setHandler;
 
@@ -82,6 +82,10 @@ public final class ReferenceWidget extends AbstractWidget {
         return this.referenceKind;
     }
 
+    public String getReferenceName() {
+        return this.referenceName;
+    }
+
     public String getOwnerKind() {
         return this.ownerKind;
     }
@@ -100,10 +104,6 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public String getOwnerId() {
         return this.ownerId;
-    }
-
-    public Supplier<IStatus> getClearHandler() {
-        return this.clearHandler;
     }
 
     public Function<Object, IStatus> getSetHandler() {
@@ -150,6 +150,8 @@ public final class ReferenceWidget extends AbstractWidget {
 
         private String referenceKind;
 
+        private String referenceName = "";
+
         private boolean containment;
 
         private boolean many;
@@ -157,8 +159,6 @@ public final class ReferenceWidget extends AbstractWidget {
         private ReferenceWidgetStyle style;
 
         private String ownerId;
-
-        private Supplier<IStatus> clearHandler;
 
         private Function<Object, IStatus> setHandler;
 
@@ -217,6 +217,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder referenceName(String referenceName) {
+            this.referenceName = Objects.requireNonNull(referenceName);
+            return this;
+        }
+
         public Builder containment(boolean containment) {
             this.containment = containment;
             return this;
@@ -234,11 +239,6 @@ public final class ReferenceWidget extends AbstractWidget {
 
         public Builder ownerId(String ownerId) {
             this.ownerId = Objects.requireNonNull(ownerId);
-            return this;
-        }
-
-        public Builder clearHandler(Supplier<IStatus> clearHandler) {
-            this.clearHandler = Objects.requireNonNull(clearHandler);
             return this;
         }
 
@@ -273,13 +273,13 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.referenceOptionsProvider = Objects.requireNonNull(this.referenceOptionsProvider);
             referenceWidget.ownerKind = Objects.requireNonNull(this.ownerKind);
             referenceWidget.referenceKind = Objects.requireNonNull(this.referenceKind);
+            referenceWidget.referenceName = Objects.requireNonNull(this.referenceName);
             referenceWidget.containment = this.containment;
             referenceWidget.many = this.many;
             referenceWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidget.readOnly = this.readOnly;
             referenceWidget.style = this.style; // Optional on purpose
             referenceWidget.ownerId = Objects.requireNonNull(this.ownerId);
-            referenceWidget.clearHandler = this.clearHandler; // Optional on purpose
             referenceWidget.setHandler = this.setHandler; // Optional on purpose
             referenceWidget.addHandler = this.addHandler; // Optional on purpose
             referenceWidget.moveHandler = this.moveHandler; // Optional on purpose

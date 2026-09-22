@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,8 +23,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * Reference widget description. Works for both single-valued and multi-valued references (the actual Widget
- * implementation created will be different in the two cases).
+ * Reference widget description. Works for both single-valued and multi-valued references (the actual Widget implementation created will be different in the two cases).
  *
  * @author pcdavid
  */
@@ -53,6 +52,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, String> referenceKindProvider;
 
+    private Function<VariableManager, String> referenceNameProvider;
+
     private Function<VariableManager, Boolean> isContainmentProvider;
 
     private Function<VariableManager, Boolean> isManyProvider;
@@ -60,8 +61,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
     private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
 
     private Function<VariableManager, String> ownerIdProvider;
-
-    private Function<VariableManager, IStatus> clearHandlerProvider;
 
     private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
 
@@ -123,6 +122,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.referenceKindProvider;
     }
 
+    public Function<VariableManager, String> getReferenceNameProvider() {
+        return this.referenceNameProvider;
+    }
+
     public Function<VariableManager, Boolean> getIsContainmentProvider() {
         return this.isContainmentProvider;
     }
@@ -137,10 +140,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     public Function<VariableManager, String> getOwnerIdProvider() {
         return this.ownerIdProvider;
-    }
-
-    public Function<VariableManager, IStatus> getClearHandlerProvider() {
-        return this.clearHandlerProvider;
     }
 
     public Function<VariableManager, IStatus> getItemRemoveHandlerProvider() {
@@ -199,6 +198,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         private Function<VariableManager, String> referenceKindProvider;
 
+        private Function<VariableManager, String> referenceNameProvider;
+
         private Function<VariableManager, Boolean> isContainmentProvider;
 
         private Function<VariableManager, Boolean> isManyProvider;
@@ -214,8 +215,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<Object, String> kindProvider;
 
         private Function<Object, String> messageProvider;
-
-        private Function<VariableManager, IStatus> clearHandlerProvider;
 
         private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
 
@@ -294,6 +293,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder referenceNameProvider(Function<VariableManager, String> referenceNameProvider) {
+            this.referenceNameProvider = Objects.requireNonNull(referenceNameProvider);
+            return this;
+        }
+
         public Builder isContainmentProvider(Function<VariableManager, Boolean> isContainmentProvider) {
             this.isContainmentProvider = Objects.requireNonNull(isContainmentProvider);
             return this;
@@ -334,11 +338,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
-        public Builder clearHandlerProvider(Function<VariableManager, IStatus> clearHandlerProvider) {
-            this.clearHandlerProvider = Objects.requireNonNull(clearHandlerProvider);
-            return this;
-        }
-
         public Builder itemRemoveHandlerProvider(Function<VariableManager, IStatus> itemRemoveHandlerProvider) {
             this.itemRemoveHandlerProvider = Objects.requireNonNull(itemRemoveHandlerProvider);
             return this;
@@ -375,6 +374,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.itemIconURLProvider = Objects.requireNonNull(this.itemIconURLProvider);
             referenceWidgetDescription.ownerKindProvider = Objects.requireNonNull(this.ownerKindProvider);
             referenceWidgetDescription.referenceKindProvider = Objects.requireNonNull(this.referenceKindProvider);
+            referenceWidgetDescription.referenceNameProvider = Objects.requireNonNull(this.referenceNameProvider);
             referenceWidgetDescription.isContainmentProvider = Objects.requireNonNull(this.isContainmentProvider);
             referenceWidgetDescription.isManyProvider = Objects.requireNonNull(this.isManyProvider);
             referenceWidgetDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
@@ -383,7 +383,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             referenceWidgetDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             referenceWidgetDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
-            referenceWidgetDescription.clearHandlerProvider = this.clearHandlerProvider; // Optional on purpose
             referenceWidgetDescription.itemRemoveHandlerProvider = this.itemRemoveHandlerProvider; // Optional on purpose
             referenceWidgetDescription.setHandlerProvider = this.setHandlerProvider; // Optional on purpose
             referenceWidgetDescription.addHandlerProvider = this.addHandlerProvider; // Optional on purpose

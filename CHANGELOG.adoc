@@ -83,6 +83,11 @@ Consumers that still need a node index can use `nodes.findIndex((node) => node.i
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Reduce the dependency of the project images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-images-infrastructure`, for its internationalization support.
 - https://github.com/eclipse-sirius/sirius-web/issues/6931[#6931] Remove `connectorTools` field from GraphQL type `DiagramDescription` and related DTO, use `connectorPalette` instead, `IConnectorToolsProvider` & `GetConnectorToolsEventHandler` have been removed too.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Reduce the dependency of the project semantic data bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-semanticdata-infrastructure`, for its internationalization support.
+- https://github.com/eclipse-sirius/sirius-web/issues/6976[#6976] [form] Remove the reference widget clear handler from the refresh mechanism.
+`clearHandlerProvider` has been removed from `ReferenceWidgetDescription`.
+`referenceNameProvider` has been added to `ReferenceWidgetDescription` to provide the name of the reference that will be edited.
+A new API has been added to replace `clearHandlerProvider`: `IReferenceWidgetClearHandler`, a candidate to handle the clear event; and `IDefaultReferenceWidgetClearHandler` the default implementation used when no candidate is able to handle the clear event.
+An implementation of `IDefaultReferenceWidgetClearHandler`, `ReferenceWidgetDefaultClearHandler`, is by default provided by Sirius Web.
 
 
 === Dependency update
@@ -143,6 +148,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - [starters] Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
 - https://github.com/eclipse-sirius/sirius-web/issues/6957[#6957] [diagram] Add translations support to manage selection diagram toolbar tool
 - https://github.com/eclipse-sirius/sirius-web/issues/6808[#6808] [diagram] Invoke manage selection diagram panel tool from the backend
+- https://github.com/eclipse-sirius/sirius-web/issues/6976[#6976] [form] Remove reference widget clear handler from refresh mechanism.
 
 
 

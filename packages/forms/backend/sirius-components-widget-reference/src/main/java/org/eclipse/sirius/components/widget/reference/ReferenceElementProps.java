@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,8 @@ public final class ReferenceElementProps implements IProps {
 
     private String referenceKind;
 
+    private String referenceName;
+
     private boolean containment;
 
     private String descriptionId;
@@ -63,8 +65,6 @@ public final class ReferenceElementProps implements IProps {
     private String ownerId;
 
     private List<Element> children;
-
-    private Supplier<IStatus> clearHandler;
 
     private Function<Object, IStatus> setHandler;
 
@@ -116,6 +116,10 @@ public final class ReferenceElementProps implements IProps {
         return this.referenceKind;
     }
 
+    public String getReferenceName() {
+        return this.referenceName;
+    }
+
     public boolean isContainment() {
         return this.containment;
     }
@@ -134,10 +138,6 @@ public final class ReferenceElementProps implements IProps {
 
     public String getOwnerId() {
         return this.ownerId;
-    }
-
-    public Supplier<IStatus> getClearHandler() {
-        return this.clearHandler;
     }
 
     public Function<Object, IStatus> getSetHandler() {
@@ -187,6 +187,8 @@ public final class ReferenceElementProps implements IProps {
 
         private String referenceKind;
 
+        private String referenceName;
+
         private boolean containment;
 
         private boolean many;
@@ -196,8 +198,6 @@ public final class ReferenceElementProps implements IProps {
         private String ownerId;
 
         private List<Element> children;
-
-        private Supplier<IStatus> clearHandler;
 
         private Function<Object, IStatus> setHandler;
 
@@ -251,6 +251,11 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder referenceName(String referenceName) {
+            this.referenceName = Objects.requireNonNull(referenceName);
+            return this;
+        }
+
         public Builder containment(boolean containment) {
             this.containment = containment;
             return this;
@@ -273,11 +278,6 @@ public final class ReferenceElementProps implements IProps {
 
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
-            return this;
-        }
-
-        public Builder clearHandler(Supplier<IStatus> clearHandler) {
-            this.clearHandler = Objects.requireNonNull(clearHandler);
             return this;
         }
 
@@ -312,13 +312,13 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.optionsProvider = Objects.requireNonNull(this.optionsProvider);
             referenceElementProps.ownerKind = Objects.requireNonNull(this.ownerKind);
             referenceElementProps.referenceKind = Objects.requireNonNull(this.referenceKind);
+            referenceElementProps.referenceName = Objects.requireNonNull(this.referenceName);
             referenceElementProps.containment = this.containment;
             referenceElementProps.many = this.many;
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceElementProps.style = this.style; // Optional on purpose
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
             referenceElementProps.children = Objects.requireNonNull(this.children);
-            referenceElementProps.clearHandler = this.clearHandler; // Optional on purpose
             referenceElementProps.setHandler = this.setHandler; // Optional on purpose
             referenceElementProps.addHandler = this.addHandler; // Optional on purpose
             referenceElementProps.moveHandler = this.moveHandler;  // Optional on purpose

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,8 +60,7 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
 
     @Override
     public void convert(Builder referenceWidgetDescriptionBuilder, ReferenceWidgetDescription viewReferenceWidgetDescription, AQLInterpreter interpreter) {
-        referenceWidgetDescriptionBuilder.clearHandlerProvider(variableManager -> this.handleClearReference(interpreter, variableManager, viewReferenceWidgetDescription))
-                .itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(interpreter, variableManager, viewReferenceWidgetDescription))
+        referenceWidgetDescriptionBuilder.itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(interpreter, variableManager, viewReferenceWidgetDescription))
                 .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(interpreter, variableManager, viewReferenceWidgetDescription));
 
         if (viewReferenceWidgetDescription.getHelpExpression() != null && !viewReferenceWidgetDescription.getHelpExpression().isBlank()) {
@@ -84,22 +83,6 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
             referenceOwner = result.asObject().filter(EObject.class::isInstance).map(EObject.class::cast).orElse(referenceOwner);
         }
         return referenceOwner;
-    }
-
-    private IStatus handleClearReference(AQLInterpreter interpreter, VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
-        EObject owner = this.getReferenceOwner(interpreter, variableManager, referenceDescription.getReferenceOwnerExpression());
-        String referenceName = new StringValueProvider(interpreter, Optional.ofNullable(referenceDescription.getReferenceNameExpression()).orElse("")).apply(variableManager);
-
-        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
-            if (reference.isMany()) {
-                ((List<?>) owner.eGet(reference)).clear();
-            } else {
-                owner.eUnset(reference);
-            }
-        } else {
-            return this.createErrorStatus("Something went wrong while clearing the reference.");
-        }
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
     }
 
     private IStatus handleItemRemove(AQLInterpreter interpreter, VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
