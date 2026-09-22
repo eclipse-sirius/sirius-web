@@ -91,6 +91,7 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
                 .itemIconURLProvider(this::getItemIconURL)
                 .ownerKindProvider(this::getOwnerKind)
                 .referenceKindProvider(variableManager -> this.getReferenceKind(interpreter, variableManager, viewReferenceWidgetDescription))
+                .referenceNameProvider(variableManager -> new StringValueProvider(interpreter, Optional.ofNullable(viewReferenceWidgetDescription.getReferenceNameExpression()).orElse("")).apply(variableManager))
                 .isContainmentProvider(variableManager -> this.isContainment(interpreter, variableManager, viewReferenceWidgetDescription))
                 .isManyProvider(variableManager -> this.isMany(interpreter, variableManager, viewReferenceWidgetDescription))
                 .ownerIdProvider(variableManager -> this.getOwnerId(interpreter, viewReferenceWidgetDescription, variableManager))

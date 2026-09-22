@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.collaborative.widget.reference.messages.IRe
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
@@ -59,78 +59,6 @@ public class ClearReferenceEventHandlerTests {
     private static final String CHANGE_DESCRIPTION_PARAMETER_KEY = "change_description_parameter_key";
 
     @Test
-    public void testClearReference() {
-        String referenceValueId = "ReferenceValue Id";
-        String changeKind = ChangeKind.SEMANTIC_CHANGE;
-
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put(CHANGE_DESCRIPTION_PARAMETER_KEY, referenceValueId);
-        var input = new ClearReferenceInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID().toString(), REF_WIDGET_ID);
-
-        AtomicBoolean hasBeenExecuted = new AtomicBoolean();
-        Supplier<IStatus> clearHandler = () -> {
-            hasBeenExecuted.set(true);
-            return new Success(changeKind, parameters);
-        };
-
-        ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(REF_WIDGET_ID)
-                .diagnostics(Collections.emptyList())
-                .referenceValues(List.of())
-                .referenceOptionsProvider(List::of)
-                .descriptionId("")
-                .label("")
-                .readOnly(false)
-                .ownerId("")
-                .ownerKind("")
-                .referenceKind("")
-                .many(false)
-                .containment(false)
-                .clearHandler(clearHandler)
-                .build();
-
-        Group group = Group.newGroup("groupId")
-                .label("group label")
-                .widgets(Collections.singletonList(referenceWidget))
-                .build();
-
-        Page page = Page.newPage("pageId")
-                .label("page label")
-                .groups(Collections.singletonList(group))
-                .build();
-
-        Form form = Form.newForm(FORM_ID.toString())
-                .targetObjectId("targetObjectId")
-                .descriptionId(UUID.randomUUID().toString())
-                .pages(Collections.singletonList(page))
-                .build();
-
-        IFormQueryService formQueryService = new IFormQueryService.NoOp() {
-            @Override
-            public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
-                return Optional.of(referenceWidget);
-            }
-        };
-
-        ClearReferenceEventHandler handler = new ClearReferenceEventHandler(formQueryService, new IReferenceMessageService.NoOp(), new SimpleMeterRegistry());
-        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
-
-        Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
-        Sinks.One<IPayload> payloadSink = Sinks.one();
-
-        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), form, input);
-
-        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
-        assertThat(changeDescription.getKind()).isEqualTo(changeKind);
-        Map<String, Object> changeDescriptionParameters = changeDescription.getParameters();
-        assertThat(changeDescriptionParameters.get(CHANGE_DESCRIPTION_PARAMETER_KEY)).isEqualTo(referenceValueId);
-
-        IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(SuccessPayload.class);
-
-        assertThat(hasBeenExecuted.get()).isTrue();
-    }
-
-    @Test
     public void testClearReferenceReadOnly() {
         String referenceValueId = "ReferenceValue Id";
         String changeKind = ChangeKind.SEMANTIC_CHANGE;
@@ -155,9 +83,9 @@ public class ClearReferenceEventHandlerTests {
                 .ownerId("")
                 .ownerKind("")
                 .referenceKind("")
+                .referenceName("")
                 .many(false)
                 .containment(false)
-                .clearHandler(clearHandler)
                 .build();
 
         Group group = Group.newGroup("groupId")
@@ -190,7 +118,7 @@ public class ClearReferenceEventHandlerTests {
             }
         };
 
-        ClearReferenceEventHandler handler = new ClearReferenceEventHandler(formQueryService, messageService, new SimpleMeterRegistry());
+        ClearReferenceEventHandler handler = new ClearReferenceEventHandler(formQueryService, messageService, List.of(), new IRepresentationDescriptionSearchService.NoOp(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -203,5 +131,4 @@ public class ClearReferenceEventHandlerTests {
         assertThat(((ErrorPayload) payload).messages()).map(Message::body).contains("Read-only widget can not be edited");
         assertThat(hasBeenExecuted.get()).isFalse();
     }
-
 }

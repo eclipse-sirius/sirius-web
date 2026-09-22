@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,6 +65,7 @@ public class ReferenceWidgetComponent implements IComponent {
 
         String ownerKind = referenceDescription.getOwnerKindProvider().apply(variableManager);
         String referenceKind = referenceDescription.getReferenceKindProvider().apply(variableManager);
+        String referenceName = referenceDescription.getReferenceNameProvider().apply(variableManager);
         boolean isContainment = referenceDescription.getIsContainmentProvider().apply(variableManager);
         boolean isMany = referenceDescription.getIsManyProvider().apply(variableManager);
         ReferenceWidgetStyle style = referenceDescription.getStyleProvider().apply(variableManager);
@@ -81,15 +82,13 @@ public class ReferenceWidgetComponent implements IComponent {
                 .optionsProvider(() -> this.getOptions(variableManager, referenceDescription))
                 .ownerKind(ownerKind)
                 .referenceKind(referenceKind)
+                .referenceName(referenceName)
                 .containment(isContainment)
                 .many(isMany)
                 .ownerId(ownerId)
                 .children(children);
         if (referenceDescription.getHelpTextProvider() != null) {
             builder.helpTextProvider(() -> referenceDescription.getHelpTextProvider().apply(variableManager));
-        }
-        if (referenceDescription.getClearHandlerProvider() != null) {
-            builder.clearHandler(() -> referenceDescription.getClearHandlerProvider().apply(variableManager));
         }
         if (referenceDescription.getSetHandlerProvider() != null) {
             Function<Object, IStatus> setHandler = object -> {

@@ -87,6 +87,7 @@ public class CreateElementEventHandlerTests {
                 .ownerId("")
                 .ownerKind("")
                 .referenceKind("")
+                .referenceName("")
                 .many(false)
                 .containment(false)
                 .build();
@@ -158,6 +159,7 @@ public class CreateElementEventHandlerTests {
                 .ownerId("")
                 .ownerKind("")
                 .referenceKind("")
+                .referenceName("")
                 .many(false)
                 .containment(false)
                 .build();
