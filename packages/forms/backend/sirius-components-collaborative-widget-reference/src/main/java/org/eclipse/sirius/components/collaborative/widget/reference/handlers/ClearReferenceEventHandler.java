@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.widget.reference.handlers;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -21,13 +21,16 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetClearHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ClearReferenceInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -55,11 +58,18 @@ public class ClearReferenceEventHandler implements IFormEventHandler {
 
     private final IFormQueryService formQueryService;
 
+    private final List<IReferenceWidgetClearHandler> referenceWidgetClearHandlers;
+
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
     private final Logger logger = LoggerFactory.getLogger(ClearReferenceEventHandler.class);
 
-    public ClearReferenceEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, MeterRegistry meterRegistry) {
+    public ClearReferenceEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, List<IReferenceWidgetClearHandler> referenceWidgetClearHandlers,
+            IRepresentationDescriptionSearchService representationDescriptionSearchService, MeterRegistry meterRegistry) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.referenceWidgetClearHandlers = Objects.requireNonNull(referenceWidgetClearHandlers);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -74,7 +84,6 @@ public class ClearReferenceEventHandler implements IFormEventHandler {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
-
         String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), ClearReferenceInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
@@ -83,12 +92,15 @@ public class ClearReferenceEventHandler implements IFormEventHandler {
             var optionalReferenceWidget = this.formQueryService.findWidget(form, input.referenceWidgetId())
                     .filter(ReferenceWidget.class::isInstance)
                     .map(ReferenceWidget.class::cast);
+            var optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId());
 
             IStatus status;
             if (optionalReferenceWidget.map(ReferenceWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
                 status = new Failure(this.messageService.unableToEditReadOnlyWidget());
+            } else if (optionalFormDescription.isPresent() && optionalFormDescription.get() instanceof FormDescription formDescription) {
+                status = optionalReferenceWidget.map(referenceWidget -> this.clear(editingContext, formDescription, referenceWidget)).orElse(new Failure(""));
             } else {
-                status = optionalReferenceWidget.map(ReferenceWidget::getClearHandler).map(Supplier::get).orElse(new Failure(""));
+                status = new Failure(this.messageService.invalidIds());
             }
             if (status instanceof Success success) {
                 this.logger.atInfo()
@@ -114,5 +126,13 @@ public class ClearReferenceEventHandler implements IFormEventHandler {
 
         changeDescriptionSink.tryEmitNext(changeDescription);
         payloadSink.tryEmitValue(payload);
+    }
+
+    private IStatus clear(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
+        return this.referenceWidgetClearHandlers.stream()
+                .filter(handler -> handler.canHandle(formDescription))
+                .findFirst()
+                .map(clearHandler -> clearHandler.clear(editingContext, formDescription, referenceWidget))
+                .orElseGet(() -> new Failure(this.messageService.noHandlerFound()));
     }
 }

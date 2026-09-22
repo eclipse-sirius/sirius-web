@@ -89,6 +89,7 @@ public class RemoveReferenceValueEventHandlerTests {
                 .ownerId("")
                 .ownerKind("")
                 .referenceKind("")
+                .referenceName("")
                 .many(false)
                 .containment(false)
                 .build();
@@ -166,6 +167,7 @@ public class RemoveReferenceValueEventHandlerTests {
                 .ownerId("")
                 .ownerKind("")
                 .referenceKind("")
+                .referenceName("")
                 .many(false)
                 .containment(false)
                 .build();

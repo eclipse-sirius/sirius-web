@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,12 +80,12 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                     .readOnly(props.isReadOnly())
                     .ownerKind(props.getOwnerKind())
                     .referenceKind(props.getReferenceKind())
+                    .referenceName(props.getReferenceName())
                     .containment(props.isContainment())
                     .many(props.isMany())
                     .referenceValues(props.getValues())
                     .referenceOptionsProvider(props.getOptionsProvider())
                     .ownerId(props.getOwnerId())
-                    .clearHandler(props.getClearHandler())
                     .setHandler(props.getSetHandler())
                     .addHandler(props.getAddHandler())
                     .moveHandler(props.getMoveHandler());

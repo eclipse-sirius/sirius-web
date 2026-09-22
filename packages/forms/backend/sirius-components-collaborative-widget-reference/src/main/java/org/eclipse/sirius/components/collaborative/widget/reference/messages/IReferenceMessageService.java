@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,13 @@ public interface IReferenceMessageService {
 
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
 
+    String noHandlerFound();
+
     String invalidIds();
 
     String unableToEditReadOnlyWidget();
+
+    String unableToClearReference();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -38,12 +42,22 @@ public interface IReferenceMessageService {
         }
 
         @Override
+        public String noHandlerFound() {
+            return "";
+        }
+
+        @Override
         public String invalidIds() {
             return "";
         }
 
         @Override
         public String unableToEditReadOnlyWidget() {
+            return "";
+        }
+
+        @Override
+        public String unableToClearReference() {
             return "";
         }
 
