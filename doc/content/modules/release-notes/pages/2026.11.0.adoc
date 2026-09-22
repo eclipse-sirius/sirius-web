@@ -51,6 +51,10 @@ Downstream consumers must declare this dependency and replace the package prefix
 - Reduce the dependency of the images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-images-infrastructure`, for its internationalization support.
 - Reduce the dependency of the project images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-images-infrastructure`, for its internationalization support.
 - Reduce the dependency of the project semantic data bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-semanticdata-infrastructure`, for its internationalization support.
+- Remove the reference widget clear handler from the refresh mechanism.
+  Therefore, it isn't possible anymore to specify the clear handler as a lambda in the `ReferenceWidgetDescription`.
+  Instead, a new API has been added: `IReferenceWidgetClearHandler`, a candidate to handle the clear event; and `IDefaultReferenceWidgetClearHandler` the default implementation used when no candidate is able to handle the clear event.
+  An implementation of `IDefaultReferenceWidgetClearHandler`, `ReferenceWidgetDefaultClearHandler`, is by default provided by Sirius Web, but it can be replaced by a custom implementation using the Spring priority annotation mechanism.
 
 == Dependency updates
 
