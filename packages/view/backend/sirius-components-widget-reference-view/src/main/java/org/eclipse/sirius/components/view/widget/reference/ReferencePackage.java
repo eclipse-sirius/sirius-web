@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,9 +30,9 @@ import org.eclipse.sirius.components.view.form.FormPackage;
  * </ul>
  * <!-- end-user-doc -->
  *
- * @see ReferenceFactory
  * @model kind="package"
  * @generated
+ * @see org.eclipse.sirius.components.view.widget.reference.ReferenceFactory
  */
 public interface ReferencePackage extends EPackage {
 
@@ -58,13 +58,12 @@ public interface ReferencePackage extends EPackage {
     String eNS_PREFIX = "reference";
 
     /**
-     * The meta object id for the
-     * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
-     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget Description</em>}' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
+     * @generated
      * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
-     * @generated
      */
     int REFERENCE_WIDGET_DESCRIPTION = 0;
 
@@ -77,8 +76,7 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__NAME = FormPackage.WIDGET_DESCRIPTION__NAME;
 
     /**
-     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -94,8 +92,15 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__HELP_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
-     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -103,8 +108,7 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Reference Owner Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The feature id for the '<em><b>Reference Owner Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -112,8 +116,7 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Reference Name Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The feature id for the '<em><b>Reference Name Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -121,8 +124,7 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -130,35 +132,39 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__BODY = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
-     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The feature id for the '<em><b>Clear Button</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+    int REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
-     * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+    int REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
-     * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
+     * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -166,13 +172,12 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the
-     * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget
-     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget Description Style</em>}' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
+     * @generated
      * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl
      * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetDescriptionStyle()
-     * @generated
      */
     int REFERENCE_WIDGET_DESCRIPTION_STYLE = 1;
 
@@ -225,8 +230,7 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
 
     /**
-     * The number of structural features of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The number of structural features of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -234,8 +238,7 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
 
     /**
-     * The number of operations of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The number of operations of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -243,13 +246,12 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the
-     * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
      * <em>Conditional Reference Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @see org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
      * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getConditionalReferenceWidgetDescriptionStyle()
-     * @generated
      */
     int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE = 2;
 
@@ -317,8 +319,7 @@ public interface ReferencePackage extends EPackage {
     int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
 
     /**
-     * The number of structural features of the '<em>Conditional Reference Widget Description Style</em>' class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The number of structural features of the '<em>Conditional Reference Widget Description Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -326,8 +327,7 @@ public interface ReferencePackage extends EPackage {
     int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
 
     /**
-     * The number of operations of the '<em>Conditional Reference Widget Description Style</em>' class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The number of operations of the '<em>Conditional Reference Widget Description Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -335,119 +335,194 @@ public interface ReferencePackage extends EPackage {
     int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
-     * Returns the meta object for class
-     * '{@link ReferenceWidgetDescription <em>Widget Description</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetClearButtonDescriptionImpl
+     * <em>Widget Clear Button Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetClearButtonDescriptionImpl
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetClearButtonDescription()
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION = 3;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION = 0;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__BODY = 1;
+
+    /**
+     * The number of structural features of the '<em>Widget Clear Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Widget Clear Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription <em>Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @return the meta object for class '<em>Widget Description</em>'.
-     * @see ReferenceWidgetDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription
      */
     EClass getReferenceWidgetDescription();
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link ReferenceWidgetDescription#getReferenceOwnerExpression
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getReferenceOwnerExpression
      * <em>Reference Owner Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Owner Expression</em>'.
-     * @see ReferenceWidgetDescription#getReferenceOwnerExpression()
-     * @see #getReferenceWidgetDescription()
      * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getReferenceOwnerExpression()
+     * @see #getReferenceWidgetDescription()
      */
     EAttribute getReferenceWidgetDescription_ReferenceOwnerExpression();
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link ReferenceWidgetDescription#getReferenceNameExpression
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getReferenceNameExpression
      * <em>Reference Name Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Name Expression</em>'.
-     * @see ReferenceWidgetDescription#getReferenceNameExpression()
-     * @see #getReferenceWidgetDescription()
      * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getReferenceNameExpression()
+     * @see #getReferenceWidgetDescription()
      */
     EAttribute getReferenceWidgetDescription_ReferenceNameExpression();
 
     /**
-     * Returns the meta object for the containment reference list
-     * '{@link ReferenceWidgetDescription#getBody <em>Body</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getBody <em>Body</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Body</em>'.
      * @generated
-     * @see ReferenceWidgetDescription#getBody()
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getBody()
      * @see #getReferenceWidgetDescription()
      */
     EReference getReferenceWidgetDescription_Body();
 
     /**
-     * Returns the meta object for the containment reference
-     * '{@link ReferenceWidgetDescription#getStyle <em>Style</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the containment reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getClearButton <em>Clear Button</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Clear Button</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getClearButton()
+     * @see #getReferenceWidgetDescription()
+     */
+    EReference getReferenceWidgetDescription_ClearButton();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Style</em>'.
-     * @see ReferenceWidgetDescription#getStyle()
-     * @see #getReferenceWidgetDescription()
      * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getStyle()
+     * @see #getReferenceWidgetDescription()
      */
     EReference getReferenceWidgetDescription_Style();
 
     /**
-     * Returns the meta object for the containment reference list
-     * '{@link ReferenceWidgetDescription#getConditionalStyles
+     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getConditionalStyles
      * <em>Conditional Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
-     * @see ReferenceWidgetDescription#getConditionalStyles()
-     * @see #getReferenceWidgetDescription()
      * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getConditionalStyles()
+     * @see #getReferenceWidgetDescription()
      */
     EReference getReferenceWidgetDescription_ConditionalStyles();
 
     /**
-     * Returns the meta object for class
-     * '{@link ReferenceWidgetDescriptionStyle <em>Widget Description
-     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle <em>Widget Description Style</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description Style</em>'.
-     * @see ReferenceWidgetDescriptionStyle
      * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle
      */
     EClass getReferenceWidgetDescriptionStyle();
 
     /**
-     * Returns the meta object for the reference
-     * '{@link ReferenceWidgetDescriptionStyle#getColor
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle#getColor
      * <em>Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the reference '<em>Color</em>'.
-     * @see ReferenceWidgetDescriptionStyle#getColor()
-     * @see #getReferenceWidgetDescriptionStyle()
      * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle#getColor()
+     * @see #getReferenceWidgetDescriptionStyle()
      */
     EReference getReferenceWidgetDescriptionStyle_Color();
 
     /**
-     * Returns the meta object for class
-     * '{@link ConditionalReferenceWidgetDescriptionStyle
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle
      * <em>Conditional Reference Widget Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional Reference Widget Description Style</em>'.
-     * @see ConditionalReferenceWidgetDescriptionStyle
      * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle
      */
     EClass getConditionalReferenceWidgetDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link ReferenceWidgetDescription#getIsEnabledExpression <em>Is
-     * Enabled Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription <em>Widget Clear Button Description</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Widget Clear Button Description</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription
+     */
+    EClass getReferenceWidgetClearButtonDescription();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getPreconditionExpression
+     * <em>Precondition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getPreconditionExpression()
+     * @see #getReferenceWidgetClearButtonDescription()
+     */
+    EAttribute getReferenceWidgetClearButtonDescription_PreconditionExpression();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getBody
+     * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getBody()
+     * @see #getReferenceWidgetClearButtonDescription()
+     */
+    EReference getReferenceWidgetClearButtonDescription_Body();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getIsEnabledExpression
+     * <em>Is Enabled Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @see ReferenceWidgetDescription#getIsEnabledExpression()
-     * @see #getReferenceWidgetDescription()
      * @generated
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getIsEnabledExpression()
+     * @see #getReferenceWidgetDescription()
      */
     EAttribute getReferenceWidgetDescription_IsEnabledExpression();
 
@@ -475,78 +550,76 @@ public interface ReferencePackage extends EPackage {
     interface Literals {
 
         /**
-         * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
-         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget Description</em>}' class. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionImpl
          * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
-         * @generated
          */
         EClass REFERENCE_WIDGET_DESCRIPTION = eINSTANCE.getReferenceWidgetDescription();
 
         /**
-         * The meta object literal for the '<em><b>Reference Owner Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Reference Owner Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EAttribute REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION = eINSTANCE.getReferenceWidgetDescription_ReferenceOwnerExpression();
 
         /**
-         * The meta object literal for the '<em><b>Reference Name Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Reference Name Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EAttribute REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION = eINSTANCE.getReferenceWidgetDescription_ReferenceNameExpression();
 
         /**
-         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference REFERENCE_WIDGET_DESCRIPTION__BODY = eINSTANCE.getReferenceWidgetDescription_Body();
 
         /**
-         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Clear Button</b></em>' containment reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON = eINSTANCE.getReferenceWidgetDescription_ClearButton();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference REFERENCE_WIDGET_DESCRIPTION__STYLE = eINSTANCE.getReferenceWidgetDescription_Style();
 
         /**
-         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getReferenceWidgetDescription_ConditionalStyles();
 
         /**
-         * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget
-         * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl
+         * <em>Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl
          * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetDescriptionStyle()
-         * @generated
          */
         EClass REFERENCE_WIDGET_DESCRIPTION_STYLE = eINSTANCE.getReferenceWidgetDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Color</b></em>' reference feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
+         * The meta object literal for the '<em><b>Color</b></em>' reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR = eINSTANCE.getReferenceWidgetDescriptionStyle_Color();
 
         /**
-         * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
          * <em>Conditional Reference Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
          * -->
          *
@@ -557,8 +630,31 @@ public interface ReferencePackage extends EPackage {
         EClass CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE = eINSTANCE.getConditionalReferenceWidgetDescriptionStyle();
 
         /**
-         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetClearButtonDescriptionImpl
+         * <em>Widget Clear Button Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetClearButtonDescriptionImpl
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetClearButtonDescription()
+         */
+        EClass REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION = eINSTANCE.getReferenceWidgetClearButtonDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getReferenceWidgetClearButtonDescription_PreconditionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__BODY = eINSTANCE.getReferenceWidgetClearButtonDescription_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */

@@ -24,6 +24,9 @@ import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.widget.reference.ReferenceElementProps;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButton;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonComponent;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonComponentProps;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponentProps;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
@@ -46,11 +49,13 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
 
     @Override
     public Optional<Boolean> validateComponentProps(Class<?> componentType, IProps props) {
+        Optional<Boolean> result = Optional.empty();
         if (ReferenceWidgetComponent.class.equals(componentType)) {
-            return Optional.of(props instanceof ReferenceWidgetComponentProps);
-        } else {
-            return Optional.empty();
+            result = Optional.of(props instanceof ReferenceWidgetComponentProps);
+        } else if (ReferenceWidgetClearButtonComponent.class.equals(componentType)) {
+            result = Optional.of(props instanceof ReferenceWidgetClearButtonComponentProps);
         }
+        return result;
     }
 
     @Override
@@ -58,6 +63,8 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
         Optional<Boolean> result = Optional.empty();
         if (Objects.equals(type, ReferenceElementProps.TYPE)) {
             result = Optional.of(props instanceof ReferenceElementProps);
+        } else if (Objects.equals(type, ReferenceWidgetClearButton.TYPE)) {
+            result = Optional.of(props instanceof ReferenceWidgetClearButtonComponentProps);
         }
         return result;
     }
@@ -71,7 +78,14 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                 .map(Diagnostic.class::cast)
                 .toList();
 
-        if (Objects.equals(type, ReferenceElementProps.TYPE) && elementProps instanceof ReferenceElementProps props) {
+        if (Objects.equals(type, ReferenceWidgetClearButton.TYPE) && elementProps instanceof ReferenceWidgetClearButtonComponentProps(String id)) {
+            result = Optional.of(ReferenceWidgetClearButton.newReferenceWidgetClearButton(id).build());
+        } else if (Objects.equals(type, ReferenceElementProps.TYPE) && elementProps instanceof ReferenceElementProps props) {
+            ReferenceWidgetClearButton clearButton = children.stream()
+                    .filter(ReferenceWidgetClearButton.class::isInstance)
+                    .map(ReferenceWidgetClearButton.class::cast)
+                    .findFirst()
+                    .orElse(null);
             var builder = ReferenceWidget.newReferenceWidget(props.getId())
                     .descriptionId(props.getDescriptionId())
                     .label(props.getLabel())
@@ -89,6 +103,9 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                     .setHandler(props.getSetHandler())
                     .addHandler(props.getAddHandler())
                     .moveHandler(props.getMoveHandler());
+            if (clearButton != null) {
+                builder.clearButton(clearButton);
+            }
             if (props.getHelpTextProvider() != null) {
                 builder.helpTextProvider(props.getHelpTextProvider());
             }

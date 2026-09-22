@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setName(value);
         return this;
     }
+
     /**
      * Setter for LabelExpression.
      *
@@ -60,6 +61,7 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setLabelExpression(value);
         return this;
     }
+
     /**
      * Setter for HelpExpression.
      *
@@ -69,6 +71,7 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setHelpExpression(value);
         return this;
     }
+
     /**
      * Setter for DiagnosticsExpression.
      *
@@ -78,6 +81,7 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setDiagnosticsExpression(value);
         return this;
     }
+
     /**
      * Setter for IsEnabledExpression.
      *
@@ -87,6 +91,7 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setIsEnabledExpression(value);
         return this;
     }
+
     /**
      * Setter for ReferenceOwnerExpression.
      *
@@ -96,6 +101,7 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setReferenceOwnerExpression(value);
         return this;
     }
+
     /**
      * Setter for ReferenceNameExpression.
      *
@@ -105,6 +111,7 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setReferenceNameExpression(value);
         return this;
     }
+
     /**
      * Setter for Body.
      *
@@ -118,6 +125,16 @@ public class ReferenceWidgetDescriptionBuilder {
     }
 
     /**
+     * Setter for ClearButton.
+     *
+     * @generated
+     */
+    public ReferenceWidgetDescriptionBuilder clearButton(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription value) {
+        this.getReferenceWidgetDescription().setClearButton(value);
+        return this;
+    }
+
+    /**
      * Setter for Style.
      *
      * @generated
@@ -126,6 +143,7 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
@@ -137,7 +155,6 @@ public class ReferenceWidgetDescriptionBuilder {
         }
         return this;
     }
-
 
 }
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference.provider;
+package org.eclipse.sirius.components.view.widget.reference.provider;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,8 +28,7 @@ import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceW
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link ConditionalReferenceWidgetDescriptionStyle} object. <!--
+ * This is the item provider adapter for a {@link ConditionalReferenceWidgetDescriptionStyle} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
@@ -139,7 +138,7 @@ public class ConditionalReferenceWidgetDescriptionStyleItemProvider extends Cond
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ConditionalStyle.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ConditionalReferenceWidgetDescriptionStyle"));
     }
 
     /**
