@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
@@ -69,7 +70,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
 
     public NonContainmentReferenceIfDescriptionProvider(IIdentityService identityService, ILabelService labelService, IEMFKindService emfKindService,
-                                                        IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
+            IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
@@ -80,7 +81,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     @Override
     public List<IfDescription> getIfDescriptions() {
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
 
@@ -99,7 +100,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     }
 
     private ReferenceWidgetDescription getReferenceWidgetDescription() {
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
 
@@ -116,6 +117,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .itemIconURLProvider(this::getItemIconURL)
                 .ownerKindProvider(this::getTypeName)
                 .referenceKindProvider(this::getReferenceKind)
+                .referenceNameProvider(this::getReferenceName)
                 .isContainmentProvider(this::isContainment)
                 .isManyProvider(this::isMany)
                 .styleProvider(variableManager -> null)
@@ -123,7 +125,6 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
-                .clearHandlerProvider(this::handleClearReference)
                 .itemRemoveHandlerProvider(this::handleRemoveValue)
                 .setHandlerProvider(this::handleSetReference)
                 .addHandlerProvider(this::handleAddReferenceValues)
@@ -153,7 +154,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     }
 
     private EStructuralFeature.Setting resolveSetting(VariableManager variableManager) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
@@ -184,7 +185,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     }
 
     private String getOwnerId(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, EObject.class).map(this.identityService::getId).orElse("");
+        return variableManager.get(RepresentationVariables.SELF.name(), EObject.class).map(this.identityService::getId).orElse("");
     }
 
     private Function<VariableManager, String> getLabelProvider() {
@@ -192,7 +193,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     }
 
     private String getTypeName(VariableManager variableManager) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
@@ -202,7 +203,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     }
 
     private String getReferenceKind(VariableManager variableManager) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
@@ -211,8 +212,14 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
         return "";
     }
 
+    private String getReferenceName(VariableManager variableManager) {
+        return variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class)
+                .map(EReference::getName)
+                .orElse("");
+    }
+
     private boolean isContainment(VariableManager variableManager) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
@@ -222,7 +229,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     }
 
     private boolean isMany(VariableManager variableManager) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
@@ -238,25 +245,8 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
         return new Failure(errorMessages);
     }
 
-    private IStatus handleClearReference(VariableManager variableManager) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
-
-        if (referenceOwner != null && optionalEReference.isPresent()) {
-            EReference reference = optionalEReference.get();
-            if (reference.isMany()) {
-                ((List<?>) referenceOwner.eGet(reference)).clear();
-            } else {
-                referenceOwner.eUnset(reference);
-            }
-        } else {
-            return this.createErrorStatus("Something went wrong while clearing the reference.");
-        }
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-    }
-
     private IStatus handleRemoveValue(VariableManager variableManager) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
         Optional<Object> item = this.getItem(variableManager);
 
@@ -275,7 +265,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     private IStatus handleSetReference(VariableManager variableManager) {
         IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
         Optional<Object> item = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, Object.class);
 
@@ -294,7 +284,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     private IStatus handleAddReferenceValues(VariableManager variableManager) {
         IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
         Optional<List<Object>> newValues = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, (Class<List<Object>>) (Class<?>) List.class);
 
@@ -315,7 +305,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     private IStatus handleMoveReferenceValue(VariableManager variableManager) {
         IStatus result = this.createErrorStatus("Something went wrong while reordering reference values.");
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
         Optional<Object> item = this.getItem(variableManager);
         Optional<Integer> fromIndex = variableManager.get(ReferenceWidgetComponent.MOVE_FROM_VARIABLE, Integer.class);
