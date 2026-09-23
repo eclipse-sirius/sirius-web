@@ -1,0 +1,12 @@
+# For developers: build the image from the working tree instead of pulling it.
+# USERNAME and PASSWORD are a GitHub login and a token with read:packages, see Dockerfile.
+#
+#   USERNAME=<login> PASSWORD=<token> docker compose -f docker-compose.yml -f docker-compose.build.yml up --build
+
+services:
+  backend:
+    build:
+      context: .
+      args:
+        - USERNAME
+        - PASSWORD
