@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -195,6 +195,18 @@ const styleField: SelectionNode = {
   },
 };
 
+const clearButtonField: SelectionNode = {
+  kind: Kind.FIELD,
+  name: {
+    kind: Kind.NAME,
+    value: 'clearButton',
+  },
+  selectionSet: {
+    kind: Kind.SELECTION_SET,
+    selections: [idField],
+  },
+};
+
 export const referenceWidgetDocumentTransform = new DocumentTransform((document) => {
   if (shouldTransform(document)) {
     return visit(document, {
@@ -214,6 +226,7 @@ export const referenceWidgetDocumentTransform = new DocumentTransform((document)
               referenceField,
               referenceValuesField,
               styleField,
+              clearButtonField,
             ],
           },
           typeCondition: {

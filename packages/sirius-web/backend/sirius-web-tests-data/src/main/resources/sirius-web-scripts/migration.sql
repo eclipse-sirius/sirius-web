@@ -2447,3 +2447,92 @@ INSERT INTO document (
   '2025-05-14 12:00:0.000',
   '2025-05-14 12:00:0.000'
 );
+
+-- Studio for ReferenceWidgetDescriptionClearButtonMigrationParticipantTests
+INSERT INTO project (id, name, created_on, last_modified_on) VALUES (
+  '3b10de31-ac01-4d53-9d5e-68c7dff7e9b7',
+  'Migration Reference Widget Studio',
+  '2026-10-02 16:00:0.000',
+  '2026-10-02 16:00:0.000'
+);
+INSERT INTO nature (project_id, name) VALUES (
+  '3b10de31-ac01-4d53-9d5e-68c7dff7e9b7',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (id, created_on, last_modified_on) VALUES (
+  'e275ebc2-a191-4ba6-af8f-3b5aef32478c',
+  '2026-10-02 16:00:0.000',
+  '2026-10-02 16:00:0.000'
+);
+INSERT INTO project_semantic_data (id, project_id, semantic_data_id, name, created_on, last_modified_on) VALUES (
+  'f12bd54e-63d4-4dd0-9414-82a90cf62cf1',
+  '3b10de31-ac01-4d53-9d5e-68c7dff7e9b7',
+  'e275ebc2-a191-4ba6-af8f-3b5aef32478c',
+  'main',
+  '2026-10-02 16:00:0.000',
+  '2026-10-02 16:00:0.000'
+);
+INSERT INTO semantic_data_domain (semantic_data_id, uri) VALUES (
+  'e275ebc2-a191-4ba6-af8f-3b5aef32478c',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO semantic_data_domain (semantic_data_id, uri) VALUES (
+  'e275ebc2-a191-4ba6-af8f-3b5aef32478c',
+  'http://www.eclipse.org/sirius-web/form'
+);
+INSERT INTO semantic_data_domain (semantic_data_id, uri) VALUES (
+  'e275ebc2-a191-4ba6-af8f-3b5aef32478c',
+  'https://www.eclipse.org/sirius/widgets/reference'
+);
+
+INSERT INTO document (id, semantic_data_id, name, content, is_read_only, created_on, last_modified_on) VALUES (
+  'c522cf20-6008-48de-b48d-3f352c4d25f9',
+  'e275ebc2-a191-4ba6-af8f-3b5aef32478c',
+  'ReferenceWidgetDescription#clearButton migration',
+  '{
+    "json": { "version": "1.0", "encoding": "utf-8" },
+    "ns": {
+      "form": "http://www.eclipse.org/sirius-web/form",
+      "reference": "https://www.eclipse.org/sirius/widgets/reference",
+      "view": "http://www.eclipse.org/sirius-web/view"
+    },
+    "content": [{
+      "id": "d32985b2-b655-4b07-8976-dd75e9fd4110",
+      "eClass": "view:View",
+      "data": {
+        "descriptions": [{
+          "id": "3ef0c556-d7c6-4484-8dfc-4a978242378e",
+          "eClass": "form:FormDescription",
+          "data": {
+            "name": "WidgetRefMonoValue",
+            "domainType": "flow::DataFlow",
+            "titleExpression": "WidgetRefMonoValue",
+            "pages": [{
+              "id": "469cf6eb-f4fe-4421-97dd-f4416f3621dd",
+              "eClass": "form:PageDescription",
+              "data": {
+                "groups": [{
+                  "id": "449fffc5-6aff-4e78-9c7d-3287fee0dc14",
+                  "eClass": "form:GroupDescription",
+                  "data": {
+                    "children": [{
+                      "id": "80669a1c-ad6e-4ce5-9bb3-afea20ae2741",
+                      "eClass": "reference:ReferenceWidgetDescription",
+                      "data": {
+                        "labelExpression": "Test Widget Reference",
+                        "referenceNameExpression": "target"
+                      }
+                    }]
+                  }
+                }]
+              }
+            }]
+          }
+        }]
+      }
+    }]
+  }',
+  false,
+  '2026-10-02 16:00:0.000',
+  '2026-10-02 16:00:0.000'
+);

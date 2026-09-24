@@ -44,9 +44,13 @@ public class ReferenceWidgetDescriptionItemProviderSpec extends ReferenceWidgetD
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
+        newChildDescriptors.add(
+                this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription()));
+
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES, ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
+        newChildDescriptors.add(
+                this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES, ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
     }
 
 }

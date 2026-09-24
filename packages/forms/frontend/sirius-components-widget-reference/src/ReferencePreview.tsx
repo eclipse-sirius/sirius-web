@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { IconOverlay, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLWidget, PreviewWidgetProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
-import { GQLReferenceWidget } from '@eclipse-sirius/sirius-components-widget-reference';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
@@ -25,7 +24,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { GQLReferenceWidgetStyle } from './ReferenceWidgetFragment.types';
+import { GQLReferenceWidget, GQLReferenceWidgetStyle } from './ReferenceWidgetFragment.types';
 
 const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
 
@@ -153,14 +152,16 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
                       data-testid={`${widget.label}-add`}>
                       <AddIcon />
                     </IconButton>
-                    <IconButton
-                      aria-label="clear"
-                      size="small"
-                      title="Clear"
-                      disabled={false}
-                      data-testid={`${widget.label}-clear`}>
-                      <DeleteIcon />
-                    </IconButton>
+                    {widget.clearButton ? (
+                      <IconButton
+                        aria-label="clear"
+                        size="small"
+                        title="Clear"
+                        disabled={false}
+                        data-testid={`${widget.label}-clear`}>
+                        <DeleteIcon />
+                      </IconButton>
+                    ) : null}
                   </InputAdornment>
                 </>
               ),
