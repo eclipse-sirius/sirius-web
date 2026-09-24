@@ -103,6 +103,7 @@ Consumers that still need a node index can use `nodes.findIndex((node) => node.i
 - https://github.com/eclipse-sirius/sirius-web/issues/3712[#3712] [diagram] Render child and border nodes declared under a border node.
 - https://github.com/eclipse-sirius/sirius-web/issues/6939[#6939] [diagram] The available `self` variable for the `precondition` of the `connector palette` is now set to the `semantic source` of connection (it was previously the target).
 - https://github.com/eclipse-sirius/sirius-web/issues/2770[#2770] [diagram] Prevent React Flow handle warnings while computing the initial diagram layout.
+- https://github.com/eclipse-sirius/sirius-web/issues/6738[#6738] [diagram] Automatically close the active diagram tab when its diagram is deleted.
 
 
 === New Features

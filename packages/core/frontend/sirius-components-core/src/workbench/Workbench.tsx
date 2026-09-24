@@ -297,6 +297,7 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
         editingContextId,
         readOnly,
         representationId: displayedRepresentationMetadata.id,
+        onRepresentationUnavailable: () => onClose(displayedRepresentationMetadata),
       };
       if (RepresentationComponent) {
         main = (
