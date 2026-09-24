@@ -57,6 +57,9 @@ Downstream consumers must declare this dependency and replace the package prefix
   Two implementations of `IReferenceWidgetClearHandler`, `ViewReferenceWidgetClearHandler` for View-based representation and `DetailsViewReferenceWidgetClearHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
   Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetClearHandler`.
 - Reference widget EMF edit classes have been moved from `org.eclipse.sirius.components.widgets` to `org.eclipse.sirius.components.view.widget` to match their domain classes.
+- The clear button of the widget reference is now driven by a dedicated EClass in the View DSL.
+ All existing representations are automatically migrated as well as the details view of Sirius Web.
+ However, programmatic form descriptions should manually add it through `ReferenceWidgetDescription.Builder#clearButtonDescription`.
 
 == Dependency updates
 
@@ -99,6 +102,7 @@ Implement `INodeStyleCustomizer` to customize node styles.
 Each customizer determines which nodes it applies to.
 All applicable customizers are applied, but their order is unspecified.
 If multiple customizers modify the same style property, the last one wins.
+* In forms, specifiers can now configure whether reference widgets show a clear button in the View DSL.
 
 
 == Improvements

@@ -139,7 +139,7 @@ public class ReferenceWidgetDescriptionStyleItemProvider extends WidgetDescripti
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Style.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ReferenceWidgetDescriptionStyle"));
     }
 
     /**
