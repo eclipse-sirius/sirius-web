@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.palette.dto.GetPaletteSuccessPayload;
+import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -107,6 +108,8 @@ public class TreeItemPaletteEventHandler implements ITreeEventHandler {
                     }
 
                     payload = new GetPaletteSuccessPayload(treeInput.id(), palette);
+                } else {
+                    payload = new GetPaletteSuccessPayload(treeInput.id(), new Palette("", List.of(), List.of()));
                 }
             }
         }
