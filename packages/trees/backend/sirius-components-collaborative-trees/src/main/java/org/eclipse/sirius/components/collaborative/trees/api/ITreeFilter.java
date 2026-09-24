@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees.api;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.trees.Tree;
 
 /**
@@ -22,5 +24,5 @@ import org.eclipse.sirius.components.trees.Tree;
  */
 public interface ITreeFilter {
 
-    Tree filter(Tree tree, String searchedValue);
+    Tree filter(Tree tree, String searchedValue, List<String> collapsedIds);
 }

@@ -14,6 +14,7 @@
 export interface UseTreeStateContainerValue {
   activeTreeDescriptionId: string | null;
   expanded: string[];
+  collapsed: string[];
   maxDepth: number;
   setActiveDescriptionId: (activeDescriptionId: string) => void;
   onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void;
@@ -22,5 +23,6 @@ export interface UseTreeStateContainerValue {
 export interface UseTreeStateContainerState {
   activeTreeDescriptionId: string | null;
   expanded: { [key: string]: string[] };
+  collapsed: { [key: string]: string[] };
   maxDepth: { [key: string]: number };
 }
