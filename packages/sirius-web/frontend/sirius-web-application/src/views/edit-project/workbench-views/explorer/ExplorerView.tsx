@@ -109,12 +109,12 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     );
 
     const activeTreeFilterIds = treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
-
     const { payload } = useExplorerSubscription(
       editingContextId,
       activeTreeDescriptionId,
       activeTreeFilterIds,
       expanded,
+      state.filterBarTreeFiltering ? state.filterBarText : '',
       maxDepth
     );
 
@@ -233,7 +233,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
                       readOnly={readOnly}
                       tree={state.tree}
                       textToHighlight={state.filterBarText}
-                      textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+                      textToFilter={null}
                       onExpandedElementChange={onExpandedElementChange}
                       expanded={expanded}
                       maxDepth={maxDepth}

@@ -170,6 +170,36 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @GivenSiriusWebServer
+    @DisplayName("Given a collapsed explorer, when we search for a leaf, then only the matching leaf and its ancestors are sent")
+    public void givenCollapsedExplorerWhenWeSearchForLeafThenOnlyMatchingLeafAndItsAncestorsAreSent() {
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of(), "package portal");
+        var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
+
+        Consumer<Object> filteredProjectContentMatcher = assertRefreshedTreeThat(tree -> {
+            assertThat(tree.getId()).isEqualTo(treeRepresentationId);
+            assertThat(tree.getChildren()).singleElement().satisfies(document -> {
+                assertThat(document.getLabel().toString()).isEqualTo("Ecore");
+                assertThat(document.isExpanded()).isTrue();
+                assertThat(document.getChildren()).singleElement().satisfies(ePackage -> {
+                    assertThat(ePackage.getLabel().toString()).isEqualTo("Sample");
+                    assertThat(ePackage.isExpanded()).isTrue();
+                    assertThat(ePackage.getChildren()).singleElement().satisfies(representation -> {
+                        assertThat(representation.getLabel().toString()).isEqualTo("EPackage Portal");
+                        assertThat(representation.isExpanded()).isFalse();
+                    });
+                });
+            });
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(filteredProjectContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the explorer of a project, when we delete tree items, then the tree is refreshed")
     public void givenExplorerOfProjectWhenWeDeleteTreeItemsThenTheTreeIsRefreshed() {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();

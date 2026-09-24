@@ -88,6 +88,7 @@ Implement `INodeStyleCustomizer` to customize node styles.
 Each customizer determines which nodes it applies to.
 All applicable customizers are applied, but their order is unspecified.
 If multiple customizers modify the same style property, the last one wins.
+* The Explorer text filter now searches inside the whole tree when the filter button inside the filter is activated.
 
 
 == Improvements
