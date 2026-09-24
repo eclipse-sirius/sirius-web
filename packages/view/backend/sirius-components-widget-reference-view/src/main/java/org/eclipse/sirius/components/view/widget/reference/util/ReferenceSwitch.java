@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
@@ -114,6 +115,13 @@ public class ReferenceSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case ReferencePackage.REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION: {
+                ReferenceWidgetClearButtonDescription referenceWidgetClearButtonDescription = (ReferenceWidgetClearButtonDescription) theEObject;
+                T result = this.caseReferenceWidgetClearButtonDescription(referenceWidgetClearButtonDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -166,6 +174,21 @@ public class ReferenceSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Widget Clear Button Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Widget Clear Button Description</em>'.
+     * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     */
+    public T caseReferenceWidgetClearButtonDescription(ReferenceWidgetClearButtonDescription object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Element Description</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
@@ -173,8 +196,8 @@ public class ReferenceSwitch<T> extends Switch<T> {
      * @param object
      *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Element Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseFormElementDescription(FormElementDescription object) {
         return null;

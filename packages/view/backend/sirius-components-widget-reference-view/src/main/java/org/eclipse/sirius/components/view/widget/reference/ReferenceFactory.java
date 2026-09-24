@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,10 @@ package org.eclipse.sirius.components.view.widget.reference;
 import org.eclipse.emf.ecore.EFactory;
 
 /**
- * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of
- * the model. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of the model. <!-- end-user-doc -->
  *
- * @see ReferencePackage
  * @generated
+ * @see ReferencePackage
  */
 public interface ReferenceFactory extends EFactory {
     /**
@@ -46,13 +45,20 @@ public interface ReferenceFactory extends EFactory {
     ReferenceWidgetDescriptionStyle createReferenceWidgetDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Reference Widget Description Style</em>'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns a new object of class '<em>Conditional Reference Widget Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Conditional Reference Widget Description Style</em>'.
      * @generated
      */
     ConditionalReferenceWidgetDescriptionStyle createConditionalReferenceWidgetDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Widget Clear Button Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Widget Clear Button Description</em>'.
+     * @generated
+     */
+    ReferenceWidgetClearButtonDescription createReferenceWidgetClearButtonDescription();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,6 @@ import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
-import org.eclipse.sirius.components.view.form.FormFactory;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.SplitButtonDescription;
@@ -68,7 +67,8 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
 
     private final Counter counter;
 
-    public AddWidgetEventHandler(IObjectSearchService objectSearchService, ICollaborativeFormDescriptionEditorMessageService messageService, List<IWidgetDescriptionProvider> widgetDescriptionProviders, MeterRegistry meterRegistry) {
+    public AddWidgetEventHandler(IObjectSearchService objectSearchService, ICollaborativeFormDescriptionEditorMessageService messageService,
+            List<IWidgetDescriptionProvider> widgetDescriptionProviders, MeterRegistry meterRegistry) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
         this.widgetDescriptionProviders = Objects.requireNonNull(widgetDescriptionProviders);
@@ -120,7 +120,8 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                 }
                 if (newElement instanceof FormElementDescription formElementDescription) {
                     if (newElement instanceof WidgetDescription widgetDescription) {
-                        this.createStyle(widgetDescription);
+                        this.createWidgetChild(widgetDescription, "style");
+                        this.createWidgetChild(widgetDescription, "clearButton");
                     }
                     if (container instanceof GroupDescription groupDescription) {
                         groupDescription.getChildren().add(index, formElementDescription);
@@ -152,7 +153,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         if (eClassifier instanceof EClass eClass) {
             var newElement = EcoreUtil.create(eClass);
             if (newElement instanceof WidgetDescription widgetDescription) {
-                this.createStyle(widgetDescription);
+                this.createWidgetChild(widgetDescription, "style");
                 if (newElement instanceof ButtonDescription buttonDescription) {
                     splitButtonDescription.getActions().add(0, buttonDescription);
                 }
@@ -179,14 +180,14 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         return result;
     }
 
-    private void createStyle(WidgetDescription widgetDescription) {
-        EStructuralFeature styleFeature = widgetDescription.eClass().getEStructuralFeature("style");
-        if (styleFeature instanceof EReference) {
-            EClassifier eClassifier = styleFeature.getEType();
+    private void createWidgetChild(WidgetDescription widgetDescription, String featureName) {
+        EStructuralFeature feature = widgetDescription.eClass().getEStructuralFeature(featureName);
+        if (feature instanceof EReference) {
+            EClassifier eClassifier = feature.getEType();
             if (eClassifier instanceof EClass eClass) {
-                var widgetDescriptionStyle = FormFactory.eINSTANCE.create(eClass);
-                if (eClassifier.isInstance(widgetDescriptionStyle)) {
-                    widgetDescription.eSet(styleFeature, widgetDescriptionStyle);
+                var child = EcoreUtil.create(eClass);
+                if (eClassifier.isInstance(child)) {
+                    widgetDescription.eSet(feature, child);
                 }
             }
         }

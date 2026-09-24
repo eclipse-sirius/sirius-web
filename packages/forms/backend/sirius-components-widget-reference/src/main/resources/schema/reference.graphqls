@@ -19,6 +19,7 @@ type ReferenceWidget implements Widget {
   referenceValues: [ReferenceValue!]!
   style: ReferenceWidgetStyle
   ownerId: ID!
+  clearButton: ReferenceWidgetClearButton
 }
 
 type ReferenceWidgetStyle {
@@ -28,6 +29,10 @@ type ReferenceWidgetStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+}
+
+type ReferenceWidgetClearButton {
+  id: ID!
 }
 
 type Reference {

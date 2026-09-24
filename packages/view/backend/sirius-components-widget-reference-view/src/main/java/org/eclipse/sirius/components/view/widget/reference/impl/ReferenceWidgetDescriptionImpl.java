@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
@@ -70,9 +71,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * The default value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getReferenceOwnerExpression()
      * @generated
      * @ordered
+     * @see #getReferenceOwnerExpression()
      */
     protected static final String REFERENCE_OWNER_EXPRESSION_EDEFAULT = null;
 
@@ -80,9 +81,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * The cached value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getReferenceOwnerExpression()
      * @generated
      * @ordered
+     * @see #getReferenceOwnerExpression()
      */
     protected String referenceOwnerExpression = REFERENCE_OWNER_EXPRESSION_EDEFAULT;
 
@@ -100,9 +101,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * The cached value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getReferenceNameExpression()
      * @generated
      * @ordered
+     * @see #getReferenceNameExpression()
      */
     protected String referenceNameExpression = REFERENCE_NAME_EXPRESSION_EDEFAULT;
 
@@ -110,19 +111,29 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see #getBody()
      * @generated
      * @ordered
+     * @see #getBody()
      */
     protected EList<Operation> body;
 
     /**
-     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The cached value of the '{@link #getClearButton() <em>Clear Button</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
-     * @see #getStyle()
      * @generated
      * @ordered
+     * @see #getClearButton()
+     */
+    protected ReferenceWidgetClearButtonDescription clearButton;
+
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getStyle()
      */
     protected ReferenceWidgetDescriptionStyle style;
 
@@ -130,9 +141,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getConditionalStyles()
      * @generated
      * @ordered
+     * @see #getConditionalStyles()
      */
     protected EList<ConditionalReferenceWidgetDescriptionStyle> conditionalStyles;
 
@@ -174,9 +185,10 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     public void setReferenceOwnerExpression(String newReferenceOwnerExpression) {
         String oldReferenceOwnerExpression = this.referenceOwnerExpression;
         this.referenceOwnerExpression = newReferenceOwnerExpression;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION, oldReferenceOwnerExpression,
                     this.referenceOwnerExpression));
+        }
     }
 
     /**
@@ -198,9 +210,10 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     public void setReferenceNameExpression(String newReferenceNameExpression) {
         String oldReferenceNameExpression = this.referenceNameExpression;
         this.referenceNameExpression = newReferenceNameExpression;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(
                     new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION, oldReferenceNameExpression, this.referenceNameExpression));
+        }
     }
 
     /**
@@ -222,6 +235,59 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @generated
      */
     @Override
+    public ReferenceWidgetClearButtonDescription getClearButton() {
+        return this.clearButton;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setClearButton(ReferenceWidgetClearButtonDescription newClearButton) {
+        if (newClearButton != this.clearButton) {
+            NotificationChain msgs = null;
+            if (this.clearButton != null) {
+                msgs = ((InternalEObject) this.clearButton).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, null, msgs);
+            }
+            if (newClearButton != null) {
+                msgs = ((InternalEObject) newClearButton).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, null, msgs);
+            }
+            msgs = this.basicSetClearButton(newClearButton, msgs);
+            if (msgs != null) {
+                msgs.dispatch();
+            }
+        } else if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, newClearButton, newClearButton));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetClearButton(ReferenceWidgetClearButtonDescription newClearButton, NotificationChain msgs) {
+        ReferenceWidgetClearButtonDescription oldClearButton = this.clearButton;
+        this.clearButton = newClearButton;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, oldClearButton, newClearButton);
+            if (msgs == null) {
+                msgs = notification;
+            } else {
+                msgs.add(notification);
+            }
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public ReferenceWidgetDescriptionStyle getStyle() {
         return this.style;
     }
@@ -235,15 +301,19 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     public void setStyle(ReferenceWidgetDescriptionStyle newStyle) {
         if (newStyle != this.style) {
             NotificationChain msgs = null;
-            if (this.style != null)
+            if (this.style != null) {
                 msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, null, msgs);
-            if (newStyle != null)
+            }
+            if (newStyle != null) {
                 msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, null, msgs);
+            }
             msgs = this.basicSetStyle(newStyle, msgs);
-            if (msgs != null)
+            if (msgs != null) {
                 msgs.dispatch();
-        } else if (this.eNotificationRequired())
+            }
+        } else if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, newStyle, newStyle));
+        }
     }
 
     /**
@@ -256,10 +326,11 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
         this.style = newStyle;
         if (this.eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, oldStyle, newStyle);
-            if (msgs == null)
+            if (msgs == null) {
                 msgs = notification;
-            else
+            } else {
                 msgs.add(notification);
+            }
         }
         return msgs;
     }
@@ -287,6 +358,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
         switch (featureID) {
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
+                return this.basicSetClearButton(null, msgs);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.basicSetStyle(null, msgs);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -314,8 +387,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     public void setIsEnabledExpression(String newIsEnabledExpression) {
         String oldIsEnabledExpression = this.isEnabledExpression;
         this.isEnabledExpression = newIsEnabledExpression;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, this.isEnabledExpression));
+        }
     }
 
     /**
@@ -334,6 +408,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.getReferenceNameExpression();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 return this.getBody();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
+                return this.getClearButton();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.getStyle();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -363,6 +439,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 this.getBody().clear();
                 this.getBody().addAll((Collection<? extends Operation>) newValue);
+                return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
+                this.setClearButton((ReferenceWidgetClearButtonDescription) newValue);
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ReferenceWidgetDescriptionStyle) newValue);
@@ -395,6 +474,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 this.getBody().clear();
                 return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
+                this.setClearButton((ReferenceWidgetClearButtonDescription) null);
+                return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ReferenceWidgetDescriptionStyle) null);
                 return;
@@ -421,6 +503,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return REFERENCE_NAME_EXPRESSION_EDEFAULT == null ? this.referenceNameExpression != null : !REFERENCE_NAME_EXPRESSION_EDEFAULT.equals(this.referenceNameExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 return this.body != null && !this.body.isEmpty();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
+                return this.clearButton != null;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.style != null;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -436,8 +520,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isEnabledExpression: ");

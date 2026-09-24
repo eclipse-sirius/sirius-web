@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.widget.reference.ReferenceWidgetStyleProvider;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.util.ReferenceSwitch;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
     }
 
     public ReferenceWidgetDescription.Builder getReferenceWidgetDescriptionBuilder(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription referenceDescription, String id) {
-        return ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
+        var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
                 .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(referenceDescription, "Reference"))
@@ -83,6 +84,10 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "");
+        if (referenceDescription.getClearButton() != null) {
+            builder.clearButtonDescription(ReferenceWidgetClearButtonDescription.newReferenceWidgetClearButtonDescription().build());
+        }
+        return builder;
     }
 
     public String getWidgetLabel(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, String defaultLabel) {

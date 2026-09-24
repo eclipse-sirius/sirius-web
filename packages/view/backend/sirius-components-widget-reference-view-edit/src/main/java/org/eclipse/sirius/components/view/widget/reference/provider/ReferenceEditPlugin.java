@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference.provider;
+package org.eclipse.sirius.components.view.widget.reference.provider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +73,7 @@ public final class ReferenceEditPlugin extends EMFPlugin {
      * Computes the file extension to be used with the key to specify an image resource.
      *
      * @param key
-     *            the key for the imagine.
+     *         the key for the imagine.
      * @return the file extension to be used with the key to specify an image resource.
      */
     protected static String extensionFor(String key) {

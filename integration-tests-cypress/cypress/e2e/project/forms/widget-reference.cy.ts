@@ -32,6 +32,7 @@ const createFormWithWidgetRef = (domainType: string, name: string, reference: st
   details.getTextField('Reference Name Expression').should('exist');
   details.getTextField('Label Expression').type('Test Widget Reference');
   details.getTextField('Reference Name Expression').type(`${reference}{enter}`);
+  explorer.createObject('ReferenceWidgetDescription', 'clearButton-ReferenceWidgetClearButtonDescription');
   explorer.collapseWithDoubleClick(name);
 };
 describe('Forms Widget-reference', () => {

@@ -69,6 +69,9 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
 
                 this.referenceWidgetPropertiesConverter.convert(builder, referenceDescription, interpreter);
                 this.referenceWidgetBehaviorConverter.convert(builder, referenceDescription, interpreter);
+                if (referenceDescription.getClearButton() != null) {
+                    builder.clearButtonDescription(org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription.newReferenceWidgetClearButtonDescription().build());
+                }
 
                 var referenceWidgetDescription = builder.build();
 
