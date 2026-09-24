@@ -1,0 +1,10 @@
+extend type Project {
+  styleCustomizations: [StyleCustomization!]!
+}
+
+type StyleCustomization {
+  id: ID!
+  name: String!
+  description: String!
+  enabled: Boolean!
+}

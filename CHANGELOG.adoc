@@ -116,6 +116,7 @@ If many node style customizations can apply to an element, they are all applied.
 - https://github.com/eclipse-sirius/sirius-web/issues/6964[#6964] [sirius-web] Add the appearance project settings view.
 The feature can be tested by using the configuration property `sirius.web.style.customization.enabled` with the value `true`.
 It also activates some node style customizations, used for tests, for flow diagrams if the label of an object contains either "I'm Blue" or "da be di da be dai".
+- https://github.com/eclipse-sirius/sirius-web/issues/6981[#6981] [projects] Add a new module `sirius-web-projects-stylecustomizations-application` containing the backend API to retrieve style customizations.
 
 
 === Improvements

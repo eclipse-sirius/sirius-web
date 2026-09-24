@@ -49,6 +49,11 @@
 			<artifactId>sirius-web-application</artifactId>
 			<version>2026.9.2</version>
 		</dependency>
+        <dependency>
+            <groupId>org.eclipse.sirius</groupId>
+            <artifactId>sirius-web-projects-stylecustomizations-application</artifactId>
+            <version>2026.9.2</version>
+        </dependency>
 
 		<dependency>
 			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>

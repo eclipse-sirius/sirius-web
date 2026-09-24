@@ -13,10 +13,12 @@
 package org.eclipse.sirius.components.flow.starter.services;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
 import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
@@ -41,15 +43,20 @@ public class FlowCapableEditingContextPredicate implements IFlowCapableEditingCo
     }
 
     @Override
-    public boolean test(String editingContextId) {
-        return new UUIDParser().parse(editingContextId)
-                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
-                .map(ProjectSemanticData::getProject)
-                .map(AggregateReference::getId)
-                .flatMap(this.projectSearchService::findById)
+    public boolean test(String id) {
+        return this.projectSearchService.findById(id)
+                .or(() -> this.getProjectFromEditingContextId(id))
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)
                         .anyMatch(FlowProjectTemplatesProvider.FLOW_NATURE::equals))
                 .isPresent();
+    }
+
+    private Optional<Project> getProjectFromEditingContextId(String editingContextId) {
+        return new UUIDParser().parse(editingContextId)
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId)
+                .flatMap(this.projectSearchService::findById);
     }
 }

@@ -128,6 +128,7 @@ public class PullRequestSizeChecker {
                 "org.eclipse.jdt.core.prefs",
                 "org.eclipse.jdt.ui.prefs",
                 "org.eclipse.m2e.core.prefs",
+                "org.springframework.ide.eclipse.boot.prefs",
                 "org.springframework.ide.eclipse.prefs",
                 ".checkstyle",
                 ".classpath",

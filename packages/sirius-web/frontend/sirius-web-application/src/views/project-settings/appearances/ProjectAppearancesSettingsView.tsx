@@ -17,7 +17,9 @@ import { ProjectSettingTabProps } from '../ProjectSettingsView.types';
 import { StyleCustomizationTable } from './StyleCustomizationTable';
 
 export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'projectAppearancesSettings' });
+  const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
+    keyPrefix: 'projectAppearancesSettings',
+  });
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: (theme) => theme.spacing(3) }}>

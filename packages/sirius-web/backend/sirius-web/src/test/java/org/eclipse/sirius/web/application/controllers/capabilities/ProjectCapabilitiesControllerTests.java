@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,11 +52,13 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
         boolean canDownload = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canDownload");
         boolean canRename = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canRename");
         boolean canDelete = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canDelete");
+        boolean canDuplicate = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canDuplicate");
         boolean canEdit = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canEdit");
         boolean canViewSettings = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.settings.canView");
         assertThat(canDownload).isFalse();
         assertThat(canRename).isFalse();
         assertThat(canDelete).isFalse();
+        assertThat(canDuplicate).isFalse();
         assertThat(canEdit).isFalse();
         assertThat(canViewSettings).isFalse();
     }
@@ -65,10 +67,12 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
     @GivenSiriusWebServer
     @DisplayName("Given the demo profile, when a query to retrieve capabilities the settings of a project is executed, then it returns the expected capabilities values")
     public void givenTheDemoProfileWhenAQueryToRetrieveTheSettingsOfAProjectIsExecutedThenItReturnsTheExpectedCapabilitiesValue() {
-        var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT, "tabIds", List.of(SiriusWebCapabilities.PROJECT_SETTINGS_IMAGE_TAB)));
+        var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT, "tabIds", List.of(SiriusWebCapabilities.PROJECT_SETTINGS_GENERAL_TAB, SiriusWebCapabilities.PROJECT_SETTINGS_IMAGE_TAB, SiriusWebCapabilities.PROJECT_SETTINGS_APPEARANCE_TAB)));
         List<Boolean> canViewProjectTabSettings = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.settings.tabs[*].canView");
         List<String> tabIds = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.settings.tabs[*].tabId");
         assertThat(canViewProjectTabSettings).allMatch(Boolean.FALSE::equals);
+        assertThat(tabIds).contains(SiriusWebCapabilities.PROJECT_SETTINGS_GENERAL_TAB);
         assertThat(tabIds).contains(SiriusWebCapabilities.PROJECT_SETTINGS_IMAGE_TAB);
+        assertThat(tabIds).contains(SiriusWebCapabilities.PROJECT_SETTINGS_APPEARANCE_TAB);
     }
 }
