@@ -24,5 +24,6 @@ import org.eclipse.sirius.web.projects.stylecustomizations.application.services.
  * @since v2026.11.0
  */
 public interface IStyleCustomizationDescriptionProvider {
+
     List<StyleCustomizationDescription> getStyleCustomizationDescriptions(String projectId);
 }
