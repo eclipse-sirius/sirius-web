@@ -37,6 +37,11 @@ public class RepresentationIdBuilder {
 
     @SuppressWarnings("checkstyle:MultipleStringLiterals")
     public String buildExplorerRepresentationId(String treeDescriptionId, List<String> expandedObjects, List<String> activatedFilters, String searchedValue) {
+        return this.buildExplorerRepresentationId(treeDescriptionId, expandedObjects, activatedFilters, searchedValue, List.of());
+    }
+
+    @SuppressWarnings("checkstyle:MultipleStringLiterals")
+    public String buildExplorerRepresentationId(String treeDescriptionId, List<String> expandedObjects, List<String> activatedFilters, String searchedValue, List<String> collapsedObjects) {
         List<String> expandedObjectIds = expandedObjects.stream()
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
@@ -49,6 +54,12 @@ public class RepresentationIdBuilder {
                 String.join(",", activatedFilterIds) + "]";
         if (!searchedValue.isEmpty()) {
             representationId += "&searchedValue=" + URLEncoder.encode(searchedValue, StandardCharsets.UTF_8);
+        }
+        if (!collapsedObjects.isEmpty()) {
+            List<String> collapsedObjectIds = collapsedObjects.stream()
+                    .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                    .toList();
+            representationId += "&collapsedIds=[" + String.join(",", collapsedObjectIds) + "]";
         }
         return representationId;
     }

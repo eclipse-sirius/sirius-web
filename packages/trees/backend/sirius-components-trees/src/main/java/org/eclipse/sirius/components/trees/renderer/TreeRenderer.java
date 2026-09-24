@@ -46,6 +46,8 @@ public class TreeRenderer {
 
     public static final String SEARCHED_VALUE = "searchedValue";
 
+    public static final String COLLAPSED_IDS = "collapsedIds";
+
     private final Logger logger = LoggerFactory.getLogger(TreeRenderer.class);
 
     private final VariableManager variableManager;

@@ -177,7 +177,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> filteredProjectContentMatcher = assertRefreshedTreeThat(tree -> {
-            assertThat(tree.getId()).isEqualTo(treeRepresentationId);
+            assertThat(tree.getId()).isEqualTo(treeRepresentationId+"&collapsedIds=[]");
             assertThat(tree.getChildren()).singleElement().satisfies(document -> {
                 assertThat(document.getLabel().toString()).isEqualTo("Ecore");
                 assertThat(document.isExpanded()).isTrue();

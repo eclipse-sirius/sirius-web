@@ -78,10 +78,11 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       tree: null,
     });
     const treeId: string | null = state.tree?.id || null;
+    const searchedValue = state.filterBarTreeFiltering ? state.filterBarText ?? '' : '';
 
     const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
-    const { activeTreeDescriptionId, expanded, maxDepth, onExpandedElementChange, setActiveDescriptionId } =
-      useTreeStateContainer(configuredActiveTreeDescriptionId, explorerDescriptions);
+    const { activeTreeDescriptionId, expanded, collapsed, maxDepth, onExpandedElementChange, setActiveDescriptionId } =
+      useTreeStateContainer(configuredActiveTreeDescriptionId, explorerDescriptions, searchedValue);
 
     const {
       treeFilters,
@@ -114,7 +115,8 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       activeTreeDescriptionId,
       activeTreeFilterIds,
       expanded,
-      state.filterBarTreeFiltering ? state.filterBarText : '',
+      collapsed,
+      searchedValue,
       maxDepth
     );
 
@@ -235,7 +237,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
                       textToHighlight={state.filterBarText}
                       textToFilter={null}
                       onExpandedElementChange={onExpandedElementChange}
-                      expanded={expanded}
+                      expanded={searchedValue ? collapsed : expanded}
                       maxDepth={maxDepth}
                       onTreeItemClick={onTreeItemClick}
                       selectTreeItems={setSelectedTreeItemIds}

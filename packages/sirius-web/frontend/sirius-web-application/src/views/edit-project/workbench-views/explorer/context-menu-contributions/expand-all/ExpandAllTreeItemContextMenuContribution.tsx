@@ -34,14 +34,16 @@ export const ExpandAllTreeItemContextMenuContribution = forwardRef(
       if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
         const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
           expandAllTreePathData.viewer.editingContext.expandAllTreePath;
-        const newExpanded: string[] = [...expanded];
-
-        treeItemIdsToExpand?.forEach((itemToExpand) => {
-          if (!expanded.includes(itemToExpand)) {
-            newExpanded.push(itemToExpand);
-          }
-        });
-        onExpandedElementChange(newExpanded, expandedMaxDepth);
+        const idsToExpand = new Set(treeItemIdsToExpand ?? []);
+        const isSearching = new URLSearchParams(treeId.split('?')[1] ?? '').has('searchedValue');
+        if (isSearching) {
+          // During search, the expanded prop carries the collapsed item IDs.
+          const newCollapsed = expanded.filter((id) => !idsToExpand.has(id));
+          onExpandedElementChange(newCollapsed, expandedMaxDepth);
+        } else {
+          const newExpanded = [...new Set([...expanded, ...idsToExpand])];
+          onExpandedElementChange(newExpanded, expandedMaxDepth);
+        }
         onClose();
       }
     }, [expandAllTreePathData]);
