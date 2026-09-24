@@ -23,7 +23,7 @@
 
 == Improvements
 
-
+Added `collapsedIds` to the `representationId` of the explorer subscription in order to collapse element when a search is active.
 
 
 == Technical details
