@@ -115,10 +115,11 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     private String getTreeId(VariableManager variableManager) {
         List<?> expandedObjects = variableManager.get(TreeRenderer.EXPANDED, List.class).orElse(List.of());
         List<?> activatedFilters = variableManager.get(TreeRenderer.ACTIVE_FILTER_IDS, List.class).orElse(List.of());
-        return this.getExplorerTreeId(expandedObjects, activatedFilters);
+        String searchedValue = variableManager.get(TreeRenderer.SEARCHED_VALUE, String.class).orElse("");
+        return this.getExplorerTreeId(expandedObjects, activatedFilters, searchedValue);
     }
 
-    private String getExplorerTreeId(List<?> expandedObjects, List<?> activatedFilters) {
+    private String getExplorerTreeId(List<?> expandedObjects, List<?> activatedFilters, String searchedValue) {
         List<String> expandedObjectIds = expandedObjects.stream()
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
@@ -131,7 +132,11 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
 
-        return PREFIX + "?" + ExplorerEventProcessorFactory.TREE_DESCRIPTION_ID_PARAMETER + "=" + URLEncoder.encode(DESCRIPTION_ID, StandardCharsets.UTF_8) + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
+        String explorerTreeId = PREFIX + "?" + ExplorerEventProcessorFactory.TREE_DESCRIPTION_ID_PARAMETER + "=" + URLEncoder.encode(DESCRIPTION_ID, StandardCharsets.UTF_8) + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
+        if (!searchedValue.isEmpty()) {
+            explorerTreeId += "&" + ExplorerEventProcessorFactory.SEARCHED_VALUE_PARAMETER + "=" + URLEncoder.encode(searchedValue, StandardCharsets.UTF_8);
+        }
+        return explorerTreeId;
     }
 
     private String getTreeItemId(VariableManager variableManager) {

@@ -71,16 +71,20 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
     }
 
     private List<Object> getDefaultChildren(VariableManager variableManager) {
+        Object self = this.getSelf(variableManager);
         List<String> expandedIds = new ArrayList<>();
+        String searchedValue = variableManager.get(TreeRenderer.SEARCHED_VALUE, String.class).orElse("");
+        String selfId = this.explorerServices.getTreeItemId(self);
         Object objects = variableManager.getVariables().get(TreeRenderer.EXPANDED);
-        if (objects instanceof List<?> list) {
+        if (!searchedValue.isEmpty() && selfId != null) {
+            expandedIds = List.of(selfId);
+        } else if (objects instanceof List<?> list) {
             expandedIds = list.stream()
                     .filter(String.class::isInstance)
                     .map(String.class::cast)
                     .toList();
         }
         var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
-        Object self = this.getSelf(variableManager);
         return this.explorerServices.getDefaultChildren(self, optionalEditingContext.orElse(null), expandedIds, this.getExistingRepresentations(variableManager));
     }
 
