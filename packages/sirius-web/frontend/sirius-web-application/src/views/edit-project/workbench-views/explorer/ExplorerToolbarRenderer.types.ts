@@ -10,15 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 import { TreeDescriptionMetadata } from './TreeDescriptionsMenu.types';
 
 export interface ExplorerToolbarRendererProps {
   editingContextId: string;
-  activeTreeDescriptionId: string;
   readOnly: boolean;
   explorerDescriptions: TreeDescriptionMetadata[];
-  treeFilters: TreeFilter[];
-  setTreeFilters: (treeFilters: TreeFilter[]) => void;
-  setActiveDescriptionId: (activeDescriptionId: string) => void;
 }

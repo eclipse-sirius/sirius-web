@@ -21,15 +21,14 @@ import { FilterBarContextProvider } from '@eclipse-sirius/sirius-components-tree
 import Box from '@mui/material/Box';
 import { ForwardedRef, forwardRef, useRef } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { ExplorerFilterContextProvider } from './ExplorerFilterContext';
+import { ExplorerInteractionContextProvider } from './ExplorerInteractionContext';
 import { ExplorerSelectionContextProvider } from './ExplorerSelectionContext';
 import { ExplorerSubscriptionContainer } from './ExplorerSubscriptionContainer';
 import { ExplorerToolbarRenderer } from './ExplorerToolbarRenderer';
 import { ExplorerTreeRenderer } from './ExplorerTreeRenderer';
 import { ExplorerViewConfiguration } from './ExplorerView.types';
 import { useExplorerDescriptions } from './useExplorerDescriptions';
-import { useTreeFiltering } from './useTreeFiltering';
-import { useTreeStateContainer } from './useTreeStateContainer';
-
 const useStyles = makeStyles()(() => ({
   treeView: {
     display: 'grid',
@@ -50,64 +49,42 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     const initialExplorerViewConfiguration: ExplorerViewConfiguration =
       initialConfiguration as unknown as ExplorerViewConfiguration;
 
-    const configuredActiveTreeDescriptionId = initialExplorerViewConfiguration?.activeTreeDescriptionId ?? null;
     const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
-    const { activeTreeDescriptionId, expanded, maxDepth, onExpandedElementChange, setActiveDescriptionId } =
-      useTreeStateContainer(configuredActiveTreeDescriptionId, explorerDescriptions);
-
-    const { treeFilters, setTreeFilters } = useTreeFiltering(
-      editingContextId,
-      activeTreeDescriptionId,
-      initialExplorerViewConfiguration?.activeTreeFilters ?? []
-    );
-
-    const activeTreeFilterIds = treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
 
     const treeElement = useRef<HTMLDivElement>(null);
 
     return (
       <FilterBarContextProvider containerRef={treeElement}>
-        <ExplorerSubscriptionContainer
-          editingContextId={editingContextId}
-          activeTreeDescriptionId={activeTreeDescriptionId}
-          activeTreeFilterIds={activeTreeFilterIds}
-          expanded={expanded}
-          maxDepth={maxDepth}>
-          <ExplorerSelectionContextProvider
-            id={id}
-            activeTreeDescriptionId={activeTreeDescriptionId}
-            treeFilters={treeFilters}
+        <ExplorerInteractionContextProvider
+          activeTreeDescriptionId={initialExplorerViewConfiguration?.activeTreeDescriptionId ?? null}
+          explorerDescriptions={explorerDescriptions}>
+          <ExplorerFilterContextProvider
             editingContextId={editingContextId}
-            refHandle={ref}
-            expanded={expanded}
-            onExpandedElementChange={onExpandedElementChange}>
-            <ViewAccordion id={id} title="Explorer">
-              <ViewAccordionToolbar>
-                <ExplorerToolbarRenderer
-                  editingContextId={editingContextId}
-                  readOnly={readOnly}
-                  activeTreeDescriptionId={activeTreeDescriptionId}
-                  explorerDescriptions={explorerDescriptions}
-                  treeFilters={treeFilters}
-                  setTreeFilters={setTreeFilters}
-                  setActiveDescriptionId={setActiveDescriptionId}
-                />
-              </ViewAccordionToolbar>
-              <ViewAccordionContent>
-                <Box className={styles.treeView} ref={treeElement}>
-                  <ExplorerTreeRenderer
-                    editingContextId={editingContextId}
-                    readOnly={readOnly}
-                    target={treeElement?.current}
-                    expanded={expanded}
-                    maxDepth={maxDepth}
-                    onExpandedElementChange={onExpandedElementChange}
-                  />
-                </Box>
-              </ViewAccordionContent>
-            </ViewAccordion>
-          </ExplorerSelectionContextProvider>
-        </ExplorerSubscriptionContainer>
+            initialTreeFilters={initialExplorerViewConfiguration?.activeTreeFilters ?? []}>
+            <ExplorerSubscriptionContainer editingContextId={editingContextId}>
+              <ExplorerSelectionContextProvider id={id} editingContextId={editingContextId} refHandle={ref}>
+                <ViewAccordion id={id} title="Explorer">
+                  <ViewAccordionToolbar>
+                    <ExplorerToolbarRenderer
+                      editingContextId={editingContextId}
+                      readOnly={readOnly}
+                      explorerDescriptions={explorerDescriptions}
+                    />
+                  </ViewAccordionToolbar>
+                  <ViewAccordionContent>
+                    <Box className={styles.treeView} ref={treeElement}>
+                      <ExplorerTreeRenderer
+                        editingContextId={editingContextId}
+                        readOnly={readOnly}
+                        target={treeElement?.current}
+                      />
+                    </Box>
+                  </ViewAccordionContent>
+                </ViewAccordion>
+              </ExplorerSelectionContextProvider>
+            </ExplorerSubscriptionContainer>
+          </ExplorerFilterContextProvider>
+        </ExplorerInteractionContextProvider>
       </FilterBarContextProvider>
     );
   }

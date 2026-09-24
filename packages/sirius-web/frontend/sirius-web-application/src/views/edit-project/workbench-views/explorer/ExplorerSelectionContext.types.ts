@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
-import { GQLTree, GQLTreeItem, TreeFilter } from '@eclipse-sirius/sirius-components-trees';
+import { GQLTree, GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import { ForwardedRef } from 'react';
 
 export interface ExplorerSelectionContextValue {
@@ -30,11 +30,7 @@ export interface ExplorerSelectionContextState {
 
 export interface ExplorerSelectionContextProviderProps {
   id: string;
-  activeTreeDescriptionId: string;
-  treeFilters: TreeFilter[];
   editingContextId: string;
   refHandle: ForwardedRef<WorkbenchViewHandle>;
-  expanded: string[];
-  onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void;
   children: React.ReactNode;
 }
