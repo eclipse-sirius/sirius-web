@@ -138,6 +138,11 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             treeItem -> !treeItem.isExpanded()
     );
 
+    private final TreeItemMatcher ePackageIsCollapsed = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(0),
+            treeItem -> treeItem.isHasChildren() && !treeItem.isExpanded() && treeItem.getChildren().isEmpty()
+    );
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -199,6 +204,24 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(filteredProjectContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a search result, when an ancestor is collapsed, then its matching descendants are hidden")
+    public void givenSearchResultWhenAncestorIsCollapsedThenMatchingDescendantsAreHidden() {
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of(), "package portal",
+                List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
+
+        var collapsedProjectContentMatcher = this.getTreeRefreshedEventPayloadMatcher(List.of(
+                this.documentIsExpanded, this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageIsCollapsed));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(collapsedProjectContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

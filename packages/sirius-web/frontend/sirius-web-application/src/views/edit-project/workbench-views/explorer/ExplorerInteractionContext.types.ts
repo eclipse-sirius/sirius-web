@@ -10,17 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { TreeDescriptionMetadata } from './TreeDescriptionsMenu.types';
 
-export interface UseTreeStateContainerValue {
+export interface ExplorerInteractionContextValue {
   activeTreeDescriptionId: string | null;
   expanded: string[];
+  collapsed: string[];
   maxDepth: number;
   setActiveDescriptionId: (activeDescriptionId: string) => void;
   onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void;
 }
 
-export interface UseTreeStateContainerState {
+export interface ExplorerInteractionContextState {
   activeTreeDescriptionId: string | null;
   expanded: { [key: string]: string[] };
+  collapsed: { [key: string]: string[] };
   maxDepth: { [key: string]: number };
+}
+
+export interface ExplorerInteractionContextProviderProps {
+  activeTreeDescriptionId: string | null;
+  explorerDescriptions: TreeDescriptionMetadata[];
+  children: React.ReactNode;
 }
