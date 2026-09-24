@@ -10,6 +10,8 @@
         lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="clearButton" eType="#//ReferenceWidgetClearButtonDescription"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//ReferenceWidgetDescriptionStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
@@ -20,4 +22,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalReferenceWidgetDescriptionStyle"
       eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//ReferenceWidgetDescriptionStyle"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ReferenceWidgetClearButtonDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
+        containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

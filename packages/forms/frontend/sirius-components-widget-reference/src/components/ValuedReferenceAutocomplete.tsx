@@ -302,15 +302,17 @@ export const ValuedReferenceAutocomplete = ({
                     onClick={onCreateClick}>
                     <AddIcon />
                   </IconButton>
-                  <IconButton
-                    aria-label="clear"
-                    size="small"
-                    title={t('clear')}
-                    disabled={readOnly || widget.readOnly}
-                    data-testid={`${widget.label}-clear`}
-                    onClick={clearReference}>
-                    <DeleteIcon />
-                  </IconButton>
+                  {widget.clearButton ? (
+                    <IconButton
+                      aria-label="clear"
+                      size="small"
+                      title={t('clear')}
+                      disabled={readOnly || widget.readOnly}
+                      data-testid={`${widget.label}-clear`}
+                      onClick={clearReference}>
+                      <DeleteIcon />
+                    </IconButton>
+                  ) : null}
                 </InputAdornment>
               </>
             ),

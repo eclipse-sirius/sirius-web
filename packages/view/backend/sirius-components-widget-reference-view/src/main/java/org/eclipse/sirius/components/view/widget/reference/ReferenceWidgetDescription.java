@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Widget Description</b></em>'. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Widget Description</b></em>'. <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
@@ -28,11 +27,12 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * <em>Reference Owner Expression</em>}</li>
  * <li>{@link ReferenceWidgetDescription#getReferenceNameExpression
  * <em>Reference Name Expression</em>}</li>
+ * <li>{@link ReferenceWidgetDescription#getClearButton <em>Clear Button</em>}</li>
  * </ul>
  *
  * @model
- * @generated
  * @see ReferencePackage#getReferenceWidgetDescription()
+ * @generated
  */
 public interface ReferenceWidgetDescription extends WidgetDescription {
 
@@ -41,9 +41,9 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Reference Owner Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @see #setReferenceOwnerExpression(String)
      * @see ReferencePackage#getReferenceWidgetDescription_ReferenceOwnerExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getReferenceOwnerExpression();
@@ -65,9 +65,9 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Reference Name Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
      * @see #setReferenceNameExpression(String)
      * @see ReferencePackage#getReferenceWidgetDescription_ReferenceNameExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
      * @generated
      */
     String getReferenceNameExpression();
@@ -89,11 +89,32 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Body</em>' containment reference list.
-     * @see ReferencePackage#getReferenceWidgetDescription_Body()
      * @model containment="true"
+     * @see ReferencePackage#getReferenceWidgetDescription_Body()
      * @generated
      */
     EList<Operation> getBody();
+
+    /**
+     * Returns the value of the '<em><b>Clear Button</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Clear Button</em>' containment reference.
+     * @model containment="true"
+     * @see #setClearButton(ReferenceWidgetClearButtonDescription)
+     * @see ReferencePackage#getReferenceWidgetDescription_ClearButton()
+     * @generated
+     */
+    ReferenceWidgetClearButtonDescription getClearButton();
+
+    /**
+     * Sets the value of the '{@link ReferenceWidgetDescription#getClearButton <em>Clear Button</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Clear Button</em>' containment reference.
+     * @see #getClearButton()
+     * @generated
+     */
+    void setClearButton(ReferenceWidgetClearButtonDescription value);
 
     /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -101,9 +122,9 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      *
      * @return the value of the '<em>Style</em>' containment reference.
      * @model containment="true"
-     * @generated
      * @see #setStyle(ReferenceWidgetDescriptionStyle)
      * @see ReferencePackage#getReferenceWidgetDescription_Style()
+     * @generated
      */
     ReferenceWidgetDescriptionStyle getStyle();
 
@@ -125,8 +146,8 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      *
      * @return the value of the '<em>Conditional Styles</em>' containment reference list.
      * @model containment="true"
-     * @generated
      * @see ReferencePackage#getReferenceWidgetDescription_ConditionalStyles()
+     * @generated
      */
     EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles();
 
@@ -135,9 +156,9 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Is Enabled Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @see #setIsEnabledExpression(String)
      * @see ReferencePackage#getReferenceWidgetDescription_IsEnabledExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getIsEnabledExpression();

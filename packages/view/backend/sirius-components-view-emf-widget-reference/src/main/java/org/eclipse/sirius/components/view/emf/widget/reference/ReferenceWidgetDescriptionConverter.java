@@ -43,7 +43,8 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
 
     private final IReferenceWidgetBehaviorConverter referenceWidgetBehaviorConverter;
 
-    public ReferenceWidgetDescriptionConverter(IFormIdProvider widgetIdProvider, IReferenceWidgetPropertiesConverter referenceWidgetPropertiesConverter, IReferenceWidgetBehaviorConverter referenceWidgetBehaviorConverter) {
+    public ReferenceWidgetDescriptionConverter(IFormIdProvider widgetIdProvider, IReferenceWidgetPropertiesConverter referenceWidgetPropertiesConverter,
+            IReferenceWidgetBehaviorConverter referenceWidgetBehaviorConverter) {
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.referenceWidgetPropertiesConverter = Objects.requireNonNull(referenceWidgetPropertiesConverter);
         this.referenceWidgetBehaviorConverter = Objects.requireNonNull(referenceWidgetBehaviorConverter);
@@ -69,6 +70,9 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
 
                 this.referenceWidgetPropertiesConverter.convert(builder, referenceDescription, interpreter);
                 this.referenceWidgetBehaviorConverter.convert(builder, referenceDescription, interpreter);
+                if (referenceDescription.getClearButton() != null) {
+                    builder.clearButtonDescription(new org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription());
+                }
 
                 var referenceWidgetDescription = builder.build();
 
