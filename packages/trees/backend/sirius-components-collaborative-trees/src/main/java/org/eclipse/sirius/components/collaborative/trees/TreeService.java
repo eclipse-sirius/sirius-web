@@ -53,7 +53,7 @@ public class TreeService implements ITreeService {
 
         TreeRenderer treeRenderer = new TreeRenderer(variableManager, treeCreationParameters.getTreeDescription());
         Tree tree = treeRenderer.render();
-        return this.treeFilter.filter(tree, treeCreationParameters.getSearchedValue());
+        return this.treeFilter.filter(tree, treeCreationParameters.getSearchedValue(), treeCreationParameters.getCollapsedIds());
     }
 
     private VariableManager createDefaultVariables(TreeCreationParameters treeCreationParameters) {
