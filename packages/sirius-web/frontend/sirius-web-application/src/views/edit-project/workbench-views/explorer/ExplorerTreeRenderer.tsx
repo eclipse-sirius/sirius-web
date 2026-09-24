@@ -40,7 +40,7 @@ export const ExplorerTreeRenderer = ({
   onExpandedElementChange,
 }: ExplorerRendererProps) => {
   const { classes: styles } = useStyles();
-  const { isOpen, filterBarText, filterBarTreeFiltering, setFilterBarText, setFilterBarTreeFiltering, onClose } =
+  const { isOpen, filterBarText, setFilterBarText, setFilterBarTreeFiltering, onClose } =
     useContext<FilterBarContextValue>(FilterBarContext);
   const { selectedTreeItemIds, singleTreeItemSelected, onTreeItemClick, setSelectedTreeItemIds } =
     useContext<ExplorerSelectionContextValue>(ExplorerSelectionContext);
@@ -83,7 +83,7 @@ export const ExplorerTreeRenderer = ({
           readOnly={readOnly}
           tree={tree}
           textToHighlight={filterBarText}
-          textToFilter={filterBarTreeFiltering ? filterBarText : null}
+          textToFilter={null}
           onExpandedElementChange={onExpandedElementChange}
           expanded={expanded}
           maxDepth={maxDepth}

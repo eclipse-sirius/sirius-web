@@ -146,6 +146,7 @@ Introduced the `PageInfoAssert` for testing the page info returned by query runn
 - https://github.com/eclipse-sirius/sirius-web/issues/7017[#7017] [projects] Add the project style customization domain.
 - https://github.com/eclipse-sirius/sirius-web/issues/7053[#7053] [projects] Use a single source of truth to determine project style customization activation state.
 Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
+- https://github.com/eclipse-sirius/sirius-web/issues/6991[#6991] [tree] The Explorer text filter now searches inside the whole tree when the filter button inside the filter is activated.
 
 
 === Improvements
