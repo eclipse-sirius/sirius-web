@@ -4,6 +4,7 @@
 
 * Project templates can now declare required libraries.
 These libraries are automatically selected during project creation and cannot be unselected.
+* Downstream projects can now customize node styles without modifying the diagram descriptions.
 
 
 == Breaking changes
@@ -49,6 +50,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 - Remove the deprecated types `IObjectService` and `ObjectService` since they have been replaced a long time ago by smaller services such as `IIdentityService`, `IObjectSearchService`, `ILabelService`, etc.
 - Reduce the dependency of the images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-images-infrastructure`, for its internationalization support.
 - Reduce the dependency of the project images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-images-infrastructure`, for its internationalization support.
+- Reduce the dependency of the project semantic data bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-semanticdata-infrastructure`, for its internationalization support.
 
 == Dependency updates
 
@@ -59,6 +61,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 - Switch to https://github.com/vitejs/vite/releases/tag/v8.3.0[Vite 8.3.0] and https://github.com/vitejs/vite-plugin-react/releases/tag/plugin-react%406.1.1[@vitejs/plugin-react 6.1.1]
 - Switch to https://github.com/nodejs/node/releases/tag/v24.20.0[node.js 24.20.0] and https://docs.npmjs.com/cli/v11/using-npm/changelog#11190-2026-07-28[npm 11.19.0] for our development environment.
 - Remove `connectorTools` field from GraphQL type `DiagramDescription` and related DTO, use `connectorPalette` instead, `IConnectorToolsProvider` & `GetConnectorToolsEventHandler` have been removed too.
+- Switch to https://github.com/TNG/ArchUnit/releases/tag/v1.5.0[ArchUnit 1.5.0] and https://github.com/xmolecules/jmolecules/releases/tag/2.0.1[jmolecules 2.0.1] for our backend architecture tests
 
 
 == Bug fixes
@@ -81,6 +84,11 @@ Available default actions are:
 - Unselect edges
 * Add `IDiagramToolbarFilterSelectionProvider` to add options to the manage diagram selection diagram toolbar tool.
 * Add `IDiagramToolbarFilterSelectionHandler` to add handlers to the manage diagram selection diagram toolbar tool.
+* Add support for node style customization.
+Implement `INodeStyleCustomizer` to customize node styles.
+Each customizer determines which nodes it applies to.
+All applicable customizers are applied, but their order is unspecified.
+If multiple customizers modify the same style property, the last one wins.
 
 
 == Improvements

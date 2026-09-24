@@ -1,0 +1,78 @@
+:author: Guillaume Coutable
+:date: 2026-09-14
+:status: proposed
+:consulted: TBD
+:informed: TBD
+:deciders: Stéphane Bégaudeau
+:pitch: doc/iterations/2026.11/add_support_for_representation_appearance_customization.adoc
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6950
+
+= ADR - 238 Add support for application-wide representation style customization
+
+== Context
+
+How is it possible to customize the style of representation elements?
+Representation descriptions define the appearance of representations and their elements, either through the View DSL or the programmatic API.
+Downstream applications currently need to modify or replace these descriptions to customize the styles they provide.
+We want to introduce server-side style contributions registered at the application level that can customize the computed appearance without replacing representation descriptions.
+
+== Decision Drivers
+
+* Compatibility: Existing behavior must remain unchanged when no style customizations are registered.
+* Integration: Downstream applications must be able to customize element styles to meet their needs.
+
+== Considered Options
+
+=== Style-specific customization APIs
+
+Style customizations are applied after computing the node style from its description and before applying manual customizations from the Appearance menu.
+
+An `IDiagramStyleCustomizationProvider` provides the node style customizers registered in the application.
+Each `INodeStyleCustomizer` receives the current node style, the diagram description, the node description, and the variable manager.
+It determines whether to apply its customization based on this context and returns the resulting node style.
+
+Customizers are applied sequentially, each receiving the style returned by the previous customizer.
+When several customizers modify the same style property, the last one applied takes precedence.
+The application order is unspecified and is not guaranteed to remain stable across diagram refreshes.
+
+The initial implementation supports customization of the entire node style.
+Support for other style types will be introduced through dedicated APIs.
+
+=== A common customization API for all style types
+
+All representation element style types (`INodeStyle`, `EdgeStyle`, `ButtonStyle`, etc.) would implement a common `IStyle` interface.
+
+A single `IStyleCustomizer` interface would allow contributions to customize any style type.
+Each customizer would receive the current style, the representation description, the element description, and the variable manager.
+It would determine whether it applies based on the style type and the provided context, then return the resulting style.
+
+Customizers would be applied sequentially, following the same precedence rules as the first option.
+
+This approach would provide a single extension point for all style types.
+However, it would require changes to existing style types to introduce the common interface.
+Customizers would also need to check and cast the provided style to access type-specific properties.
+
+
+== Decision Outcome
+
+In the context of an architecture where element styles are defined by representation descriptions, making them difficult to customize independently, and facing the need to simplify style customization across representation types, we decided to introduce style-specific customization APIs to support incremental API evolution without introducing a common abstraction for all style types, accepting that support for additional style types may require additional APIs.
+
+== Consequences
+
+=== Advantages
+
+* Element styles can be customized without modifying representation descriptions.
+* It changes nothing if no style customization is provided.
+
+=== Drawbacks
+
+* The solution will not be implemented for all kind of representation.
+* When multiple customizers modify the same style property, the resulting value depends on their application order, which is not guaranteed.
+
+== More Information
+
+=== Implementation
+
+First, we will extract the appearance logic of nodes and edges into a dedicated service.
+Then, we will implement the solution we imagined.
+Finally, we will allow users to enable or disable registered node style customizations for their project.
