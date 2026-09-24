@@ -121,6 +121,7 @@ If multiple customizers modify the same style property, the last one wins.
 * In forms, specifiers can now configure reference-widget clear-button behavior through its View DSL operation body.
 * Studio makers can now show or hide the reference widget's create button by adding or removing its create button description.
 The form editor preview reflects this configuration.
+* The Explorer text filter now searches inside the whole tree when the filter button inside the filter is activated.
 
 
 == Improvements
