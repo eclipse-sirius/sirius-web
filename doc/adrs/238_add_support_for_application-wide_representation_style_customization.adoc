@@ -27,7 +27,6 @@ We want to introduce server-side style contributions registered at the applicati
 
 Style customizations are applied after computing the node style from its description and before applying manual customizations from the Appearance menu.
 
-An `IDiagramStyleCustomizationProvider` provides the node style customizers registered in the application.
 Each `INodeStyleCustomizer` receives the current node style, the diagram description, the node description, and the variable manager.
 It determines whether to apply its customization based on this context and returns the resulting node style.
 

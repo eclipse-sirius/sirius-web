@@ -16,6 +16,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
@@ -33,7 +34,7 @@ import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.IEdgeA
 import org.eclipse.sirius.components.diagrams.renderer.IDiagramAppearanceHandler;
 import org.eclipse.sirius.components.diagrams.renderer.IEdgeAppearanceHandler;
 import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
-import org.eclipse.sirius.components.diagrams.renderer.api.IDiagramStyleCustomizationProvider;
+import org.eclipse.sirius.components.diagrams.renderer.api.INodeStyleCustomizer;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -45,14 +46,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramAppearanceHandler implements IDiagramAppearanceHandler {
 
-    private final IDiagramStyleCustomizationProvider diagramStyleCustomizationProvider;
+    private final Set<INodeStyleCustomizer> nodeStyleCustomizers;
 
     private final List<INodeAppearanceHandler> nodeAppearanceHandlers;
 
     private final List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
 
-    public DiagramAppearanceHandler(IDiagramStyleCustomizationProvider diagramStyleCustomizationProvider, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers) {
-        this.diagramStyleCustomizationProvider = Objects.requireNonNull(diagramStyleCustomizationProvider);
+    public DiagramAppearanceHandler(Set<INodeStyleCustomizer> nodeStyleCustomizers, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers) {
+        this.nodeStyleCustomizers = Objects.requireNonNull(nodeStyleCustomizers);
         this.nodeAppearanceHandlers = Objects.requireNonNull(nodeAppearanceHandlers);
         this.edgeAppearanceHandlers = Objects.requireNonNull(edgeAppearanceHandlers);
     }
@@ -65,8 +66,7 @@ public class DiagramAppearanceHandler implements IDiagramAppearanceHandler {
 
         INodeStyle providedStyle = nodeDescription.getStyleProvider().apply(variableManager);
 
-        var nodeStyleCustomizers = this.diagramStyleCustomizationProvider.getNodeStyleCustomizers();
-        for (var nodeStyleCustomizer: nodeStyleCustomizers) {
+        for (var nodeStyleCustomizer: this.nodeStyleCustomizers) {
             providedStyle = nodeStyleCustomizer.customize(variableManager, diagramDescription, nodeDescription, providedStyle);
         }
 
