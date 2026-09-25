@@ -90,6 +90,7 @@ Implement `INodeStyleCustomizer` to customize node styles.
 Each customizer determines which nodes it applies to.
 All applicable customizers are applied, but their order is unspecified.
 If multiple customizers modify the same style property, the last one wins.
+* Display contributed style customizations in the project _Appearances_ settings tab.
 
 
 == Improvements

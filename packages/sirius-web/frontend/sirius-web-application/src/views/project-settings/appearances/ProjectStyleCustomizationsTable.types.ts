@@ -11,9 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface StyleCustomizationTableProps {}
+import { GQLStyleCustomization } from './useProjectStyleCustomizations.types';
 
-export interface GQLStyleCustomization {
+export interface ProjectStyleCustomizationsTableProps {
+  loading: boolean;
+  styleCustomizations: GQLStyleCustomization[];
+  rowCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  onPreviousPage: () => void;
+  onNextPage: () => void;
+  pageSize: number;
+  onPageSizeChange: (pageSize: number) => void;
+}
+
+export interface ProjectStyleCustomization {
+  id: string;
   name: string;
   description: string;
+  enabled: boolean;
 }

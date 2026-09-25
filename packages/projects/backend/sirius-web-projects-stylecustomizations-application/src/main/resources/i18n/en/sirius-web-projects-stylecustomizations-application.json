@@ -3,7 +3,7 @@
     "title": "Appearances",
     "description": "Enable or disable style customizations to change the appearance of elements in representations"
   },
-  "styleCustomizationTable": {
+  "projectStyleCustomizationTable": {
     "name": "Name",
     "description": "Description"
   }
