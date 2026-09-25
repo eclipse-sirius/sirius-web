@@ -19,7 +19,9 @@ import { useTranslation } from 'react-i18next';
 import { GQLStyleCustomization, StyleCustomizationTableProps } from './StyleCustomizationTable.types';
 
 export const StyleCustomizationTable = ({}: StyleCustomizationTableProps) => {
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'styleCustomizationTable' });
+  const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
+    keyPrefix: 'styleCustomizationTable',
+  });
   const localization = useTableTranslation();
 
   const rows: GQLStyleCustomization[] = [

@@ -1,0 +1,10 @@
+{
+  "projectAppearancesSettings":  {
+    "title": "Apparences",
+    "description": "Active ou désactive des personnalisations de style pour modifier l'apparance d'éléments dans des representations"
+  },
+  "styleCustomizationTable": {
+    "name": "Nom",
+    "description": "Description"
+  }
+}
