@@ -12,35 +12,42 @@
  *******************************************************************************/
 
 import { useTableTranslation } from '@eclipse-sirius/sirius-components-tables';
+import { Checkbox } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GQLStyleCustomization, StyleCustomizationTableProps } from './StyleCustomizationTable.types';
+import { CursorBasedPagination } from '../../../table/CursorBasedPagination';
+import {
+  ProjectStyleCustomization,
+  ProjectStyleCustomizationsTableProps,
+} from './ProjectStyleCustomizationsTable.types';
+import { GQLStyleCustomization } from './useProjectStyleCustomizations.types';
 
-export const StyleCustomizationTable = ({}: StyleCustomizationTableProps) => {
+export const ProjectStyleCustomizationsTable = ({
+  loading,
+  styleCustomizations,
+  rowCount,
+  hasPreviousPage,
+  hasNextPage,
+  onPreviousPage,
+  onNextPage,
+  pageSize,
+  onPageSizeChange,
+}: ProjectStyleCustomizationsTableProps) => {
   const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
-    keyPrefix: 'styleCustomizationTable',
+    keyPrefix: 'projectStyleCustomizationTable',
   });
   const localization = useTableTranslation();
 
-  const rows: GQLStyleCustomization[] = [
-    {
-      name: 'Basic node style customization in diagram',
-      description: 'Changes the background color of flow elements when temperature above 50°',
-    },
-    {
-      name: 'Basic edge style customization in diagram',
-      description: 'Changes the background color of flow data',
-    },
-    {
-      name: 'Basic button style customization in form',
-      description: 'Changes the font of buttons in a form',
-    },
-  ];
-
-  const columns = useMemo<MRT_ColumnDef<GQLStyleCustomization>[]>(
+  const columns = useMemo<MRT_ColumnDef<ProjectStyleCustomization>[]>(
     () => [
+      {
+        accessorKey: 'enabled',
+        header: '',
+        size: 50,
+        Cell: ({ cell }) => <Checkbox disabled checked={cell.getValue<boolean>()} />,
+      },
       {
         accessorFn: (row) => row.name,
         header: t('name'),
@@ -54,13 +61,13 @@ export const StyleCustomizationTable = ({}: StyleCustomizationTableProps) => {
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
     ],
-    []
+    [t]
   );
 
   const table = useMaterialReactTable<GQLStyleCustomization>({
     // Data
     columns,
-    data: rows,
+    data: styleCustomizations,
 
     // Disable some unnecessary features (overkill here)
     enableColumnActions: false,
@@ -69,9 +76,28 @@ export const StyleCustomizationTable = ({}: StyleCustomizationTableProps) => {
     enableDensityToggle: false,
     enableHiding: false,
     enableSorting: false,
+    enableRowSelection: false,
     enableGlobalFilter: false,
 
+    // Configure pagination
+    enablePagination: true,
+    manualPagination: true,
+    rowCount: rowCount,
+    enableBottomToolbar: true,
+    renderBottomToolbar: () => (
+      <CursorBasedPagination
+        hasPreviousPage={hasPreviousPage}
+        hasNextPage={hasNextPage}
+        onPreviousPage={onPreviousPage}
+        onNextPage={onNextPage}
+        pageSize={pageSize}
+        onPageSizeChange={onPageSizeChange}
+      />
+    ),
+
     localization: localization,
+
+    state: { isLoading: loading },
   });
 
   return <MaterialReactTable table={table} />;
