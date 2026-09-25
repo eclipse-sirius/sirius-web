@@ -21,7 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapablePredicate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,16 +35,16 @@ public class ManageVisibilityNodeActionProvider implements IActionsProvider {
 
     private static final String ACTION_ID = "siriusweb_manage_visibility";
 
-    private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
+    private final IFlowCapablePredicate flowCapablePredicate;
 
-    public ManageVisibilityNodeActionProvider(IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
-        this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
+    public ManageVisibilityNodeActionProvider(IFlowCapablePredicate flowCapablePredicate) {
+        this.flowCapablePredicate = Objects.requireNonNull(flowCapablePredicate);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean canHandle(IEditingContext editingContext, DiagramDescription diagramDescription, IDiagramElement diagramElement) {
-        var isFlowProject = this.flowCapableEditingContextPredicate.test(editingContext.getId());
+        var isFlowProject = this.flowCapablePredicate.test(editingContext.getId());
 
         return isFlowProject && diagramElement instanceof Node node && !node.getChildNodes().isEmpty();
     }

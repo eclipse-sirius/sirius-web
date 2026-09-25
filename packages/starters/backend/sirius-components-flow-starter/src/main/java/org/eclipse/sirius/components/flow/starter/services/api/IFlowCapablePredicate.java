@@ -15,9 +15,10 @@ package org.eclipse.sirius.components.flow.starter.services.api;
 import java.util.function.Predicate;
 
 /**
- * Used to test if an editing context is capable of supporting a flow project.
+ * Used to test if a project or an editing context is capable of supporting flow.
  *
  * @author gcoutable
+ * @since 2026.11.0
  */
-public interface IFlowCapableEditingContextPredicate extends Predicate<String> {
+public interface IFlowCapablePredicate extends Predicate<String> {
 }

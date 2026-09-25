@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapablePredicate;
 import org.eclipse.sirius.web.application.document.dto.Stereotype;
 import org.eclipse.sirius.web.application.document.services.api.IStereotypeProvider;
 import org.springframework.stereotype.Service;
@@ -33,15 +33,15 @@ public class FlowStereotypeProvider implements IStereotypeProvider {
 
     public static final String ROBOT_FLOW = "robot_flow";
 
-    private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
+    private final IFlowCapablePredicate flowCapablePredicate;
 
-    public FlowStereotypeProvider(IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
-        this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
+    public FlowStereotypeProvider(IFlowCapablePredicate flowCapablePredicate) {
+        this.flowCapablePredicate = Objects.requireNonNull(flowCapablePredicate);
     }
 
     @Override
     public List<Stereotype> getStereotypes(IEditingContext editingContext) {
-        var isFlowProject = this.flowCapableEditingContextPredicate.test(editingContext.getId());
+        var isFlowProject = this.flowCapablePredicate.test(editingContext.getId());
 
         if (isFlowProject) {
             return List.of(

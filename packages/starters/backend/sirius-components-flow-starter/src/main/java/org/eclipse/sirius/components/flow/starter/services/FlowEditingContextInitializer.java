@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.flow.starter.helper.ColorProvider;
-import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapablePredicate;
 import org.eclipse.sirius.components.flow.starter.view.FlowTopographyUnsynchronizedViewDiagramDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.FlowTopographyViewDiagramDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.FlowTopographyWithAutoLayoutViewDiagramDescriptionProvider;
@@ -46,15 +46,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlowEditingContextInitializer implements IEditingContextProcessor {
 
-    private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
+    private final IFlowCapablePredicate flowCapablePredicate;
 
-    public FlowEditingContextInitializer(IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
-        this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
+    public FlowEditingContextInitializer(IFlowCapablePredicate flowCapablePredicate) {
+        this.flowCapablePredicate = Objects.requireNonNull(flowCapablePredicate);
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        var isFlowProject = this.flowCapableEditingContextPredicate.test(editingContext.getId());
+        var isFlowProject = this.flowCapablePredicate.test(editingContext.getId());
 
         if (isFlowProject && editingContext instanceof EditingContext emfEditingContext) {
             var packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();

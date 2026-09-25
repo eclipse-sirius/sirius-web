@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.flow.starter.services;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapablePredicate;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.StyleCustomizationDescription;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.api.IStyleCustomizationDescriptionProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,16 +35,16 @@ public class FlowStyleCustomizationDescriptionProvider implements IStyleCustomiz
 
     private final boolean nodeCustomizationEnabled;
 
-    private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
+    private final IFlowCapablePredicate flowCapablePredicate;
 
-    public FlowStyleCustomizationDescriptionProvider(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
+    public FlowStyleCustomizationDescriptionProvider(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapablePredicate flowCapablePredicate) {
         this.nodeCustomizationEnabled = nodeCustomizationEnabled;
-        this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
+        this.flowCapablePredicate = Objects.requireNonNull(flowCapablePredicate);
     }
 
     @Override
     public List<StyleCustomizationDescription> getStyleCustomizationDescriptions(String projectId) {
-        if (this.nodeCustomizationEnabled && this.flowCapableEditingContextPredicate.test(projectId)) {
+        if (this.nodeCustomizationEnabled && this.flowCapablePredicate.test(projectId)) {
             return List.of(new StyleCustomizationDescription(FLOW_STYLE_CUSTOMIZATION_I_M_BLUE, "I'm blue style customization",
                             "Change the background of flow element graphical node to blue if label contains 'I'm Blue'"),
                     new StyleCustomizationDescription(FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI, "Da be di da be dai style customization",

@@ -18,7 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextActionProvider;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextAction;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapablePredicate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,15 +37,15 @@ public class FlowEditingContextActionProvider implements IEditingContextActionPr
 
     private static final EditingContextAction ROBOT_FLOW_EDITING_CONTEXT_ACTION = new EditingContextAction(ROBOT_FLOW_ID, "Robot Flow");
 
-    private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
+    private final IFlowCapablePredicate flowCapablePredicate;
 
-    public FlowEditingContextActionProvider(IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
-        this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
+    public FlowEditingContextActionProvider(IFlowCapablePredicate flowCapablePredicate) {
+        this.flowCapablePredicate = Objects.requireNonNull(flowCapablePredicate);
     }
 
     @Override
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {
-        var isFlowProject = this.flowCapableEditingContextPredicate.test(editingContext.getId());
+        var isFlowProject = this.flowCapablePredicate.test(editingContext.getId());
 
         if (isFlowProject) {
             return List.of(EMPTY_FLOW_EDITING_CONTEXT_ACTION, ROBOT_FLOW_EDITING_CONTEXT_ACTION);

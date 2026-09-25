@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.renderer.api.INodeStyleCustomizer;
-import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapablePredicate;
 import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,11 +39,11 @@ public class BlueNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final boolean nodeCustomizationEnabled;
 
-    private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
+    private final IFlowCapablePredicate flowCapablePredicate;
 
-    public BlueNodeStyleCustomizer(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
+    public BlueNodeStyleCustomizer(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapablePredicate flowCapablePredicate) {
         this.nodeCustomizationEnabled = nodeCustomizationEnabled;
-        this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
+        this.flowCapablePredicate = Objects.requireNonNull(flowCapablePredicate);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class BlueNodeStyleCustomizer implements INodeStyleCustomizer {
         if (this.nodeCustomizationEnabled && nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {
             var isFlowProject = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                     .map(IEditingContext::getId)
-                    .map(this.flowCapableEditingContextPredicate::test)
+                    .map(this.flowCapablePredicate::test)
                     .orElse(Boolean.FALSE);
             if (isFlowProject) {
                 var optionalNamed = variableManager.get(RepresentationVariables.SELF.name(), Named.class);
