@@ -83,6 +83,8 @@ Consumers that still need a node index can use `nodes.findIndex((node) => node.i
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Reduce the dependency of the project images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-images-infrastructure`, for its internationalization support.
 - https://github.com/eclipse-sirius/sirius-web/issues/6931[#6931] Remove `connectorTools` field from GraphQL type `DiagramDescription` and related DTO, use `connectorPalette` instead, `IConnectorToolsProvider` & `GetConnectorToolsEventHandler` have been removed too.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Reduce the dependency of the project semantic data bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-semanticdata-infrastructure`, for its internationalization support.
+- [cleanup] Rename `IFlowCapableEditingContextPredicate` to `IFlowCapablePredicate`.
+Consumers must update imports and injected types accordingly.
 
 
 === Dependency update

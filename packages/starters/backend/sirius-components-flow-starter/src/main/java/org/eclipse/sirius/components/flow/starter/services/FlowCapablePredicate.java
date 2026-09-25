@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.flow.starter.services;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
+import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapablePredicate;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -26,18 +26,18 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to test if an editing context is capable of supporting a flow project.
+ * Used to test if a project or an editing context is capable of supporting flow.
  *
  * @author gcoutable
  */
 @Service
-public class FlowCapableEditingContextPredicate implements IFlowCapableEditingContextPredicate {
+public class FlowCapablePredicate implements IFlowCapablePredicate {
 
     private final IProjectSearchService projectSearchService;
 
     private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
-    public FlowCapableEditingContextPredicate(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+    public FlowCapablePredicate(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
