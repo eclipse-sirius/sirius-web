@@ -67,7 +67,15 @@ export const TreeItemContextMenu = ({
 
   const expandItem = () => {
     if (!item.expanded && item.hasChildren) {
-      onExpandedElementChange([...expanded, item.id], Math.max(depth, maxDepth));
+      const isSearching = new URLSearchParams(treeId.split('?')[1] ?? '').has('searchedValue');
+      if (isSearching) {
+        // During search, the expanded prop carries the collapsed item IDs.
+        const newCollapsed = expanded.filter((collapsedId) => collapsedId !== item.id);
+        onExpandedElementChange(newCollapsed, Math.max(depth, maxDepth));
+      } else {
+        const newExpanded = [...expanded, item.id];
+        onExpandedElementChange(newExpanded, Math.max(depth, maxDepth));
+      }
     }
   };
 

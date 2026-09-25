@@ -17,11 +17,13 @@ import { UseTreeStateContainerState, UseTreeStateContainerValue } from './useTre
 
 export const useTreeStateContainer = (
   configuredActiveTreeDescriptionId: string | null,
-  explorerDescriptions: TreeDescriptionMetadata[]
+  explorerDescriptions: TreeDescriptionMetadata[],
+  searchedValue: string
 ): UseTreeStateContainerValue => {
   const [state, setState] = useState<UseTreeStateContainerState>({
     activeTreeDescriptionId: configuredActiveTreeDescriptionId,
     expanded: {},
+    collapsed: {},
     maxDepth: {},
   });
 
@@ -38,6 +40,15 @@ export const useTreeStateContainer = (
     setState((prevState) => {
       if (prevState.activeTreeDescriptionId) {
         const activeTreeDescriptionId: string = prevState.activeTreeDescriptionId;
+        if (searchedValue) {
+          return {
+            ...prevState,
+            collapsed: {
+              ...prevState.collapsed,
+              [activeTreeDescriptionId]: newExpandedIds,
+            },
+          };
+        }
         return {
           ...prevState,
           expanded: {
@@ -58,9 +69,11 @@ export const useTreeStateContainer = (
   useEffect(() => {
     if (explorerDescriptions && explorerDescriptions.length > 0) {
       const expandedInitiated: { [key: string]: string[] } = {};
+      const collapsedInitiated: { [key: string]: string[] } = {};
       const maxDepthInitiated: { [key: string]: number } = {};
       explorerDescriptions.forEach((explorerDescription) => {
         expandedInitiated[explorerDescription.id] = [];
+        collapsedInitiated[explorerDescription.id] = [];
         maxDepthInitiated[explorerDescription.id] = 1;
       });
 
@@ -68,6 +81,7 @@ export const useTreeStateContainer = (
         ...prevState,
         activeTreeDescriptionId: prevState.activeTreeDescriptionId ?? explorerDescriptions[0].id,
         expanded: expandedInitiated,
+        collapsed: collapsedInitiated,
         maxDepth: maxDepthInitiated,
       }));
     }
@@ -76,6 +90,7 @@ export const useTreeStateContainer = (
   return {
     activeTreeDescriptionId: state.activeTreeDescriptionId,
     expanded: state.activeTreeDescriptionId ? state.expanded[state.activeTreeDescriptionId] ?? [] : [],
+    collapsed: state.activeTreeDescriptionId ? state.collapsed[state.activeTreeDescriptionId] ?? [] : [],
     maxDepth: state.activeTreeDescriptionId ? state.maxDepth[state.activeTreeDescriptionId] ?? 1 : 1,
     setActiveDescriptionId,
     onExpandedElementChange,

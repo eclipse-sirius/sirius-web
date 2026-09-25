@@ -35,6 +35,8 @@ public final class TreeCreationParameters {
 
     private List<String> expanded;
 
+    private List<String> collapsedIds;
+
     private String searchedValue;
 
     private IEditingContext editingContext;
@@ -59,6 +61,10 @@ public final class TreeCreationParameters {
 
     public List<String> getExpanded() {
         return this.expanded;
+    }
+
+    public List<String> getCollapsedIds() {
+        return this.collapsedIds;
     }
 
     public String getSearchedValue() {
@@ -98,6 +104,8 @@ public final class TreeCreationParameters {
 
         private List<String> expanded;
 
+        private List<String> collapsedIds;
+
         private String searchedValue;
 
         private IEditingContext editingContext;
@@ -123,6 +131,11 @@ public final class TreeCreationParameters {
             return this;
         }
 
+        public Builder collapsedIds(List<String> collapsedIds) {
+            this.collapsedIds = Objects.requireNonNull(collapsedIds);
+            return this;
+        }
+
         public Builder searchedValue(String searchedValue) {
             this.searchedValue = Objects.requireNonNull(searchedValue);
             return this;
@@ -144,6 +157,7 @@ public final class TreeCreationParameters {
             treeCreationParameters.treeDescription = Objects.requireNonNull(this.treeDescription);
             treeCreationParameters.activeFilterIds = Objects.requireNonNull(this.activeFilterIds);
             treeCreationParameters.expanded = Objects.requireNonNull(this.expanded);
+            treeCreationParameters.collapsedIds = Objects.requireNonNull(this.collapsedIds);
             treeCreationParameters.searchedValue = Objects.requireNonNull(this.searchedValue);
             treeCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
             treeCreationParameters.tragetObject = this.targetObject; // can be null;

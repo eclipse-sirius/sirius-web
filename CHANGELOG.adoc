@@ -147,6 +147,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - [starters] Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
 - https://github.com/eclipse-sirius/sirius-web/issues/6957[#6957] [diagram] Add translations support to manage selection diagram toolbar tool
 - https://github.com/eclipse-sirius/sirius-web/issues/6808[#6808] [diagram] Invoke manage selection diagram panel tool from the backend
+- https://github.com/eclipse-sirius/sirius-web/issues/6995[#6995] [tree] Added `collapsedIds` to the `representationId` of the explorer subscription in order to collapse element when a search is active.
 
 
 
