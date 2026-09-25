@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,5 +44,10 @@ public class ReferenceMessageService implements IReferenceMessageService {
     @Override
     public String unableToEditReadOnlyWidget() {
         return this.messageSourceAccessor.getMessage(MessageConstants.UNABLE_TO_EDIT_READONLY_WIDGET);
+    }
+
+    @Override
+    public String unableToClearReference() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.UNABLE_TO_CLEAR_REFERENCE);
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
@@ -69,7 +70,8 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     private final AQLTextfieldCustomizer aqlTextfieldCustomizer;
 
-    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, IIdentityService identityService, ILabelService labelService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
+    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, IIdentityService identityService, ILabelService labelService, IEMFKindService emfKindService,
+            IFeedbackMessageService feedbackMessageService, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
@@ -100,10 +102,11 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     }
 
     @Override
-    public CheckboxDescription createCheckbox(String id, String title, Function<Object, Boolean> reader, BiConsumer<Object, Boolean> writer, Object feature, Optional<Function<VariableManager, String>> helpTextProvider) {
-        Function<VariableManager, Boolean> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(Boolean.FALSE);
+    public CheckboxDescription createCheckbox(String id, String title, Function<Object, Boolean> reader, BiConsumer<Object, Boolean> writer, Object feature,
+            Optional<Function<VariableManager, String>> helpTextProvider) {
+        Function<VariableManager, Boolean> valueProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(reader).orElse(Boolean.FALSE);
         BiFunction<VariableManager, Boolean, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
+            var optionalDiagramMapping = variableManager.get(RepresentationVariables.SELF.name(), Object.class);
             if (optionalDiagramMapping.isPresent()) {
                 writer.accept(optionalDiagramMapping.get(), newValue);
                 return new Success();
@@ -127,12 +130,12 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     @Override
     public TextareaDescription createExpressionField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(reader)
                 .orElse("");
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
+            var optionalDiagramMapping = variableManager.get(RepresentationVariables.SELF.name(), Object.class);
             if (optionalDiagramMapping.isPresent()) {
                 writer.accept(optionalDiagramMapping.get(), newValue);
                 return new Success();
@@ -157,11 +160,11 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     @Override
     public TextfieldDescription createTextField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(reader)
                 .orElse("");
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
+            var optionalDiagramMapping = variableManager.get(RepresentationVariables.SELF.name(), Object.class);
             if (optionalDiagramMapping.isPresent()) {
                 writer.accept(optionalDiagramMapping.get(), newValue);
                 return new Success();
@@ -197,14 +200,14 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .itemIconURLProvider(variableManager -> this.getItem(variableManager).map(this.labelService::getImagePaths).orElse(List.of()))
                 .ownerKindProvider(variableManager -> this.getTypeName(variableManager, feature))
                 .referenceKindProvider(variableManager -> this.getReferenceKind(variableManager, feature))
+                .referenceNameProvider(variableManager -> this.getReferenceName(variableManager, feature))
                 .isContainmentProvider(variableManager -> this.isContainment(variableManager, feature))
                 .isManyProvider(variableManager -> this.isMany(variableManager, feature))
                 .styleProvider(variableManager -> null)
-                .ownerIdProvider(variableManager -> variableManager.get(VariableManager.SELF, EObject.class).map(this.identityService::getId).orElse(""))
+                .ownerIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), EObject.class).map(this.identityService::getId).orElse(""))
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(feature))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
-                .clearHandlerProvider(variableManager -> this.handleClearReference(variableManager, feature))
                 .itemRemoveHandlerProvider(variableManager -> this.handleRemoveValue(variableManager, feature))
                 .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, feature))
                 .addHandlerProvider(variableManager -> this.handleAddReferenceValues(variableManager, feature))
@@ -233,7 +236,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     }
 
     private EStructuralFeature.Setting resolveSetting(VariableManager variableManager, Object feature) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         if (referenceOwner != null && feature instanceof EReference reference) {
             return ((InternalEObject) referenceOwner).eSetting(reference);
         } else {
@@ -242,24 +245,31 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     }
 
     private String getTypeName(VariableManager variableManager, Object feature) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         if (referenceOwner != null && feature instanceof EReference reference) {
             return this.emfKindService.getKind(reference.getEContainingClass());
         }
         return "";
     }
 
-
     private String getReferenceKind(VariableManager variableManager, Object feature) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         if (referenceOwner != null && feature instanceof EReference reference) {
             return this.emfKindService.getKind(reference.getEReferenceType());
         }
         return "";
     }
 
+    private String getReferenceName(VariableManager variableManager, Object feature) {
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
+        if (referenceOwner != null && feature instanceof EReference reference) {
+            return reference.getName();
+        }
+        return "";
+    }
+
     private boolean isContainment(VariableManager variableManager, Object feature) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         if (referenceOwner != null && feature instanceof EReference reference) {
             return reference.isContainment();
         }
@@ -267,7 +277,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     }
 
     private boolean isMany(VariableManager variableManager, Object feature) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         if (referenceOwner != null && feature instanceof EReference reference) {
             return reference.isMany();
         }
@@ -281,23 +291,8 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
         return new Failure(errorMessages);
     }
 
-    private IStatus handleClearReference(VariableManager variableManager, Object feature) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-
-        if (referenceOwner != null && feature instanceof EReference reference) {
-            if (reference.isMany()) {
-                ((List<?>) referenceOwner.eGet(reference)).clear();
-            } else {
-                referenceOwner.eUnset(reference);
-            }
-        } else {
-            return this.createErrorStatus("Something went wrong while clearing the reference.");
-        }
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-    }
-
     private IStatus handleRemoveValue(VariableManager variableManager, Object feature) {
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         Optional<Object> item = this.getItem(variableManager);
 
         if (referenceOwner != null && feature instanceof EReference reference) {
@@ -314,7 +309,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     private IStatus handleSetReference(VariableManager variableManager, Object feature) {
         IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         Optional<Object> item = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, Object.class);
 
         if (referenceOwner != null && feature instanceof EReference reference) {
@@ -331,7 +326,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     private IStatus handleAddReferenceValues(VariableManager variableManager, Object feature) {
         IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         Optional<List<Object>> newValues = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, (Class<List<Object>>) (Class<?>) List.class);
 
         if (newValues.isEmpty()) {
@@ -350,7 +345,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     private IStatus handleMoveReferenceValue(VariableManager variableManager, Object feature) {
         IStatus result = this.createErrorStatus("Something went wrong while reordering reference values.");
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         Optional<Object> item = this.getItem(variableManager);
         Optional<Integer> fromIndex = variableManager.get(ReferenceWidgetComponent.MOVE_FROM_VARIABLE, Integer.class);
         Optional<Integer> toIndex = variableManager.get(ReferenceWidgetComponent.MOVE_TO_VARIABLE, Integer.class);

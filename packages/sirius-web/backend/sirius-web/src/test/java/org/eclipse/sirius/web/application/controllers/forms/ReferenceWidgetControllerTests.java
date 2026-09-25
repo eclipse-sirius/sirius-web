@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -168,8 +168,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a reference widget, when the clear mutation is trigger, then values are removed")
-    public void givenReferenceWidgetWhenClearMutationIsTriggerThenValuesAreRemoved() {
+    @DisplayName("Given a reference widget without a custom clear handler, when clear is triggered, then the default handler removes its values")
+    public void givenReferenceWidgetWithoutCustomClearHandlerWhenMutationIsTriggeredThenDefaultHandlerRemovesValues() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
@@ -208,7 +208,6 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
             assertThat(referenceWidget).hasNoValue();
         });
-
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -262,7 +261,6 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
             assertThat(referenceWidget).hasNoValue();
         });
-
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
