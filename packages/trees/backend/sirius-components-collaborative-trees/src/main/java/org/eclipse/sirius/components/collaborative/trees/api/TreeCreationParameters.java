@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ public final class TreeCreationParameters {
 
     private List<String> expanded;
 
+    private String searchedValue;
+
     private IEditingContext editingContext;
 
     private Object tragetObject;
@@ -57,6 +59,10 @@ public final class TreeCreationParameters {
 
     public List<String> getExpanded() {
         return this.expanded;
+    }
+
+    public String getSearchedValue() {
+        return this.searchedValue;
     }
 
     public IEditingContext getEditingContext() {
@@ -92,6 +98,8 @@ public final class TreeCreationParameters {
 
         private List<String> expanded;
 
+        private String searchedValue;
+
         private IEditingContext editingContext;
 
         private Object targetObject;
@@ -115,6 +123,11 @@ public final class TreeCreationParameters {
             return this;
         }
 
+        public Builder searchedValue(String searchedValue) {
+            this.searchedValue = Objects.requireNonNull(searchedValue);
+            return this;
+        }
+
         public Builder editingContext(IEditingContext editingContext) {
             this.editingContext = Objects.requireNonNull(editingContext);
             return this;
@@ -131,6 +144,7 @@ public final class TreeCreationParameters {
             treeCreationParameters.treeDescription = Objects.requireNonNull(this.treeDescription);
             treeCreationParameters.activeFilterIds = Objects.requireNonNull(this.activeFilterIds);
             treeCreationParameters.expanded = Objects.requireNonNull(this.expanded);
+            treeCreationParameters.searchedValue = Objects.requireNonNull(this.searchedValue);
             treeCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
             treeCreationParameters.tragetObject = this.targetObject; // can be null;
             return treeCreationParameters;
