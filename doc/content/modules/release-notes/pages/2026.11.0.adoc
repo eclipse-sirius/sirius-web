@@ -70,6 +70,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 * Border nodes can now display their configured child and border nodes.
 * The available `self` variable for the `precondition` of the `connector palette` is now set to the `semantic source` of connection (it was previously the target).
 * Add missing palette for the views explorer representation
+* Edge-tool preconditions in diagram element palettes can now use `edgeSource` and `semanticEdgeSource`. Before a target is selected, `edgeTarget` and `semanticEdgeTarget` are defined as `null`; the connector palette supplies the selected target.
 
 
 == New features

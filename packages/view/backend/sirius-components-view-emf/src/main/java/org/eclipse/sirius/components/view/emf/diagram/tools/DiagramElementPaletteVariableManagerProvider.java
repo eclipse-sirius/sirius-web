@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.RepresentationVariables;
@@ -48,6 +49,10 @@ public class DiagramElementPaletteVariableManagerProvider implements IDiagramEle
         this.operationValidator = Objects.requireNonNull(operationValidator);
     }
 
+    /**
+     * Provides the palette variables for the selected element. For a node or edge source, target variables are defined
+     * as {@code null} until a connection target is selected.
+     */
     @Override
     public Optional<VariableManager> getVariableManager(IEditingContext editingContext, DiagramContext diagramContext, Object diagramElement, Object semanticElement) {
         VariableManager variableManager = new VariableManager();
@@ -56,6 +61,13 @@ public class DiagramElementPaletteVariableManagerProvider implements IDiagramEle
         variableManager.put(CoreVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
         variableManager.put(DiagramVariables.DIAGRAM_CONTEXT.name(), diagramContext);
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
+
+        if (diagramElement instanceof IDiagramElement) {
+            variableManager.put(DiagramVariables.EDGE_SOURCE.name(), diagramElement);
+            variableManager.put(DiagramVariables.SEMANTIC_EDGE_SOURCE.name(), semanticElement);
+            variableManager.put(DiagramVariables.EDGE_TARGET.name(), null);
+            variableManager.put(DiagramVariables.SEMANTIC_EDGE_TARGET.name(), null);
+        }
 
         variableManager.put(DiagramVariables.SELECTED_NODE.name(), Optional.ofNullable(diagramElement)
                 .filter(Node.class::isInstance)

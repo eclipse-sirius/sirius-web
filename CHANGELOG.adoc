@@ -104,7 +104,7 @@ Consumers that still need a node index can use `nodes.findIndex((node) => node.i
 - https://github.com/eclipse-sirius/sirius-web/issues/6939[#6939] [diagram] The available `self` variable for the `precondition` of the `connector palette` is now set to the `semantic source` of connection (it was previously the target).
 - https://github.com/eclipse-sirius/sirius-web/issues/2770[#2770] [diagram] Prevent React Flow handle warnings while computing the initial diagram layout.
 - https://github.com/eclipse-sirius/sirius-web/issues/6992[#6992] [diagram] Add missing palette for the views explorer representation
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6997[#6997] [diagram] Define edge source variables and null edge target variables when evaluating edge-tool preconditions in a diagram element palette, so tools remain available before a target is selected.
 
 === New Features
 

@@ -52,6 +52,13 @@ It can contain tools to perform actions on the selected elements.
 * `minimapVisible: boolean` Used to indicate if the minimap is visible or not.
 The minimap is a small overview of the diagram that can be used to navigate the diagram quickly.
 
+==== Edge tool preconditions
+
+An edge tool's precondition is evaluated when the source node or edge is selected to determine whether the tool appears in its palette.
+At this stage, `edgeSource` is the selected diagram element and `semanticEdgeSource` is its semantic element; `edgeTarget` and `semanticEdgeTarget` are defined as `null` because no target has been selected yet.
+After a target is selected, the connector palette evaluates the precondition again with all four variables set to the actual source and target elements.
+Preconditions that depend on the target must handle the `null` target during the first evaluation.
+
 ==== Delete views from a group palette
 
 The `diagramServices.deleteViews(nodes)` AQL service can be used to remove a collection of nodes from the diagram without deleting their semantic elements.

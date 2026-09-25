@@ -192,7 +192,7 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
     private EdgeTool edgeTool(DiagramElementDescription... targetElementDescriptions) {
         return new DiagramBuilders().newEdgeTool()
                 .name("New dependencies")
-                .preconditionExpression("aql:semanticEdgeSource.dependencies->excludes(semanticEdgeTarget)")
+                .preconditionExpression("aql:edgeSource <> null and semanticEdgeSource <> null and (edgeTarget = null or semanticEdgeSource.dependencies->excludes(semanticEdgeTarget))")
                 .targetElementDescriptions(targetElementDescriptions)
                 .body(
                         new ViewBuilders().newChangeContext()
