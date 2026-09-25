@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.eclipse.sirius</groupId>
         <artifactId>sirius-web-parent</artifactId>
-        <version>2026.9.2</version>
+        <version>2026.9.3</version>
         <relativePath>../../../releng/backend/sirius-web-parent</relativePath>
     </parent>
 
@@ -30,24 +30,24 @@
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-web-projects-stylecustomizations-domain</artifactId>
-            <version>2026.9.2</version>
+            <version>2026.9.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-components-graphql-api</artifactId>
-            <version>2026.9.2</version>
+            <version>2026.9.3</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-components-core-graphql</artifactId>
-            <version>2026.9.2</version>
+            <version>2026.9.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-web-application</artifactId>
-            <version>2026.9.2</version>
+            <version>2026.9.3</version>
         </dependency>
     </dependencies>
 
