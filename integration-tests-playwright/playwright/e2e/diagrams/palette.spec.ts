@@ -50,13 +50,16 @@ test.describe('diagram - palette', () => {
     await page.getByTestId('toolSection-Layout').click();
     await page.getByTestId('Palette').getByTestId('tool-Align bottom').click();
     await playwrightNode.waitForAnimationToFinish();
-    const playwrightNodeXYPosition = await playwrightNode.getReactFlowXYPosition('DataSource1', false);
-    const playwrightNode2XYPosition = await playwrightNode2.getReactFlowXYPosition('CompositeProcessor1', false);
-    const playwrightNodeSize = await playwrightNode.getReactFlowSize('DataSource1', false);
-    const playwrightNode2Size = await playwrightNode2.getReactFlowSize('CompositeProcessor1', false);
-    expect(playwrightNodeXYPosition.y + playwrightNodeSize.height).toBe(
-      playwrightNode2XYPosition.y + playwrightNode2Size.height
-    );
+    await expect
+      .poll(async () => {
+        const position1 = await playwrightNode.getReactFlowXYPosition('DataSource1', false);
+        const position2 = await playwrightNode2.getReactFlowXYPosition('CompositeProcessor1', false);
+        const size1 = await playwrightNode.getReactFlowSize('DataSource1', false);
+        const size2 = await playwrightNode2.getReactFlowSize('CompositeProcessor1', false);
+
+        return position1.y + size1.height - (position2.y + size2.height);
+      })
+      .toBe(0);
   });
 
   test('when a node then an edge is selected, we can open the group palette and fade both elements', async ({
