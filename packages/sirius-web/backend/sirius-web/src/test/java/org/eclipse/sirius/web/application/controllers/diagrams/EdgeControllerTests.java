@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ReconnectEdgeMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -72,6 +73,9 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
     private ConnectorPaletteExecutor connectorPaletteExecutor;
 
     @Autowired
+    private PaletteExecutor paletteExecutor;
+
+    @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 
     @Autowired
@@ -91,6 +95,39 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                 "EdgeDiagram"
         );
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
+    }
+
+    /**
+     * Verifies that an edge tool is available both before and after selecting its target.
+     */
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given an edge tool precondition, when the source and connector palettes are requested, then the edge tool is available in both")
+    public void givenEdgeToolPreconditionWhenSourceAndConnectorPalettesAreRequestedThenEdgeToolIsAvailable() {
+        var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var sourceNodeId = new AtomicReference<String>();
+        var targetNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            sourceNodeId.set(new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode().getId());
+            targetNodeId.set(new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode().getId());
+        });
+
+        Runnable requestPalettes = () -> {
+            this.paletteExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(sourceNodeId.get()))
+                    .hasPaletteEntries(labels -> assertThat(labels).contains("New dependencies"));
+            this.connectorPaletteExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), sourceNodeId.get(), targetNodeId.get())
+                    .hasPaletteEntriesLabel(labels -> assertThat(labels).contains("New dependencies"));
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(requestPalettes)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @Test
