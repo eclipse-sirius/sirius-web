@@ -12,13 +12,20 @@ services:
       start_period: 1s
   backend:
     image: "eclipsesirius/sirius-web:${VERSION:-latest}"
-    pull_policy: always
+    # Built from the working tree by docker compose build; USERNAME and PASSWORD come from the environment, see Dockerfile
+    build:
+      context: .
+      args:
+        - USERNAME
+        - PASSWORD
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://database/postgres
       SPRING_DATASOURCE_USERNAME: username
       SPRING_DATASOURCE_PASSWORD: password
       SIRIUS_COMPONENTS_CORS_ALLOWEDORIGINPATTERNS: "*"
       SIRIUS_WEB_TREE_NEW-PALETTE_ENABLED: false
+      # No Elasticsearch in this stack: without this, its health indicator reports the backend DOWN
+      MANAGEMENT_HEALTH_ELASTICSEARCH_ENABLED: false
       SERVER_PORT: 8080
     ports:
       - 8080:8080

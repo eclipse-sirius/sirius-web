@@ -123,6 +123,7 @@ It also activates some node style customizations, used for tests, for flow diagr
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6978[#6978] [releng] Add a Dockerfile to build the Docker image from the sources with `docker compose up --build`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [validation] Perform the refresh of the validation representation outside of its representation event processor.
 A new provisional method `IValidationEventProcessor#update` is available to update the state of the validation event processor and publish a new validation representation to subscribers.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
