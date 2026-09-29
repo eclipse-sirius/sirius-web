@@ -280,10 +280,10 @@ export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => 
               </span>
             </Tooltip>
             <RevealSelectionInDiagramButton editingContextId={editingContextId} />
+            <FilterSelectionToolbarButton />
             {diagramToolbarActionComponents.map(({ Component: DiagramToolbarActionComponent }, index) => (
               <DiagramToolbarActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
             ))}
-            <FilterSelectionToolbarButton />
           </Box>
           {state.expanded ? (
             <Tooltip title={t('collapse')}>
