@@ -81,10 +81,15 @@ test.describe('diagram - growable list', () => {
     await new PlaywrightDiagram(page).hideDebugPanel();
 
     await growableListNode.resize({ height: 100, width: 100 });
-
-    const growableListNodeSizeAfterHide = await growableListNode.getReactFlowSize('Growable', false);
-    expect(growableListNodeSizeAfterHide.height).toBeGreaterThan(growableListNodeSize.height);
-    expect(growableListNodeSizeAfterHide.width).toBeGreaterThan(growableListNodeSize.width);
+    await expect
+      .poll(async () => {
+        const growableListNodeSizeAfterHide = await growableListNode.getReactFlowSize('Growable', false);
+        return (
+          growableListNodeSizeAfterHide.height > growableListNodeSize.height &&
+          growableListNodeSizeAfterHide.width > growableListNodeSize.width
+        );
+      })
+      .toBe(true);
   });
 });
 

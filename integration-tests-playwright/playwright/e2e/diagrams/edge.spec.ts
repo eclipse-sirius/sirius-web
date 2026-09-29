@@ -77,7 +77,7 @@ test.describe('edge', () => {
     await expect.poll(() => playwrightEdge.getEdgePath()).not.toBe(edgePathBefore);
 
     const newBendingPoint = page.locator(`[data-testid="bend-point-2"]`).first();
-    await expect(newBendingPoint).toBeAttached();
+    await expect.poll(() => newBendingPoint.count(), { timeout: 15_000 }).toBe(1);
     const playwrightTargetNode = new PlaywrightNode(page, 'Processor1');
     const newBendingPointBox = (await newBendingPoint.boundingBox())!;
     const targetNodeBox = await playwrightTargetNode.getDOMBoundingBox();

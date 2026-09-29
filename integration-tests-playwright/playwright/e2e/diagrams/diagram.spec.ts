@@ -44,11 +44,15 @@ test.describe('diagram', () => {
     const reactFlowXYPositionBefore = await playwrightNode.getReactFlowXYPosition();
 
     await playwrightNode.move({ x: 450, y: 450 });
-
-    const reactFlowXYPositionAfter = await playwrightNode.getReactFlowXYPosition();
-
-    expect(reactFlowXYPositionAfter.x).toBeGreaterThan(reactFlowXYPositionBefore.x);
-    expect(reactFlowXYPositionAfter.y).toBeGreaterThan(reactFlowXYPositionBefore.y);
+    await expect
+      .poll(async () => {
+        const reactFlowXYPositionAfter = await playwrightNode.getReactFlowXYPosition();
+        return (
+          reactFlowXYPositionAfter.x > reactFlowXYPositionBefore.x &&
+          reactFlowXYPositionAfter.y > reactFlowXYPositionBefore.y
+        );
+      })
+      .toBe(true);
   });
 
   test('when the mini map is shown or hidden, then mini map is available or not', async ({ page }) => {

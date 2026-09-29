@@ -23,13 +23,16 @@ export class Flow {
       if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
 
-        cy.getCurrentEditingContextId(projectId).then((res) => {
-          const editingContextId = res.body.data.viewer.project.currentEditingContext.id;
-          cy.createDocument(editingContextId, 'robot_flow', 'robot');
-        });
-
-        const data: CreatedProjectData = { projectId };
-        return cy.wrap(data);
+        return cy
+          .getCurrentEditingContextId(projectId)
+          .then((res) => {
+            const editingContextId = res.body.data.viewer.project.currentEditingContext.id;
+            return cy.createDocument(editingContextId, 'robot_flow', 'robot');
+          })
+          .then(() => {
+            const data: CreatedProjectData = { projectId };
+            return data;
+          });
       } else {
         throw new Error(`The project "${name}" has not been created`);
       }

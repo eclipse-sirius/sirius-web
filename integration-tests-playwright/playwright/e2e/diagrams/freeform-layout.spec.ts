@@ -83,10 +83,14 @@ test.describe('diagram - freeform layout', () => {
     const childNodePositionBefore = await childNode.getReactFlowXYPosition('Child');
     await childNode.move({ x: 75, y: 75 });
     await childNode.waitForAnimationToFinish();
-    const childNodePositionAfter = await childNode.getReactFlowXYPosition('Child', false);
-
-    expect(childNodePositionAfter.x).toBeGreaterThan(childNodePositionBefore.x);
-    expect(childNodePositionAfter.y).toBeGreaterThan(childNodePositionBefore.y);
+    await expect
+      .poll(async () => {
+        const childNodePositionAfter = await childNode.getReactFlowXYPosition('Child', false);
+        return (
+          childNodePositionAfter.x > childNodePositionBefore.x && childNodePositionAfter.y > childNodePositionBefore.y
+        );
+      })
+      .toBe(true);
   });
 });
 
