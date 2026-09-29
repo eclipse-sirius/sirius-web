@@ -12,33 +12,31 @@
  *******************************************************************************/
 
 import { useTableTranslation } from '@eclipse-sirius/sirius-components-tables';
+import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GQLStyleCustomization, StyleCustomizationTableProps } from './StyleCustomizationTable.types';
+import { ProjectStyleCustomizationsTableProps } from './ProjectStyleCustomizationsTable.types';
+import { GQLProjectStyleCustomization } from './useProjectStyleCustomizations.types';
 
-export const StyleCustomizationTable = ({}: StyleCustomizationTableProps) => {
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'styleCustomizationTable' });
+export const ProjectStyleCustomizationsTable = ({
+  loading,
+  styleCustomizations,
+}: ProjectStyleCustomizationsTableProps) => {
+  const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
+    keyPrefix: 'styleCustomizationTable',
+  });
   const localization = useTableTranslation();
 
-  const rows: GQLStyleCustomization[] = [
-    {
-      name: 'Basic node style customization in diagram',
-      description: 'Changes the background color of flow elements when temperature above 50°',
-    },
-    {
-      name: 'Basic edge style customization in diagram',
-      description: 'Changes the background color of flow data',
-    },
-    {
-      name: 'Basic button style customization in form',
-      description: 'Changes the font of buttons in a form',
-    },
-  ];
-
-  const columns = useMemo<MRT_ColumnDef<GQLStyleCustomization>[]>(
+  const columns = useMemo<MRT_ColumnDef<GQLProjectStyleCustomization>[]>(
     () => [
+      {
+        accessorKey: 'enabled',
+        header: '',
+        size: 50,
+        Cell: ({ cell }) => <Checkbox disabled checked={cell.getValue<boolean>()} />,
+      },
       {
         accessorFn: (row) => row.name,
         header: t('name'),
@@ -52,13 +50,13 @@ export const StyleCustomizationTable = ({}: StyleCustomizationTableProps) => {
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
     ],
-    []
+    [t]
   );
 
-  const table = useMaterialReactTable<GQLStyleCustomization>({
+  const table = useMaterialReactTable<GQLProjectStyleCustomization>({
     // Data
     columns,
-    data: rows,
+    data: styleCustomizations,
 
     // Disable some unnecessary features (overkill here)
     enableColumnActions: false,
@@ -67,9 +65,14 @@ export const StyleCustomizationTable = ({}: StyleCustomizationTableProps) => {
     enableDensityToggle: false,
     enableHiding: false,
     enableSorting: false,
+    enableRowSelection: false,
     enableGlobalFilter: false,
+    enablePagination: false,
+    enableBottomToolbar: false,
 
     localization: localization,
+
+    state: { isLoading: loading },
   });
 
   return <MaterialReactTable table={table} />;

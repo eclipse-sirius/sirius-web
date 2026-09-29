@@ -13,11 +13,21 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { ProjectSettingTabProps } from '../ProjectSettingsView.types';
-import { StyleCustomizationTable } from './StyleCustomizationTable';
+import { ProjectAppearancesSettingsParams } from './ProjectAppearancesSettingsView.types';
+import { ProjectStyleCustomizationsTable } from './ProjectStyleCustomizationsTable';
+import { useProjectStyleCustomizations } from './useProjectStyleCustomizations';
+import { GQLProjectStyleCustomization } from './useProjectStyleCustomizations.types';
 
 export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'projectAppearancesSettings' });
+  const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
+    keyPrefix: 'projectAppearancesSettings',
+  });
+  const { projectId } = useParams<ProjectAppearancesSettingsParams>();
+  const { data, loading } = useProjectStyleCustomizations(projectId);
+
+  const styleCustomizations: GQLProjectStyleCustomization[] = data?.viewer.project?.styleCustomizations ?? [];
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: (theme) => theme.spacing(3) }}>
@@ -27,7 +37,7 @@ export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
           {t('description')}
         </Typography>
       </Box>
-      <StyleCustomizationTable />
+      <ProjectStyleCustomizationsTable styleCustomizations={styleCustomizations} loading={loading} />
     </Box>
   );
 };
