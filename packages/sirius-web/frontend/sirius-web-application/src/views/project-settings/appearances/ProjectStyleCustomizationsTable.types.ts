@@ -16,4 +16,11 @@ import { GQLProjectStyleCustomization } from './useProjectStyleCustomizations.ty
 export interface ProjectStyleCustomizationsTableProps {
   loading: boolean;
   styleCustomizations: GQLProjectStyleCustomization[];
+  rowCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  onPreviousPage: () => void;
+  onNextPage: () => void;
+  pageSize: number;
+  onPageSizeChange: (pageSize: number) => void;
 }

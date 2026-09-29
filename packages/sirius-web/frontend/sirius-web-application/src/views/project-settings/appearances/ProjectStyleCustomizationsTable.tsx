@@ -17,12 +17,20 @@ import Typography from '@mui/material/Typography';
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CursorBasedPagination } from '../../../table/CursorBasedPagination';
 import { ProjectStyleCustomizationsTableProps } from './ProjectStyleCustomizationsTable.types';
 import { GQLProjectStyleCustomization } from './useProjectStyleCustomizations.types';
 
 export const ProjectStyleCustomizationsTable = ({
   loading,
   styleCustomizations,
+  rowCount,
+  hasPreviousPage,
+  hasNextPage,
+  onPreviousPage,
+  onNextPage,
+  pageSize,
+  onPageSizeChange,
 }: ProjectStyleCustomizationsTableProps) => {
   const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
     keyPrefix: 'styleCustomizationTable',
@@ -67,8 +75,22 @@ export const ProjectStyleCustomizationsTable = ({
     enableSorting: false,
     enableRowSelection: false,
     enableGlobalFilter: false,
-    enablePagination: false,
-    enableBottomToolbar: false,
+
+    // Configure pagination
+    enablePagination: true,
+    manualPagination: true,
+    rowCount: rowCount,
+    enableBottomToolbar: true,
+    renderBottomToolbar: () => (
+      <CursorBasedPagination
+        hasPreviousPage={hasPreviousPage}
+        hasNextPage={hasNextPage}
+        onPreviousPage={onPreviousPage}
+        onNextPage={onNextPage}
+        pageSize={pageSize}
+        onPageSizeChange={onPageSizeChange}
+      />
+    ),
 
     localization: localization,
 

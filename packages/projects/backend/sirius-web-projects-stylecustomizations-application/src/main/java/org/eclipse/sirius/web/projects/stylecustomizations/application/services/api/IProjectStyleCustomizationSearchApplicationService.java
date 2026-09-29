@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.projects.stylecustomizations.application.services.api;
 
-import java.util.List;
-
+import org.eclipse.sirius.web.core.domain.pagination.Window;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.StyleCustomizationDTO;
+import org.springframework.data.domain.KeysetScrollPosition;
 
 /**
  * Application service used to search project style customizations.
@@ -24,5 +24,5 @@ import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.Style
  */
 public interface IProjectStyleCustomizationSearchApplicationService {
 
-    List<StyleCustomizationDTO> getStyleCustomizations(String projectId);
+    Window<StyleCustomizationDTO> getStyleCustomizations(String projectId, KeysetScrollPosition position, int limit);
 }

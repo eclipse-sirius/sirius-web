@@ -12,3 +12,9 @@
  *******************************************************************************/
 
 export type ProjectAppearancesSettingsParams = 'projectId';
+
+export interface ProjectAppearancesSettingsViewState {
+  pageSize: number;
+  startCursor: string | null;
+  endCursor: string | null;
+}
