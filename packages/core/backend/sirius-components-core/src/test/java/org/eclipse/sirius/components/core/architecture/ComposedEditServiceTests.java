@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.architecture;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
@@ -30,6 +32,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author arichard
  */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ComposedEditServiceTests {
 
     @Test
@@ -88,5 +91,44 @@ public class ComposedEditServiceTests {
         List<ChildCreationDescription> result = editService.getChildCreationDescriptions(null, "", "");
         assertEquals(1, result.size());
         assertEquals("defaultId", result.get(0).id());
+    }
+
+    @Test
+    @DisplayName("Test that clearing a reference is delegated to a matching edit service")
+    public void testDelegateClearReference() {
+        var clearedReferences = new ArrayList<String>();
+        IEditServiceDelegate editServiceDelegate = new IEditServiceDelegate.NoOp() {
+            @Override
+            public boolean canHandle(Object object) {
+                return true;
+            }
+
+            @Override
+            public void clearReference(Object object, String referenceName) {
+                clearedReferences.add(referenceName);
+            }
+        };
+
+        var editService = new ComposedEditService(List.of(editServiceDelegate), new IDefaultEditService.NoOp());
+        editService.clearReference(new Object(), "reference");
+        assertThat(clearedReferences).containsExactly("reference");
+    }
+
+    @Test
+    @DisplayName("Test that clearing a reference falls back to the default edit service")
+    public void testDefaultClearReference() {
+        var clearedReferences = new ArrayList<String>();
+        IEditServiceDelegate editServiceDelegate = new IEditServiceDelegate.NoOp() {
+        };
+        IDefaultEditService defaultEditService = new IDefaultEditService.NoOp() {
+            @Override
+            public void clearReference(Object object, String referenceName) {
+                clearedReferences.add(referenceName);
+            }
+        };
+
+        var editService = new ComposedEditService(List.of(editServiceDelegate), defaultEditService);
+        editService.clearReference(new Object(), "reference");
+        assertThat(clearedReferences).containsExactly("reference");
     }
 }

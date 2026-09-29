@@ -34,6 +34,7 @@ export class PlaywrightExplorer {
   async createNewObject(treeItemLabel: string, childCreationDescriptionLabel: string) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
     await this.page.getByTestId('new-object').first().click();
+    await expect(this.page.getByTestId('create-object')).toBeEnabled();
     await this.page.getByTestId('childCreationDescription').click();
     await this.page.locator(`[data-value="${childCreationDescriptionLabel}"]`).click();
     await this.page.getByTestId('create-object').click();

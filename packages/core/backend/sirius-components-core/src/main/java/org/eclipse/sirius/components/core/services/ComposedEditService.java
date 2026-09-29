@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,8 +25,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of {@link IEditService} which delegates to {@link IEditServiceDelegate} or fallback to
- * {@link IDefaultEditService}.
+ * Implementation of {@link IEditService} which delegates to {@link IEditServiceDelegate} or fallback to {@link IDefaultEditService}.
  *
  * @author arichard
  */
@@ -92,5 +91,13 @@ public class ComposedEditService implements IEditService {
                 .filter(delegate -> delegate.canHandle(object))
                 .findFirst()
                 .ifPresentOrElse(delegate -> delegate.delete(object), () -> this.defaultEditService.delete(object));
+    }
+
+    @Override
+    public void clearReference(Object object, String referenceName) {
+        this.editServiceDelegates.stream()
+                .filter(delegate -> delegate.canHandle(object))
+                .findFirst()
+                .ifPresentOrElse(delegate -> delegate.clearReference(object, referenceName), () -> this.defaultEditService.clearReference(object, referenceName));
     }
 }

@@ -92,8 +92,10 @@ Two implementations of `IReferenceWidgetClearHandler`, `ViewReferenceWidgetClear
 Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetClearHandler`.
 - [form] Reference widget EMF edit classes have been moved from `org.eclipse.sirius.components.widgets` to `org.eclipse.sirius.components.view.widget` to match their domain classes.
 - https://github.com/eclipse-sirius/sirius-web/issues/6973[#6973] [form] The clear button of the widget reference is now driven by a dedicated EClass in the View DSL.
-All existing representations are automatically migrated as well as the details view of Sirius Web.
-However, programmatic form descriptions should manually add it through `ReferenceWidgetDescription.Builder#clearButtonDescription`.
+Its body defines the clear behavior; an empty body does nothing.
+New Studio widgets contain a default clear operation.
+All existing representations and the Sirius Web details view are automatically migrated.
+Programmatic form descriptions should manually add it through `ReferenceWidgetDescription.Builder#clearButtonDescription`.
 
 
 === Dependency update
@@ -166,7 +168,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - https://github.com/eclipse-sirius/sirius-web/issues/6957[#6957] [diagram] Add translations support to manage selection diagram toolbar tool
 - https://github.com/eclipse-sirius/sirius-web/issues/6808[#6808] [diagram] Invoke manage selection diagram panel tool from the backend
 - https://github.com/eclipse-sirius/sirius-web/issues/6976[#6976] [form] Remove reference widget clear handler from refresh mechanism.
-- https://github.com/eclipse-sirius/sirius-web/issues/6973[#6973] [form] We can now customize the widget reference clear button through the View DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/6973[#6973] [form] We can now customize the reference widget clear button behavior through the View DSL.
 
 
 
