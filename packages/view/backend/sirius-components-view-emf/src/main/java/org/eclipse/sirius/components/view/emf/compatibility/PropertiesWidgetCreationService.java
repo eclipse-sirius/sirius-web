@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.springframework.stereotype.Service;
@@ -203,6 +204,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .referenceNameProvider(variableManager -> this.getReferenceName(variableManager, feature))
                 .isContainmentProvider(variableManager -> this.isContainment(variableManager, feature))
                 .isManyProvider(variableManager -> this.isMany(variableManager, feature))
+                .clearButtonDescription(new ReferenceWidgetClearButtonDescription(variableManager -> true))
                 .styleProvider(variableManager -> null)
                 .ownerIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), EObject.class).map(this.identityService::getId).orElse(""))
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(feature))

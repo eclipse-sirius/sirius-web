@@ -58,8 +58,10 @@ Downstream consumers must declare this dependency and replace the package prefix
   Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetClearHandler`.
 - Reference widget EMF edit classes have been moved from `org.eclipse.sirius.components.widgets` to `org.eclipse.sirius.components.view.widget` to match their domain classes.
 - The clear button of the widget reference is now driven by a dedicated EClass in the View DSL.
- All existing representations are automatically migrated as well as the details view of Sirius Web.
- However, programmatic form descriptions should manually add it through `ReferenceWidgetDescription.Builder#clearButtonDescription`.
+ Its body defines the clear behavior; an empty body clears the reference using the default behavior.
+ New Studio widgets contain a default clear operation.
+ All existing representations and the Sirius Web details view are automatically migrated.
+ Programmatic form descriptions should manually add it through `ReferenceWidgetDescription.Builder#clearButtonDescription`.
 - Reference widget creation handlers are now form handlers instead of editing context handlers.
   `IReferenceWidgetCreateElementHandler#canHandle` now accepts a `FormDescription` instead of a widget description ID.
   `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
@@ -108,6 +110,7 @@ Each customizer determines which nodes it applies to.
 All applicable customizers are applied, but their order is unspecified.
 If multiple customizers modify the same style property, the last one wins.
 * In forms, specifiers can now configure whether reference widgets show a clear button in the View DSL.
+* In forms, specifiers can now configure reference-widget clear-button behavior through its View DSL operation body.
 
 
 == Improvements

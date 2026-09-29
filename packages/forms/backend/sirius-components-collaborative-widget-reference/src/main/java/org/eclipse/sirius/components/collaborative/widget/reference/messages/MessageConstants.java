@@ -24,6 +24,7 @@ public final class MessageConstants {
     public static final String INVALID_IDS = "INVALID_IDS";
     public static final String UNABLE_TO_EDIT_READONLY_WIDGET = "UNABLE_TO_EDIT_READONLY_WIDGET";
     public static final String UNABLE_TO_CLEAR_REFERENCE = "UNABLE_TO_CLEAR_REFERENCE";
+    public static final String FAILED_TO_EXECUTE_CLEAR_REFERENCE_ACTION = "FAILED_TO_EXECUTE_CLEAR_REFERENCE_ACTION";
 
     private MessageConstants() {
         // Prevent instantiation
