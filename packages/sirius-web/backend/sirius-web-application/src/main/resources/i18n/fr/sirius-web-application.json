@@ -137,10 +137,6 @@
   "projectActionButton": {
     "more": "Plus"
   },
-  "projectAppearancesSettings":  {
-    "title": "Apparences",
-    "description": "Active ou désactive des personnalisations de style pour modifier l'apparance d'éléments dans des representations"
-  },
   "projectImagesSettings": {
     "empty": "Aucune image de projet disponible, commencez par en téléverser une",
     "title": "Images du projet",
@@ -284,10 +280,6 @@
     "version": "Version",
     "createdOn": "Créé le",
     "namespace": "Espace de nom",
-    "description": "Description"
-  },
-  "styleCustomizationTable": {
-    "name": "Nom",
     "description": "Description"
   },
   "detailsView": {

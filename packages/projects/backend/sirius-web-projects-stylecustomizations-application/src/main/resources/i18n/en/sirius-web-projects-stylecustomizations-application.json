@@ -1,0 +1,10 @@
+{
+  "projectAppearancesSettings":  {
+    "title": "Appearances",
+    "description": "Enable or disable style customizations to change the appearance of elements in representations"
+  },
+  "styleCustomizationTable": {
+    "name": "Name",
+    "description": "Description"
+  }
+}

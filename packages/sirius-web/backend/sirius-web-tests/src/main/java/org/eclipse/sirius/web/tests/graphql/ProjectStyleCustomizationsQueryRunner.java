@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,30 +21,22 @@ import org.eclipse.sirius.components.graphql.tests.api.IQueryRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to get the project capabilities from the GraphQL API.
+ * Used to retrieve registered style customizations from the GraphQL API.
  *
  * @author gcoutable
  */
 @Service
-public class ProjectCapabilitiesQueryRunner implements IQueryRunner {
+public class ProjectStyleCustomizationsQueryRunner implements IQueryRunner {
 
-    public static final String GET_PROJECT_CAPABILITIES = """
-            query getProjectCapabilities($projectId: ID!, $tabIds: [ID!]!) {
+    public static final String PROJECT_STYLE_CUSTOMIZATIONS_QUERY = """
+            query projectStyleCustomizations($projectId: ID!) {
               viewer {
                 project(projectId: $projectId) {
-                  capabilities {
-                    canDownload
-                    canRename
-                    canDelete
-                    canDuplicate
-                    canEdit
-                    settings {
-                      canView
-                      tabs(tabIds: $tabIds) {
-                        tabId
-                        canView
-                      }
-                    }
+                  styleCustomizations {
+                    id
+                    name
+                    description
+                    enabled
                   }
                 }
               }
@@ -53,12 +45,12 @@ public class ProjectCapabilitiesQueryRunner implements IQueryRunner {
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public ProjectCapabilitiesQueryRunner(IGraphQLRequestor graphQLRequestor) {
+    public ProjectStyleCustomizationsQueryRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
     public GraphQLResult run(Map<String, Object> variables) {
-        return this.graphQLRequestor.execute(GET_PROJECT_CAPABILITIES, variables);
+        return this.graphQLRequestor.execute(PROJECT_STYLE_CUSTOMIZATIONS_QUERY, variables);
     }
 }
