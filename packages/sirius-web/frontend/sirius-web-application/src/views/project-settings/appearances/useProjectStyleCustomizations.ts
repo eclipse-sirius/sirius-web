@@ -21,23 +21,47 @@ import {
 } from './useProjectStyleCustomizations.types';
 
 const getProjectStyleCustomizations = gql`
-  query getProjectStyleCustomizations($projectId: ID!) {
+  query getProjectStyleCustomizations($projectId: ID!, $after: String, $before: String, $first: Int, $last: Int) {
     viewer {
       project(projectId: $projectId) {
-        styleCustomizations {
-          id
-          name
-          description
-          enabled
+        styleCustomizations(after: $after, before: $before, first: $first, last: $last) {
+          ...ProjectStyleCustomizationsConnectionFragment
         }
       }
     }
   }
+
+  fragment ProjectStyleCustomizationsConnectionFragment on ProjectStyleCustomizationsConnection {
+    edges {
+      node {
+        id
+        name
+        description
+        enabled
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+      count
+    }
+  }
 `;
 
-export const useProjectStyleCustomizations = (projectId: string): UseProjectStyleCustomizationsValue => {
+export const useProjectStyleCustomizations = (
+  projectId: string,
+  after: string | null,
+  before: string | null,
+  pageSize: number
+): UseProjectStyleCustomizationsValue => {
   const variables = {
     projectId,
+    after,
+    before,
+    first: after ? pageSize : before ? null : pageSize,
+    last: before ? pageSize : null,
   };
 
   const { data, loading, error } = useQuery<

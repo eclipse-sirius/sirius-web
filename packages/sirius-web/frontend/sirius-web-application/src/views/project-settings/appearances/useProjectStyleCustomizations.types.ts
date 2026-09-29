@@ -18,6 +18,10 @@ export interface UseProjectStyleCustomizationsValue {
 
 export interface GQLGetProjectStyleCustomizationsQueryVariables {
   projectId: string;
+  after: string | null;
+  before: string | null;
+  first: number | null;
+  last: number | null;
 }
 
 export interface GQLGetProjectStyleCustomizationsQueryData {
@@ -29,7 +33,16 @@ export interface GQLViewer {
 }
 
 export interface GQLProject {
-  styleCustomizations: GQLProjectStyleCustomization[];
+  styleCustomizations: GQLStyleCustomizationsConnection;
+}
+
+export interface GQLStyleCustomizationsConnection {
+  edges: GQLStyleCustomizationsEdge[];
+  pageInfo: GQLPageInfo;
+}
+
+export interface GQLStyleCustomizationsEdge {
+  node: GQLProjectStyleCustomization;
 }
 
 export interface GQLProjectStyleCustomization {
@@ -37,4 +50,12 @@ export interface GQLProjectStyleCustomization {
   name: string;
   description: string;
   enabled: boolean;
+}
+
+export interface GQLPageInfo {
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  startCursor: string | null;
+  endCursor: string | null;
+  count: number;
 }

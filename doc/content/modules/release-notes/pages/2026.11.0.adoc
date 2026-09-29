@@ -103,6 +103,7 @@ If multiple customizers modify the same style property, the last one wins.
 - Extract the appearance logic of nodes and edges in a dedicated service.
 - In forms, the _RichTextEditor_ widget can now insert, open, edit, and delete links using a dedicated link popup.
 - Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
+- Introduced the `PageInfoAssert` for testing the page info returned by query runner when using the cursor-based pagination in integration tests.
 
 
 == Deprecation warnings

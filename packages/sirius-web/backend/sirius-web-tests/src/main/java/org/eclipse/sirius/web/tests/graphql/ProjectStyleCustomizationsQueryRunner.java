@@ -29,14 +29,26 @@ import org.springframework.stereotype.Service;
 public class ProjectStyleCustomizationsQueryRunner implements IQueryRunner {
 
     public static final String PROJECT_STYLE_CUSTOMIZATIONS_QUERY = """
-            query projectStyleCustomizations($projectId: ID!) {
+            query projectStyleCustomizations($projectId: ID!, $first: Int, $after: String, $last: Int, $before: String) {
               viewer {
                 project(projectId: $projectId) {
-                  styleCustomizations {
-                    id
-                    name
-                    description
-                    enabled
+                  styleCustomizations(first: $first, after: $after, last: $last, before: $before) {
+                    edges {
+                      node {
+                        id
+                        name
+                        description
+                        enabled
+                      }
+                      cursor
+                    }
+                    pageInfo {
+                      hasPreviousPage
+                      hasNextPage
+                      startCursor
+                      endCursor
+                      count
+                    }
                   }
                 }
               }

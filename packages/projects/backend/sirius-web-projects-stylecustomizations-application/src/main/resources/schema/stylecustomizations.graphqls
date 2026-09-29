@@ -1,5 +1,15 @@
 extend type Project {
-  styleCustomizations: [StyleCustomization!]!
+  styleCustomizations(first: Int, after: String, last: Int, before: String): ProjectStyleCustomizationsConnection!
+}
+
+type ProjectStyleCustomizationsConnection {
+  edges: [ProjectStyleCustomizationsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectStyleCustomizationsEdge {
+  node: StyleCustomization!
+  cursor: String!
 }
 
 type StyleCustomization {

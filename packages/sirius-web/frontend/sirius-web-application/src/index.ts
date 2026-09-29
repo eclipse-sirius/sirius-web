@@ -179,6 +179,9 @@ export { type ProjectsTableColumnCustomizer } from './views/project-browser/list
 export { ProjectBrowserOmnibox } from './views/project-browser/ProjectBrowserOmnibox';
 export { type ProjectBrowserOmniboxProps } from './views/project-browser/ProjectBrowserOmnibox.types';
 export { ProjectBrowserView } from './views/project-browser/ProjectBrowserView';
+export { ProjectAppearancesSettingsView } from './views/project-settings/appearances/ProjectAppearancesSettingsView';
+export { ProjectStyleCustomizationsTable } from './views/project-settings/appearances/ProjectStyleCustomizationsTable';
+export { type ProjectStyleCustomizationsTableProps } from './views/project-settings/appearances/ProjectStyleCustomizationsTable.types';
 export { type ProjectImagesSettingsModal } from './views/project-settings/images/ProjectImagesSettings.types';
 export { UploadImageModal } from './views/project-settings/images/upload-image/UploadImageModal';
 export { useProjectImages } from './views/project-settings/images/useProjectImages';
