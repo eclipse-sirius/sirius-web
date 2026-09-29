@@ -35,8 +35,11 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.Entity;
+import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
+import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceClearExecutor;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceClearMutationRunner;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceCreateElementExecutor;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceRemoveMutationRunner;
@@ -89,6 +92,9 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     private ReferenceClearMutationRunner referenceClearMutationRunner;
 
     @Autowired
+    private ReferenceClearExecutor referenceClearExecutor;
+
+    @Autowired
     private ReferenceRemoveMutationRunner referenceRemoveMutationRunner;
 
     @Autowired
@@ -137,6 +143,9 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var nameTextfield = groupNavigator.findWidget("Name", Textfield.class);
+            assertThat(nameTextfield.getValue()).isEqualTo("Human");
+
             var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
 
             assertThat(referenceWidget)
@@ -232,26 +241,106 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             referenceWidgetId.set(referenceWidget.getId());
         });
 
-        Runnable clearValueMutation = () -> {
-            var clearReferenceInput = new ClearReferenceInput(UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get());
-            var result = this.referenceClearMutationRunner.run(clearReferenceInput);
-
-            String mutationResult = JsonPath.read(result.data(), "$.data.clearReference.__typename");
-            assertThat(mutationResult).isEqualTo("SuccessPayload");
-
-        };
+        Runnable clearValueMutation = () -> this.referenceClearExecutor.execute(new ClearReferenceInput(UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get())).isSuccess();
 
         Consumer<Object> afterClearContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
             var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
             assertThat(referenceWidget).hasNoValue();
+            assertThat(groupNavigator.findWidget("Name", Textfield.class).getValue()).isEqualTo("Cleared by custom action");
         });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
                 .then(clearValueMutation)
                 .consumeNextWith(afterClearContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget with an empty clear body, when it is cleared, then the default behavior clears it")
+    public void givenReferenceWidgetWithAnEmptyClearBodyWhenItIsClearedThenDefaultBehaviorClearsIt() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionIdWithDefaultClear(),
+                StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
+                "FormWithReferenceWidgetDefaultClear"
+        );
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
+
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            assertThat(groupNavigator.findWidget("Name", Textfield.class).getValue()).isEqualTo("Human");
+            var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+            assertThat(referenceWidget).hasValueWithLabel("NamedElement");
+            assertThat(referenceWidget.isReadOnly()).isFalse();
+            referenceWidgetId.set(referenceWidget.getId());
+        });
+
+        Runnable clearValueMutation = () -> this.referenceClearExecutor.execute(new ClearReferenceInput(UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get())).isSuccess();
+
+        Consumer<Object> afterClearContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            assertThat(groupNavigator.findWidget("Super types", ReferenceWidget.class)).hasNoValue();
+            assertThat(groupNavigator.findWidget("Name", Textfield.class).getValue()).isEqualTo("Human");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(clearValueMutation)
+                .consumeNextWith(afterClearContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget in node style details, when it is cleared, then its value is removed")
+    public void givenReferenceWidgetInNodeStyleDetailsWhenItIsClearedThenItsValueIsRemoved() {
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.RECTANGULAR_NODE_STYLE_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
+
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var backgroundReferenceWidget = this.findBackgroundReferenceWidget(form);
+            assertThat(backgroundReferenceWidget.isMany()).isFalse();
+            assertThat(backgroundReferenceWidget.getReferenceValues()).hasSize(1);
+            referenceWidgetId.set(backgroundReferenceWidget.getId());
+        });
+
+        Runnable clearReference = () -> {
+            var clearReferenceInput = new ClearReferenceInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get());
+            var result = this.referenceClearMutationRunner.run(clearReferenceInput);
+            String typename = JsonPath.read(result.data(), "$.data.clearReference.__typename");
+            assertThat(typename).isEqualTo("SuccessPayload");
+        };
+
+        Consumer<Object> clearedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var backgroundReferenceWidget = this.findBackgroundReferenceWidget(form);
+            assertThat(backgroundReferenceWidget.getReferenceValues()).isEmpty();
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(clearReference)
+                .consumeNextWith(clearedFormContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -532,5 +621,16 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         var editingContext = this.editingContextSearchService.findById(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID).orElseThrow();
         var domain = this.objectSearchService.getObject(editingContext, StudioIdentifiers.DOMAIN_OBJECT.toString()).filter(Domain.class::isInstance).map(Domain.class::cast).orElseThrow();
         return domain.getTypes().size();
+    }
+
+    private ReferenceWidget findBackgroundReferenceWidget(Form form) {
+        return form.getPages().stream()
+                .flatMap(page -> page.getGroups().stream())
+                .flatMap(group -> group.getWidgets().stream())
+                .filter(ReferenceWidget.class::isInstance)
+                .map(ReferenceWidget.class::cast)
+                .filter(referenceWidget -> "background".equals(referenceWidget.getReferenceName()))
+                .findFirst()
+                .orElseThrow();
     }
 }

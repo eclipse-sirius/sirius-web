@@ -105,7 +105,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .map(this.identityService::getId)
                 .orElse(null);
 
-        var clearButton = new ReferenceWidgetClearButtonDescription();
+        var clearButton = new ReferenceWidgetClearButtonDescription(variableManager -> true);
 
         return ReferenceWidgetDescription.newReferenceWidgetDescription(REFERENCE_WIDGET_DESCRIPTION_ID)
                 .targetObjectIdProvider(targetObjectIdProvider)

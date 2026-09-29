@@ -25,11 +25,15 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.form.FormDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.PageDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionStyleBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.UnsetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
@@ -52,6 +56,8 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
 
     private FormDescription formDescription;
 
+    private FormDescription formDescriptionWithDefaultClear;
+
     public FormWithReferenceWidgetDescriptionProvider(IFormIdProvider formIdProvider) {
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.view = this.createView();
@@ -68,10 +74,17 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
         return this.formIdProvider.getId(this.formDescription);
     }
 
+    public String getRepresentationDescriptionIdWithDefaultClear() {
+        return this.formIdProvider.getId(this.formDescriptionWithDefaultClear);
+    }
+
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
         View textfieldFormView = viewBuilder.build();
-        textfieldFormView.getDescriptions().add(this.createFormDescription());
+        this.formDescription = this.createFormDescription(true);
+        this.formDescriptionWithDefaultClear = this.createFormDescription(false);
+        textfieldFormView.getDescriptions().add(this.formDescription);
+        textfieldFormView.getDescriptions().add(this.formDescriptionWithDefaultClear);
 
         textfieldFormView.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
@@ -85,7 +98,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
         return textfieldFormView;
     }
 
-    private FormDescription createFormDescription() {
+    private FormDescription createFormDescription(boolean customClear) {
         var superTypesReferenceStyle = new ReferenceWidgetDescriptionStyleBuilder()
                 .bold(true)
                 .italic(true)
@@ -101,6 +114,23 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .helpExpression("aql:'Specify the super-types of ' + self.name")
                 .style(superTypesReferenceStyle)
                 .build();
+        var clearButton = ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription();
+        if (customClear) {
+            clearButton.getBody().add(new SetValueBuilder()
+                    .featureName("name")
+                    .valueExpression("Cleared by custom action")
+                    .build());
+            clearButton.getBody().add(new UnsetValueBuilder()
+                    .featureName("superTypes")
+                    .build());
+        }
+        superTypesReference.setClearButton(clearButton);
+
+        var nameTextfield = new TextfieldDescriptionBuilder()
+                .name("Name")
+                .labelExpression("Name")
+                .valueExpression("aql:self.name")
+                .build();
 
         var readOnlySuperTypesReference = new ReferenceWidgetDescriptionBuilder()
                 .name("Read-only super types reference")
@@ -114,7 +144,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .name("Group")
                 .labelExpression("Group")
                 .semanticCandidatesExpression("aql:self")
-                .children(superTypesReference, readOnlySuperTypesReference)
+                .children(nameTextfield, superTypesReference, readOnlySuperTypesReference)
                 .build();
 
         var pageDescription = new PageDescriptionBuilder()
@@ -125,13 +155,18 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .groups(groupDescription)
                 .build();
 
-        this.formDescription = new FormDescriptionBuilder()
-                .name("Form")
-                .titleExpression("aql:'FormWithReferenceWidget'")
+        String formName = "Form";
+        String formTitle = "FormWithReferenceWidget";
+        if (!customClear) {
+            formName = "FormWithDefaultClear";
+            formTitle = "FormWithReferenceWidgetDefaultClear";
+        }
+
+        return new FormDescriptionBuilder()
+                .name(formName)
+                .titleExpression(formTitle)
                 .domainType("domain:Entity")
                 .pages(pageDescription)
                 .build();
-
-        return this.formDescription;
     }
 }
