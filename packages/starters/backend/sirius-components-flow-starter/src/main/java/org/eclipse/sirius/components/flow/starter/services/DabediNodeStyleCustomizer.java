@@ -27,7 +27,10 @@ import org.eclipse.sirius.components.diagrams.renderer.api.INodeStyleCustomizer;
 import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
 import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,9 +45,16 @@ public class DabediNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
 
-    public DabediNodeStyleCustomizer(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
+    private final IProjectEditingContextService projectEditingContextService;
+
+    private final IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService;
+
+    public DabediNodeStyleCustomizer(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate,
+            IProjectEditingContextService projectEditingContextService, IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService) {
         this.nodeCustomizationEnabled = nodeCustomizationEnabled;
         this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
+        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
+        this.projectStyleCustomizationSearchService = Objects.requireNonNull(projectStyleCustomizationSearchService);
     }
 
     @Override
@@ -55,7 +65,12 @@ public class DabediNodeStyleCustomizer implements INodeStyleCustomizer {
                     .map(IEditingContext::getId)
                     .map(this.flowCapableEditingContextPredicate::test)
                     .orElse(Boolean.FALSE);
-            if (isFlowProject) {
+            var isEnabled = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
+                    .map(IEditingContext::getId)
+                    .flatMap(this.projectEditingContextService::getProjectId)
+                    .map(projectId -> this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(projectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI))
+                    .orElse(Boolean.FALSE);
+            if (isFlowProject && isEnabled) {
                 var optionalNamed = variableManager.get(RepresentationVariables.SELF.name(), Named.class);
                 if (optionalNamed.isPresent() && optionalNamed.get().getName().contains("da be di da be dai")) {
                     customizeStyle = RectangularNodeStyle.newRectangularNodeStyle(rectangularNodeStyle)

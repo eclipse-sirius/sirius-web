@@ -37,5 +37,6 @@
         <module>sirius-web-projects-semanticdata-domain</module>
         <module>sirius-web-projects-semanticdata-infrastructure</module>
         <module>sirius-web-projects-stylecustomizations-application</module>
+        <module>sirius-web-projects-stylecustomizations-domain</module>
     </modules>
 </project>
