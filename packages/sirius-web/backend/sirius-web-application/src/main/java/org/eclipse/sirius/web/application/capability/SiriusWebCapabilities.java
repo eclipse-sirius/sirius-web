@@ -99,6 +99,13 @@ public final class SiriusWebCapabilities {
          * @since v2025.10.0                                                                                                     .0
          */
         public static final String DUPLICATE = "duplicate";
+
+        /**
+         * Used to check if project style customizations can be listed.
+         *
+         * @since v2026.11.0
+         */
+        public static final String LIST_STYLE_CUSTOMIZATIONS = "list-style-customizations";
     }
 
     public static final String LIBRARY = "Library";
@@ -173,5 +180,12 @@ public final class SiriusWebCapabilities {
      * @since v2026.1.0
      */
     public static final String PROJECT_SETTINGS_GENERAL_TAB = PROJECT_SETTINGS + '#' + "general";
+
+    /**
+     * The identifier of the appearances settings tab.
+     *
+     * @since v2026.11.0
+     */
+    public static final String PROJECT_SETTINGS_APPEARANCE_TAB = PROJECT_SETTINGS + '#' + "appearances";
 
 }

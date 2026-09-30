@@ -50,13 +50,16 @@ test.describe('diagram - palette', () => {
     await page.getByTestId('toolSection-Layout').click();
     await page.getByTestId('Palette').getByTestId('tool-Align bottom').click();
     await playwrightNode.waitForAnimationToFinish();
-    const playwrightNodeXYPosition = await playwrightNode.getReactFlowXYPosition('DataSource1', false);
-    const playwrightNode2XYPosition = await playwrightNode2.getReactFlowXYPosition('CompositeProcessor1', false);
-    const playwrightNodeSize = await playwrightNode.getReactFlowSize('DataSource1', false);
-    const playwrightNode2Size = await playwrightNode2.getReactFlowSize('CompositeProcessor1', false);
-    expect(playwrightNodeXYPosition.y + playwrightNodeSize.height).toBe(
-      playwrightNode2XYPosition.y + playwrightNode2Size.height
-    );
+    await expect
+      .poll(async () => {
+        const position1 = await playwrightNode.getReactFlowXYPosition('DataSource1', false);
+        const position2 = await playwrightNode2.getReactFlowXYPosition('CompositeProcessor1', false);
+        const size1 = await playwrightNode.getReactFlowSize('DataSource1', false);
+        const size2 = await playwrightNode2.getReactFlowSize('CompositeProcessor1', false);
+
+        return position1.y + size1.height - (position2.y + size2.height);
+      })
+      .toBe(0);
   });
 
   test('when a node then an edge is selected, we can open the group palette and fade both elements', async ({
@@ -73,6 +76,25 @@ test.describe('diagram - palette', () => {
     const edgeStyle = await playwrightEdge.getEdgeStyle();
     await expect(edgeStyle).toHaveCSS('opacity', '0.4');
     await expect(playwrightNode.nodeStyleLocator).toHaveCSS('opacity', '0.4');
+  });
+
+  test('when the diagram palette is opened, then the global selection is updated with the diagram', async ({
+    page,
+  }) => {
+    const playwrightNode = new PlaywrightNode(page, 'DataSource1');
+    const details = new PlaywrightDetails(page);
+
+    await playwrightNode.click();
+    await expect(details.detailsLocator.getByTestId('input-Name')).toHaveValue('DataSource1');
+    const diagramId = new URL(page.url()).pathname.split('/').at(-1);
+    if (!diagramId) {
+      throw new Error('The diagram identifier should be present in the URL');
+    }
+
+    await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 1, y: 1 } });
+
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await expect.poll(() => new URL(page.url()).searchParams.get('selection')).toBe(diagramId);
   });
 
   test('when several elements are selected with the rectangular selection, we can open the group palette and hide both elements', async ({

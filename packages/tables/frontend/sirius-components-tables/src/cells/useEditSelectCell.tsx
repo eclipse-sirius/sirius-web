@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client/core';
-import { useMutation } from '@apollo/client/react/hooks/useMutation';
+import { useMutation } from '@apollo/client/react';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { GQLEditSelectCellMutationData, GQLEditSelectCellMutationVariables } from './useEditSelectCell.types';
 

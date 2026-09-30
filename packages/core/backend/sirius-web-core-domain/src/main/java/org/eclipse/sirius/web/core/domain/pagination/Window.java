@@ -74,8 +74,8 @@ public class Window<T> implements org.springframework.data.domain.Window<T> {
     }
 
     @Override
-    public <U> org.springframework.data.domain.Window<U> map(Function<? super T, ? extends U> converter) {
-        return this.delegate.map(converter);
+    public <U> Window<U> map(Function<? super T, ? extends U> converter) {
+        return new Window<>(this.delegate.map(converter), this.hasPrevious);
     }
 
     public boolean hasPrevious() {

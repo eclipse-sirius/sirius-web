@@ -23,10 +23,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -61,7 +59,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private EditLabelMutationRunner editLabelMutationRunner;
+    private EditLabelExecutor editLabelExecutor;
 
     @Autowired
     private InitialDirectEditElementLabelQueryRunner initialDirectEditElementLabelQueryRunner;
@@ -138,13 +136,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
             labelId.set(node.getInsideLabel().getId());
         });
 
-        Runnable editLabel = () -> {
-            var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "new label");
-            var result = this.editLabelMutationRunner.run(input);
-
-            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
-            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
-        };
+        Runnable editLabel = () -> this.editLabelExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "new label").isSuccess();
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
             var node = new DiagramNavigator(diagram).nodeWithId(nodeId.get()).getNode();
@@ -177,13 +169,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
             labelId.set(edge.getCenterLabel().id());
         });
 
-        Runnable editLabel = () -> {
-            var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "sirius-web-application-renamed");
-            var result = this.editLabelMutationRunner.run(input);
-
-            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
-            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
-        };
+        Runnable editLabel = () -> this.editLabelExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "sirius-web-application-renamed").isSuccess();
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
             var edge = new DiagramNavigator(diagram).edgeWithId(edgeId.get()).getEdge();

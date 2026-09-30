@@ -33,6 +33,25 @@ When you are done, you can stop the application by hitting Ctrl-c from the termi
 
 NOTE: This way of running the application is only useful for quick testing and should not be used for actual deployments.
 
+To build and run from a checkout, set `USERNAME` to your GitHub login and `PASSWORD` to a token with `read:packages`, then run:
+
+[source,shell]
+----
+docker compose up --build
+----
+
+The source build requires BuildKit and the Buildx CLI plugin; the GitHub token is passed as a build secret.
+Compose automatically loads `compose.override.yml`, which adds only build settings and build secrets.
+Runtime settings, including database credentials and healthchecks, come from the original `docker-compose.yml`.
+`docker compose up` requests the published image; Compose can fall back to building if pulling it fails.
+Use `docker compose -f docker-compose.yml up` to run the original configuration without loading the build settings.
+`docker compose build` uses the `source` target in `packages/sirius-web/backend/sirius-web/Dockerfile` to build the frontend and backend, skipping tests.
+Use `docker compose up --build` to run from source; plain `up` follows the original `pull_policy: always` and can replace a locally built image.
+GitHub Actions keeps its frontend build, Maven verification, coverage, and package publishing steps.
+It then runs `BUILD_TARGET=prebuilt docker compose build backend` to package the existing JAR without compiling the application again.
+Both targets share the same Dockerfile runtime stage.
+Integration tests explicitly load `docker-compose.yml` and `packages/sirius-web/backend/sirius-web/compose.ci.yml` to use the local image, a generated database password, and the `e2e` application profile.
+
 [#documentation]
 == Documentation
 

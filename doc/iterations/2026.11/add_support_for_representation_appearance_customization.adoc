@@ -1,7 +1,7 @@
 :author: Guillaume Coutable
 :date: 2026-09-14
 :status: accepted
-:consulted:
+:consulted: Stéphane Bégaudeau
 :informed: Axel Richard, Mélanie Bats, Stéphane Bégaudeau
 :deciders: Stéphane Bégaudeau
 :issue: https://github.com/eclipse-sirius/sirius-web/issues/6949
@@ -15,44 +15,50 @@ Downstream applications cannot easily customize it without replacing the descrip
 
 == Key Result
 
-* Application developers can customize the appearance of existing representations through server-side contributions, without replacing their representation descriptions.
+* Application developers can customize the appearance of existing representations through server-side contributions registered at the application level, without replacing their representation descriptions.
 * The customization mechanism must be applicable to different representation types.
-The initial implementation will support background-color customization for diagram nodes.
-* Style customizations from the _Appearance_ menu have a higher priority than style customizations registered in the server.
+The initial implementation will support customization for diagram nodes.
+* Users will be able to enable or disable style customization for their project.
+* Style customizations from the _Appearance_ menu have a higher priority than style customizations registered in the application.
 
 === Acceptance Criteria
 
 * An integration test should verify that a registered customization is applied to matching elements.
-* An integration test should verify that a style property customized through the Appearance menu takes precedence over an applicable server-provided customization targeting the same property.
+* An integration test should verify that a style property customized through the Appearance menu takes precedence over an applicable customization registered at the application level and targeting the same property.
 
 == Solution
 
-One can register style customizations on the server via a backend extension point.
+One can register style customizations at the application level through a backend extension point.
 Registered customizations are automatically applied where applicable.
 Each customization determines its applicability from the representation context, such as its description or editing context.
-If several applicable customizations target the same property of the same element, only one will be used.
+If several applicable customizations target the same property of the same element, the resulting value depends on their application order, which is not guaranteed.
 
 === Scenarios
 
 * **Scenario steps**
-  * Sirius Web registers a server-side customization that sets the background color of class nodes to _green_ in Papaya class diagrams named “Overview”.
+  * Sirius Web registers an application-wide customization that sets the background color of class nodes to _green_ in Papaya class diagrams named “Overview”.
   * The end-user creates a Papaya class diagram and names it "Overview".
   * The class graphical nodes in that diagram have a green background.
   * The end-user creates a Papaya class diagram with another name.
   * The class graphical nodes in that diagram retain their original background color.
 
 * **Scenario steps**
-  * Sirius Web registers a server-side customization that sets the background color of class nodes to _green_ in Papaya class diagrams named “Overview”.
+  * Sirius Web registers an application-wide customization that sets the background color of class nodes to _green_ in Papaya class diagrams named “Overview”.
   * The end-user creates a Papaya class diagram and names it "Overview".
   * The class graphical nodes in that diagram have a green background.
   * The end user uses the _Appearance_ menu to set the background color of one class node to purple.
   * The background-color of the node is purple.
 
+* **Scenario steps**
+  * Sirius Web registers an application-wide customization that sets the background color of class nodes to _green_ in Papaya class diagrams named “Overview”.
+  * The end-user creates a Papaya class diagram and names it "Overview".
+  * The class graphical nodes in that diagram have a green background.
+  * The end-user goes to the _Appearance_ tab of project settings and disables the node style customization.
+  * The end-user returns to the project, the class graphical node has the style defined by its node description.
+
+
 === Cutting back
 
-* **Nice-to-have:** Support for customizing all style properties beyond the background-color in a diagram.
-* **Nice-to-have:** Allow users to select, from the project settings, which server-provided style customizations apply to their project.
-The UI allows users to enable or disable each server-provided customization for their project.
 
 == No-Gos
 

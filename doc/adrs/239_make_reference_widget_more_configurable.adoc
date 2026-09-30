@@ -1,0 +1,75 @@
+:author: Théo Giraudet
+:date: 2026-09-21
+:status: proposed
+:consulted: Arthur Daussy, Axel Richard, Pierre-Charles David
+:informed: /
+:deciders: Stéphane Begaudeau
+:pitch: /
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/2320
+
+= ADR-239 - Make the reference widget more configurable
+
+== Context and Problem Statement
+
+In some contexts, we want to use a reference widget only to select existing values.
+In such contexts, allowing users to create new elements does not make sense.
+
+== Decision Drivers
+
+- The visibility and behavior of each reference-widget action should be configurable independently.
+- Persisted representations must retain their current behavior after every View DSL evolution.
+
+== Considered Options
+
+=== Evolve the View DSL using existing patterns
+
+We will extend the View DSL with the existing optional-containment and operation-body patterns.
+No alternative is considered necessary because this is consistent with the established way to configure optional controls and their behavior in the View DSL.
+
+== Decision Outcome
+
+In the context of configuring the reference widget, facing the need to preserve the behavior of existing representations, we decided to extend the View DSL with optional button descriptions and dedicated operation bodies to make each action independently configurable, accepting versioned migrations for persisted representations and manual updates for programmatic descriptions.
+
+== Consequences
+
+=== Advantages
+
+The reference widget becomes configurable for downstream projects such as SysON.
+
+=== Drawbacks
+
+Every contribution that replaces an implicit behavior with a View DSL element requires a versioned migration participant.
+The participant must restore both the visibility and the behavior of existing persisted representations.
+
+Programmatic descriptions using the View DSL cannot be migrated automatically and must be updated by their owners.
+
+
+== More Information
+
+=== Implementation
+
+We will add `ReferenceWidgetClearButtonDescription` and `ReferenceWidgetCreateButtonDescription` to the View DSL.
+The presence of a description determines the presence of the associated button.
+Each description can contain a precondition expression and an operation body.
+An empty body displays the button without a custom behavior.
+
+We will add dedicated View DSL operation bodies for the _add_, _set_, and _remove_ actions.
+Unlike _create_ and _clear_, these concepts affect only the behavior of existing controls and are not represented in the refresh layer.
+
+
+=== Decision Details
+
+The implementation will be carried out in several steps.
+The same steps will be repeated for every covered feature.
+Here, we will take the example of the clear button:
+
+1. Refactor the clear event handler so that it no longer passes through the refresh layer.
+It will use the usual event-handler pattern already used by `create`.
+2. Implement the View DSL layer by adding `ReferenceWidgetClearButton` and using it to determine the presence of the button.
+At this stage, its body is not interpreted and the existing clear execution is retained.
+3. Implement the AQL interpretation of the `ReferenceWidgetClearButton` body.
+This replaces the existing clear execution.
+
+=== References
+
+/

@@ -25,6 +25,8 @@ public class FlowIdentifier {
 
     public static final String FLOW_DIAGRAM_REPRESENTATION_ID = "40569b77-1967-46cc-99da-c526f5ffbc85";
 
+    public static final String TOPOGRAPHY_VIEW_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38";
+
     public static final String FLOW_ROOT_SYSTEM_OBJECT = "5b75dcbe-10af-452a-af98-4461ee13ea40";
 
     public static final String FLOW_DATA_SOURCE_1 = "2c6c3606-5ed2-35f1-b05e-cba434e1a812";

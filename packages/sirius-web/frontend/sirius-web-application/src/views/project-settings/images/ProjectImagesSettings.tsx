@@ -86,7 +86,7 @@ export const ProjectImagesSettings = ({}: ProjectSettingTabProps) => {
     <>
       <div className={classes.imageSettingsViewContainer}>
         <div className={classes.header}>
-          <Typography variant="h5">{t('title')}</Typography>
+          <Typography variant="h3">{t('title')}</Typography>
 
           <div className={classes.actions}>
             <Button data-testid="upload-image" color="primary" variant="outlined" onClick={onTriggerUpload}>

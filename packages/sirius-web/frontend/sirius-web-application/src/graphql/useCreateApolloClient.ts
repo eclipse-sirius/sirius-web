@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import {
   InMemoryCache,
   InMemoryCacheConfig,
   NormalizedCacheObject,
-  split,
 } from '@apollo/client';
 import { FragmentRegistryAPI, createFragmentRegistry } from '@apollo/client/cache';
 import { WebSocketLink } from '@apollo/client/link/ws';
@@ -88,7 +87,7 @@ export const useCreateApolloClient = (httpOrigin: string, wsOrigin: string): Apo
   const httpLink = new HttpLink(httpOptions);
   const wsLink = new WebSocketLink(webSocketOptions);
 
-  const link = split(
+  const link = ApolloLink.split(
     ({ query }) => {
       const definition = getMainDefinition(query);
       return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
@@ -116,7 +115,7 @@ export const useCreateApolloClient = (httpOrigin: string, wsOrigin: string): Apo
   let apolloClientOptions: ApolloClientOptions<NormalizedCacheObject> = {
     link: apolloLink,
     cache,
-    connectToDevTools: true,
+    devtools: { enabled: true },
     defaultOptions,
   };
   const { data: apolloClientOptionsConfigurers } = useData(apolloClientOptionsConfigurersExtensionPoint);

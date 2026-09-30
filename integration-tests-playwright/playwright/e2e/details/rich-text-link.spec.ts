@@ -28,6 +28,7 @@ test.describe('details - rich text links', () => {
     await playwrightExplorer.expand('detailsOpenTab.xml');
     await playwrightExplorer.expand('Project1');
     await playwrightExplorer.select('Component');
+    expect(await new PlaywrightDetails(page).isTabSelected('Component'));
   });
 
   test.afterEach(async ({ request }) => {

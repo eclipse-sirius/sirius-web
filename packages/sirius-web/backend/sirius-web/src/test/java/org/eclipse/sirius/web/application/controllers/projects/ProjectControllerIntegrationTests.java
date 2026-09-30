@@ -150,7 +150,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a set of projects, when a valid first query is performed, then the projects are returned")
+    @DisplayName("Given a set of projects, when a valid last query is performed, then the projects are returned")
     public void givenSetOfProjectsWhenValidLastQueryIsPerformedThenTheProjectsAreReturned() {
         Map<String, Object> variables = Map.of("last", 2);
         var result = this.projectsQueryRunner.run(variables);

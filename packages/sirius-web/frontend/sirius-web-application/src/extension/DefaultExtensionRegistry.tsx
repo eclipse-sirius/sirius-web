@@ -89,6 +89,7 @@ import Filter from '@mui/icons-material/Filter';
 import ImageIcon from '@mui/icons-material/Image';
 import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
+import PaletteIcon from '@mui/icons-material/Palette';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -142,6 +143,7 @@ import { ViewsExplorerView } from '../views/edit-project/workbench-views/views-e
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
 import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
+import { ProjectAppearancesSettingsView } from '../views/project-settings/appearances/ProjectAppearancesSettingsView';
 import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
 import { ProjectGeneralSettingsView } from '../views/project-settings/ProjectGeneralSettingsView';
 import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
@@ -623,6 +625,12 @@ const defaultSettingPages: ProjectSettingTabContribution[] = [
     title: 'Images',
     icon: <ImageIcon />,
     component: ProjectImagesSettings,
+  },
+  {
+    id: 'appearances',
+    title: 'Appearances',
+    icon: <PaletteIcon />,
+    component: ProjectAppearancesSettingsView,
   },
 ];
 

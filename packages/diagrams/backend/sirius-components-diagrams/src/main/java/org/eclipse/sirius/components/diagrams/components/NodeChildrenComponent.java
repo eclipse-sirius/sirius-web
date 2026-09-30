@@ -103,6 +103,7 @@ public class NodeChildrenComponent implements IComponent {
             BorderNodePosition initialBorderNodePosition = this.getBorderNodePosition(borderNodeDescription, nodeDescription.getInitialChildBorderNodePositions());
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                     .variableManager(descendantNodesVariableManager)
+                    .diagramDescription(this.props.getNodeComponentProps().getDiagramDescription())
                     .nodeDescription(borderNodeDescription)
                     .nodesRequestor(borderNodesRequestor)
                     .nodeDescriptionRequestor(this.props.getNodeComponentProps().getNodeDescriptionRequestor())
@@ -142,6 +143,7 @@ public class NodeChildrenComponent implements IComponent {
             INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                     .variableManager(descendantNodesVariableManager)
+                    .diagramDescription(this.props.getNodeComponentProps().getDiagramDescription())
                     .nodeDescription(childNodeDescription)
                     .nodesRequestor(childNodesRequestor)
                     .nodeDescriptionRequestor(this.props.getNodeComponentProps().getNodeDescriptionRequestor())

@@ -167,7 +167,7 @@ public class NodeComponent implements IComponent {
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
         String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
 
-        var appearance = this.props.getDiagramAppearanceHandler().getNodeAppearance(nodeVariableManager, nodeDescription, diagramEvents, nodeId, optionalPreviousNode);
+        var appearance = this.props.getDiagramAppearanceHandler().getNodeAppearance(nodeVariableManager, this.props.getDiagramDescription(), nodeDescription, diagramEvents, nodeId, optionalPreviousNode);
 
         var parentState = state;
         if (collapsingState == CollapsingState.COLLAPSED) {

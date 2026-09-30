@@ -2,3 +2,8 @@
 **/node_modules
 **/target
 **/dist
+
+# Allow CI to package the JAR produced by its Maven build.
+!packages/sirius-web/backend/sirius-web/target/
+packages/sirius-web/backend/sirius-web/target/*
+!packages/sirius-web/backend/sirius-web/target/sirius-web-*[^sources].jar

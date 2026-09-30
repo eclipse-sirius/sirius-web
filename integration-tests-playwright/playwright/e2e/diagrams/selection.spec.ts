@@ -260,8 +260,7 @@ test.describe('selection', () => {
     let node = await new PlaywrightNode(page, 'CompositeProcessor1');
     await expect(node.nodeLocator).not.toContainClass('selected');
 
-    await explorer.explorerLocator.getByTestId(`CompositeProcessor1-more`).click();
-    await page.getByTestId(`push-selection-to-Topography`).click();
+    await explorer.showIn(`CompositeProcessor1`, 'Topography');
 
     node = await new PlaywrightNode(page, 'CompositeProcessor1');
     await expect(node.nodeLocator).toContainClass('selected');
@@ -274,7 +273,8 @@ test.describe('selection', () => {
     await explorer.select('CompositeProcessor1');
 
     // The Details view is initially opened, we should be able to "Show in Details"
-    await explorer.explorerLocator.getByTestId(`CompositeProcessor1-more`).click();
+    await explorer.openPalette(`CompositeProcessor1`);
+    await page.getByTestId(`toolSection-Show in`).click();
     await expect(page.getByTestId(`push-selection-to-Details`)).toBeVisible();
     await page.getByTestId(`push-selection-to-Details`).click();
 
@@ -282,7 +282,8 @@ test.describe('selection', () => {
     await page.getByTestId('viewselector-Details').click();
 
     // Now the "Show in Details" menu item should no longer be available
-    await explorer.explorerLocator.getByTestId(`CompositeProcessor1-more`).click();
+    await explorer.openPalette(`CompositeProcessor1`);
+    await page.getByTestId(`toolSection-Show in`).click();
     await expect(page.getByTestId(`push-selection-to-Details`)).not.toBeVisible();
   });
 });

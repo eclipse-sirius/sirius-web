@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.components.EdgeAppearance;
 import org.eclipse.sirius.components.diagrams.components.NodeAppearance;
+import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
@@ -33,7 +34,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author gcoutable
  */
 public interface IDiagramAppearanceHandler {
-    NodeAppearance getNodeAppearance(VariableManager variableManager, NodeDescription nodeDescription, List<IDiagramEvent> diagramEvents, String nodeId, Optional<Node> optionalPreviousNode);
+    NodeAppearance getNodeAppearance(VariableManager variableManager, DiagramDescription diagramDescription, NodeDescription nodeDescription,
+            List<IDiagramEvent> diagramEvents, String nodeId, Optional<Node> optionalPreviousNode);
 
     EdgeAppearance getEdgeAppearance(VariableManager variableManager, EdgeDescription edgeDescription, List<IDiagramEvent> diagramEvents, String edgeId, Optional<Edge> optionalPreviousEdge);
 
@@ -45,7 +47,7 @@ public interface IDiagramAppearanceHandler {
     class NoOp implements IDiagramAppearanceHandler {
 
         @Override
-        public NodeAppearance getNodeAppearance(VariableManager variableManager, NodeDescription nodeDescription, List<IDiagramEvent> diagramEvents, String nodeId,
+        public NodeAppearance getNodeAppearance(VariableManager variableManager, DiagramDescription diagramDescription, NodeDescription nodeDescription, List<IDiagramEvent> diagramEvents, String nodeId,
                 Optional<Node> optionalPreviousNode) {
             INodeStyle providedStyle = nodeDescription.getStyleProvider().apply(variableManager);
             return new NodeAppearance(providedStyle, new LinkedHashSet<>());

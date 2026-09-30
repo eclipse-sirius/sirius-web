@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { gql } from '@apollo/client';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
-import gql from 'graphql-tag';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';

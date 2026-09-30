@@ -30,7 +30,7 @@
     "publish:local": "yalc push"
   },
   "peerDependencies": {
-    "@apollo/client": "3.10.4",
+    "@apollo/client": "3.14.1",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-charts": "*",
     "@eclipse-sirius/sirius-components-forms": "*",
@@ -60,7 +60,7 @@
     "react-resizable-panels": "4.11.2"
   },
   "devDependencies": {
-    "@apollo/client": "3.10.4",
+    "@apollo/client": "3.14.1",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-charts": "*",
     "@eclipse-sirius/sirius-components-forms": "*",
