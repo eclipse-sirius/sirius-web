@@ -10,17 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.projects.stylecustomizations.application.services.api;
+package org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api;
 
-import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.StyleCustomizationDTO;
-import org.eclipse.sirius.web.projects.stylecustomizations.application.services.StyleCustomizationDescription;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
- * Used to convert a description of style customization to a DTO.
+ * Used to retrieve project style customizations.
  *
  * @author gcoutable
- * @since v2026.11.0
  */
-public interface IStyleCustomizationMapper {
-    StyleCustomizationDTO toDTO(String projectId, StyleCustomizationDescription styleCustomizationDescription);
+public interface IProjectStyleCustomizationSearchService {
+
+    boolean existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference<Project, String> projectReference, String styleCustomizationDescriptionId);
 }

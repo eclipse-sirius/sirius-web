@@ -67,7 +67,7 @@ public class ProjectStyleCustomizationSearchApplicationService implements IProje
             }
         }
 
-        return window.map(this.styleCustomizationMapper::toDTO);
+        return window.map(styleCustomizationDescription -> this.styleCustomizationMapper.toDTO(projectId, styleCustomizationDescription));
     }
 
     private List<StyleCustomizationDescription> getStyleCustomizationDescriptions(String projectId) {
