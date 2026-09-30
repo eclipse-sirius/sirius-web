@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -27,7 +28,7 @@ test.describe('diagram - make same size', () => {
     await playwrightExplorer.expand('Papaya');
     await playwrightExplorer.expand('Project');
     await playwrightExplorer.expand('Component');
-    await playwrightExplorer.select('Component class diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Component class diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
@@ -91,7 +92,9 @@ test.describe('diagram - make same size', () => {
     await playwrightExplorer.uploadDocument('papayaApplicationConcern.xml');
     await playwrightExplorer.expand('papayaApplicationConcern.xml');
     await playwrightExplorer.expand('Project');
-    await playwrightExplorer.createRepresentation('Application Concern', 'Lifecycle Diagram', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Application Concern', 'Lifecycle Diagram', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {

@@ -13,6 +13,7 @@
 import { expect, test } from '@playwright/test';
 import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -30,7 +31,9 @@ test.describe('diagram - list', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramList.xml');
     await playwrightExplorer.expand('diagramList.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramList - simple list node', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramList - simple list node', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -135,7 +138,9 @@ test.describe('diagram - list', () => {
     const detailsView = new PlaywrightDetails(page);
     await detailsView.setText('Name', 'Test with a very large name that can be wrap');
 
-    await playwrightExplorer.createRepresentation('Root', 'diagramList - multiple growable list nodes', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramList - multiple growable list nodes', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -180,6 +185,10 @@ test.describe('diagram - list', () => {
 test.describe('diagram - list', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
+    await page.addInitScript(() => {
+      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
+      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
+    });
     const project = await new PlaywrightProject(request).createProject('diagram-list', 'papaya-empty');
     projectId = project.projectId;
 
@@ -190,7 +199,9 @@ test.describe('diagram - list', () => {
     await playwrightExplorer.expand('Project');
     await playwrightExplorer.expand('Component');
 
-    await playwrightExplorer.createRepresentation('Component', 'Class Diagram', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Component', 'Class Diagram', 'diagram')
+    );
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
   });
 

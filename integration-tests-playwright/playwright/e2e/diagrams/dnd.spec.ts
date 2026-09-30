@@ -26,7 +26,9 @@ test.describe('diagram - drag and drop', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramDnD.xml');
     await playwrightExplorer.expand('diagramDnD.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramDnD - simple dnd view', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramDnD - simple dnd view', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -204,7 +206,7 @@ test.describe('diagram - drag and drop', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('multiDrops');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
@@ -287,7 +289,9 @@ test.describe('diagram - drag and drop', () => {
 
     const explorer = await new PlaywrightExplorer(page);
     await explorer.expand('Flow');
-    await explorer.createRepresentation('NewSystem', 'Topography with auto layout', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      explorer.createRepresentation('NewSystem', 'Topography with auto layout', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -322,7 +326,7 @@ test.describe('diagram - drag and drop', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('dropCandidate');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');

@@ -14,6 +14,7 @@
 import { expect, test } from '@playwright/test';
 import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -35,7 +36,9 @@ test.describe('diagram - edgeStyle', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramEdgesWithConditionalStyle.xml');
     await playwrightExplorer.expand('diagramEdgesWithConditionalStyle.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram')
+    );
     const playwrightEdge = new PlaywrightEdge(page);
     const color = await playwrightEdge.getEdgeColor();
     await expect(color).toBe('rgb(255, 0, 0)');
@@ -45,7 +48,9 @@ test.describe('diagram - edgeStyle', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramEdgesWithConditionalStyle.xml');
     await playwrightExplorer.expand('diagramEdgesWithConditionalStyle.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram')
+    );
     const playwrightEdge = new PlaywrightEdge(page);
 
     await playwrightExplorer.showIn('TestConditionalEdgeStyle', 'Details');

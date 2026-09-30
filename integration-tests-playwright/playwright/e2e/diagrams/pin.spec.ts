@@ -14,6 +14,7 @@
 import { test, expect } from '@playwright/test';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 
 test.describe('diagram - pin', () => {
@@ -26,7 +27,7 @@ test.describe('diagram - pin', () => {
     const explorer = await new PlaywrightExplorer(page);
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
-    await explorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => explorer.select('Topography'));
   });
 
   test.afterEach(async ({ request }) => {

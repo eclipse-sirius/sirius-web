@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { expect, test } from '@playwright/test';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -48,7 +49,7 @@ test.describe('delete node without delete tool', () => {
     await playwrightExplorer.expand('Papaya');
     await playwrightExplorer.expand('Project');
     await playwrightExplorer.expand('Component');
-    await playwrightExplorer.select('Component class diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Component class diagram'));
 
     await expect(page.getByTestId('rf__wrapper')).toBeVisible();
 

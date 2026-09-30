@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -33,7 +34,9 @@ test.describe('diagram - tool', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
   test('When clicking on a tool with selection dialog, then the dialog is displayed', async ({ page }) => {
-    new PlaywrightExplorer(page).createRepresentation('Component', 'Class Diagram', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      new PlaywrightExplorer(page).createRepresentation('Component', 'Class Diagram', 'diagram')
+    );
     await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 100, y: 100 } });
     await page.getByTestId('Import existing types - Tool').click();
     await expect(page.getByTestId('selection-dialog')).toBeAttached();
@@ -42,7 +45,9 @@ test.describe('diagram - tool', () => {
   test('When a custom quick tool is contribute to a palette, then it should be available in the palette', async ({
     page,
   }) => {
-    new PlaywrightExplorer(page).createRepresentation('Component', 'Component Diagram', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      new PlaywrightExplorer(page).createRepresentation('Component', 'Component Diagram', 'diagram')
+    );
     await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 100, y: 100 } });
     await expect(page.getByTestId('Palette')).toBeAttached();
     await expect(page.getByTestId('coordinates-quickTool')).toBeAttached();
@@ -51,7 +56,9 @@ test.describe('diagram - tool', () => {
   test('When a custom tool is contribute to a palette, then it should be available in the palette', async ({
     page,
   }) => {
-    new PlaywrightExplorer(page).createRepresentation('Component', 'Component Diagram', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      new PlaywrightExplorer(page).createRepresentation('Component', 'Component Diagram', 'diagram')
+    );
     await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 100, y: 100 } });
     await expect(page.getByTestId('Palette')).toBeAttached();
     await expect(page.getByTestId('coordinates-tool')).toBeAttached();
@@ -60,7 +67,9 @@ test.describe('diagram - tool', () => {
   test('When a custom tool is overriding a backend tool from the palette, then it should be available in the palette', async ({
     page,
   }) => {
-    new PlaywrightExplorer(page).createRepresentation('Component', 'Component Diagram', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      new PlaywrightExplorer(page).createRepresentation('Component', 'Component Diagram', 'diagram')
+    );
     await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 100, y: 100 } });
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('Palette').getByTestId('tool-New component').click();
@@ -81,7 +90,9 @@ test.describe('diagram - tool key bindings', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('studioKeyBindings.xml');
     await playwrightExplorer.expand('studioKeyBindings.xml');
-    await playwrightExplorer.createRepresentation('domain', 'Domain', 'Domain Diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('domain', 'Domain', 'Domain Diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -112,7 +123,9 @@ test.describe('diagram - tool key bindings', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('studioKeyBindingsEmpty.xml');
     await playwrightExplorer.expand('studioKeyBindingsEmpty.xml');
-    await playwrightExplorer.createRepresentation('domain', 'Domain', 'Domain Diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('domain', 'Domain', 'Domain Diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {

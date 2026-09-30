@@ -27,7 +27,9 @@ test.describe('diagram - auto-layout', () => {
     await new PlaywrightWorkbench(page).performAction('Robot Flow');
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Robot Flow');
-    await playwrightExplorer.createRepresentation('System', 'Topography with auto layout', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('System', 'Topography with auto layout', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -97,7 +99,7 @@ test.describe('diagram - auto-until-manual', () => {
     const project = await new PlaywrightProject(request).createProject('Studio', 'studio-template');
     projectId = project.projectId;
 
-    await page.goto(`/projects/${projectId}/edit/`);
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => page.goto(`/projects/${projectId}/edit/`));
   });
 
   test.afterEach(async ({ request }) => {
