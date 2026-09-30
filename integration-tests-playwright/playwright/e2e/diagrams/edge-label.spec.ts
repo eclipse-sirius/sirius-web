@@ -13,6 +13,7 @@
 
 import { expect, test } from '@playwright/test';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -23,7 +24,7 @@ test.describe('edge-label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Flow');
     await playwrightExplorer.expand('NewSystem');
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const url = page.url();
     const parts = url.split('/');

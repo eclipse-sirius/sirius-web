@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -27,7 +28,9 @@ test.describe('diagram - arrange all', () => {
     await new PlaywrightWorkbench(page).performAction('Robot Flow');
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Robot Flow');
-    await playwrightExplorer.createRepresentation('System', 'Topography', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('System', 'Topography', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -93,7 +96,7 @@ test.describe('diagram - arrange all', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('arrange-direction');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await page.getByTestId('arrange-all-main-button').click();
@@ -115,7 +118,7 @@ test.describe('diagram - arrange all', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('arrange-fail');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await page.getByTestId('arrange-all-main-button').click();
@@ -127,7 +130,7 @@ test.describe('diagram - arrange all', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('arrange-fail');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await page.getByTestId('arrange-all-menu-toggle').click();
@@ -158,7 +161,7 @@ test.describe('diagram - arrange all', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramParentToChild');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await page.getByTestId('arrange-all-main-button').click();
@@ -172,7 +175,7 @@ test.describe('diagram - arrange all', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramChildToParent');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await page.getByTestId('arrange-all-main-button').click();
@@ -200,7 +203,9 @@ test.describe('diagram - arrange all', () => {
 
   test('when a oblique edge has one bending point, then arrange all removed it', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('ObliqueEdgeWithBendingPoints');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.select('ObliqueEdgeWithBendingPoints')
+    );
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await page.getByTestId('arrange-all-main-button').click();

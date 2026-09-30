@@ -30,7 +30,9 @@ test.describe('diagram - growable list', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramGrowableList.xml');
     await playwrightExplorer.expand('diagramGrowableList.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramList - multiple growable list nodes', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramList - multiple growable list nodes', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -101,7 +103,9 @@ test.describe('diagram - growable list', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramSubNodeList.xml');
     await playwrightExplorer.expand('diagramSubNodeList.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramList - list with subnode', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramList - list with subnode', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
