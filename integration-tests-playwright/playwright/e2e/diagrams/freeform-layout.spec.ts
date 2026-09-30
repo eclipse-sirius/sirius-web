@@ -28,7 +28,9 @@ test.describe('diagram - freeform layout', () => {
     await playwrightExplorer.uploadDocument('papayaApplicationConcern.xml');
     await playwrightExplorer.expand('papayaApplicationConcern.xml');
     await playwrightExplorer.expand('Project');
-    await playwrightExplorer.createRepresentation('Application Concern', 'Lifecycle Diagram', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Application Concern', 'Lifecycle Diagram', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -67,7 +69,9 @@ test.describe('diagram - freeform layout', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramNode.xml');
     await playwrightExplorer.expand('diagramNode.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramNode - node', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramNode - node', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -103,7 +107,9 @@ test.describe('diagram - freeform layout', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramFreeFormWithOneChild.xml');
     await playwrightExplorer.expand('diagramFreeFormWithOneChild.xml');
-    await playwrightExplorer.createRepresentation('System', 'Topography', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('System', 'Topography', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {

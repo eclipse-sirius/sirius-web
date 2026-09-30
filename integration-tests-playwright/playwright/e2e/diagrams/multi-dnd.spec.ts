@@ -49,7 +49,9 @@ test.describe('diagram - drag and drop of multiple elements', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramMultiDnD.xml');
     await playwrightExplorer.expand('diagramMultiDnD.xml');
-    await playwrightExplorer.createRepresentation('fixture', 'Domain', 'fixture domain diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('fixture', 'Domain', 'fixture domain diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -244,7 +246,7 @@ test.describe('diagram - drag and drop of multiple elements', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('dropCandidate');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');

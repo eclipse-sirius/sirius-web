@@ -13,6 +13,7 @@
 import { test, expect } from '@playwright/test';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 
 test.describe('diagram - layout tool', () => {
@@ -34,7 +35,7 @@ test.describe('diagram - layout tool', () => {
 
   test('when an align left tool is trigger, then all nodes shared the same left coordinate', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const node1 = new PlaywrightNode(page, 'CompositeProcessor1');
@@ -74,7 +75,7 @@ test.describe('diagram - layout tool', () => {
 
   test('when an align right tool is trigger, then all nodes shared the same right coordinate', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const node1 = new PlaywrightNode(page, 'CompositeProcessor1');
@@ -117,7 +118,7 @@ test.describe('diagram - layout tool', () => {
 
   test('when an align top tool is trigger, then all nodes shared the same top coordinate', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const node1 = new PlaywrightNode(page, 'CompositeProcessor1');
@@ -157,7 +158,7 @@ test.describe('diagram - layout tool', () => {
 
   test('when an align bottom tool is trigger, then all nodes shared the same bottom coordinate', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const node1 = new PlaywrightNode(page, 'CompositeProcessor1');
@@ -200,7 +201,7 @@ test.describe('diagram - layout tool', () => {
 
   test('when an arrange in column tool is trigger, then all nodes are placed in the same column', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const node1 = new PlaywrightNode(page, 'CompositeProcessor1');
@@ -239,7 +240,7 @@ test.describe('diagram - layout tool', () => {
 
   test('when an arrange in row tool is trigger, then all nodes are placed in the same row', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const node1 = new PlaywrightNode(page, 'CompositeProcessor1');

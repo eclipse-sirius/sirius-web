@@ -24,6 +24,21 @@ const extractPoints = (path: string) => {
 };
 
 export const edgeExpect = expect.extend({
+  async toHaveBendPointCount(received: string | null, expected: number) {
+    const assertionName = 'toHaveBendPointCount';
+    const points = received ? extractPoints(received) : [];
+    const actual = points.length >= 2 ? points.length - 2 : null;
+    return {
+      message: () =>
+        `Expected ${assertionName} to match ${expected} bend points but received ${
+          actual ?? 'an invalid path'
+        } for path ${received}`,
+      pass: actual !== null && actual === expected,
+      name: assertionName,
+      expected,
+      actual,
+    };
+  },
   async toHaveSamePath(received: string | null, expected: string | null, options?: { errorMargin?: number }) {
     const assertionName = 'toHaveSamePath';
     let pass = false;

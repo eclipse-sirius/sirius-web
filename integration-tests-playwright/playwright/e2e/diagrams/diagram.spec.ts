@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -31,7 +32,7 @@ test.describe('diagram', () => {
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
     const representationItem = await explorer.getTreeItemLabel('Topography');
-    representationItem.click();
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => representationItem.click());
   });
 
   test.afterEach(async ({ request }) => {
@@ -76,7 +77,9 @@ test.describe('diagram', () => {
     const explorer = await new PlaywrightExplorer(page);
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
-    await explorer.createRepresentation('NewSystem', 'Topography unsynchronized', 'Topography2');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      explorer.createRepresentation('NewSystem', 'Topography unsynchronized', 'Topography2')
+    );
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await expect(page.getByTestId('hide-mini-map')).toBeAttached();
@@ -106,7 +109,9 @@ test.describe('diagram', () => {
     await playwrightExplorer.expand('Project');
     await playwrightExplorer.expand('Component');
 
-    await playwrightExplorer.createRepresentation('Component', 'Class Diagram', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Component', 'Class Diagram', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -165,7 +170,9 @@ test.describe('diagram', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramNode.xml');
     await playwrightExplorer.expand('diagramNode.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramNode - node', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramNode - node', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {

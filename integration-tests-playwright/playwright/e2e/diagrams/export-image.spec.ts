@@ -14,6 +14,7 @@
 import { test, expect } from '@playwright/test';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 import { PlaywrightWorkbench } from '../../helpers/PlaywrightWorkbench';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 
 test.describe('diagram - export image', () => {
@@ -26,7 +27,9 @@ test.describe('diagram - export image', () => {
     await new PlaywrightWorkbench(page).performAction('Robot Flow');
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Robot Flow');
-    await playwrightExplorer.createRepresentation('System', 'Topography', 'topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('System', 'Topography', 'topography')
+    );
   });
 
   test.afterEach(async ({ request }) => {

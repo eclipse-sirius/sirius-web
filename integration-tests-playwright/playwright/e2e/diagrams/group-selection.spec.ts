@@ -24,7 +24,7 @@ test.describe('diagram - group selection', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Others...');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagramResize diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagramResize diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const url = page.url();
     const parts = url.split('/');

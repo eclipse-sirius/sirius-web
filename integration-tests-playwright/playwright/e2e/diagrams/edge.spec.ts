@@ -25,7 +25,7 @@ test.describe('edge', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Flow');
     await playwrightExplorer.expand('NewSystem');
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     await new PlaywrightNode(page, 'DataSource1').waitForAnimationToFinish();
     const url = page.url();
@@ -122,7 +122,9 @@ test.describe('edge', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Flow');
     await playwrightExplorer.expand('NewSystem');
-    await playwrightExplorer.select('TopographyWithCustomHandle');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.select('TopographyWithCustomHandle')
+    );
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     await new PlaywrightNode(page, 'DataSource1').waitForAnimationToFinish();
     await new PlaywrightDiagram(page).hideDebugPanel();
@@ -181,7 +183,7 @@ test.describe('edge', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Flow');
     await playwrightExplorer.expand('NewSystem');
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
@@ -214,10 +216,15 @@ test.describe('edge', () => {
 test.describe('edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProject('edge', 'blank-project');
-    projectId = project.projectId;
-
-    await page.goto(`/projects/${projectId}/edit`);
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgePathReset.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('edgePathReset');
+    await playwrightExplorer.expand('Root');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
   });
 
   test.afterEach(async ({ request }) => {
@@ -225,39 +232,16 @@ test.describe('edge', () => {
   });
 
   test('when a node overlap a bend point, then the edge path is reset', async ({ page }) => {
-    const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.uploadDocument('diagramSimpleEdge.xml');
-    await playwrightExplorer.expand('diagramSimpleEdge.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram');
+    const edge = new PlaywrightEdge(page);
+    await edge.click();
+    await edge.isSelected();
+    await edgeExpect(await edge.getEdgePath()).toHaveBendPointCount(4);
 
-    const playwrightNode = new PlaywrightNode(page, 'Entity2');
-    await playwrightNode.click();
-    await playwrightNode.move({ x: 250, y: 200 });
+    const entity2Node = new PlaywrightNode(page, 'Entity2');
+    await entity2Node.click();
+    await entity2Node.move({ x: -75, y: 25 });
 
-    const playwrightEdge = new PlaywrightEdge(page);
-    await playwrightEdge.click();
-    await playwrightEdge.isSelected();
-
-    const firstBendingPoint = page.locator(`[data-testid="bend-point-0"]`).first();
-    const firstBendingPointBox = (await firstBendingPoint.boundingBox())!;
-    await firstBendingPoint.hover({ force: true });
-    await page.mouse.down();
-    await page.mouse.move(firstBendingPointBox.x + 50, firstBendingPointBox.y + 50, { steps: 2 });
-    await page.mouse.up();
-
-    const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
-    const lastBendingPointBox = (await lastBendingPoint.boundingBox())!;
-    await lastBendingPoint.hover({ force: true });
-    await page.mouse.down();
-    await page.mouse.move(lastBendingPointBox.x + 100, lastBendingPointBox.y + 50, { steps: 2 });
-    await page.mouse.up();
-
-    await playwrightNode.click();
-    await playwrightNode.move({ x: -75, y: 25 });
-
-    await playwrightEdge.openPalette();
-    await expect(page.getByTestId('Reset-path')).not.toBeAttached();
-    await playwrightEdge.closePalette();
+    await edgeExpect.poll(() => edge.getEdgePath()).toHaveBendPointCount(2);
   });
 });
 
@@ -268,7 +252,9 @@ test.describe('edge', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Others...');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagramEdgeOnBorderNode diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.select('diagramEdgeOnBorderNode diagram')
+    );
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
@@ -323,7 +309,7 @@ test.describe('edge', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('CrossFadeTunnels');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagramEdges diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagramEdges diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
@@ -393,7 +379,9 @@ test.describe('edge', () => {
     page,
   }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('ManhattanEdgeWithBendingPoints');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.select('ManhattanEdgeWithBendingPoints')
+    );
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const playwrightEdge = new PlaywrightEdge(page);
@@ -415,7 +403,9 @@ test.describe('edge', () => {
 
   test('when a oblique edge has one bending point, then path is composed of two lines', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('ObliqueEdgeWithBendingPoints');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.select('ObliqueEdgeWithBendingPoints')
+    );
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await page.waitForFunction(
@@ -438,7 +428,9 @@ test.describe('edge', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramEdgeOnIconLabel.xml');
     await playwrightExplorer.expand('diagramEdgeOnIconLabel.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramEdgeIconLabel - simple edge icon label', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramEdgeIconLabel - simple edge icon label', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -474,7 +466,7 @@ test.describe('edge', () => {
     page,
   }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const playwrightEdge1 = new PlaywrightEdge(page, 0);
@@ -525,7 +517,7 @@ test.describe('edge', () => {
 
   test('when edges source and target are closed, then edges path are aligned', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('diagramWithAutoAlignment');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagramWithAutoAlignment'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const edge1 = new PlaywrightEdge(page);
@@ -546,7 +538,7 @@ test.describe('edge', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Domain');
     await playwrightExplorer.expand('elgamal');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');

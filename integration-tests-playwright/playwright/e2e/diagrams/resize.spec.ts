@@ -32,7 +32,7 @@ test.describe('diagram - resize', () => {
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
     const representationItem = await explorer.getTreeItemLabel('Topography');
-    representationItem.click();
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => representationItem.click());
   });
 
   test.afterEach(async ({ request }) => {
@@ -63,7 +63,9 @@ test.describe('diagram - resize smaller than default', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramResizableSmallerThanDefaultWidth.xml');
     await playwrightExplorer.expand('diagramResizableSmallerThanDefaultWidth.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramResize - simple resize node', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramResize - simple resize node', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -115,7 +117,9 @@ test.describe('diagram - multi-resize', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramMultiResize.xml');
     await playwrightExplorer.expand('diagramMultiResize.xml');
-    await playwrightExplorer.createRepresentation('NewSystem', 'Topography', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('NewSystem', 'Topography', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -130,14 +134,12 @@ test.describe('diagram - multi-resize', () => {
 
     await compositeProcessor1.click();
     await compositeProcessor2.controlClick();
+    expect(await compositeProcessor1.isNotLastOneSelected());
+    expect(await compositeProcessor2.isLastOneSelected());
 
     const cp1Before = await compositeProcessor1.getReactFlowSize('CompositeProcessor1', false);
 
-    // Hide Node Panel Info to avoid overlap in diagram
-    const panel = page.locator('.react-flow__panel.bottom.left');
-    await panel.evaluate((node) => {
-      node.style.visibility = 'hidden';
-    });
+    await new PlaywrightDiagram(page).hideDebugPanel();
 
     await compositeProcessor1.resize({ height: 50, width: 50 });
 
@@ -230,10 +232,12 @@ test.describe('diagram - resize', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramResizeWithSameSemanticElement.xml');
     await playwrightExplorer.expand('diagramResizeWithSameSemanticElement.xml');
-    await playwrightExplorer.createRepresentation(
-      'Root',
-      'diagramResize - resize node with same semantic element',
-      'diagram'
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation(
+        'Root',
+        'diagramResize - resize node with same semantic element',
+        'diagram'
+      )
     );
   });
 
@@ -280,7 +284,7 @@ test.describe('diagram - resize', () => {
     page,
   }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await page.getByTestId('hide-mini-map').click();
@@ -322,7 +326,7 @@ test.describe('diagram - resize', () => {
       page,
     }) => {
       const playwrightExplorer = new PlaywrightExplorer(page);
-      await playwrightExplorer.select('Topography');
+      await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
       await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
       await page.getByTestId('hide-mini-map').click();
@@ -356,7 +360,7 @@ test.describe('diagram - resize', () => {
       page,
     }) => {
       const playwrightExplorer = new PlaywrightExplorer(page);
-      await playwrightExplorer.select('Topography');
+      await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
       await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
       await page.getByTestId('hide-mini-map').click();
@@ -417,7 +421,7 @@ test.describe('diagram - resize', () => {
 
   test(`when resizing a child node from its left side, then it moves within its parent node`, async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const childNode = new PlaywrightNode(page, 'Child');
