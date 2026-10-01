@@ -84,6 +84,8 @@ Consumers that still need a node index can use `nodes.findIndex((node) => node.i
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Reduce the dependency of the project images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-images-infrastructure`, for its internationalization support.
 - https://github.com/eclipse-sirius/sirius-web/issues/6931[#6931] Remove `connectorTools` field from GraphQL type `DiagramDescription` and related DTO, use `connectorPalette` instead, `IConnectorToolsProvider` & `GetConnectorToolsEventHandler` have been removed too.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Reduce the dependency of the project semantic data bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-semanticdata-infrastructure`, for its internationalization support.
+- https://github.com/eclipse-sirius/sirius-web/issues/7021[#7021] [view] `IVariableProvider` now return `record VariableUsage(Variable variable, boolean optional)`, optional variable are ignored during validation and annotated as optional during the generation of the javadoc of view builders.
+The AQL variables `selectedNode` is now only available if the targeted element is a `node`, and `selectedEdge` if the target element is an `edge`
 
 
 === Dependency update
@@ -154,6 +156,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - [starters] Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
 - https://github.com/eclipse-sirius/sirius-web/issues/6957[#6957] [diagram] Add translations support to manage selection diagram toolbar tool
 - https://github.com/eclipse-sirius/sirius-web/issues/6808[#6808] [diagram] Invoke manage selection diagram panel tool from the backend
+- https://github.com/eclipse-sirius/sirius-web/issues/7021[#7021] [view] `IVariableProvider` now return `record VariableUsage(Variable variable, boolean optional)`, optional variable are ignored during validation and annotated as optional during the generation of the javadoc of view builders.
 
 
 

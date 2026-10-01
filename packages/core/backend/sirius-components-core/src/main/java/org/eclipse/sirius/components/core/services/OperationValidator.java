@@ -21,6 +21,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.core.api.variables.IVariableProvider;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.Variable;
+import org.eclipse.sirius.components.representations.VariableUsage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -46,10 +47,11 @@ public class OperationValidator implements IOperationValidator {
         var expectedVariables = this.variableProviders.stream()
                 .map(variableProvider -> variableProvider.getVariables(operationName))
                 .flatMap(List::stream)
+                .filter(variableUsage -> !variableUsage.optional())
+                .map(VariableUsage::variable)
                 .toList();
 
-        variables.entrySet().stream()
-                .forEach(entry -> this.validate(operationName, expectedVariables, entry.getKey(), entry.getValue()));
+        variables.forEach((key, value) -> this.validate(operationName, expectedVariables, key, value));
     }
 
     private void validate(String operationName, List<Variable> expectedVariables, String variableName, Object value) {

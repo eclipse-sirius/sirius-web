@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,21 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.core.api.variables;
-
-import java.util.List;
-
-import org.eclipse.sirius.components.representations.VariableUsage;
+package org.eclipse.sirius.components.representations;
 
 /**
- * Used to provide the list of variables accessible for an operation.
+ * The description usage of a variable which can be used by various operations.
  *
- * @author sbegaudeau
+ * @param variable The variable
+ * @param optional Is the variable optional
+ *
+ * @author mcharfadi
  */
-public interface IVariableProvider {
-    List<VariableUsage> getVariables(String operation);
+public record VariableUsage(Variable variable, boolean optional) {
 
-    default List<VariableUsage> noVariables() {
-        return List.of();
+    public VariableUsage(Variable variable) {
+        this(variable, false);
     }
+
 }

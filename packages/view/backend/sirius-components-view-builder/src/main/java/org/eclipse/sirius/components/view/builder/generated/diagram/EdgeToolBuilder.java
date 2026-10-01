@@ -54,6 +54,10 @@ public class EdgeToolBuilder {
     /**
      * Setter for PreconditionExpression.
      *
+     * Used to execute a tool or to retrieve a tool from the palette of the diagram.
+     * Depending on the selection some variables are not available.
+     * For example on a node the variable "selectedNode" will be available while on an edge the variables "selectedEdge", "edgeSource", "edgeTarget", "semanticEdgeSource", "semanticEdgeTarget" will be available.
+     *
      * <p>Available variables:</p>
      * <ul>
      *   <li>{@code self: Object} - The current element on which the operation is performed</li>

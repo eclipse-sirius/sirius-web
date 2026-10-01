@@ -70,14 +70,11 @@ public class ConnectorPaletteVariableManagerProvider implements IConnectorPalett
             variableManager.put(DiagramVariables.EDGE_SOURCE.name(), sourceDiagramElement);
             variableManager.put(DiagramVariables.EDGE_TARGET.name(), targetDiagramElement);
 
-            variableManager.put(DiagramVariables.SELECTED_NODE.name(), Optional.ofNullable(sourceDiagramElement)
-                    .filter(Node.class::isInstance)
-                    .map(Node.class::cast)
-                    .orElse(null));
-            variableManager.put(DiagramVariables.SELECTED_EDGE.name(), Optional.ofNullable(sourceDiagramElement)
-                    .filter(Edge.class::isInstance)
-                    .map(Edge.class::cast)
-                    .orElse(null));
+            if (sourceDiagramElement instanceof Node) {
+                variableManager.put(DiagramVariables.SELECTED_NODE.name(), sourceDiagramElement);
+            } else if (sourceDiagramElement instanceof Edge) {
+                variableManager.put(DiagramVariables.SELECTED_EDGE.name(), sourceDiagramElement);
+            }
 
             this.getViewDiagramConversionData(editingContext, diagramContext.diagram().getDescriptionId())
                     .ifPresent(viewDiagramConversionData -> variableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, viewDiagramConversionData.convertedNodes()));

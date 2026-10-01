@@ -74,17 +74,18 @@ public class SingleClickOnOneDiagramElementVariableManagerProvider implements IS
         if (optionalSelf.isPresent()) {
             var self = optionalSelf.get();
 
-            var optionalNode = optionalDiagramElement.filter(Node.class::isInstance).map(Node.class::cast);
-            var optionalEdge = optionalDiagramElement.filter(Edge.class::isInstance).map(Edge.class::cast);
-
             VariableManager variableManager = new VariableManager();
             variableManager.put(RepresentationVariables.SELF.name(), self);
             variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(CoreVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
             variableManager.put(DiagramVariables.DIAGRAM_CONTEXT.name(), diagramContext);
             variableManager.put(DiagramVariables.DIAGRAM_SERVICES.name(), new DiagramService(diagramContext));
-            variableManager.put(DiagramVariables.SELECTED_NODE.name(), optionalNode.orElse(null));
-            variableManager.put(DiagramVariables.SELECTED_EDGE.name(), optionalEdge.orElse(null));
+
+            if (optionalDiagramElement.isPresent() && optionalDiagramElement.get() instanceof Node node) {
+                variableManager.put(DiagramVariables.SELECTED_NODE.name(), node);
+            } else if (optionalDiagramElement.isPresent() && optionalDiagramElement.get() instanceof Edge edge) {
+                variableManager.put(DiagramVariables.SELECTED_EDGE.name(), edge);
+            }
 
             this.getViewDiagramConversionData(editingContext, diagramContext.diagram().getDescriptionId()).ifPresent(viewDiagramConversionData -> variableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, viewDiagramConversionData.convertedNodes()));
 
