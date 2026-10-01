@@ -120,6 +120,8 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
       </div>
       <div data-testid={widget.label}>
         <MarkdownRenderer
+          key={widget.id}
+          plainTextByDefault={widget.plainTextByDefault}
           value={widget.stringValue}
           placeholder={widget.label}
           onBlur={onBlur}

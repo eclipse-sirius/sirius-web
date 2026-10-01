@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,6 +86,9 @@ public class FormWithRichTextDescriptionProvider implements IEditingContextProce
         return textfieldFormView;
     }
 
+    /**
+     * Creates a form whose initial text mode and editability depend on the semantic name.
+     */
     private FormDescription createFormDescription() {
         var editRichText = new ChangeContextBuilder()
                 .expression("aql:self")
@@ -103,6 +106,7 @@ public class FormWithRichTextDescriptionProvider implements IEditingContextProce
                 .helpExpression("The name of the object")
                 .isEnabledExpression("aql:self.name.size() <> 4")
                 .valueExpression("aql:self.name")
+                .plainTextByDefaultExpression("aql:self.name.size() > 4")
                 .body(editRichText)
                 .build();
 

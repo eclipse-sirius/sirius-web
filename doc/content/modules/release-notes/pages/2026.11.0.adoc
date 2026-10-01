@@ -98,6 +98,11 @@ Implement `INodeStyleCustomizer` to customize node styles.
 Each customizer determines which nodes it applies to.
 All applicable customizers are applied, but their order is unspecified.
 If multiple customizers modify the same style property, the last one wins.
+* The _RichTextEditor_ widget now supports switching between rendered Markdown and plain-text editing of its raw Markdown source.
+Specifiers can choose the initial mode with an AQL expression; Markdown remains the default.
+Switching preserves unsaved edits and the exact source when no edits are made, and is also available on read-only widgets.
+The selected mode is retained while the widget is open, including during value refreshes.
+See xref:studio-maker-guide:features/form-description.adoc#rich-text-widget[Rich text widget] for configuration and behavior.
 
 
 == Improvements
