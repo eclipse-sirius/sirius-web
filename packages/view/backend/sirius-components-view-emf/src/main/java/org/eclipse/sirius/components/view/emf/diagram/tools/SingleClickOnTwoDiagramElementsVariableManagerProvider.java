@@ -71,6 +71,8 @@ public class SingleClickOnTwoDiagramElementsVariableManagerProvider implements I
         var optionalSemanticEdgeTarget = optionalTargetDiagramElement.flatMap(diagramElement -> this.getSemanticElement(editingContext, diagramElement));
 
         if (optionalSourceDiagramElement.isPresent() && optionalTargetDiagramElement.isPresent() && optionalSemanticEdgeSource.isPresent() && optionalSemanticEdgeTarget.isPresent()) {
+            var sourceDiagramElement = optionalSourceDiagramElement.get();
+
             VariableManager variableManager = new VariableManager();
             variableManager.put(RepresentationVariables.SELF.name(), optionalSemanticEdgeSource.get());
             variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
@@ -79,17 +81,15 @@ public class SingleClickOnTwoDiagramElementsVariableManagerProvider implements I
             variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
             variableManager.put(DiagramVariables.SEMANTIC_EDGE_SOURCE.name(), optionalSemanticEdgeSource.get());
             variableManager.put(DiagramVariables.SEMANTIC_EDGE_TARGET.name(), optionalSemanticEdgeTarget.get());
-            variableManager.put(DiagramVariables.EDGE_SOURCE.name(), optionalSourceDiagramElement.get());
+            variableManager.put(DiagramVariables.EDGE_SOURCE.name(), sourceDiagramElement);
             variableManager.put(DiagramVariables.EDGE_TARGET.name(), optionalTargetDiagramElement.get());
 
-            variableManager.put(DiagramVariables.SELECTED_NODE.name(), optionalSourceDiagramElement
-                    .filter(Node.class::isInstance)
-                    .map(Node.class::cast)
-                    .orElse(null));
-            variableManager.put(DiagramVariables.SELECTED_EDGE.name(), optionalTargetDiagramElement
-                    .filter(Edge.class::isInstance)
-                    .map(Edge.class::cast)
-                    .orElse(null));
+
+            if (sourceDiagramElement instanceof Node) {
+                variableManager.put(DiagramVariables.SELECTED_NODE.name(), sourceDiagramElement);
+            } else if (sourceDiagramElement instanceof Edge) {
+                variableManager.put(DiagramVariables.SELECTED_EDGE.name(), sourceDiagramElement);
+            }
 
             this.getViewDiagramConversionData(editingContext, diagramContext.diagram().getDescriptionId()).ifPresent(viewDiagramConversionData -> variableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, viewDiagramConversionData.convertedNodes()));
 

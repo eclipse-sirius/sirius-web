@@ -43,7 +43,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVariableProvider;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.api.variables.IVariableProvider;
-import org.eclipse.sirius.components.representations.Variable;
+import org.eclipse.sirius.components.representations.VariableUsage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -416,12 +416,8 @@ public class BuilderGenerator {
 
     private String getDocumentation(GenClass clazz, GenFeature feat) {
         StringBuilder documentation = new StringBuilder();
-        String featureDocumentation = feat.getDocumentation();
-        if (feat.getDocumentation() != null && !featureDocumentation.isBlank()) {
-            documentation.append(" ").append(feat.getDocumentation());
-        }
-
         EAnnotation operationAnnotation = feat.getEcoreFeature().getEAnnotation(OPERATION_ANNOTATION_SOURCE);
+
         if (operationAnnotation != null) {
             String operationId = operationAnnotation.getDetails().get("operation_id");
             if (operationId != null && !operationId.isBlank()) {
@@ -431,26 +427,23 @@ public class BuilderGenerator {
                 );
 
                 String operation = clazz.getName() + "#" + operationId;
-                List<Variable> variables = variableProviders.stream()
+                List<VariableUsage> variablesUsage = variableProviders.stream()
                         .map(variableProvider -> variableProvider.getVariables(operation))
                         .flatMap(Collection::stream)
                         .toList();
 
-                if (!variables.isEmpty()) {
-                    if (!documentation.isEmpty()) {
-                        documentation.append("\n     *");
-                    }
-
+                if (!variablesUsage.isEmpty()) {
+                    documentation.append(this.getGenModelFeatureDocumentation(feat.getDocumentation()));
                     documentation.append("\n     * <p>Available variables:</p>");
                     documentation.append("\n     * <ul>");
 
-                    variables.forEach(variable ->
+                    variablesUsage.forEach(variableUsage ->
                             documentation.append("\n     *   <li>{@code ")
-                                    .append(variable.name())
+                                    .append(variableUsage.variable().name())
                                     .append(": ")
-                                    .append(this.getVariableType(variable))
+                                    .append(this.getVariableType(variableUsage))
                                     .append("} - ")
-                                    .append(variable.documentation())
+                                    .append(this.getVariableDocumentation(variableUsage))
                                     .append("</li>"));
 
                     documentation.append("\n     * </ul>");
@@ -461,12 +454,37 @@ public class BuilderGenerator {
         return documentation.toString();
     }
 
-    private String getVariableType(Variable variable) {
-        String typeName = variable.type().getSimpleName();
-        if (variable.isMany()) {
+    private String getGenModelFeatureDocumentation(String featureDocumentation) {
+        StringBuilder documentation = new StringBuilder();
+        if (featureDocumentation != null && !featureDocumentation.isBlank()) {
+            var lines = featureDocumentation.lines().toList();
+            if (lines.size() == 1) {
+                documentation.append(" ").append(lines.get(0));
+            } else {
+                documentation.append("\n     * ").append(String.join("\n     * ", lines));
+            }
+        }
+
+        if (!documentation.isEmpty()) {
+            documentation.append("\n     *");
+        }
+        return documentation.toString();
+    }
+
+    private String getVariableType(VariableUsage variableUsage) {
+        String typeName = variableUsage.variable().type().getSimpleName();
+        if (variableUsage.variable().isMany()) {
             return "List<" + typeName + ">";
         }
         return typeName;
+    }
+
+    private String getVariableDocumentation(VariableUsage variableUsage) {
+        if (variableUsage.optional()) {
+            return variableUsage.variable().documentation() + " (optional)";
+        } else {
+            return variableUsage.variable().documentation();
+        }
     }
 
     private void generateOrMerge(JControlModel jControlModel, String outDirectory, String fileName, String contentToGenerate) throws IOException {

@@ -32,11 +32,12 @@ import static org.eclipse.sirius.components.diagrams.variables.DiagramRenderingO
 import static org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations.NODE_DESCRIPTION_SEMANTIC_CANDIDATES;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.core.api.variables.IVariableProvider;
 import org.eclipse.sirius.components.representations.RepresentationVariables;
-import org.eclipse.sirius.components.representations.Variable;
+import org.eclipse.sirius.components.representations.VariableUsage;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,7 +49,7 @@ import org.springframework.stereotype.Service;
 public class DiagramVariableProvider implements IVariableProvider {
 
     @Override
-    public List<Variable> getVariables(String operation) {
+    public List<VariableUsage> getVariables(String operation) {
         return switch (operation) {
             case NODE_DESCRIPTION_SEMANTIC_CANDIDATES -> this.nodeSemanticCandidates();
             case NODE_DESCRIPTION_PRECONDITION -> this.nodePrecondition();
@@ -68,59 +69,76 @@ public class DiagramVariableProvider implements IVariableProvider {
         };
     }
 
-    private List<Variable> nodeSemanticCandidates() {
-        return List.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, DiagramVariables.SEMANTIC_ELEMENT_IDS, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+    private List<VariableUsage> nodeSemanticCandidates() {
+        return Stream.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, DiagramVariables.SEMANTIC_ELEMENT_IDS, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> nodePrecondition() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+    private List<VariableUsage> nodePrecondition() {
+        return Stream.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> nodeLabel() {
-        return List.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+    private List<VariableUsage> nodeLabel() {
+        return Stream.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> nodeWidthAndHeight() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+    private List<VariableUsage> nodeWidthAndHeight() {
+        return Stream.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> edgeSemanticCandidates() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT);
+    private List<VariableUsage> edgeSemanticCandidates() {
+        return Stream.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> edgeSourceAndTargetNodes() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT);
+    private List<VariableUsage> edgeSourceAndTargetNodes() {
+        return Stream.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> edgePrecondition() {
-        return List.of(RepresentationVariables.SELF, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.GRAPHICAL_EDGE_SOURCE, DiagramVariables.GRAPHICAL_EDGE_TARGET, CoreVariables.EDITING_CONTEXT, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.CACHE, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT);
+    private List<VariableUsage> edgePrecondition() {
+        return Stream.of(RepresentationVariables.SELF, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.GRAPHICAL_EDGE_SOURCE, DiagramVariables.GRAPHICAL_EDGE_TARGET, CoreVariables.EDITING_CONTEXT, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.CACHE, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> edgeLabels() {
-        return List.of(RepresentationVariables.SELF, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.GRAPHICAL_EDGE_SOURCE, DiagramVariables.GRAPHICAL_EDGE_TARGET, CoreVariables.EDITING_CONTEXT, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.CACHE, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT);
+    private List<VariableUsage> edgeLabels() {
+        return Stream.of(RepresentationVariables.SELF, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.GRAPHICAL_EDGE_SOURCE, DiagramVariables.GRAPHICAL_EDGE_TARGET, CoreVariables.EDITING_CONTEXT, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.CACHE, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> diagramDropNodes() {
-        return List.of(CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DROPPED_ELEMENTS, DiagramVariables.DROPPED_NODES, DiagramVariables.DROPPED_ELEMENT, DiagramVariables.DROPPED_NODE, DiagramVariables.TARGET_ELEMENT, DiagramVariables.TARGET_NODE);
+    private List<VariableUsage> diagramDropNodes() {
+        return Stream.of(CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DROPPED_ELEMENTS, DiagramVariables.DROPPED_NODES, DiagramVariables.DROPPED_ELEMENT, DiagramVariables.DROPPED_NODE, DiagramVariables.TARGET_ELEMENT, DiagramVariables.TARGET_NODE)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> singleClickTool() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODE, DiagramVariables.SELECTED_EDGE);
+    private List<VariableUsage> singleClickTool() {
+        var requiredVariables = Stream.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES)
+                .map(VariableUsage::new);
+        var optionalVariables = Stream.of(DiagramVariables.SELECTED_NODE, DiagramVariables.SELECTED_EDGE)
+                .map(variable -> new VariableUsage(variable, true));
+        return Stream.concat(requiredVariables, optionalVariables).toList();
     }
 
-    private List<Variable> groupTool() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODES, DiagramVariables.SELECTED_EDGES);
+    private List<VariableUsage> groupTool() {
+        return Stream.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODES, DiagramVariables.SELECTED_EDGES)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> nodeDrop() {
-        return List.of(CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.DROPPED_ELEMENTS, DiagramVariables.DROPPED_NODES, DiagramVariables.DROPPED_ELEMENT, DiagramVariables.DROPPED_NODE, DiagramVariables.TARGET_ELEMENT, DiagramVariables.TARGET_NODE);
+    private List<VariableUsage> nodeDrop() {
+        return Stream.of(CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.DROPPED_ELEMENTS, DiagramVariables.DROPPED_NODES, DiagramVariables.DROPPED_ELEMENT, DiagramVariables.DROPPED_NODE, DiagramVariables.TARGET_ELEMENT, DiagramVariables.TARGET_NODE)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> objectDrop() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODE);
+    private List<VariableUsage> objectDrop() {
+        return Stream.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODE)
+                .map(VariableUsage::new).toList();
     }
 
-    private List<Variable> edgeTool() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.EDGE_SOURCE, DiagramVariables.EDGE_TARGET, DiagramVariables.SELECTED_NODE, DiagramVariables.SELECTED_EDGE);
+    private List<VariableUsage> edgeTool() {
+        return Stream.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.EDGE_SOURCE, DiagramVariables.EDGE_TARGET, DiagramVariables.SELECTED_NODE, DiagramVariables.SELECTED_EDGE)
+                .map(VariableUsage::new).toList();
     }
 }

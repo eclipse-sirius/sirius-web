@@ -54,6 +54,10 @@ public class NodeToolBuilder {
     /**
      * Setter for PreconditionExpression.
      *
+     * Used to execute a tool or to retrieve a tool from the palette of the diagram.
+     * Depending on the selection some variables are not available.
+     * For example on a node the variable "selectedNode" will be available while on an edge the variables "selectedEdge", "edgeSource", "edgeTarget", "semanticEdgeSource", "semanticEdgeTarget" will be available.
+     *
      * <p>Available variables:</p>
      * <ul>
      *   <li>{@code self: Object} - The current element on which the operation is performed</li>
@@ -61,8 +65,8 @@ public class NodeToolBuilder {
      *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
      *   <li>{@code diagramContext: DiagramContext} - Used to retrieve the diagram context which contains the diagram, the view creation and deletion requests and the diagram events</li>
      *   <li>{@code diagramServices: IDiagramService} - Used to access generic diagram services</li>
-     *   <li>{@code selectedNode: Node} - The node on which the tool is being executed</li>
-     *   <li>{@code selectedEdge: Edge} - The edge on which the tool is being executed</li>
+     *   <li>{@code selectedNode: Node} - The node on which the tool is being executed (optional)</li>
+     *   <li>{@code selectedEdge: Edge} - The edge on which the tool is being executed (optional)</li>
      * </ul>
      *
      * @generated
@@ -81,8 +85,8 @@ public class NodeToolBuilder {
      *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
      *   <li>{@code diagramContext: DiagramContext} - Used to retrieve the diagram context which contains the diagram, the view creation and deletion requests and the diagram events</li>
      *   <li>{@code diagramServices: IDiagramService} - Used to access generic diagram services</li>
-     *   <li>{@code selectedNode: Node} - The node on which the tool is being executed</li>
-     *   <li>{@code selectedEdge: Edge} - The edge on which the tool is being executed</li>
+     *   <li>{@code selectedNode: Node} - The node on which the tool is being executed (optional)</li>
+     *   <li>{@code selectedEdge: Edge} - The edge on which the tool is being executed (optional)</li>
      * </ul>
      *
      * @generated

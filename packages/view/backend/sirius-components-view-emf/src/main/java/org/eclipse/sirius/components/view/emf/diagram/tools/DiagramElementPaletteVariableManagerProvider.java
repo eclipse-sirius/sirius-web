@@ -57,19 +57,16 @@ public class DiagramElementPaletteVariableManagerProvider implements IDiagramEle
         variableManager.put(DiagramVariables.DIAGRAM_CONTEXT.name(), diagramContext);
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
 
-        variableManager.put(DiagramVariables.SELECTED_NODE.name(), Optional.ofNullable(diagramElement)
-                .filter(Node.class::isInstance)
-                .map(Node.class::cast)
-                .orElse(null));
-        variableManager.put(DiagramVariables.SELECTED_EDGE.name(), Optional.ofNullable(diagramElement)
-                .filter(Edge.class::isInstance)
-                .map(Edge.class::cast)
-                .orElse(null));
+        if (diagramElement instanceof Node) {
+            variableManager.put(DiagramVariables.SELECTED_NODE.name(), diagramElement);
+        } else if (diagramElement instanceof Edge) {
+            variableManager.put(DiagramVariables.SELECTED_EDGE.name(), diagramElement);
+        }
 
         this.getViewDiagramConversionData(editingContext, diagramContext.diagram().getDescriptionId())
                 .ifPresent(viewDiagramConversionData -> variableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, viewDiagramConversionData.convertedNodes()));
 
-        this.operationValidator.validate(DiagramInteractionOperations.EDGE_TOOL, variableManager.getVariables());
+        this.operationValidator.validate(DiagramInteractionOperations.SINGLE_CLICK_TOOL, variableManager.getVariables());
         return Optional.of(variableManager);
     }
 

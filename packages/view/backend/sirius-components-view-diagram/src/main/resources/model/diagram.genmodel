@@ -293,7 +293,8 @@
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//Tool">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Tool/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Tool/preconditionExpression"/>
+      <genFeatures documentation="Used to execute a tool or to retrieve a tool from the palette of the diagram.&#xA;Depending on the selection some variables are not available.&#xA;For example on a node the variable &quot;selectedNode&quot; will be available while on an edge the variables &quot;selectedEdge&quot;, &quot;edgeSource&quot;, &quot;edgeTarget&quot;, &quot;semanticEdgeSource&quot;, &quot;semanticEdgeTarget&quot; will be available."
+          createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Tool/preconditionExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//Tool/body"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Tool/description"/>
     </genClasses>

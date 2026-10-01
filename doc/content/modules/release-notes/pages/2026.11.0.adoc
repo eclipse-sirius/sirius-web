@@ -51,6 +51,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 - Reduce the dependency of the images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-images-infrastructure`, for its internationalization support.
 - Reduce the dependency of the project images bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-images-infrastructure`, for its internationalization support.
 - Reduce the dependency of the project semantic data bounded context on `sirius-web-domain` by adding a dedicated configuration module, `sirius-web-projects-semanticdata-infrastructure`, for its internationalization support.
+- When executing a tool or computing the tool of a palette, the AQL variables `selectedNode` is now only available if the targeted element is a `node`, and `selectedEdge` if the target element is an `edge`
 
 == Dependency updates
 
@@ -104,6 +105,7 @@ If multiple customizers modify the same style property, the last one wins.
 - In forms, the _RichTextEditor_ widget can now insert, open, edit, and delete links using a dedicated link popup.
 - Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
 - Introduced the `PageInfoAssert` for testing the page info returned by query runner when using the cursor-based pagination in integration tests.
+- Improve java documentation of view builder by precising if some variable are optional or not.
 
 
 == Deprecation warnings
