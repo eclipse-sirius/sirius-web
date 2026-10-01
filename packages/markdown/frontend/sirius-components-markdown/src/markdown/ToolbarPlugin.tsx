@@ -84,7 +84,7 @@ const StyledToggleButtonGroup = withStyles(ToggleButtonGroup, (theme) => ({
   },
 }));
 
-export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
+export const ToolbarPlugin = ({ readOnly, plainText, onModeChange }: ToolbarPluginProps) => {
   const [editor] = useLexicalComposerContext();
 
   const [isBold, setIsBold] = useState<boolean>(false);
@@ -202,152 +202,161 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
   const { classes } = useToolbarStyles();
   return (
     <Paper elevation={0} className={classes.paper}>
-      <StyledToggleButtonGroup size="small" value={toggled} onChange={(_, newStyles) => updateButtons(newStyles)}>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'paragraph'}
-          key={'paragraph'}
-          onClick={() => {
-            editor.update(() => {
-              const selection = $getSelection();
-              if ($isRangeSelection(selection)) {
-                $wrapNodes(selection, () => $createParagraphNode());
-              }
-            });
-          }}>
-          <SubjectIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'header1'}
-          key={'header1'}
-          onClick={() => {
-            editor.update(() => {
-              const selection = $getSelection();
-              if ($isRangeSelection(selection)) {
-                $wrapNodes(selection, () => $createHeadingNode('h1'));
-              }
-            });
-          }}>
-          <TitleIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'bullet-list'}
-          key={'bullet-list'}
-          onClick={() => {
-            if (blockType !== 'bullet-list') {
-              editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
-            } else {
-              editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
-            }
-          }}>
-          <FormatListBulletedIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'checked'}
-          key={'checked'}
-          onClick={() => {
-            if (blockType !== 'check-list') {
-              editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
-            }
-            editor.dispatchCommand(SET_CHECK_LIST_ITEM_CHECKED_COMMAND, true);
-          }}>
-          <CheckBoxIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'unchecked'}
-          key={'unchecked'}
-          onClick={() => {
-            if (blockType !== 'check-list') {
-              editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
-            }
-            editor.dispatchCommand(SET_CHECK_LIST_ITEM_CHECKED_COMMAND, false);
-          }}>
-          <CheckBoxOutlineBlankIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'number-list'}
-          key={'number-list'}
-          onClick={() => {
-            if (blockType !== 'number-list') {
-              editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
-            } else {
-              editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
-            }
-          }}>
-          <FormatListNumberedIcon fontSize="small" />
+      <StyledToggleButtonGroup size="small">
+        <ToggleButton value="plain-text" selected={plainText} onClick={onModeChange} aria-label="Plain text">
+          Plain text
         </ToggleButton>
       </StyledToggleButtonGroup>
-      <Divider flexItem orientation="vertical" className={classes.divider} />
-      <StyledToggleButtonGroup size="small" value={toggled} onChange={(_, newStyles) => updateButtons(newStyles)}>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'bold'}
-          key={'bold'}
-          onClick={() => {
-            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
-          }}>
-          <FormatBoldIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'italic'}
-          key={'italic'}
-          onClick={() => {
-            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
-          }}>
-          <FormatItalicIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'code'}
-          key={'code'}
-          onClick={() => {
-            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
-          }}>
-          <CodeIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'strikethrough'}
-          key={'strikethrough'}
-          onClick={() => {
-            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
-          }}>
-          <StrikethroughSIcon fontSize="small" />
-        </ToggleButton>
-        <ToggleButton
-          classes={{ root: classes.button }}
-          disabled={readOnly}
-          value={'link'}
-          key={'link'}
-          aria-label="Insert Link"
-          onMouseDown={(event) => {
-            event.preventDefault();
-            editor.dispatchCommand(OPEN_LINK_EDITOR_COMMAND, undefined);
-          }}
-          onClick={(event) => {
-            if (event.detail === 0) {
-              editor.dispatchCommand(OPEN_LINK_EDITOR_COMMAND, undefined);
-            }
-          }}>
-          <LinkIcon fontSize="small" />
-        </ToggleButton>
-      </StyledToggleButtonGroup>
+      {!readOnly && !plainText ? (
+        <>
+          <StyledToggleButtonGroup size="small" value={toggled} onChange={(_, newStyles) => updateButtons(newStyles)}>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'paragraph'}
+              key={'paragraph'}
+              onClick={() => {
+                editor.update(() => {
+                  const selection = $getSelection();
+                  if ($isRangeSelection(selection)) {
+                    $wrapNodes(selection, () => $createParagraphNode());
+                  }
+                });
+              }}>
+              <SubjectIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'header1'}
+              key={'header1'}
+              onClick={() => {
+                editor.update(() => {
+                  const selection = $getSelection();
+                  if ($isRangeSelection(selection)) {
+                    $wrapNodes(selection, () => $createHeadingNode('h1'));
+                  }
+                });
+              }}>
+              <TitleIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'bullet-list'}
+              key={'bullet-list'}
+              onClick={() => {
+                if (blockType !== 'bullet-list') {
+                  editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+                } else {
+                  editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+                }
+              }}>
+              <FormatListBulletedIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'checked'}
+              key={'checked'}
+              onClick={() => {
+                if (blockType !== 'check-list') {
+                  editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
+                }
+                editor.dispatchCommand(SET_CHECK_LIST_ITEM_CHECKED_COMMAND, true);
+              }}>
+              <CheckBoxIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'unchecked'}
+              key={'unchecked'}
+              onClick={() => {
+                if (blockType !== 'check-list') {
+                  editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
+                }
+                editor.dispatchCommand(SET_CHECK_LIST_ITEM_CHECKED_COMMAND, false);
+              }}>
+              <CheckBoxOutlineBlankIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'number-list'}
+              key={'number-list'}
+              onClick={() => {
+                if (blockType !== 'number-list') {
+                  editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+                } else {
+                  editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+                }
+              }}>
+              <FormatListNumberedIcon fontSize="small" />
+            </ToggleButton>
+          </StyledToggleButtonGroup>
+          <Divider flexItem orientation="vertical" className={classes.divider} />
+          <StyledToggleButtonGroup size="small" value={toggled} onChange={(_, newStyles) => updateButtons(newStyles)}>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'bold'}
+              key={'bold'}
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
+              }}>
+              <FormatBoldIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'italic'}
+              key={'italic'}
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
+              }}>
+              <FormatItalicIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'code'}
+              key={'code'}
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
+              }}>
+              <CodeIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'strikethrough'}
+              key={'strikethrough'}
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
+              }}>
+              <StrikethroughSIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={'link'}
+              key={'link'}
+              aria-label="Insert Link"
+              onMouseDown={(event) => {
+                event.preventDefault();
+                editor.dispatchCommand(OPEN_LINK_EDITOR_COMMAND, undefined);
+              }}
+              onClick={(event) => {
+                if (event.detail === 0) {
+                  editor.dispatchCommand(OPEN_LINK_EDITOR_COMMAND, undefined);
+                }
+              }}>
+              <LinkIcon fontSize="small" />
+            </ToggleButton>
+          </StyledToggleButtonGroup>
+        </>
+      ) : null}
     </Paper>
   );
 };
