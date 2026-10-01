@@ -31,6 +31,7 @@ export const ProjectStyleCustomizationsTable = ({
   onNextPage,
   pageSize,
   onPageSizeChange,
+  onUpdateStyleCustomizationState,
 }: ProjectStyleCustomizationsTableProps) => {
   const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
     keyPrefix: 'styleCustomizationTable',
@@ -43,7 +44,13 @@ export const ProjectStyleCustomizationsTable = ({
         accessorKey: 'enabled',
         header: '',
         size: 50,
-        Cell: ({ cell }) => <Checkbox disabled checked={cell.getValue<boolean>()} />,
+        Cell: ({ cell, row }) => (
+          <Checkbox
+            disabled={loading}
+            checked={cell.getValue<boolean>()}
+            onChange={(event) => onUpdateStyleCustomizationState(row.original.id, event.target.checked)}
+          />
+        ),
       },
       {
         accessorFn: (row) => row.name,
@@ -58,7 +65,7 @@ export const ProjectStyleCustomizationsTable = ({
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
     ],
-    [t]
+    [t, onUpdateStyleCustomizationState]
   );
 
   const table = useMaterialReactTable<GQLProjectStyleCustomization>({
