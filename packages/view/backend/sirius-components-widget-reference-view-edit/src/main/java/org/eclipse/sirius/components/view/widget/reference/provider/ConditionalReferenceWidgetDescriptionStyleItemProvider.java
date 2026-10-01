@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widgets.reference.provider;
+package org.eclipse.sirius.components.view.widget.reference.provider;
 
 import java.util.Collection;
 import java.util.List;

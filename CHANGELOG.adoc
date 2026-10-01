@@ -90,6 +90,7 @@ Consumers that still need a node index can use `nodes.findIndex((node) => node.i
 A new API has been added to replace `clearHandlerProvider`: `IReferenceWidgetClearHandler`, a candidate to handle the clear event.
 Two implementations of `IReferenceWidgetClearHandler`, `ViewReferenceWidgetClearHandler` for View-based representation and `DetailsViewReferenceWidgetClearHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
 Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetClearHandler`.
+- [form] Reference widget EMF edit classes have been moved from `org.eclipse.sirius.components.widgets` to `org.eclipse.sirius.components.view.widget` to match their domain classes.
 
 
 === Dependency update
