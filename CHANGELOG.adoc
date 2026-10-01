@@ -132,7 +132,10 @@ Implement `IStyleCustomizationDescriptionProvider` to provide a list of style cu
 - https://github.com/eclipse-sirius/sirius-web/issues/7015[#7015] [projects] Add support for project style customizations cursor pagination.
 Introduced the `PageInfoAssert` for testing the page info returned by query runner when using the cursor-based pagination in integration tests.
 - https://github.com/eclipse-sirius/sirius-web/issues/7017[#7017] [projects] Add the project style customization domain.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/7025[#7025] [forms] Add configuration of the initial RichTextEditor rendering mode.
+The View DSL `plainTextByDefaultExpression` evaluates an AQL boolean; `true` selects plain text, while `false`, missing, or invalid results retain the default Markdown rendering.
+The Java API exposes `plainTextByDefaultProvider`, and GraphQL exposes `plainTextByDefault`.
+This feature is delivered in dependent changes suitable for separate PRs to respect the pull request size limit.
 
 === Improvements
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,8 @@ public final class RichTextElementProps implements IProps {
 
     private boolean readOnly;
 
+    private boolean plainTextByDefault;
+
     private String value;
 
     private Function<String, IStatus> newValueHandler;
@@ -75,6 +77,13 @@ public final class RichTextElementProps implements IProps {
 
     public boolean isReadOnly() {
         return this.readOnly;
+    }
+
+    /**
+     * Returns whether this widget initially displays its Markdown source as plain text.
+     */
+    public boolean isPlainTextByDefault() {
+        return this.plainTextByDefault;
     }
 
     public String getValue() {
@@ -114,6 +123,8 @@ public final class RichTextElementProps implements IProps {
 
         private boolean readOnly;
 
+        private boolean plainTextByDefault;
+
         private String value;
 
         private Function<String, IStatus> newValueHandler;
@@ -139,6 +150,14 @@ public final class RichTextElementProps implements IProps {
             return this;
         }
 
+        /**
+         * Sets the initial rendering mode; false keeps the default Markdown rendering.
+         */
+        public Builder plainTextByDefault(boolean plainTextByDefault) {
+            this.plainTextByDefault = plainTextByDefault;
+            return this;
+        }
+
         public Builder value(String value) {
             this.value = Objects.requireNonNull(value);
             return this;
@@ -159,12 +178,16 @@ public final class RichTextElementProps implements IProps {
             return this;
         }
 
+        /**
+         * Builds the rich text element props, including its initial rendering mode.
+         */
         public RichTextElementProps build() {
             RichTextElementProps textareaElementProps = new RichTextElementProps();
             textareaElementProps.id = Objects.requireNonNull(this.id);
             textareaElementProps.label = Objects.requireNonNull(this.label);
             textareaElementProps.iconURL = this.iconURL;
             textareaElementProps.readOnly = this.readOnly;
+            textareaElementProps.plainTextByDefault = this.plainTextByDefault;
             textareaElementProps.value = Objects.requireNonNull(this.value);
             textareaElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textareaElementProps.children = Objects.requireNonNull(this.children);

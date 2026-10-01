@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,9 @@ public class RichTextComponent implements IComponent {
         this.props = Objects.requireNonNull(props);
     }
 
+    /**
+     * Renders the widget and evaluates its initial rendering mode in the semantic context.
+     */
     @Override
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
@@ -54,6 +57,7 @@ public class RichTextComponent implements IComponent {
         String id = richTextDescription.getIdProvider().apply(idVariableManager);
 
         List<String> iconURL = richTextDescription.getIconURLProvider().apply(variableManager);
+        boolean plainTextByDefault = Boolean.TRUE.equals(richTextDescription.getPlainTextByDefaultProvider().apply(variableManager));
         Boolean readOnly = richTextDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = richTextDescription.getValueProvider().apply(variableManager);
         BiFunction<VariableManager, String, IStatus> genericHandler = richTextDescription.getNewValueHandler();
@@ -62,6 +66,7 @@ public class RichTextComponent implements IComponent {
 
         Builder richTextElementPropsBuilder = RichTextElementProps.newRichTextElementProps(id)
                 .label(label)
+                .plainTextByDefault(plainTextByDefault)
                 .value(value)
                 .newValueHandler(specializedHandler)
                 .children(children);
