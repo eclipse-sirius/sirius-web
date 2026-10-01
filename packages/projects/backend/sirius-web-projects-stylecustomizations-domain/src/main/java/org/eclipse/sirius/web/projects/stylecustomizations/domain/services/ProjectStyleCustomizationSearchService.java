@@ -12,7 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.projects.stylecustomizations.domain.services;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.ProjectStyleCustomizationStore;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -25,8 +29,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectStyleCustomizationSearchService implements IProjectStyleCustomizationSearchService {
 
+    private final ProjectStyleCustomizationStore projectStyleCustomizationStore;
+
+    public ProjectStyleCustomizationSearchService(ProjectStyleCustomizationStore projectStyleCustomizationStore) {
+        this.projectStyleCustomizationStore = Objects.requireNonNull(projectStyleCustomizationStore);
+    }
+
     @Override
     public boolean existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference<Project, String> projectReference, String styleCustomizationDescriptionId) {
-        return true;
+        return this.projectStyleCustomizationStore.existsByProjectIdAndStyleCustomizationDescriptionId(projectReference.getId(), styleCustomizationDescriptionId);
+    }
+
+    @Override
+    public List<String> findAllByProjectId(AggregateReference<Project, String> projectReference) {
+        return this.projectStyleCustomizationStore.findAllByProjectId(projectReference.getId());
     }
 }

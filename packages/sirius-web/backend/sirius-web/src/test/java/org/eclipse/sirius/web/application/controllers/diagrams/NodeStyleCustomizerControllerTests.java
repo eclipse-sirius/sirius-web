@@ -30,8 +30,10 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditRectangularNodeAppearanceExecutor;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.flow.starter.services.FlowStyleCustomizationDescriptionProvider;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.FlowIdentifier;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.ProjectStyleCustomizationStore;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -67,6 +69,9 @@ public class NodeStyleCustomizerControllerTests  extends AbstractIntegrationTest
     @Autowired
     private EditRectangularNodeAppearanceExecutor editRectangularNodeAppearanceExecutor;
 
+    @Autowired
+    private ProjectStyleCustomizationStore projectStyleCustomizationStore;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -83,10 +88,19 @@ public class NodeStyleCustomizerControllerTests  extends AbstractIntegrationTest
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
+    /*
+     * This method will be removed when we will actually persist project style customizations.
+     */
+    private void enableProjectStyleCustomization() {
+        this.projectStyleCustomizationStore.createProjectStyleCustomization(FlowIdentifier.PROJECT_ID, FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE);
+        this.projectStyleCustomizationStore.createProjectStyleCustomization(FlowIdentifier.PROJECT_ID, FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
+    }
+
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a flow node in a topography diagram, when conditions activating node style customization are met, then node style customizations are applied")
     public void givenFlowNodeInTopographyDiagramWhenConditionsActivatingNodeStyleCustomizationAreMetThenNodeStyleCustomizationsAreApplied() {
+        this.enableProjectStyleCustomization();
         var flux = this.givenDiagramSubscription();
 
         var diagramId = new AtomicReference<String>();
@@ -162,6 +176,7 @@ public class NodeStyleCustomizerControllerTests  extends AbstractIntegrationTest
     @GivenSiriusWebServer
     @DisplayName("Given a node with a customized style, when its appearance is edited manually, then the manual changes take precedence")
     public void givenNodeWithCustomizedStyleWhenItsAppearanceIsEditedManuallyThenManualChangeTakePrecedence() {
+        this.enableProjectStyleCustomization();
         var flux = this.givenDiagramSubscription();
 
         var diagramId = new AtomicReference<String>();

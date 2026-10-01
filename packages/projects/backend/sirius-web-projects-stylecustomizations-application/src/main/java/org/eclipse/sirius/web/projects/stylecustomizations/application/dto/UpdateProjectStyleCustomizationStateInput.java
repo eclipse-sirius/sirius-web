@@ -10,18 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.projects.stylecustomizations.application.dto;
 
-import { GQLProjectStyleCustomization } from './useProjectStyleCustomizations.types';
+import java.util.UUID;
 
-export interface ProjectStyleCustomizationsTableProps {
-  loading: boolean;
-  styleCustomizations: GQLProjectStyleCustomization[];
-  rowCount: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-  onPreviousPage: () => void;
-  onNextPage: () => void;
-  pageSize: number;
-  onPageSizeChange: (pageSize: number) => void;
-  onUpdateStyleCustomizationState: (styleCustomizationDescriptionId: string, enable: boolean) => void;
+import org.eclipse.sirius.components.core.api.IInput;
+
+/**
+ * The input used to update the state of a style customization.
+ *
+ * @author gcoutable
+ */
+public record UpdateProjectStyleCustomizationStateInput(UUID id, String projectId, String styleCustomizationDescriptionId, boolean enable) implements IInput {
 }

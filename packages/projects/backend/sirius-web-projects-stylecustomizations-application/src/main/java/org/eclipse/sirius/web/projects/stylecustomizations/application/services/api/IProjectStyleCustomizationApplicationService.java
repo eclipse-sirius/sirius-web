@@ -12,15 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.projects.stylecustomizations.application.services.api;
 
-import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.StyleCustomizationDTO;
-import org.eclipse.sirius.web.projects.stylecustomizations.application.services.StyleCustomizationDescription;
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.UpdateProjectStyleCustomizationStateInput;
 
 /**
- * Used to convert a description of style customization to a DTO.
+ * Used to manipulate project style customizations.
  *
  * @author gcoutable
- * @since v2026.11.0
  */
-public interface IStyleCustomizationMapper {
-    StyleCustomizationDTO toDTO(String projectId, StyleCustomizationDescription styleCustomizationDescription);
+public interface IProjectStyleCustomizationApplicationService {
+    IPayload updateProjectStyleCustomizationState(UpdateProjectStyleCustomizationStateInput input);
 }
