@@ -40,7 +40,6 @@ import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvid
 import org.eclipse.sirius.components.view.emf.diagram.ToolFinder;
 import org.eclipse.sirius.components.view.emf.diagram.api.IPaletteToolsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
-import org.eclipse.sirius.components.view.emf.diagram.tools.api.IEdgeToolConverter;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodePaletteProvider;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodeToolConverter;
 import org.springframework.stereotype.Service;
@@ -63,15 +62,12 @@ public class NodePaletteProvider implements INodePaletteProvider {
 
     private final INodeToolConverter nodeToolConverter;
 
-    private final IEdgeToolConverter edgeToolConverter;
-
-    public NodePaletteProvider(IURLParser urlParser, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, List<IPaletteToolsProvider> paletteToolsProviders, List<IDiagramPaletteCustomizer> diagramPaletteCustomizers, INodeToolConverter nodeToolConverter, IEdgeToolConverter edgeToolConverter) {
+    public NodePaletteProvider(IURLParser urlParser, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, List<IPaletteToolsProvider> paletteToolsProviders, List<IDiagramPaletteCustomizer> diagramPaletteCustomizers, INodeToolConverter nodeToolConverter) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.paletteToolsProviders = Objects.requireNonNull(paletteToolsProviders);
         this.diagramPaletteCustomizers = Objects.requireNonNull(diagramPaletteCustomizers);
         this.nodeToolConverter = Objects.requireNonNull(nodeToolConverter);
-        this.edgeToolConverter = Objects.requireNonNull(edgeToolConverter);
     }
 
     @Override
@@ -102,10 +98,6 @@ public class NodePaletteProvider implements INodePaletteProvider {
                 toolFinder.findNodeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
-                        .forEach(paletteEntries::add);
-                toolFinder.findEdgeTools(viewNodeDescription).stream()
-                        .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(viewEdgeTools -> this.edgeToolConverter.createEdgeTool(interpreter, viewEdgeTools, diagramDescription, nodeDescription, variableManager))
                         .forEach(paletteEntries::add);
 
                 toolFinder.findToolSections(viewNodeDescription).stream()
@@ -145,14 +137,9 @@ public class NodePaletteProvider implements INodePaletteProvider {
     private ToolSection createToolSection(NodeToolSection toolSection, DiagramDescription diagramDescription, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolSelectionId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(toolSection).toString().getBytes()).toString();
 
-        var tools = new ArrayList<ITool>();
-        tools.addAll(toolSection.getNodeTools().stream()
+        var tools = new ArrayList<ITool>(toolSection.getNodeTools().stream()
                 .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                 .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
-                .toList());
-        tools.addAll(toolSection.getEdgeTools().stream()
-                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(viewEdgeTools -> this.edgeToolConverter.createEdgeTool(interpreter, viewEdgeTools, diagramDescription, nodeDescription, variableManager))
                 .toList());
 
         return ToolSection.newToolSection(toolSelectionId)

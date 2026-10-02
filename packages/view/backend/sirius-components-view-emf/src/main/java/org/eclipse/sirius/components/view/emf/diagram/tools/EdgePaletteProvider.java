@@ -41,7 +41,6 @@ import org.eclipse.sirius.components.view.emf.diagram.ToolFinder;
 import org.eclipse.sirius.components.view.emf.diagram.api.IPaletteToolsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IEdgePaletteProvider;
-import org.eclipse.sirius.components.view.emf.diagram.tools.api.IEdgeToolConverter;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodeToolConverter;
 import org.springframework.stereotype.Service;
 
@@ -63,15 +62,12 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
 
     private final INodeToolConverter nodeToolConverter;
 
-    private final IEdgeToolConverter edgeToolConverter;
-
-    public EdgePaletteProvider(IURLParser urlParser, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, List<IPaletteToolsProvider> paletteToolsProviders, List<IDiagramPaletteCustomizer> diagramPaletteCustomizers, INodeToolConverter nodeToolConverter, IEdgeToolConverter edgeToolConverter) {
+    public EdgePaletteProvider(IURLParser urlParser, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, List<IPaletteToolsProvider> paletteToolsProviders, List<IDiagramPaletteCustomizer> diagramPaletteCustomizers, INodeToolConverter nodeToolConverter) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.paletteToolsProviders = Objects.requireNonNull(paletteToolsProviders);
         this.diagramPaletteCustomizers = Objects.requireNonNull(diagramPaletteCustomizers);
         this.nodeToolConverter = Objects.requireNonNull(nodeToolConverter);
-        this.edgeToolConverter = Objects.requireNonNull(edgeToolConverter);
     }
 
     @Override
@@ -103,10 +99,7 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                         .forEach(paletteEntries::add);
-                toolFinder.findEdgeTools(viewEdgeDescription).stream()
-                        .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(viewEdgeTools -> this.edgeToolConverter.createEdgeTool(interpreter, viewEdgeTools, diagramDescription, edgeDescription, variableManager))
-                        .forEach(paletteEntries::add);
+
                 toolFinder.findToolSections(viewEdgeDescription).stream()
                         .map(edgeToolSection -> this.createToolSection(edgeToolSection, variableManager, interpreter))
                         .forEach(paletteEntries::add);
