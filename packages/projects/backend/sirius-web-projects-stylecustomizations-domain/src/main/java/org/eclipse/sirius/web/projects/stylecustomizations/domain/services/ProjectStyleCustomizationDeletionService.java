@@ -43,7 +43,9 @@ public class ProjectStyleCustomizationDeletionService implements IProjectStyleCu
         var optionalProjectStyleCustomization = this.projectStyleCustomizationRepository.findByProjectIdAndStyleCustomizationDescriptionId(project.getId(), styleCustomizationId);
         optionalProjectStyleCustomization.ifPresent(this.projectStyleCustomizationRepository::delete);
         if (optionalProjectStyleCustomization.isPresent()) {
-            this.projectStyleCustomizationRepository.delete(optionalProjectStyleCustomization.get());
+            var projectStyleCustomization = optionalProjectStyleCustomization.get();
+            projectStyleCustomization.dispose(cause);
+            this.projectStyleCustomizationRepository.delete(projectStyleCustomization);
             return new Success<>(null);
         }
         return new Failure<>("");

@@ -20,7 +20,10 @@ import org.eclipse.sirius.components.flow.starter.services.FlowStyleCustomizatio
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.UpdateProjectStyleCustomizationStateInput;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationCreatedEvent;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationDeletedEvent;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
+import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.UpdateProjectStyleCustomizationStateExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -52,9 +55,13 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
     @Autowired
     private UpdateProjectStyleCustomizationStateExecutor updateProjectStyleCustomizationStateExecutor;
 
+    @Autowired
+    private IDomainEventCollector domainEventCollector;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
+        this.domainEventCollector.clear();
     }
 
     @Test
@@ -67,6 +74,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
         var input = new UpdateProjectStyleCustomizationStateInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, arbitraryProjectStyleCustomizationDescriptionId, true);
         this.updateProjectStyleCustomizationStateExecutor.execute(input, capturedOutput).isSuccess();
 
+        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(ProjectStyleCustomizationCreatedEvent.class::isInstance);
         assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), arbitraryProjectStyleCustomizationDescriptionId)).isTrue();
     }
 
@@ -79,6 +87,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
         var input = new UpdateProjectStyleCustomizationStateInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE, false);
         this.updateProjectStyleCustomizationStateExecutor.execute(input, capturedOutput).isSuccess();
 
+        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(ProjectStyleCustomizationDeletedEvent.class::isInstance);
         assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE)).isFalse();
     }
 }

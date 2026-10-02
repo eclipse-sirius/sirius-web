@@ -19,6 +19,8 @@ import java.util.UUID;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationCreatedEvent;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationDeletedEvent;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -71,6 +73,10 @@ public class ProjectStyleCustomization extends AbstractValidatingAggregateRoot<P
         return this.isNew;
     }
 
+    public void dispose(ICause cause) {
+        this.registerEvent(new ProjectStyleCustomizationDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
+    }
+
     public static Builder newProjectStyleCustomization() {
         return new Builder();
     }
@@ -104,8 +110,11 @@ public class ProjectStyleCustomization extends AbstractValidatingAggregateRoot<P
             projectStyleCustomization.id = UUID.randomUUID();
             projectStyleCustomization.project = Objects.requireNonNull(this.project);
             projectStyleCustomization.styleCustomizationDescriptionId = Objects.requireNonNull(this.styleCustomizationDescriptionId);
-            projectStyleCustomization.createdOn = Instant.now();
 
+            var now = Instant.now();
+            projectStyleCustomization.createdOn = now;
+
+            projectStyleCustomization.registerEvent(new ProjectStyleCustomizationCreatedEvent(UUID.randomUUID(), now, cause, projectStyleCustomization));
             return projectStyleCustomization;
         }
     }
