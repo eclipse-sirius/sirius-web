@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
+import { ViewMode } from '@ObeoNetwork/gantt-task-react';
 import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
@@ -26,7 +26,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Tooltip from '@mui/material/Tooltip';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
@@ -56,9 +56,10 @@ const useToolbarStyles = makeStyles()((theme) => ({
 export const Toolbar = ({
   representationId,
   viewMode,
+  zoomLevel,
   columns,
-  tasks,
   onChangeViewMode,
+  onChangeZoomLevel,
   onChangeDisplayColumns,
   onChangeColumns,
   fullscreenNode,
@@ -71,56 +72,9 @@ export const Toolbar = ({
 
   const onShare = () => setState((prevState) => ({ ...prevState, modal: 'share' }));
   const closeModal = () => setState((prevState) => ({ ...prevState, modal: null }));
-  const isTask = (task: TaskOrEmpty): task is Task => {
-    return task.type !== 'empty';
-  };
   const onFitToScreen = () => {
-    const minTime = Math.min.apply(
-      null,
-      tasks
-        .filter((t) => isTask(t))
-        .map((t) => t as Task)
-        .filter((task) => Boolean(task.start))
-        .map((task) => (task.start ? task.start.getTime() : 0))
-    );
-    const maxTime = Math.max.apply(
-      null,
-
-      tasks
-        .filter((t) => isTask(t))
-        .map((t) => t as Task)
-        .filter((task) => Boolean(task.end))
-        .map((task) => (task.end ? task.end.getTime() : 0))
-    );
-
-    const fullTime: number = (maxTime - minTime) / 1000 / 3600;
-    let viewMode: ViewMode = ViewMode.Day;
-    if (!isFinite(fullTime)) {
-      viewMode = ViewMode.Day;
-    } else if (fullTime < 10) {
-      viewMode = ViewMode.Hour;
-    } else if (fullTime < 48) {
-      viewMode = ViewMode.QuarterDay;
-    } else if (fullTime < 24 * 4) {
-      viewMode = ViewMode.HalfDay;
-    } else if (fullTime < 24 * 10) {
-      viewMode = ViewMode.Day;
-    } else if (fullTime < 24 * 25) {
-      viewMode = ViewMode.TwoDays;
-    } else if (fullTime < 24 * 60) {
-      viewMode = ViewMode.Week;
-    } else if (fullTime < 24 * 30 * 7) {
-      viewMode = ViewMode.Month;
-    } else {
-      viewMode = ViewMode.Year;
-    }
-
-    onChangeViewMode(viewMode);
+    onChangeZoomLevel(100);
   };
-
-  useEffect(() => {
-    onFitToScreen();
-  }, []);
 
   const handleDisplayColumns = () => {
     onChangeDisplayColumns();
@@ -137,18 +91,12 @@ export const Toolbar = ({
   }
 
   const onZoomIn = () => {
-    if (viewMode !== ViewMode.Hour) {
-      const currentIndex = Object.values(ViewMode).indexOf(viewMode);
-      const newViewMode = Object.values(ViewMode).at(currentIndex - 1);
-      onChangeViewMode(newViewMode ? newViewMode : ViewMode.Hour);
-    }
+    const newZoomLevel = Math.max(1, Math.min(400, zoomLevel + 10));
+    onChangeZoomLevel(newZoomLevel);
   };
   const onZoomOut = () => {
-    if (viewMode !== ViewMode.Year) {
-      const currentIndex = Object.values(ViewMode).indexOf(viewMode);
-      const newViewMode = Object.values(ViewMode).at(currentIndex + 1);
-      onChangeViewMode(newViewMode ? newViewMode : ViewMode.Year);
-    }
+    const newZoomLevel = Math.max(1, Math.min(400, zoomLevel - 10));
+    onChangeZoomLevel(newZoomLevel);
   };
 
   const handleChangeColumns = (event) => {

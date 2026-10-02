@@ -48,6 +48,8 @@ import { GanttProps, GanttState, TaskListColumnEnum } from './Gantt.types';
 const useGanttStyle = makeStyles()((theme) => ({
   ganttContainer: {
     backgroundColor: theme.palette.background.default,
+    width: '100%',
+    minWidth: 0,
     overflowX: 'hidden',
     overflowY: 'auto',
     display: 'flex',
@@ -77,8 +79,9 @@ export const Gantt = ({
   onChangeColumn,
 }: GanttProps) => {
   // all Columns state is used to avoid the blink effect when resizing the column
-  const [{ viewMode, selectedColumns, displayedColumns, displayColumns }, setState] = useState<GanttState>({
+  const [{ viewMode, zoomLevel, selectedColumns, displayedColumns, displayColumns }, setState] = useState<GanttState>({
     viewMode: ViewMode.Day,
+    zoomLevel: 100,
     selectedColumns: getSelectedColumns(gqlColumns),
     displayedColumns: getDisplayedColumns(gqlColumns),
     displayColumns: true,
@@ -92,23 +95,10 @@ export const Gantt = ({
     if (wheelEvent.ctrlKey) {
       wheelEvent.preventDefault();
       const deltaY = wheelEvent.deltaY;
-      if (deltaY < 0 && viewMode !== ViewMode.Hour) {
-        const currentIndex = Object.values(ViewMode).indexOf(viewMode);
-        const newViewMode = Object.values(ViewMode).at(currentIndex - 1);
-        if (newViewMode) {
-          setState((prevState) => {
-            return { ...prevState, viewMode: newViewMode };
-          });
-        }
-      } else if (deltaY > 0 && viewMode !== ViewMode.Year) {
-        const currentIndex = Object.values(ViewMode).indexOf(viewMode);
-        const newViewMode = Object.values(ViewMode).at(currentIndex + 1);
-        if (newViewMode) {
-          setState((prevState) => {
-            return { ...prevState, viewMode: newViewMode };
-          });
-        }
-      }
+
+      setState((prevState) => {
+        return { ...prevState, zoomLevel: Math.max(1, Math.min(400, prevState.zoomLevel + (deltaY < 0 ? 10 : -10))) };
+      });
     }
   };
 
@@ -127,7 +117,13 @@ export const Gantt = ({
 
   const onChangeViewMode = (viewMode: ViewMode) => {
     setState((prevState) => {
-      return { ...prevState, viewMode: viewMode };
+      return { ...prevState, viewMode };
+    });
+  };
+
+  const onChangeZoomLevel = (zoomLevel: number) => {
+    setState((prevState) => {
+      return { ...prevState, zoomLevel: Math.max(1, Math.min(400, zoomLevel)) };
     });
   };
 
@@ -258,9 +254,10 @@ export const Gantt = ({
       <Toolbar
         representationId={representationId}
         viewMode={viewMode}
+        zoomLevel={zoomLevel}
         columns={selectedColumns}
-        tasks={tasks}
         onChangeViewMode={onChangeViewMode}
+        onChangeZoomLevel={onChangeZoomLevel}
         onChangeDisplayColumns={onChangeDisplayColumns}
         onChangeColumns={onChangeColumns}
         fullscreenNode={ganttContainerRef}
@@ -270,7 +267,7 @@ export const Gantt = ({
         distances={distances}
         columns={tableColumns}
         colors={colors}
-        zoomLevel={100}
+        zoomLevel={zoomLevel}
         viewMode={viewMode}
         onDateChange={onEditTask}
         onProgressChange={onEditTask}
