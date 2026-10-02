@@ -93,7 +93,7 @@ public class PaletteToolProviderControllerTests extends AbstractIntegrationTests
             var result = this.paletteQueryRunner.run(variables);
 
             List<String> paletteEntriesLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
-            assertThat(paletteEntriesLabels).containsExactly("Relation", "Containment", "Supertype", "Attributes", "Show/Hide", "Edit");
+            assertThat(paletteEntriesLabels).containsExactly("Attributes", "Show/Hide", "Edit");
             List<String> paletteEntriesToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
             assertThat(paletteEntriesToolsLabels).containsExactly("Text", "Boolean", "Number", "Hide", "extraTool", "Edit", "Delete from model");
         };
