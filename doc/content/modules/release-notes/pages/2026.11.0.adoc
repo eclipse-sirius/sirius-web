@@ -60,6 +60,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 A new query `connectorToolsCandidatesDescriptionIds(diagramElementId: ID!): [ID!]!` is used instead, it returns all element description id that are target candidate for a given source element.
 This query is using the `IDiagramElementConnectorToolsCandidatesProvider`, a default implementation is provided.
 The `precondition` of an edge tool is no longer evaluated when computing if an element should display its creation handles.
+- The `getPalette` query is no longer return edge tool, use `getConnectorPalette` instead if needed.
 
 == Dependency updates
 
