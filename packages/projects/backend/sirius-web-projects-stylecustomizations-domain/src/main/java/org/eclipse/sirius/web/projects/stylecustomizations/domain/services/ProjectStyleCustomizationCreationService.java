@@ -12,37 +12,40 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.projects.stylecustomizations.domain.services;
 
-import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.IProjectStyleCustomizationRepository;
-import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationCreationService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to retrieve project style customizations.
+ * Used to create project style customizations.
  *
  * @author gcoutable
  */
 @Service
-public class ProjectStyleCustomizationSearchService implements IProjectStyleCustomizationSearchService {
+public class ProjectStyleCustomizationCreationService implements IProjectStyleCustomizationCreationService {
 
     private final IProjectStyleCustomizationRepository projectStyleCustomizationRepository;
 
-    public ProjectStyleCustomizationSearchService(IProjectStyleCustomizationRepository projectStyleCustomizationRepository) {
+    public ProjectStyleCustomizationCreationService(IProjectStyleCustomizationRepository projectStyleCustomizationRepository) {
         this.projectStyleCustomizationRepository = Objects.requireNonNull(projectStyleCustomizationRepository);
     }
 
     @Override
-    public boolean existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference<Project, String> projectReference, String styleCustomizationDescriptionId) {
-        return this.projectStyleCustomizationRepository.existsByProjectIdAndStyleCustomizationDescriptionId(projectReference.getId(), styleCustomizationDescriptionId);
-    }
+    public IResult<ProjectStyleCustomization> createProjectStyleCustomization(ICause cause, AggregateReference<Project, String> project, String styleCustomizationDescriptionId) {
+        var projectStyleCustomization = ProjectStyleCustomization.newProjectStyleCustomization()
+                .project(project)
+                .styleCustomizationDescriptionId(styleCustomizationDescriptionId)
+                .build(cause);
+        this.projectStyleCustomizationRepository.save(projectStyleCustomization);
 
-    @Override
-    public List<ProjectStyleCustomization> findAllByProjectId(AggregateReference<Project, String> projectReference) {
-        return this.projectStyleCustomizationRepository.findAllByProjectId(projectReference.getId());
+        return new Success<>(projectStyleCustomization);
     }
 }

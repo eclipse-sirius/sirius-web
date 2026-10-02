@@ -20,12 +20,10 @@ import org.eclipse.sirius.components.flow.starter.services.FlowStyleCustomizatio
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.UpdateProjectStyleCustomizationStateInput;
-import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.ProjectStyleCustomizationStore;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.UpdateProjectStyleCustomizationStateExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,17 +52,9 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
     @Autowired
     private UpdateProjectStyleCustomizationStateExecutor updateProjectStyleCustomizationStateExecutor;
 
-    @Autowired
-    private ProjectStyleCustomizationStore projectStyleCustomizationStore;
-
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
-    }
-
-    @AfterEach
-    public void afterEach() {
-        this.projectStyleCustomizationStore.clear();
     }
 
     @Test
