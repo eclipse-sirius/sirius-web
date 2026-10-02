@@ -123,6 +123,30 @@ INSERT INTO nature (
   'siriusWeb://nature?kind=flow'
 );
 
+INSERT INTO project_style_customization (
+  id,
+  project_id,
+  style_customization_description_id,
+  created_on
+) VALUES (
+  '16e0f083-2815-4061-98f6-7934cc7622d7',
+  'd419bbee-9cba-4b85-972c-660d875ad705',
+  'flow-style-customization-I-m-blue',
+  '2026-02-10 11:40:38.389785+00'
+);
+
+INSERT INTO project_style_customization (
+  id,
+  project_id,
+  style_customization_description_id,
+  created_on
+) VALUES (
+  '24fdbe08-0445-4109-8f27-aaa346625d99',
+  'd419bbee-9cba-4b85-972c-660d875ad705',
+  'flow-style-customization-da-be-di-da-be-dai',
+  '2026-02-10 11:40:38.389785+00'
+);
+
 INSERT INTO project_semantic_data (
   id,
   project_id,

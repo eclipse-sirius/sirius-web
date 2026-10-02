@@ -14,14 +14,21 @@ package org.eclipse.sirius.web.projects.stylecustomizations.application.services
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.web.core.domain.results.Failure;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.UpdateProjectStyleCustomizationStateInput;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.api.IProjectStyleCustomizationApplicationService;
-import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.ProjectStyleCustomizationStore;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationCreationService;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationDeletionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Used to manipulate project style customizations.
@@ -31,29 +38,49 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectStyleCustomizationApplicationService implements IProjectStyleCustomizationApplicationService {
 
-    private final ProjectStyleCustomizationStore projectStyleCustomizationStore;
+    private final IProjectStyleCustomizationCreationService projectStyleCustomizationCreationService;
+
+    private final IProjectStyleCustomizationDeletionService projectStyleCustomizationDeletionService;
 
     private final Logger logger = LoggerFactory.getLogger(ProjectStyleCustomizationApplicationService.class);
 
-    public ProjectStyleCustomizationApplicationService(ProjectStyleCustomizationStore projectStyleCustomizationStore) {
-        this.projectStyleCustomizationStore = Objects.requireNonNull(projectStyleCustomizationStore);
+    public ProjectStyleCustomizationApplicationService(IProjectStyleCustomizationCreationService projectStyleCustomizationCreationService, IProjectStyleCustomizationDeletionService projectStyleCustomizationDeletionService) {
+        this.projectStyleCustomizationCreationService = Objects.requireNonNull(projectStyleCustomizationCreationService);
+        this.projectStyleCustomizationDeletionService = Objects.requireNonNull(projectStyleCustomizationDeletionService);
     }
 
     @Override
+    @Transactional
     public IPayload updateProjectStyleCustomizationState(UpdateProjectStyleCustomizationStateInput input) {
+        IResult<?> result;
+
         if (input.enable()) {
-            this.projectStyleCustomizationStore.createProjectStyleCustomization(input.projectId(), input.styleCustomizationDescriptionId());
+            result = this.projectStyleCustomizationCreationService.createProjectStyleCustomization(input, AggregateReference.to(input.projectId()), input.styleCustomizationDescriptionId());
         } else {
-            this.projectStyleCustomizationStore.deleteByProjectIdAndStyleDescriptionId(input.projectId(), input.styleCustomizationDescriptionId());
+            result = this.projectStyleCustomizationDeletionService.deleteByProjectIdAndStyleDescriptionId(input, AggregateReference.to(input.projectId()), input.styleCustomizationDescriptionId());
         }
 
-        this.logger.atInfo()
-                .setMessage("Project style customization {} updated in project {}")
-                .addArgument(input.styleCustomizationDescriptionId())
-                .addArgument(input.projectId())
-                .addKeyValue("styleCustomizationId", input.styleCustomizationDescriptionId())
-                .addKeyValue("projectId", input.projectId())
-                .log();
-        return new SuccessPayload(input.id());
+        return switch (result) {
+            case Failure<?>(var message) -> {
+                this.logger.atWarn()
+                        .setMessage("Update of Project style customization {} failed")
+                        .addArgument(input.styleCustomizationDescriptionId())
+                        .addKeyValue("styleCustomizationId", input.styleCustomizationDescriptionId())
+                        .addKeyValue("projectId", input.projectId())
+                        .log();
+
+                yield new ErrorPayload(input.id(), message);
+            }
+            case Success<?>(var data) -> {
+                this.logger.atInfo()
+                        .setMessage("Update the project style customization {}")
+                        .addArgument(input.styleCustomizationDescriptionId())
+                        .addKeyValue("styleCustomizationId", input.styleCustomizationDescriptionId())
+                        .addKeyValue("projectId", input.projectId())
+                        .log();
+
+                yield new SuccessPayload(input.id());
+            }
+        };
     }
 }

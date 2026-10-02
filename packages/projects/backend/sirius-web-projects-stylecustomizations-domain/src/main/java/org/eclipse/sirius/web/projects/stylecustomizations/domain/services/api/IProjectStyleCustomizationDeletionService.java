@@ -12,20 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api;
 
-import java.util.List;
-
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
- * Used to retrieve project style customizations.
+ * Used to delete project style customizations.
  *
  * @author gcoutable
  */
-public interface IProjectStyleCustomizationSearchService {
+public interface IProjectStyleCustomizationDeletionService {
 
-    boolean existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference<Project, String> projectReference, String styleCustomizationDescriptionId);
-
-    List<ProjectStyleCustomization> findAllByProjectId(AggregateReference<Project, String> projectReference);
+    IResult<Void> deleteByProjectIdAndStyleDescriptionId(ICause cause, AggregateReference<Project, String> project, String styleCustomizationId);
 }

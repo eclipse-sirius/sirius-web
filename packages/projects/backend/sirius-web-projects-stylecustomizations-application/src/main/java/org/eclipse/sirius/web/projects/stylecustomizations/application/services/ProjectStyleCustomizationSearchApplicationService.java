@@ -22,12 +22,14 @@ import org.eclipse.sirius.web.core.domain.pagination.Window;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.StyleCustomizationDTO;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.api.IProjectStyleCustomizationSearchApplicationService;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.api.IStyleCustomizationDescriptionProvider;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Application service used to search project style customizations.
@@ -49,6 +51,7 @@ public class ProjectStyleCustomizationSearchApplicationService implements IProje
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Window<StyleCustomizationDTO> getStyleCustomizations(String projectId, KeysetScrollPosition position, int limit) {
         Window<StyleCustomizationDescription> window = new Window<>(List.of(), index -> position, false, false);
 
@@ -70,7 +73,7 @@ public class ProjectStyleCustomizationSearchApplicationService implements IProje
 
         var enabledProjectStyleCustomizations = this.projectStyleCustomizationSearchService.findAllByProjectId(AggregateReference.to(projectId));
         return window.map(styleCustomizationDescription -> {
-            var isEnabled = enabledProjectStyleCustomizations.contains(String.join("#", projectId, styleCustomizationDescription.id()));
+            var isEnabled = enabledProjectStyleCustomizations.stream().map(ProjectStyleCustomization::getStyleCustomizationDescriptionId).anyMatch(styleCustomizationDescription.id()::equals);
             return new StyleCustomizationDTO(styleCustomizationDescription.id(), styleCustomizationDescription.label(), styleCustomizationDescription.description(), isEnabled);
         });
     }
