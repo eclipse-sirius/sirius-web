@@ -27,11 +27,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
 import { useFullscreen } from './useFullScreen';
-import { useTranslation } from 'react-i18next';
 
 const useToolbarStyles = makeStyles()((theme) => ({
   toolbar: {
@@ -55,10 +55,10 @@ const useToolbarStyles = makeStyles()((theme) => ({
 
 export const Toolbar = ({
   representationId,
-  zoomLevel,
+  viewMode,
   columns,
   tasks,
-  onChangeZoomLevel,
+  onChangeViewMode,
   onChangeDisplayColumns,
   onChangeColumns,
   fullscreenNode,
@@ -94,28 +94,28 @@ export const Toolbar = ({
     );
 
     const fullTime: number = (maxTime - minTime) / 1000 / 3600;
-    let zoomLevel: ViewMode = ViewMode.Day;
+    let viewMode: ViewMode = ViewMode.Day;
     if (!isFinite(fullTime)) {
-      zoomLevel = ViewMode.Day;
+      viewMode = ViewMode.Day;
     } else if (fullTime < 10) {
-      zoomLevel = ViewMode.Hour;
+      viewMode = ViewMode.Hour;
     } else if (fullTime < 48) {
-      zoomLevel = ViewMode.QuarterDay;
+      viewMode = ViewMode.QuarterDay;
     } else if (fullTime < 24 * 4) {
-      zoomLevel = ViewMode.HalfDay;
+      viewMode = ViewMode.HalfDay;
     } else if (fullTime < 24 * 10) {
-      zoomLevel = ViewMode.Day;
+      viewMode = ViewMode.Day;
     } else if (fullTime < 24 * 25) {
-      zoomLevel = ViewMode.TwoDays;
+      viewMode = ViewMode.TwoDays;
     } else if (fullTime < 24 * 60) {
-      zoomLevel = ViewMode.Week;
+      viewMode = ViewMode.Week;
     } else if (fullTime < 24 * 30 * 7) {
-      zoomLevel = ViewMode.Month;
+      viewMode = ViewMode.Month;
     } else {
-      zoomLevel = ViewMode.Year;
+      viewMode = ViewMode.Year;
     }
 
-    onChangeZoomLevel(zoomLevel);
+    onChangeViewMode(viewMode);
   };
 
   useEffect(() => {
@@ -126,9 +126,9 @@ export const Toolbar = ({
     onChangeDisplayColumns();
   };
 
-  const updateZoomLevel = (event) => {
-    const newZoomLevel = event.target.value;
-    onChangeZoomLevel(newZoomLevel);
+  const updateViewMode = (event) => {
+    const newViewMode = event.target.value;
+    onChangeViewMode(newViewMode);
   };
 
   let modalElement: React.ReactElement | null = null;
@@ -137,17 +137,17 @@ export const Toolbar = ({
   }
 
   const onZoomIn = () => {
-    if (zoomLevel !== ViewMode.Hour) {
-      const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
-      const newZoomLevel = Object.values(ViewMode).at(currentIndex - 1);
-      onChangeZoomLevel(newZoomLevel ? newZoomLevel : ViewMode.Hour);
+    if (viewMode !== ViewMode.Hour) {
+      const currentIndex = Object.values(ViewMode).indexOf(viewMode);
+      const newViewMode = Object.values(ViewMode).at(currentIndex - 1);
+      onChangeViewMode(newViewMode ? newViewMode : ViewMode.Hour);
     }
   };
   const onZoomOut = () => {
-    if (zoomLevel !== ViewMode.Year) {
-      const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
-      const newZoomLevel = Object.values(ViewMode).at(currentIndex + 1);
-      onChangeZoomLevel(newZoomLevel ? newZoomLevel : ViewMode.Year);
+    if (viewMode !== ViewMode.Year) {
+      const currentIndex = Object.values(ViewMode).indexOf(viewMode);
+      const newViewMode = Object.values(ViewMode).at(currentIndex + 1);
+      onChangeViewMode(newViewMode ? newViewMode : ViewMode.Year);
     }
   };
 
@@ -190,11 +190,11 @@ export const Toolbar = ({
         )}
         <FormControl className={classes.selectFormControl}>
           <Select
-            value={zoomLevel}
-            onChange={updateZoomLevel}
+            value={viewMode}
+            onChange={updateViewMode}
             variant="standard"
             disableUnderline
-            title={t('zoomLevel')}
+            title={t('viewMode')}
             data-testid="zoom-level">
             <MenuItem value={ViewMode.Hour} data-testid="zoom-level-Hour">
               {t('hour')}

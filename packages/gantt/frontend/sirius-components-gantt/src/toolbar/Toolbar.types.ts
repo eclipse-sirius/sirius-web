@@ -15,10 +15,10 @@ import { TaskListColumnEnum } from '../representation/Gantt.types';
 
 export interface ToolbarProps {
   representationId: string;
-  zoomLevel: ViewMode;
+  viewMode: ViewMode;
   columns: TaskListColumnEnum[];
   tasks: TaskOrEmpty[];
-  onChangeZoomLevel: (_: ViewMode) => any;
+  onChangeViewMode: (_: ViewMode) => any;
   onChangeDisplayColumns: () => any;
   onChangeColumns: (_: TaskListColumnEnum[]) => any;
   fullscreenNode: React.RefObject<HTMLDivElement | null>;

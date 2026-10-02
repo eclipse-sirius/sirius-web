@@ -23,7 +23,7 @@ export enum TaskListColumnEnum {
 }
 
 export interface GanttState {
-  zoomLevel: ViewMode;
+  viewMode: ViewMode;
   selectedColumns: TaskListColumnEnum[];
   displayedColumns: Column[];
   displayColumns: boolean;
