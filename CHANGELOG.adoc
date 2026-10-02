@@ -90,6 +90,10 @@ Consumers that still need a node index can use `nodes.findIndex((node) => node.i
 A new API has been added to replace `clearHandlerProvider`: `IReferenceWidgetClearHandler`, a candidate to handle the clear event.
 Two implementations of `IReferenceWidgetClearHandler`, `ViewReferenceWidgetClearHandler` for View-based representation and `DetailsViewReferenceWidgetClearHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
 Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetClearHandler`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5509[#5509] [diagram] The `getPalette` query is no longer used to compute if a node has an edge creation tool (and thus if a diagram element should render edge creation handles).
+A new query `connectorToolsCandidatesDescriptionIds(diagramElementId: ID!): [ID!]!` is used instead, it returns all elements description ids that are target candidate for a given source element.
+This query is using the `IDiagramElementConnectorToolsCandidatesProvider`, a default implementation is provided.
+The `precondition` of an edge tool is no longer evaluated when computing if an element should display its creation handles.
 
 
 === Dependency update

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteExecutor;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsCandidatesExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ReconnectEdgeMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -70,6 +71,9 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private ConnectorPaletteExecutor connectorPaletteExecutor;
+
+    @Autowired
+    private ConnectorToolsCandidatesExecutor connectorToolsCandidatesExecutor;
 
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
@@ -119,6 +123,37 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(requestConnectorPalette)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with some nodes, when the connector tool candidate descriptions are requested for a node, then the target descriptions are returned")
+    public void givenDiagramWithSomeNodesWhenTheConnectorToolCandidateDescriptionsAreRequestedForANodeThenTheTargetDescriptionsAreReturned() {
+        var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var nodeId = new AtomicReference<String>();
+        var nodeDescriptionId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+
+            var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
+            nodeId.set(siriusWebInfrastructureNode.getId());
+            nodeDescriptionId.set(siriusWebInfrastructureNode.getDescriptionId());
+        });
+
+        Runnable requestConnectorToolsCandidates = () -> this.connectorToolsCandidatesExecutor.execute(
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                diagramId.get(),
+                nodeId.get()
+        ).hasTargetDescriptionIds(targetDescriptionIds -> assertThat(targetDescriptionIds).contains(nodeDescriptionId.get()));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(requestConnectorToolsCandidates)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

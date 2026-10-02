@@ -59,20 +59,23 @@ public class EdgeToolConverter implements IEdgeToolConverter {
             dialogDescriptionId = this.diagramIdProvider.getId(viewEdgeTool.getDialogDescription());
         }
 
-        List<SingleClickOnTwoDiagramElementsCandidate> candidates = List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
+        return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
+                .label(viewEdgeTool.getName())
+                .iconURL(iconURLs)
+                .candidates(this.getConnectorToolsCandidates(viewEdgeTool, diagramDescription, diagramElementDescription))
+                .dialogDescriptionId(dialogDescriptionId)
+                .build();
+    }
+
+    @Override
+    public List<SingleClickOnTwoDiagramElementsCandidate> getConnectorToolsCandidates(EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription) {
+        return List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                 .sources(List.of(diagramElementDescription))
                 .targets(viewEdgeTool.getTargetElementDescriptions().stream()
                         .map(viewDiagramElementDescription -> this.diagramDescriptionService.findDiagramElementDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription)))
                         .flatMap(Optional::stream)
                         .toList())
                 .build());
-
-        return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
-                .label(viewEdgeTool.getName())
-                .iconURL(iconURLs)
-                .candidates(candidates)
-                .dialogDescriptionId(dialogDescriptionId)
-                .build();
     }
 
     private List<String> getIconURLs(EdgeTool edgeTool, AQLInterpreter interpreter, VariableManager variableManager) {

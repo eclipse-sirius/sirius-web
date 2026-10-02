@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram.tools.api;
 
-import org.eclipse.sirius.components.palette.dto.ITool;
+import java.util.List;
+
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.palette.dto.ITool;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 
@@ -26,4 +29,15 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
  */
 public interface IEdgeToolConverter {
     ITool createEdgeTool(AQLInterpreter interpreter, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager);
+
+    /**
+     * Returns the candidates of the given edge tool.
+     *
+     * @param viewEdgeTool The edge tool
+     * @param diagramDescription The diagram description
+     * @param diagramElementDescription The diagram element description
+     * @return The candidates of the edge tool
+     * @since 2026.11.0
+     */
+    List<SingleClickOnTwoDiagramElementsCandidate> getConnectorToolsCandidates(EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription);
 }
