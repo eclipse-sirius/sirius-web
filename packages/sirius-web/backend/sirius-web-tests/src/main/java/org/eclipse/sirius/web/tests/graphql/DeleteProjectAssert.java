@@ -54,7 +54,7 @@ public class DeleteProjectAssert {
         String typename = JsonPath.read(this.result.data(), "$.data.deleteProject.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
-        assertThat(capturedOutput.getOut()).contains("Project " + this.input.projectId() + " deleted");
+        assertThat(this.capturedOutput.getOut()).contains("Project " + this.input.projectId() + " deleted");
         return this;
     }
 
@@ -67,7 +67,7 @@ public class DeleteProjectAssert {
     }
 
     public DeleteProjectAssert isCapabilityError() {
-        List<String> messages = JsonPath.read(result.data(), "$.data.deleteProject.messages[*].body");
+        List<String> messages = JsonPath.read(this.result.data(), "$.data.deleteProject.messages[*].body");
         assertThat(messages).contains(this.messageService.unauthorized());
         return this;
     }

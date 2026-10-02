@@ -18,10 +18,12 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.flow.starter.services.FlowStyleCustomizationDescriptionProvider;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.UpdateProjectStyleCustomizationStateInput;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.DeleteProjectExecutor;
 import org.eclipse.sirius.web.tests.graphql.UpdateProjectStyleCustomizationStateExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +54,9 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
     @Autowired
     private UpdateProjectStyleCustomizationStateExecutor updateProjectStyleCustomizationStateExecutor;
 
+    @Autowired
+    private DeleteProjectExecutor deleteProjectExecutor;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -78,6 +83,18 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
 
         var input = new UpdateProjectStyleCustomizationStateInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE, false);
         this.updateProjectStyleCustomizationStateExecutor.execute(input, capturedOutput).isSuccess();
+
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE)).isFalse();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a flow project with project style customizations enabled, when the project is deleted, then the associated project style customizations are deleted")
+    public void givenAFlowProjectWithProjectStyleCustomizationsEnabledWhenTheProjectIsDeletedThenAssociatedProjectStyleCustomizationsAreDeleted(CapturedOutput capturedOutput) {
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE)).isTrue();
+
+        var input = new DeleteProjectInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID);
+        this.deleteProjectExecutor.execute(input, capturedOutput).isSuccess();
 
         assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE)).isFalse();
     }

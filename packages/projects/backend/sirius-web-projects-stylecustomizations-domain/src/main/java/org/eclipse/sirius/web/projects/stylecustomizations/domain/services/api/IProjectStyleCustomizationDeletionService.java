@@ -25,4 +25,6 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 public interface IProjectStyleCustomizationDeletionService {
 
     IResult<Void> deleteByProjectIdAndStyleDescriptionId(ICause cause, AggregateReference<Project, String> project, String styleCustomizationId);
+
+    IResult<Void> deleteProjectStyleCustomizationsByProjectId(ICause cause, AggregateReference<Project, String> project);
 }

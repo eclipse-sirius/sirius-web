@@ -48,4 +48,11 @@ public class ProjectStyleCustomizationDeletionService implements IProjectStyleCu
         }
         return new Failure<>("");
     }
+
+    @Override
+    public IResult<Void> deleteProjectStyleCustomizationsByProjectId(ICause cause, AggregateReference<Project, String> project) {
+        var projectStyleCustomizations = this.projectStyleCustomizationRepository.findAllByProjectId(project.getId());
+        this.projectStyleCustomizationRepository.deleteAll(projectStyleCustomizations);
+        return new Success<>(null);
+    }
 }
