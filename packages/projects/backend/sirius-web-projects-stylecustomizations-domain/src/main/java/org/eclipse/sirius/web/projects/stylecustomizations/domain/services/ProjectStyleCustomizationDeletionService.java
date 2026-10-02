@@ -44,4 +44,12 @@ public class ProjectStyleCustomizationDeletionService implements IProjectStyleCu
         optionalProjectStyleCustomization.ifPresent(this.projectStyleCustomizationRepository::delete);
         return new Success<>(null);
     }
+
+    @Override
+    public IResult<Void> deleteProjectStyleCustomizationsByProjectId(ICause cause, AggregateReference<Project, String> project) {
+        // TODO: quid du projet qui n'existe pas
+        var projectStyleCustomizations = this.projectStyleCustomizationRepository.findAllByProjectId(project.getId());
+        this.projectStyleCustomizationRepository.deleteAll(projectStyleCustomizations);
+        return new Success<>(null);
+    }
 }
