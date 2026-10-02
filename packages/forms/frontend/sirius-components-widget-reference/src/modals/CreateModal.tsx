@@ -85,6 +85,7 @@ const createElementInReferenceMutation = gql`
 const getChildCreationDescriptionsQuery = gql`
   query getChildCreationDescriptions(
     $editingContextId: ID!
+    $representationId: ID!
     $containerId: ID!
     $referenceKind: String
     $descriptionId: String!
@@ -92,6 +93,7 @@ const getChildCreationDescriptionsQuery = gql`
     viewer {
       editingContext(editingContextId: $editingContextId) {
         referenceWidgetChildCreationDescriptions(
+          representationId: $representationId
           containerId: $containerId
           referenceKind: $referenceKind
           descriptionId: $descriptionId
@@ -108,6 +110,7 @@ const getChildCreationDescriptionsQuery = gql`
 const getRootObjectCreationDescriptionsQuery = gql`
   query getRootObjectCreationDescriptions(
     $editingContextId: ID!
+    $representationId: ID!
     $domainId: ID!
     $referenceKind: String
     $descriptionId: String!
@@ -115,6 +118,7 @@ const getRootObjectCreationDescriptionsQuery = gql`
     viewer {
       editingContext(editingContextId: $editingContextId) {
         referenceWidgetRootCreationDescriptions(
+          representationId: $representationId
           domainId: $domainId
           referenceKind: $referenceKind
           descriptionId: $descriptionId
@@ -323,6 +327,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
       getRootObjectCreationDescriptions({
         variables: {
           editingContextId,
+          representationId: formId,
           domainId: state.selectedDomainId,
           referenceKind: widget.reference.referenceKind,
           descriptionId: widget.descriptionId,
@@ -332,6 +337,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
       getChildCreationDescription({
         variables: {
           editingContextId,
+          representationId: formId,
           containerId: state.containerId,
           referenceKind: widget.reference.referenceKind,
           descriptionId: widget.descriptionId,

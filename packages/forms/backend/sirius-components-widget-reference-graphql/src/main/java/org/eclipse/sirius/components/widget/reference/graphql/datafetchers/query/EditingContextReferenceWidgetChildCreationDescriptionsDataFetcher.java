@@ -34,6 +34,7 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "EditingContext", field = "referenceWidgetChildCreationDescriptions")
 public class EditingContextReferenceWidgetChildCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<ChildCreationDescription>>> {
 
+    private static final String REPRESENTATION_ID_ARGUMENT = "representationId";
     private static final String CONTAINER_ID_ARGUMENT = "containerId";
     private static final String REFERENCE_KIND_ARGUMENT = "referenceKind";
     private static final String WIDGET_DESCRIPTION_ID_ARGUMENT = "descriptionId";
@@ -47,11 +48,12 @@ public class EditingContextReferenceWidgetChildCreationDescriptionsDataFetcher i
     @Override
     public CompletableFuture<List<ChildCreationDescription>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
+        String representationId = environment.getArgument(REPRESENTATION_ID_ARGUMENT);
         String containerId = environment.getArgument(CONTAINER_ID_ARGUMENT);
         String referenceKind = environment.getArgument(REFERENCE_KIND_ARGUMENT);
         String descriptionId = environment.getArgument(WIDGET_DESCRIPTION_ID_ARGUMENT);
 
-        ReferenceWidgetChildCreationDescriptionsInput input = new ReferenceWidgetChildCreationDescriptionsInput(UUID.randomUUID(), editingContextId, containerId,
+        ReferenceWidgetChildCreationDescriptionsInput input = new ReferenceWidgetChildCreationDescriptionsInput(UUID.randomUUID(), editingContextId, representationId, containerId,
                 referenceKind, descriptionId);
 
         return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)

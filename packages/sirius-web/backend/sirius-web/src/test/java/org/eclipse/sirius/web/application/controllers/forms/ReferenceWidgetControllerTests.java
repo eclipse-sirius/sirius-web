@@ -28,18 +28,31 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ClearReferenceInput;
+import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.RemoveReferenceValueInput;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.domain.Domain;
+import org.eclipse.sirius.components.domain.DomainPackage;
+import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceClearMutationRunner;
+import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceCreateElementExecutor;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceRemoveMutationRunner;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceValueOptionsQueryRunner;
+import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceWidgetChildCreationDescriptionsExecutor;
+import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceWidgetRootCreationDescriptionsExecutor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithReferenceWidgetDescriptionProvider;
+import org.eclipse.sirius.web.services.forms.FormWithUnhandledReferenceWidgetDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,6 +60,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -76,6 +90,30 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private ReferenceRemoveMutationRunner referenceRemoveMutationRunner;
+
+    @Autowired
+    private ReferenceCreateElementExecutor referenceCreateElementExecutor;
+
+    @Autowired
+    private ReferenceWidgetRootCreationDescriptionsExecutor referenceWidgetRootCreationDescriptionsExecutor;
+
+    @Autowired
+    private ReferenceWidgetChildCreationDescriptionsExecutor referenceWidgetChildCreationDescriptionsExecutor;
+
+    @Autowired
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
+
+    @Autowired
+    private FormWithUnhandledReferenceWidgetDescriptionProvider formWithUnhandledReferenceWidgetDescriptionProvider;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
+    @Autowired
+    private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private IObjectSearchService objectSearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -269,5 +307,230 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                 .consumeNextWith(afterRemoveReferenceContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget in View, when creating a root element, then the semantic object is created")
+    public void givenReferenceWidgetInViewWhenCreatingRootElementThenTheSemanticObjectIsCreated() {
+        var formId = new AtomicReference<String>();
+        var referenceWidget = new AtomicReference<ReferenceWidget>();
+        var createdObjectId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            referenceWidget.set(new FormNavigator(form).page("Page").group("Group").findWidget("Super types", ReferenceWidget.class));
+            assertThat(referenceWidget.get().isReadOnly()).isFalse();
+        });
+
+        Runnable createElementMutation = () -> {
+            var widget = referenceWidget.get();
+            var creationDescriptionId = this.getRootCreationDescriptionId(formId.get(), widget);
+            var input = new CreateElementInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    formId.get(), widget.getId(), StudioIdentifiers.DOMAIN_DOCUMENT.toString(), DomainPackage.eNS_URI, creationDescriptionId, widget.getDescriptionId());
+            createdObjectId.set(this.referenceCreateElementExecutor.execute(input).isSuccess().getObjectId());
+        };
+
+        StepVerifier.create(this.givenViewReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(createElementMutation)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var entity = this.getCreatedEntity(createdObjectId.get());
+        assertThat(entity.eContainer()).isNull();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget in View, when creating a child element, then the semantic object is created")
+    public void givenReferenceWidgetInViewWhenCreatingChildElementThenTheSemanticObjectIsCreated() {
+        var formId = new AtomicReference<String>();
+        var referenceWidget = new AtomicReference<ReferenceWidget>();
+        var createdObjectId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            referenceWidget.set(new FormNavigator(form).page("Page").group("Group").findWidget("Super types", ReferenceWidget.class));
+            assertThat(referenceWidget.get().isReadOnly()).isFalse();
+        });
+
+        Runnable createElementMutation = () -> {
+            var widget = referenceWidget.get();
+            var creationDescriptionId = this.getChildCreationDescriptionId(formId.get(), widget);
+            var input = new CreateElementInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    formId.get(), widget.getId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), null, creationDescriptionId, widget.getDescriptionId());
+            createdObjectId.set(this.referenceCreateElementExecutor.execute(input).isSuccess().getObjectId());
+        };
+
+        StepVerifier.create(this.givenViewReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(createElementMutation)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var entity = this.getCreatedEntity(createdObjectId.get());
+        assertThat(entity.eContainer()).isInstanceOf(Domain.class);
+        assertThat(((Domain) entity.eContainer()).getTypes()).contains(entity);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget in Details, when creating a root element, then the semantic object is created")
+    public void givenReferenceWidgetInDetailsWhenCreatingRootElementThenTheSemanticObjectIsCreated() {
+        var formId = new AtomicReference<String>();
+        var referenceWidget = new AtomicReference<ReferenceWidget>();
+        var createdObjectId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            referenceWidget.set(new FormNavigator(form).page("Human").group("Core Properties").findWidget("Super Types", ReferenceWidget.class));
+            assertThat(referenceWidget.get().isReadOnly()).isFalse();
+        });
+
+        Runnable createElementMutation = () -> {
+            var widget = referenceWidget.get();
+            var creationDescriptionId = this.getRootCreationDescriptionId(formId.get(), widget);
+            var input = new CreateElementInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    formId.get(), widget.getId(), StudioIdentifiers.DOMAIN_DOCUMENT.toString(), DomainPackage.eNS_URI, creationDescriptionId, widget.getDescriptionId());
+            createdObjectId.set(this.referenceCreateElementExecutor.execute(input).isSuccess().getObjectId());
+        };
+
+        StepVerifier.create(this.givenDetailsReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(createElementMutation)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var entity = this.getCreatedEntity(createdObjectId.get());
+        assertThat(entity.eContainer()).isNull();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget in Details, when creating a child element, then the semantic object is created")
+    public void givenReferenceWidgetInDetailsWhenCreatingChildElementThenTheSemanticObjectIsCreated() {
+        var formId = new AtomicReference<String>();
+        var referenceWidget = new AtomicReference<ReferenceWidget>();
+        var createdObjectId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            referenceWidget.set(new FormNavigator(form).page("Human").group("Core Properties").findWidget("Super Types", ReferenceWidget.class));
+            assertThat(referenceWidget.get().isReadOnly()).isFalse();
+        });
+
+        Runnable createElementMutation = () -> {
+            var widget = referenceWidget.get();
+            var creationDescriptionId = this.getChildCreationDescriptionId(formId.get(), widget);
+            var input = new CreateElementInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    formId.get(), widget.getId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), null, creationDescriptionId, widget.getDescriptionId());
+            createdObjectId.set(this.referenceCreateElementExecutor.execute(input).isSuccess().getObjectId());
+        };
+
+        StepVerifier.create(this.givenDetailsReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(createElementMutation)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var entity = this.getCreatedEntity(createdObjectId.get());
+        assertThat(entity.eContainer()).isInstanceOf(Domain.class);
+        assertThat(((Domain) entity.eContainer()).getTypes()).contains(entity);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a form without a create handler, when creating an element, then an error is returned and no object is created")
+    public void givenFormWithoutCreateHandlerWhenCreatingElementThenErrorIsReturnedAndNoObjectIsCreated() {
+        this.assertCreateElementRejected(this.formWithUnhandledReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
+                "Super types", "No handler found to handle the input", false);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a read-only reference widget, when creating an element, then an error is returned and no object is created")
+    public void givenReadOnlyReferenceWidgetWhenCreatingElementThenErrorIsReturnedAndNoObjectIsCreated() {
+        this.assertCreateElementRejected(this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
+                "Read-only super types", "Read-only widget cannot be edited", true);
+    }
+
+    private void assertCreateElementRejected(String descriptionId, String widgetLabel, String expectedMessage, boolean readOnly) {
+        int initialTypeCount = this.getDomainTypeCount();
+        var formId = new AtomicReference<String>();
+        var referenceWidget = new AtomicReference<ReferenceWidget>();
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                descriptionId, StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(), "FormWithReferenceWidget");
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            referenceWidget.set(new FormNavigator(form).page("Page").group("Group").findWidget(widgetLabel, ReferenceWidget.class));
+            assertThat(referenceWidget.get().isReadOnly()).isEqualTo(readOnly);
+        });
+        Runnable createElementMutation = () -> {
+            var widget = referenceWidget.get();
+            var createInput = new CreateElementInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    formId.get(), widget.getId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), null, "types-Entity", widget.getDescriptionId());
+            this.referenceCreateElementExecutor.execute(createInput).isError().hasMessage(expectedMessage);
+        };
+
+        StepVerifier.create(this.givenCreatedFormSubscription.createAndSubscribe(input).flux().filter(FormRefreshedEventPayload.class::isInstance))
+                .consumeNextWith(initialFormContentConsumer)
+                .then(createElementMutation)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        assertThat(this.getDomainTypeCount()).isEqualTo(initialTypeCount);
+    }
+
+    private String getRootCreationDescriptionId(String formId, ReferenceWidget widget) {
+        var variables = Map.<String, Object>of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                "representationId", formId,
+                "domainId", DomainPackage.eNS_URI,
+                "referenceKind", widget.getReferenceKind(),
+                "descriptionId", widget.getDescriptionId());
+        return this.referenceWidgetRootCreationDescriptionsExecutor.execute(variables)
+                .hasCreationDescriptionIds("Entity")
+                .getCreationDescriptionId();
+    }
+
+    private String getChildCreationDescriptionId(String formId, ReferenceWidget widget) {
+        var variables = Map.<String, Object>of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                "representationId", formId,
+                "containerId", StudioIdentifiers.DOMAIN_OBJECT.toString(),
+                "referenceKind", widget.getReferenceKind(),
+                "descriptionId", widget.getDescriptionId());
+        return this.referenceWidgetChildCreationDescriptionsExecutor.execute(variables)
+                .hasCreationDescriptionIds("types-Entity")
+                .getCreationDescriptionId();
+    }
+
+    private Flux<Object> givenViewReferenceFormSubscription() {
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(), StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(), "FormWithReferenceWidget");
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux().filter(FormRefreshedEventPayload.class::isInstance);
+    }
+
+    private Flux<Object> givenDetailsReferenceFormSubscription() {
+        var representationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
+        return this.detailsEventSubscriptionRunner.run(input).flux().filter(FormRefreshedEventPayload.class::isInstance);
+    }
+
+    private Entity getCreatedEntity(String objectId) {
+        var editingContext = this.editingContextSearchService.findById(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID).orElseThrow();
+        var object = this.objectSearchService.getObject(editingContext, objectId).orElseThrow();
+        assertThat(object).isInstanceOf(Entity.class);
+        var entity = (Entity) object;
+        assertThat(entity.eResource()).isNotNull();
+        return entity;
+    }
+
+    private int getDomainTypeCount() {
+        var editingContext = this.editingContextSearchService.findById(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID).orElseThrow();
+        var domain = this.objectSearchService.getObject(editingContext, StudioIdentifiers.DOMAIN_OBJECT.toString()).filter(Domain.class::isInstance).map(Domain.class::cast).orElseThrow();
+        return domain.getTypes().size();
     }
 }
