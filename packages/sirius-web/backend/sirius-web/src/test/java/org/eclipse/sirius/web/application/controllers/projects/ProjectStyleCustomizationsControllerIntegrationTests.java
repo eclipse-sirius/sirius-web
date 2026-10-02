@@ -20,12 +20,10 @@ import org.eclipse.sirius.components.flow.starter.services.FlowStyleCustomizatio
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.UpdateProjectStyleCustomizationStateInput;
-import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.ProjectStyleCustomizationStore;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.UpdateProjectStyleCustomizationStateExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,28 +52,33 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
     @Autowired
     private UpdateProjectStyleCustomizationStateExecutor updateProjectStyleCustomizationStateExecutor;
 
-    @Autowired
-    private ProjectStyleCustomizationStore projectStyleCustomizationStore;
-
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
-    }
-
-    @AfterEach
-    public void afterEach() {
-        this.projectStyleCustomizationStore.clear();
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a disabled project style customization, when it is enabled, then it becomes active")
     public void givenDisabledProjectStyleCustomizationWhenEnabledThenItBecomesActive(CapturedOutput capturedOutput) {
-        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI)).isFalse();
+        String arbitraryProjectStyleCustomizationDescriptionId = "does-not-really-exists";
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), arbitraryProjectStyleCustomizationDescriptionId)).isFalse();
 
-        var input = new UpdateProjectStyleCustomizationStateInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI, true);
+        var input = new UpdateProjectStyleCustomizationStateInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, arbitraryProjectStyleCustomizationDescriptionId, true);
         this.updateProjectStyleCustomizationStateExecutor.execute(input, capturedOutput).isSuccess();
 
-        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI)).isTrue();
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), arbitraryProjectStyleCustomizationDescriptionId)).isTrue();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a enabled project style customization, when it is disabled, then it becomes inactive")
+    public void givenEnabledProjectStyleCustomizationWhenDisabledThenItBecomeInactive(CapturedOutput capturedOutput) {
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE)).isTrue();
+
+        var input = new UpdateProjectStyleCustomizationStateInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE, false);
+        this.updateProjectStyleCustomizationStateExecutor.execute(input, capturedOutput).isSuccess();
+
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE)).isFalse();
     }
 }

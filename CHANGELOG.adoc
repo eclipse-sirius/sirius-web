@@ -134,6 +134,8 @@ Implement `IStyleCustomizationDescriptionProvider` to provide a list of style cu
 Introduced the `PageInfoAssert` for testing the page info returned by query runner when using the cursor-based pagination in integration tests.
 - https://github.com/eclipse-sirius/sirius-web/issues/7017[#7017] [projects] Add the project style customization domain.
 - https://github.com/eclipse-sirius/sirius-web/issues/6966[#6966] [projects] Allow users to enable and disable project style customizations.
+- https://github.com/eclipse-sirius/sirius-web/issues/7034[#7034] [projects] Persist project style customizations.
+When a style customization is disabled for a project, then its associated project style customization is deleted from the database.
 
 
 === Improvements

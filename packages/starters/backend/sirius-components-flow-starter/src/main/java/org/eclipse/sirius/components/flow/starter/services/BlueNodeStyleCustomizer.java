@@ -31,6 +31,7 @@ import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.I
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The flow node style customizer updating the background color of flow element when their name contains "I'm Blue".
@@ -58,6 +59,7 @@ public class BlueNodeStyleCustomizer implements INodeStyleCustomizer {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public INodeStyle customize(VariableManager variableManager, DiagramDescription diagramDescription, NodeDescription nodeDescription, INodeStyle nodeStyle) {
         INodeStyle customizeStyle = nodeStyle;
         if (this.nodeCustomizationEnabled && nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {

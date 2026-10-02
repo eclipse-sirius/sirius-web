@@ -28,7 +28,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "org.eclipse.sirius.web.images.domain",
     "org.eclipse.sirius.web.library.domain",
     "org.eclipse.sirius.web.projects.images.domain",
-    "org.eclipse.sirius.web.projects.semanticdata.domain"
+    "org.eclipse.sirius.web.projects.semanticdata.domain",
+    "org.eclipse.sirius.web.projects.stylecustomizations.domain"
 })
 public class JDBCConfiguration {
 }
