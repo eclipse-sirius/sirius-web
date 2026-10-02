@@ -425,6 +425,7 @@ type DiagramDescription implements RepresentationDescription {
   edgeDescriptions: [EdgeDescription!]!
   toolbar: DiagramToolbar
   palette(diagramElementIds: [ID!]): Palette!
+  connectorToolCandidateDescriptionIds(diagramElementId: ID!): [ID!]!
   connectorPalette(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): Palette!
   actions(diagramElementId: ID!): [Action!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!

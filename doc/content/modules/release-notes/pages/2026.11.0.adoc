@@ -67,6 +67,10 @@ Downstream consumers must declare this dependency and replace the package prefix
   `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
   Other programmatic forms must contribute their own creation handler.
   The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
+- The `getPalette` query is no longer used to compute if a node has an edge creation tool (and thus if a diagram element should render edge creation handles).
+A new query `connectorToolCandidateDescriptionIds(diagramElementId: ID!): [ID!]!` is used instead, it returns all element description id that are target candidate for a given source element.
+This query is using the `IConnectorToolCandidateDescriptionIdsProvider`, a default implementation is provided.
+The `precondition` of an edge tool is no longer evaluated when computing if an element should display its creation handles.
 
 == Dependency updates
 
