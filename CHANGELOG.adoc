@@ -136,6 +136,7 @@ Introduced the `PageInfoAssert` for testing the page info returned by query runn
 - https://github.com/eclipse-sirius/sirius-web/issues/6966[#6966] [projects] Allow users to enable and disable project style customizations.
 - https://github.com/eclipse-sirius/sirius-web/issues/7034[#7034] [projects] Persist project style customizations.
 When a style customization is disabled for a project, then its associated project style customization is deleted from the database.
+- [projects] Enable flow related project style customizations when a new flow project is created.
 
 
 === Improvements

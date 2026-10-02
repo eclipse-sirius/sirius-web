@@ -14,14 +14,18 @@ package org.eclipse.sirius.web.application.controllers.projects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.flow.starter.services.FlowProjectTemplatesProvider;
 import org.eclipse.sirius.components.flow.starter.services.FlowStyleCustomizationDescriptionProvider;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.UpdateProjectStyleCustomizationStateInput;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.CreateProjectExecutor;
 import org.eclipse.sirius.web.tests.graphql.UpdateProjectStyleCustomizationStateExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +56,9 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
     @Autowired
     private UpdateProjectStyleCustomizationStateExecutor updateProjectStyleCustomizationStateExecutor;
 
+    @Autowired
+    private CreateProjectExecutor createProjectExecutor;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -80,5 +87,16 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
         this.updateProjectStyleCustomizationStateExecutor.execute(input, capturedOutput).isSuccess();
 
         assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE)).isFalse();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given the initial server state, when a flow project is created, then flow related project style customization are enabled")
+    public void givenTheInitialServerStateWhenFlowProjectIsCreatedThenFlowRelatedProjectStyleCustomizationsAreEnabled(CapturedOutput capturedOutput) {
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Flow Project", FlowProjectTemplatesProvider.FLOW_TEMPLATE_ID, List.of());
+        var createdProjectId = this.createProjectExecutor.execute(input, capturedOutput).isSuccess().getProjectId();
+
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(createdProjectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE)).isTrue();
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(createdProjectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI)).isTrue();
     }
 }
