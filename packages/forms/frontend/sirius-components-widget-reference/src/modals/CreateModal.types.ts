@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ export interface GQLErrorPayload extends GQLCreateElementInReferencePayload {
 
 export interface GQLGetChildCreationDescriptionsQueryVariables {
   editingContextId: string;
+  representationId: string;
   containerId: string;
   referenceKind?: string;
   descriptionId: string;
@@ -71,6 +72,7 @@ export interface GQLGetDomainsQueryData {
 
 export interface GQLGetRootObjectCreationDescriptionsQueryVariables {
   editingContextId: string;
+  representationId: string;
   domainId: string;
   referenceKind?: string;
   descriptionId: string;

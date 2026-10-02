@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.widget.reference;
+package org.eclipse.sirius.components.view.emf.widget.reference;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,24 +21,30 @@ import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferen
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.view.emf.ViewRepresentationDescriptionPredicate;
+import org.springframework.stereotype.Service;
 
 /**
- * * Default implementation of {@link IReferenceWidgetCreateElementHandler}.
- * * This implementation use {@link IEditService}.
+ * Creates objects from View-based reference widgets.
  *
- * @author frouene
+ * @author tgiraudet
  */
-public class ReferenceWidgetDefaultCreateElementHandler implements IReferenceWidgetCreateElementHandler {
+@Service
+public class ViewReferenceWidgetCreateElementHandler implements IReferenceWidgetCreateElementHandler {
+
+    private final ViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
     private final IEditService editService;
 
-    public ReferenceWidgetDefaultCreateElementHandler(IEditService editService) {
+    public ViewReferenceWidgetCreateElementHandler(ViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IEditService editService) {
+        this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.editService = Objects.requireNonNull(editService);
     }
 
     @Override
-    public boolean canHandle(String descriptionId) {
-        return true;
+    public boolean canHandle(FormDescription formDescription) {
+        return this.viewRepresentationDescriptionPredicate.test(formDescription);
     }
 
     @Override

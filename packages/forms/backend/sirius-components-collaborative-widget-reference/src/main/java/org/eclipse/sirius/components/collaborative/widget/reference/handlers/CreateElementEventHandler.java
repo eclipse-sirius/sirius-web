@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,18 +24,18 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
-import org.eclipse.sirius.components.collaborative.widget.reference.ReferenceWidgetDefaultCreateElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetCreateElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInReferenceSuccessPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.springframework.stereotype.Service;
 
@@ -60,18 +60,20 @@ public class CreateElementEventHandler implements IFormEventHandler {
 
     private final List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers;
 
-    private final ReferenceWidgetDefaultCreateElementHandler defaultReferenceWidgetCreateElementHandler;
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final Counter counter;
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService, List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, IEditService editService, MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
+    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService,
+            List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+            MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.referenceWidgetCreateElementHandlers = Objects.requireNonNull(referenceWidgetCreateElementHandlers);
-        this.defaultReferenceWidgetCreateElementHandler = new ReferenceWidgetDefaultCreateElementHandler(Objects.requireNonNull(editService));
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -94,23 +96,32 @@ public class CreateElementEventHandler implements IFormEventHandler {
         if (formInput instanceof CreateElementInput input) {
 
             var optionalWidget = this.formQueryService.findWidget(form, input.referenceWidgetId()).filter(ReferenceWidget.class::isInstance).map(ReferenceWidget.class::cast);
+            var optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId());
 
             if (optionalWidget.isPresent() && optionalWidget.get().isReadOnly()) {
                 payload = new ErrorPayload(input.id(), this.messageService.unableToEditReadOnlyWidget());
-            } else {
-                IReferenceWidgetCreateElementHandler handler = this.referenceWidgetCreateElementHandlers.stream()
-                        .filter(provider -> provider.canHandle(input.descriptionId()))
-                        .findFirst()
-                        .orElse(this.defaultReferenceWidgetCreateElementHandler);
+            } else if (optionalWidget.isPresent() && optionalFormDescription.isPresent() && optionalFormDescription.get() instanceof FormDescription formDescription) {
+                Optional<IReferenceWidgetCreateElementHandler> optionalHandler = this.referenceWidgetCreateElementHandlers.stream()
+                        .filter(provider -> provider.canHandle(formDescription))
+                        .findFirst();
 
-                var optionalObject = this.createElement(editingContext, handler, input);
+                if (optionalHandler.isPresent()) {
+                    var handler = optionalHandler.get();
 
-                if (optionalObject.isPresent()) {
-                    payload = new CreateElementInReferenceSuccessPayload(formInput.id(), optionalObject.get(), this.feedbackMessageService.getFeedbackMessages());
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
+                    var optionalObject = this.createElement(editingContext, handler, input);
+
+                    if (optionalObject.isPresent()) {
+                        payload = new CreateElementInReferenceSuccessPayload(formInput.id(), optionalObject.get(), this.feedbackMessageService.getFeedbackMessages());
+                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
+                    } else {
+                        payload = new ErrorPayload(input.id(), this.feedbackMessageService.getFeedbackMessages());
+                    }
                 } else {
-                    payload = new ErrorPayload(input.id(), this.feedbackMessageService.getFeedbackMessages());
+                    payload = new ErrorPayload(input.id(), this.messageService.noHandlerFound());
                 }
+
+            } else {
+                payload = new ErrorPayload(input.id(), this.messageService.invalidIds());
             }
         }
 

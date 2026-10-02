@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,13 +14,13 @@ package org.eclipse.sirius.components.collaborative.widget.reference.dto;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 
 /**
  * Input object for the query to retrieve the root creation descriptions.
  *
  * @author frouene
  */
-public record ReferenceWidgetRootCreationDescriptionsInput(UUID id, String editingContextId, String domainId, String referenceKind, String descriptionId) implements IInput {
+public record ReferenceWidgetRootCreationDescriptionsInput(UUID id, String editingContextId, String representationId, String domainId, String referenceKind, String descriptionId) implements IFormInput {
 
 }

@@ -34,8 +34,8 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "EditingContext", field = "referenceWidgetRootCreationDescriptions")
 public class EditingContextReferenceWidgetRootCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<ChildCreationDescription>>> {
 
+    private static final String REPRESENTATION_ID_ARGUMENT = "representationId";
     private static final String DOMAIN_ID_ARGUMENT = "domainId";
-
     private static final String REFERENCE_KIND_ARGUMENT = "referenceKind";
     private static final String WIDGET_DESCRIPTION_ID = "descriptionId";
 
@@ -48,11 +48,12 @@ public class EditingContextReferenceWidgetRootCreationDescriptionsDataFetcher im
     @Override
     public CompletableFuture<List<ChildCreationDescription>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
+        String representationId = environment.getArgument(REPRESENTATION_ID_ARGUMENT);
         String domainId = environment.getArgument(DOMAIN_ID_ARGUMENT);
         String referenceKind = environment.getArgument(REFERENCE_KIND_ARGUMENT);
         String descriptionId = environment.getArgument(WIDGET_DESCRIPTION_ID);
 
-        ReferenceWidgetRootCreationDescriptionsInput input = new ReferenceWidgetRootCreationDescriptionsInput(UUID.randomUUID(), editingContextId, domainId,
+        ReferenceWidgetRootCreationDescriptionsInput input = new ReferenceWidgetRootCreationDescriptionsInput(UUID.randomUUID(), editingContextId, representationId, domainId,
                 referenceKind, descriptionId);
 
         return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)

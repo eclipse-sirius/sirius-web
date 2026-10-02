@@ -94,6 +94,11 @@ Contributed programmatic views not relying on View DSL should have their own imp
 - https://github.com/eclipse-sirius/sirius-web/issues/6973[#6973] [form] The clear button of the widget reference is now driven by a dedicated EClass in the View DSL.
 All existing representations are automatically migrated as well as the details view of Sirius Web.
 However, programmatic form descriptions should manually add it through `ReferenceWidgetDescription.Builder#clearButtonDescription`.
+- https://github.com/eclipse-sirius/sirius-web/issues/7027 [form] Reference widget creation handlers are now form handlers instead of editing context handlers.
+`IReferenceWidgetCreateElementHandler#canHandle` now accepts a `FormDescription` instead of a widget description ID.
+`ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
+Other programmatic forms must contribute their own creation handler.
+The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
 
 
 === Dependency update

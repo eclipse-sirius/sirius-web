@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.forms.description.FormDescription;
 
 /**
  * Handle a reference widget create element operations.
@@ -26,7 +27,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  */
 public interface IReferenceWidgetCreateElementHandler {
 
-    boolean canHandle(String descriptionId);
+    boolean canHandle(FormDescription formDescription);
 
     List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, String referenceKind, String descriptionId);
 
@@ -44,7 +45,7 @@ public interface IReferenceWidgetCreateElementHandler {
     class NoOp implements IReferenceWidgetCreateElementHandler {
 
         @Override
-        public boolean canHandle(String descriptionId) {
+        public boolean canHandle(FormDescription formDescription) {
             return true;
         }
 
