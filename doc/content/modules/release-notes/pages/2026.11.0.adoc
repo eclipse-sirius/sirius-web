@@ -74,6 +74,7 @@ The `precondition` of an edge tool is no longer evaluated when computing if an e
 - Reference widgets now have an optional create button description.
   Existing persisted View descriptions are migrated to keep their create button.
   Programmatic descriptions must explicitly configure `createButtonDescription` to keep the creation action.
+- The `getPalette` query no longer return edge tool, use `getConnectorPalette` instead if needed.
 
 == Dependency updates
 
