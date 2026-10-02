@@ -54,7 +54,7 @@ export const ConnectionCreationHandles = memo(
     // Set candidates in the context
     useEffect(() => {
       if (candidates !== null) {
-        setCandidateDescriptionIds(candidates.map((candidate) => candidate.id));
+        setCandidateDescriptionIds(candidates);
       }
     }, [candidates]);
 
