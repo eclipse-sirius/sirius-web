@@ -18,3 +18,16 @@ type StyleCustomization {
   description: String!
   enabled: Boolean!
 }
+
+extend type Mutation {
+  updateProjectStyleCustomizationState(input: UpdateProjectStyleCustomizationStateInput!): UpdateProjectStyleCustomizationStatePayload!
+}
+
+input UpdateProjectStyleCustomizationStateInput {
+  id: ID!
+  projectId: ID!
+  styleCustomizationDescriptionId: ID!
+  enable: Boolean!
+}
+
+union UpdateProjectStyleCustomizationStatePayload = SuccessPayload | ErrorPayload

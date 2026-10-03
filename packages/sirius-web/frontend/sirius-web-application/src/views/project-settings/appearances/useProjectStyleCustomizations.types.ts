@@ -14,6 +14,7 @@
 export interface UseProjectStyleCustomizationsValue {
   data: GQLGetProjectStyleCustomizationsQueryData | null;
   loading: boolean;
+  refreshStyleCustomization: () => void;
 }
 
 export interface GQLGetProjectStyleCustomizationsQueryVariables {
