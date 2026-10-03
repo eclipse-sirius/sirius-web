@@ -27,7 +27,8 @@
     "build": "vite build && tsc",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
-    "publish:local": "yalc push"
+    "publish:local": "yalc push",
+    "test": "vitest --run --config vite.config.js"
   },
   "peerDependencies": {
     "@lexical/code-core": "0.42.0",
@@ -57,15 +58,19 @@
     "@lexical/rich-text": "0.42.0",
     "@lexical/selection": "0.42.0",
     "@lexical/utils": "0.42.0",
-    "lexical": "0.42.0",
     "@mui/material": "7.3.10",
     "@mui/icons-material": "7.3.10",
+    "@testing-library/react": "16.3.3",
     "@types/react": "18.3.3",
+    "@vitejs/plugin-react": "6.1.1",
+    "jsdom": "16.7.0",
+    "lexical": "0.42.0",
     "prettier": "2.7.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tss-react": "4.9.16",
     "typescript": "5.4.5",
-    "vite": "8.3.0"
+    "vite": "8.3.0",
+    "vitest": "3.2.4"
   }
 }
