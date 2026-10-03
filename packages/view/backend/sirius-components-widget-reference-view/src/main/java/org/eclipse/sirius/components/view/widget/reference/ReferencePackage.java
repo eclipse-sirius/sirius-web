@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,8 @@ import org.eclipse.sirius.components.view.form.FormPackage;
  * </ul>
  * <!-- end-user-doc -->
  *
- * @see ReferenceFactory
  * @model kind="package"
+ * @see org.eclipse.sirius.components.view.widget.reference.ReferenceFactory
  * @generated
  */
 public interface ReferencePackage extends EPackage {
@@ -94,6 +94,14 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__HELP_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -130,13 +138,21 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__BODY = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Clear Button</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -145,7 +161,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+    int REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
@@ -154,7 +170,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -335,117 +351,192 @@ public interface ReferencePackage extends EPackage {
     int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
-     * Returns the meta object for class
-     * '{@link ReferenceWidgetDescription <em>Widget Description</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetClearButtonDescriptionImpl
+     * <em>Widget Clear Button Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetClearButtonDescriptionImpl
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetClearButtonDescription()
+     * @generated
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION = 3;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION = 0;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__BODY = 1;
+
+    /**
+     * The number of structural features of the '<em>Widget Clear Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Widget Clear Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription <em>Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @return the meta object for class '<em>Widget Description</em>'.
-     * @see ReferenceWidgetDescription
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription
      * @generated
      */
     EClass getReferenceWidgetDescription();
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link ReferenceWidgetDescription#getReferenceOwnerExpression
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getReferenceOwnerExpression
      * <em>Reference Owner Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Owner Expression</em>'.
-     * @see ReferenceWidgetDescription#getReferenceOwnerExpression()
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getReferenceOwnerExpression()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
     EAttribute getReferenceWidgetDescription_ReferenceOwnerExpression();
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link ReferenceWidgetDescription#getReferenceNameExpression
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getReferenceNameExpression
      * <em>Reference Name Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Name Expression</em>'.
-     * @see ReferenceWidgetDescription#getReferenceNameExpression()
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getReferenceNameExpression()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
     EAttribute getReferenceWidgetDescription_ReferenceNameExpression();
 
     /**
-     * Returns the meta object for the containment reference list
-     * '{@link ReferenceWidgetDescription#getBody <em>Body</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getBody <em>Body</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Body</em>'.
-     * @generated
-     * @see ReferenceWidgetDescription#getBody()
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getBody()
      * @see #getReferenceWidgetDescription()
+     * @generated
      */
     EReference getReferenceWidgetDescription_Body();
 
     /**
-     * Returns the meta object for the containment reference
-     * '{@link ReferenceWidgetDescription#getStyle <em>Style</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the containment reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getClearButton <em>Clear Button</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Clear Button</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getClearButton()
+     * @see #getReferenceWidgetDescription()
+     * @generated
+     */
+    EReference getReferenceWidgetDescription_ClearButton();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Style</em>'.
-     * @see ReferenceWidgetDescription#getStyle()
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getStyle()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
     EReference getReferenceWidgetDescription_Style();
 
     /**
-     * Returns the meta object for the containment reference list
-     * '{@link ReferenceWidgetDescription#getConditionalStyles
+     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getConditionalStyles
      * <em>Conditional Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
-     * @see ReferenceWidgetDescription#getConditionalStyles()
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getConditionalStyles()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
     EReference getReferenceWidgetDescription_ConditionalStyles();
 
     /**
-     * Returns the meta object for class
-     * '{@link ReferenceWidgetDescriptionStyle <em>Widget Description
-     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle <em>Widget Description Style</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description Style</em>'.
-     * @see ReferenceWidgetDescriptionStyle
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle
      * @generated
      */
     EClass getReferenceWidgetDescriptionStyle();
 
     /**
-     * Returns the meta object for the reference
-     * '{@link ReferenceWidgetDescriptionStyle#getColor
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle#getColor
      * <em>Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the reference '<em>Color</em>'.
-     * @see ReferenceWidgetDescriptionStyle#getColor()
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle#getColor()
      * @see #getReferenceWidgetDescriptionStyle()
      * @generated
      */
     EReference getReferenceWidgetDescriptionStyle_Color();
 
     /**
-     * Returns the meta object for class
-     * '{@link ConditionalReferenceWidgetDescriptionStyle
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle
      * <em>Conditional Reference Widget Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional Reference Widget Description Style</em>'.
-     * @see ConditionalReferenceWidgetDescriptionStyle
+     * @see org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle
      * @generated
      */
     EClass getConditionalReferenceWidgetDescriptionStyle();
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link ReferenceWidgetDescription#getIsEnabledExpression <em>Is
-     * Enabled Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription <em>Widget Clear Button Description</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Widget Clear Button Description</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription
+     * @generated
+     */
+    EClass getReferenceWidgetClearButtonDescription();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getPreconditionExpression
+     * <em>Precondition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getPreconditionExpression()
+     * @see #getReferenceWidgetClearButtonDescription()
+     * @generated
+     */
+    EAttribute getReferenceWidgetClearButtonDescription_PreconditionExpression();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getBody
+     * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getBody()
+     * @see #getReferenceWidgetClearButtonDescription()
+     * @generated
+     */
+    EReference getReferenceWidgetClearButtonDescription_Body();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getIsEnabledExpression
+     * <em>Is Enabled Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @see ReferenceWidgetDescription#getIsEnabledExpression()
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getIsEnabledExpression()
      * @see #getReferenceWidgetDescription()
      * @generated
      */
@@ -510,6 +601,13 @@ public interface ReferencePackage extends EPackage {
         EReference REFERENCE_WIDGET_DESCRIPTION__BODY = eINSTANCE.getReferenceWidgetDescription_Body();
 
         /**
+         * The meta object literal for the '<em><b>Clear Button</b></em>' containment reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON = eINSTANCE.getReferenceWidgetDescription_ClearButton();
+
+        /**
          * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
          * --> <!-- end-user-doc -->
          *
@@ -550,11 +648,35 @@ public interface ReferencePackage extends EPackage {
          * <em>Conditional Reference Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
          * -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
          * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getConditionalReferenceWidgetDescriptionStyle()
+         * @generated
          */
         EClass CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE = eINSTANCE.getConditionalReferenceWidgetDescriptionStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetClearButtonDescriptionImpl
+         * <em>Widget Clear Button Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetClearButtonDescriptionImpl
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetClearButtonDescription()
+         * @generated
+         */
+        EClass REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION = eINSTANCE.getReferenceWidgetClearButtonDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getReferenceWidgetClearButtonDescription_PreconditionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__BODY = eINSTANCE.getReferenceWidgetClearButtonDescription_Body();
 
         /**
          * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
