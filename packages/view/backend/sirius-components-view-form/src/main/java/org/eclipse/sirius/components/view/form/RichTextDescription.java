@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.Operation;
  * <li>{@link org.eclipse.sirius.components.view.form.RichTextDescription#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.RichTextDescription#getIsEnabledExpression <em>Is Enabled
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.RichTextDescription#getPlainTextByDefaultExpression <em>Plain Text By Default Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getRichTextDescription()
@@ -92,5 +93,28 @@ public interface RichTextDescription extends WidgetDescription {
      * @generated
      */
     void setIsEnabledExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Plain Text By Default Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Plain Text By Default Expression</em>' attribute.
+     * @see #setPlainTextByDefaultExpression(String)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getRichTextDescription_PlainTextByDefaultExpression()
+     * @model default="aql:false" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getPlainTextByDefaultExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.RichTextDescription#getPlainTextByDefaultExpression
+     * <em>Plain Text By Default Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Plain Text By Default Expression</em>' attribute.
+     * @see #getPlainTextByDefaultExpression()
+     * @generated
+     */
+    void setPlainTextByDefaultExpression(String value);
 
 } // RichTextDescription

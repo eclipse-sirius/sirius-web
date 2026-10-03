@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.form.RichTextDescription;
  * <li>{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl#getBody <em>Body</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl#getIsEnabledExpression <em>Is Enabled
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl#getPlainTextByDefaultExpression <em>Plain Text By Default Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -92,6 +93,26 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
      * @see #getIsEnabledExpression()
      */
     protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPlainTextByDefaultExpression() <em>Plain Text By Default Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPlainTextByDefaultExpression()
+     */
+    protected static final String PLAIN_TEXT_BY_DEFAULT_EXPRESSION_EDEFAULT = "aql:false";
+
+    /**
+     * The cached value of the '{@link #getPlainTextByDefaultExpression() <em>Plain Text By Default Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPlainTextByDefaultExpression()
+     */
+    protected String plainTextByDefaultExpression = PLAIN_TEXT_BY_DEFAULT_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -177,6 +198,29 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
      * @generated
      */
     @Override
+    public String getPlainTextByDefaultExpression() {
+        return this.plainTextByDefaultExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPlainTextByDefaultExpression(String newPlainTextByDefaultExpression) {
+        String oldPlainTextByDefaultExpression = this.plainTextByDefaultExpression;
+        this.plainTextByDefaultExpression = newPlainTextByDefaultExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION, oldPlainTextByDefaultExpression, this.plainTextByDefaultExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
@@ -199,6 +243,8 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
                 return this.getBody();
             case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 return this.getIsEnabledExpression();
+            case FormPackage.RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION:
+                return this.getPlainTextByDefaultExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -222,6 +268,9 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
             case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.setIsEnabledExpression((String) newValue);
                 return;
+            case FormPackage.RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION:
+                this.setPlainTextByDefaultExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -243,6 +292,9 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
             case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
                 return;
+            case FormPackage.RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION:
+                this.setPlainTextByDefaultExpression(PLAIN_TEXT_BY_DEFAULT_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -261,6 +313,8 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
                 return this.body != null && !this.body.isEmpty();
             case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
+            case FormPackage.RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION:
+                return PLAIN_TEXT_BY_DEFAULT_EXPRESSION_EDEFAULT == null ? this.plainTextByDefaultExpression != null : !PLAIN_TEXT_BY_DEFAULT_EXPRESSION_EDEFAULT.equals(this.plainTextByDefaultExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -280,6 +334,8 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
         result.append(this.valueExpression);
         result.append(", IsEnabledExpression: ");
         result.append(this.isEnabledExpression);
+        result.append(", plainTextByDefaultExpression: ");
+        result.append(this.plainTextByDefaultExpression);
         result.append(')');
         return result.toString();
     }

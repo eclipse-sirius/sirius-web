@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,8 @@ import org.eclipse.sirius.components.representations.IStatus;
 @Immutable
 public final class RichText extends AbstractWidget {
 
+    private boolean plainTextByDefault;
+
     private String value;
 
     private Function<String, IStatus> newValueHandler;
@@ -40,6 +42,13 @@ public final class RichText extends AbstractWidget {
 
     public static Builder newRichText(String id) {
         return new Builder(id);
+    }
+
+    /**
+     * Returns whether this widget initially displays its Markdown source as plain text.
+     */
+    public boolean isPlainTextByDefault() {
+        return this.plainTextByDefault;
     }
 
     public String getValue() {
@@ -70,6 +79,8 @@ public final class RichText extends AbstractWidget {
 
         private List<String> iconURL = List.of();
 
+        private boolean plainTextByDefault;
+
         private String value;
 
         private Function<String, IStatus> newValueHandler;
@@ -91,6 +102,14 @@ public final class RichText extends AbstractWidget {
 
         public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        /**
+         * Sets the initial rendering mode; false keeps the default Markdown rendering.
+         */
+        public Builder plainTextByDefault(boolean plainTextByDefault) {
+            this.plainTextByDefault = plainTextByDefault;
             return this;
         }
 
@@ -119,11 +138,15 @@ public final class RichText extends AbstractWidget {
             return this;
         }
 
+        /**
+         * Builds the rich text widget, including its initial rendering mode.
+         */
         public RichText build() {
             RichText richtext = new RichText();
             richtext.id = Objects.requireNonNull(this.id);
             richtext.label = Objects.requireNonNull(this.label);
             richtext.iconURL = Objects.requireNonNull(this.iconURL);
+            richtext.plainTextByDefault = this.plainTextByDefault;
             richtext.value = Objects.requireNonNull(this.value);
             richtext.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             richtext.diagnostics = Objects.requireNonNull(this.diagnostics);

@@ -204,6 +204,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsEnabledExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="plainTextByDefaultExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SelectDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
