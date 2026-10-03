@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -32,7 +33,9 @@ test.describe('edge-handle', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramWithTwoEdges.xml');
     await playwrightExplorer.expand('diagramWithTwoEdges.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -142,7 +145,7 @@ test.describe('edge-handle', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('handlesPosition');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('UNDEFINED');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('UNDEFINED'));
 
     await expect(page.locator('.source_handle_left')).toHaveCount(1);
     await expect(page.locator('.source_handle_right')).toHaveCount(0);
@@ -154,7 +157,7 @@ test.describe('edge-handle', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('handlesPosition');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('RIGHT');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('RIGHT'));
 
     await expect(page.locator('.source_handle_left')).toHaveCount(1);
     await expect(page.locator('.source_handle_right')).toHaveCount(1);
@@ -166,7 +169,7 @@ test.describe('edge-handle', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('handlesPosition');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('DOWN');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('DOWN'));
 
     await expect(page.locator('.source_handle_left')).toHaveCount(0);
     await expect(page.locator('.source_handle_right')).toHaveCount(0);
@@ -182,7 +185,7 @@ test.describe('edge-handle', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Domain');
     await playwrightExplorer.expand('merkle');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');

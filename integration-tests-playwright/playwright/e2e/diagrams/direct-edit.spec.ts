@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -33,7 +34,7 @@ test.describe('diagram - direct edit', () => {
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
     const representationItem = await explorer.getTreeItemLabel('Topography');
-    representationItem.click();
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => representationItem.click());
   });
 
   test.afterEach(async ({ request }) => {

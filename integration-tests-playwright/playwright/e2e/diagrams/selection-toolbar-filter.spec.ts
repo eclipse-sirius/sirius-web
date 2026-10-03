@@ -14,6 +14,7 @@
 import { test } from '@playwright/test';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -28,7 +29,7 @@ test.describe('filter selection menu', () => {
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
     const representationItem = await explorer.getTreeItemLabel('Topography');
-    await representationItem.click();
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => representationItem.click());
     await explorer.expand('NewSystem');
     await explorer.expand('Flow');
   });

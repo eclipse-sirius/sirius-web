@@ -14,6 +14,7 @@ import { expect, test } from '@playwright/test';
 import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -28,7 +29,7 @@ test.describe('diagram - palette', () => {
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
     const representationItem = await explorer.getTreeItemLabel('Topography');
-    representationItem.click();
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => representationItem.click());
   });
 
   test.afterEach(async ({ request }) => {
@@ -128,7 +129,9 @@ test.describe('diagram - palette tool section', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramPalette.xml');
     await playwrightExplorer.expand('diagramPalette.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramPalette - palette', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramPalette - palette', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {

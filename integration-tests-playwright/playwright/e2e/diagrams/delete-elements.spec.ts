@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -37,17 +38,19 @@ test.describe('diagram - delete elements', () => {
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
     const representationItem = await explorer.getTreeItemLabel('Topography');
-    representationItem.click();
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => representationItem.click());
   });
 
   test.afterEach(async ({ request }) => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when two nodes and an edge are selected they can be deleted through the delete quick tool of the palette', async ({ page }) => {
-    const dataSource1 = new PlaywrightNode(page, "DataSource1");
+  test('when two nodes and an edge are selected they can be deleted through the delete quick tool of the palette', async ({
+    page,
+  }) => {
+    const dataSource1 = new PlaywrightNode(page, 'DataSource1');
     await expect(dataSource1.nodeLocator).toBeAttached();
-    const compositeProcessor1 = new PlaywrightNode(page, "CompositeProcessor1");
+    const compositeProcessor1 = new PlaywrightNode(page, 'CompositeProcessor1');
     await expect(compositeProcessor1.nodeLocator).toBeAttached();
     const flow = new PlaywrightEdge(page, 0);
     await expect(flow.edgeLocator).toBeAttached();

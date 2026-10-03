@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { expect, test } from '@playwright/test';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -25,7 +26,9 @@ test.describe('diagram - animation', () => {
     await page.goto(`/projects/${projectId}/edit/`);
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Flow');
-    await playwrightExplorer.createRepresentation('NewSystem', 'Topography unsynchronized', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('NewSystem', 'Topography unsynchronized', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {

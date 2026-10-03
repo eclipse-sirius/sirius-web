@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -26,7 +27,9 @@ test.describe('diagram - key bindings', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('studioKeyBindings.xml');
     await playwrightExplorer.expand('studioKeyBindings.xml');
-    await playwrightExplorer.createRepresentation('domain', 'Domain', 'Domain Diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('domain', 'Domain', 'Domain Diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {

@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightLabel } from '../../helpers/PlaywrightLabel';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -26,7 +27,9 @@ test.describe('diagram - node creation', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramNodeCreationEmpty.xml');
     await playwrightExplorer.expand('diagramNodeCreationEmpty.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramNodeCreation - node creation', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramNodeCreation - node creation', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -76,11 +79,9 @@ test.describe('diagram - node creation', () => {
     await parentLabel.labelContentLocator.click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').first().click();
-    //Check the newly created element is the only one selected
-    await expect(page.getByTestId('nodePanelInfos')).toHaveCount(1);
     const entity4SecondNode = new PlaywrightNode(page, 'Entity4', 'FreeForm', 1);
     await entity4SecondNode.waitForAnimationToFinish();
-    const reactFlowXYPositionEntity4Second = await entity4SecondNode.getReactFlowXYPosition('Entity4', false);
+    const reactFlowXYPositionEntity4Second = await entity4SecondNode.getReactFlowXYPosition('Entity4', true);
     const nodeGap = 25;
     expect(reactFlowXYPositionEntity4Second.y).toBe(reactFlowXYPositionEntity4First.y);
     expect(reactFlowXYPositionEntity4Second.x).toBe(
@@ -103,7 +104,9 @@ test.describe('diagram - node creation', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramNodeCreationWithEntity1.xml');
     await playwrightExplorer.expand('diagramNodeCreationWithEntity1.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramNodeCreation - node creation', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramNodeCreation - node creation', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {

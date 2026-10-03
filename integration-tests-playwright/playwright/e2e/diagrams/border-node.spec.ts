@@ -26,7 +26,9 @@ test.describe('diagram - border-node', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramWithBorderNode.xml');
     await playwrightExplorer.expand('diagramWithBorderNode.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramBorderNode - simple border', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramBorderNode - simple border', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -144,7 +146,7 @@ test.describe('diagram - border-node', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('handlePosition');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
@@ -167,7 +169,7 @@ test.describe('diagram - border-node', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('borderNodes');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
@@ -209,7 +211,7 @@ test.describe('diagram - border-node', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Others...');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
@@ -252,7 +254,9 @@ test.describe('diagram - border-node', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramBorderNodeDnD.xml');
     await playwrightExplorer.expand('diagramBorderNodeDnD.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramDnD - simple dnd view', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramDnD - simple dnd view', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {

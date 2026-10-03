@@ -31,7 +31,7 @@ test.describe('diagram - label', () => {
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
     const representationItem = await explorer.getTreeItemLabel('Topography');
-    await representationItem.click();
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => representationItem.click());
   });
 
   test.afterEach(async ({ request }) => {
@@ -97,7 +97,7 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Flow');
     await playwrightExplorer.expand('NewSystem');
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const url = page.url();
     const parts = url.split('/');
@@ -176,7 +176,7 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramResizableLabel');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const url = page.url();
     const parts = url.split('/');
@@ -268,7 +268,7 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramWithLabelResized');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
 
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const outsideLabel = new PlaywrightLabel(page, 'OutsideLabel');
@@ -292,7 +292,7 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramWithLabelResized');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
 
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const labelBegin = new PlaywrightLabel(page, 'Begin');
@@ -326,7 +326,7 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramWithLabelResized');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
 
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const label = new PlaywrightLabel(page, 'edgeOnEdgeLabel');
@@ -350,7 +350,7 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramWithLabelResized');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
 
     const entity1Node = new PlaywrightNode(page, 'Entity1');
     const edge = new PlaywrightEdge(page);
@@ -379,7 +379,7 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramWithLabelResized');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     await page.getByTestId('Label - Moved').click();
@@ -398,7 +398,7 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramWithLabelResized');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const label = new PlaywrightLabel(page, 'Moved');
     const labelBoxBefore = await label.labelContentLocator.boundingBox();
@@ -422,7 +422,7 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramWithLabelResized');
     await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('diagram'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const label = new PlaywrightLabel(page, 'edgeOnEdgeLabel');
     const labelBoxBefore = await label.labelContentLocator.boundingBox();
@@ -451,7 +451,9 @@ test.describe('diagram - label', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('diagramWithBorderNodeWithOutsideLabel.xml');
     await playwrightExplorer.expand('diagramWithBorderNodeWithOutsideLabel.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramBorderNode - simple border', 'diagram');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      playwrightExplorer.createRepresentation('Root', 'diagramBorderNode - simple border', 'diagram')
+    );
   });
 
   test.afterEach(async ({ request }) => {
@@ -502,7 +504,7 @@ test.describe('diagram - label', () => {
     const project = await new PlaywrightProject(request).createProject('Studio', 'studio-template');
     projectId = project.projectId;
 
-    await page.goto(`/projects/${projectId}/edit`);
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => page.goto(`/projects/${projectId}/edit`));
   });
 
   test.afterEach(async ({ request }) => {
@@ -560,7 +562,7 @@ test.describe('diagram - label', () => {
   test('when the inside label has a position and overflow to none, then label position is correct', async ({
     page,
   }) => {
-    await new PlaywrightExplorer(page).select('diagram none');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => new PlaywrightExplorer(page).select('diagram none'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     // TOP
@@ -681,7 +683,7 @@ test.describe('diagram - label', () => {
   test('when the inside label has a position and overflow to wrap, then label position is correct', async ({
     page,
   }) => {
-    await new PlaywrightExplorer(page).select('diagram wrap');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => new PlaywrightExplorer(page).select('diagram wrap'));
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     // TOP
@@ -802,7 +804,9 @@ test.describe('diagram - label', () => {
   test('when the inside label has a position and overflow to ellipse, then label position is correct', async ({
     page,
   }) => {
-    await new PlaywrightExplorer(page).select('diagram ellipse');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      new PlaywrightExplorer(page).select('diagram ellipse')
+    );
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     // TOP

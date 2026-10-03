@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -22,7 +23,7 @@ test.describe('diagram - adjust size', () => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Flow');
     await playwrightExplorer.expand('NewSystem');
-    await playwrightExplorer.select('Topography');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Topography'));
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
