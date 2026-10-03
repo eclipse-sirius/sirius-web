@@ -14,9 +14,12 @@ package org.eclipse.sirius.components.view.emf.widget.reference;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.BooleanValueProvider;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.widget.reference.api.IReferenceWidgetBehaviorConverter;
@@ -43,8 +46,7 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
 
     private final IReferenceWidgetBehaviorConverter referenceWidgetBehaviorConverter;
 
-    public ReferenceWidgetDescriptionConverter(IFormIdProvider widgetIdProvider, IReferenceWidgetPropertiesConverter referenceWidgetPropertiesConverter,
-            IReferenceWidgetBehaviorConverter referenceWidgetBehaviorConverter) {
+    public ReferenceWidgetDescriptionConverter(IFormIdProvider widgetIdProvider, IReferenceWidgetPropertiesConverter referenceWidgetPropertiesConverter, IReferenceWidgetBehaviorConverter referenceWidgetBehaviorConverter) {
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.referenceWidgetPropertiesConverter = Objects.requireNonNull(referenceWidgetPropertiesConverter);
         this.referenceWidgetBehaviorConverter = Objects.requireNonNull(referenceWidgetBehaviorConverter);
@@ -71,7 +73,12 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
                 this.referenceWidgetPropertiesConverter.convert(builder, referenceDescription, interpreter);
                 this.referenceWidgetBehaviorConverter.convert(builder, referenceDescription, interpreter);
                 if (referenceDescription.getClearButton() != null) {
-                    builder.clearButtonDescription(new org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription());
+                    var preconditionExpression = referenceDescription.getClearButton().getPreconditionExpression();
+                    Function<VariableManager, Boolean> precondition = variableManager -> true;
+                    if (preconditionExpression != null && !preconditionExpression.isBlank()) {
+                        precondition = new BooleanValueProvider(interpreter, preconditionExpression);
+                    }
+                    builder.clearButtonDescription(new org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription(precondition));
                 }
 
                 var referenceWidgetDescription = builder.build();

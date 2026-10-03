@@ -40,6 +40,8 @@ const createFormWithWidgetReference = async (
   await details.setText('Label Expression', widgetLabel);
   await details.setText('Reference Name Expression', reference);
   await explorer.createNewObject('ReferenceWidgetDescription', 'clearButton-ReferenceWidgetClearButtonDescription');
+  await explorer.createNewObject('ReferenceWidgetClearButtonDescription', 'body-ChangeContext');
+  await details.setText('Expression', 'aql:self.defaultClearReference(referenceName)');
   await explorer.expand(name);
 };
 

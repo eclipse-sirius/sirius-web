@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,7 +120,6 @@ public class DefaultEditService implements IDefaultEditService {
                 optionalEClassReference = Optional.empty();
             }
 
-
             if (optionalContainer.isPresent()) {
                 EObject eObject = optionalContainer.get();
 
@@ -187,7 +186,7 @@ public class DefaultEditService implements IDefaultEditService {
     }
 
     private String getChildCreationDescriptionId(CommandParameter commandParameter) {
-        if (commandParameter.getFeature() instanceof  EReference eReference && commandParameter.getValue() instanceof EObject eObject) {
+        if (commandParameter.getFeature() instanceof EReference eReference && commandParameter.getValue() instanceof EObject eObject) {
             return eReference.getName() + "-" + eObject.eClass().getName();
         }
         return commandParameter.toString();
@@ -222,6 +221,17 @@ public class DefaultEditService implements IDefaultEditService {
                 .map(EObject.class::cast);
 
         optionalEObject.ifPresent(eObject -> EcoreUtil.deleteAll(Collections.singleton(eObject), true));
+    }
+
+    @Override
+    public void clearReference(Object object, String referenceName) {
+        if (object instanceof EObject eObject && eObject.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+            if (reference.isMany()) {
+                ((List<?>) eObject.eGet(reference)).clear();
+            } else {
+                eObject.eUnset(reference);
+            }
+        }
     }
 
     @Override
