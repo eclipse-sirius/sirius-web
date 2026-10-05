@@ -39,11 +39,9 @@ import org.eclipse.sirius.components.palette.dto.IPaletteEntry;
 import org.eclipse.sirius.components.palette.dto.ITool;
 import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.palette.dto.PaletteDivider;
-import org.eclipse.sirius.components.palette.dto.ToolSection;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
@@ -132,10 +130,6 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
                         .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription, variableManager, interpreter))
                         .forEach(paletteEntries::add);
 
-                toolFinder.findToolSections(viewNodeDescription).stream()
-                        .map(nodeToolSection -> this.createToolSection(nodeToolSection, diagramDescription, nodeDescription, variableManager, interpreter))
-                        .forEach(paletteEntries::add);
-
                 paletteEntries.add(new PaletteDivider(UUID.randomUUID().toString()));
 
                 String nodePaletteId = "siriusComponents://connectorPalette?nodeId=" + sourceElementId.get();
@@ -146,21 +140,6 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
             }
         }
         return nodePalette;
-    }
-
-    private ToolSection createToolSection(NodeToolSection toolSection, DiagramDescription diagramDescription, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        String toolSelectionId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(toolSection).toString().getBytes()).toString();
-
-        var tools = new ArrayList<ITool>(toolSection.getEdgeTools().stream()
-                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription, variableManager, interpreter))
-                .toList());
-
-        return ToolSection.newToolSection(toolSelectionId)
-                .label(toolSection.getName())
-                .iconURL(List.of())
-                .tools(tools)
-                .build();
     }
 
     private ITool createEdgeTool(EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager, AQLInterpreter interpreter) {

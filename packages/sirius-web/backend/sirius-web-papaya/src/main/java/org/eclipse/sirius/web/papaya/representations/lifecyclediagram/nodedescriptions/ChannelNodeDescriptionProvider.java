@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,7 +78,9 @@ public class ChannelNodeDescriptionProvider implements INodeDescriptionProvider 
         var channelNodeDescription = cache.getNodeDescription(NAME).orElse(null);
         diagramDescription.getNodeDescriptions().add(channelNodeDescription);
 
-        var palette = new ChannelNodePaletteProvider().getNodePalette(cache);
+        var paletteProvider = new ChannelNodePaletteProvider();
+        var palette = paletteProvider.getNodePalette(cache);
         channelNodeDescription.setPalette(palette);
+        channelNodeDescription.getEdgeTools().add(paletteProvider.getConnectorTool(cache));
     }
 }

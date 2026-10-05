@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -110,18 +110,6 @@ public class EdgePaletteBuilder {
     public EdgePaletteBuilder edgeReconnectionTools(org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool ... values) {
         for (org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool value : values) {
             this.getEdgePalette().getEdgeReconnectionTools().add(value);
-        }
-        return this;
-    }
-
-    /**
-     * Setter for EdgeTools.
-     *
-     * @generated
-     */
-    public EdgePaletteBuilder edgeTools(org.eclipse.sirius.components.view.diagram.EdgeTool ... values) {
-        for (org.eclipse.sirius.components.view.diagram.EdgeTool value : values) {
-            this.getEdgePalette().getEdgeTools().add(value);
         }
         return this;
     }

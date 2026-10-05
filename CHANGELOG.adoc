@@ -101,6 +101,10 @@ Programmatic form descriptions should manually add it through `ReferenceWidgetDe
 `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
 Other programmatic forms must contribute their own creation handler.
 The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
+- https://github.com/eclipse-sirius/sirius-web/issues/7040[#7040] [diagram] Connector tools are now contained directly by `NodeDescription` and `EdgeDescription` in their `edgeTools` reference.
+The `edgeTools` references and builder methods have been removed from `NodePalette`, `EdgePalette`, and `NodeToolSection`.
+Programmatic View DSLs must use `NodeDescription#getEdgeTools()`, `EdgeDescription#getEdgeTools()`, or the corresponding description builders' `edgeTools(...)` methods.
+Existing View descriptions are migrated automatically.
 
 
 === Dependency update

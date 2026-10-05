@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
-import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -46,7 +45,6 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getQuickAccessTools <em>Quick Access
  * Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getEdgeTools <em>Edge Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getToolSections <em>Tool
  * Sections</em>}</li>
  * </ul>
@@ -103,16 +101,6 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
      * @ordered
      */
     protected EList<NodeTool> quickAccessTools;
-
-    /**
-     * The cached value of the '{@link #getEdgeTools() <em>Edge Tools</em>}' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getEdgeTools()
-     * @generated
-     * @ordered
-     */
-    protected EList<EdgeTool> edgeTools;
 
     /**
      * The cached value of the '{@link #getToolSections() <em>Tool Sections</em>}' containment reference list. <!--
@@ -319,19 +307,6 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
      * @generated
      */
     @Override
-    public EList<EdgeTool> getEdgeTools() {
-        if (this.edgeTools == null) {
-            this.edgeTools = new EObjectContainmentEList<>(EdgeTool.class, this, DiagramPackage.NODE_PALETTE__EDGE_TOOLS);
-        }
-        return this.edgeTools;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EList<NodeToolSection> getToolSections() {
         if (this.toolSections == null) {
             this.toolSections = new EObjectContainmentEList<>(NodeToolSection.class, this, DiagramPackage.NODE_PALETTE__TOOL_SECTIONS);
@@ -357,8 +332,6 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
                 return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
                 return ((InternalEList<?>) this.getQuickAccessTools()).basicRemove(otherEnd, msgs);
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
                 return ((InternalEList<?>) this.getToolSections()).basicRemove(otherEnd, msgs);
         }
@@ -383,8 +356,6 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
                 return this.getNodeTools();
             case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
                 return this.getQuickAccessTools();
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                return this.getEdgeTools();
             case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
                 return this.getToolSections();
         }
@@ -417,10 +388,6 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
                 this.getQuickAccessTools().clear();
                 this.getQuickAccessTools().addAll((Collection<? extends NodeTool>) newValue);
                 return;
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                this.getEdgeTools().clear();
-                this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
-                return;
             case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
                 this.getToolSections().clear();
                 this.getToolSections().addAll((Collection<? extends NodeToolSection>) newValue);
@@ -452,9 +419,6 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
             case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
                 this.getQuickAccessTools().clear();
                 return;
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                this.getEdgeTools().clear();
-                return;
             case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
                 this.getToolSections().clear();
                 return;
@@ -480,8 +444,6 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
                 return this.nodeTools != null && !this.nodeTools.isEmpty();
             case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
                 return this.quickAccessTools != null && !this.quickAccessTools.isEmpty();
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                return this.edgeTools != null && !this.edgeTools.isEmpty();
             case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
                 return this.toolSections != null && !this.toolSections.isEmpty();
         }

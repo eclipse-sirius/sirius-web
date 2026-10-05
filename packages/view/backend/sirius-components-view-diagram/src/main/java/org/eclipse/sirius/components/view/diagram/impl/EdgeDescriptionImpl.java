@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Edge Description</b></em>'. <!-- end-user-doc
@@ -44,6 +45,8 @@ import org.eclipse.sirius.components.view.diagram.EdgeStyle;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeDescriptionImpl#isIsDomainBasedEdge <em>Is Domain
  * Based Edge</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeDescriptionImpl#getPalette <em>Palette</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeDescriptionImpl#getEdgeTools <em>Edge
+ * Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeDescriptionImpl#getSourceNodeDescriptions <em>Source
  * Node Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeDescriptionImpl#getTargetNodeDescriptions <em>Target
@@ -150,6 +153,16 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected EdgePalette palette;
+
+    /**
+     * The cached value of the '{@link #getEdgeTools() <em>Edge Tools</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEdgeTools()
+     * @generated
+     * @ordered
+     */
+    protected EList<EdgeTool> edgeTools;
 
     /**
      * The cached value of the '{@link #getSourceDescriptions() <em>Source Descriptions</em>}' reference list. <!--
@@ -378,6 +391,19 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public EList<EdgeTool> getEdgeTools() {
+        if (this.edgeTools == null) {
+            this.edgeTools = new EObjectContainmentEList<>(EdgeTool.class, this, DiagramPackage.EDGE_DESCRIPTION__EDGE_TOOLS);
+        }
+        return this.edgeTools;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EList<DiagramElementDescription> getSourceDescriptions() {
         if (this.sourceDescriptions == null) {
             this.sourceDescriptions = new EObjectResolvingEList<>(DiagramElementDescription.class, this, DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS);
@@ -533,6 +559,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
                 return this.basicSetPalette(null, msgs);
+            case DiagramPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
                 return this.basicSetStyle(null, msgs);
             case DiagramPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -559,6 +587,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.isIsDomainBasedEdge();
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
                 return this.getPalette();
+            case DiagramPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                return this.getEdgeTools();
             case DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS:
                 return this.getSourceDescriptions();
             case DiagramPackage.EDGE_DESCRIPTION__TARGET_DESCRIPTIONS:
@@ -598,6 +628,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
                 this.setPalette((EdgePalette) newValue);
+                return;
+            case DiagramPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                this.getEdgeTools().clear();
+                this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS:
                 this.getSourceDescriptions().clear();
@@ -647,6 +681,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
                 this.setPalette((EdgePalette) null);
                 return;
+            case DiagramPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                this.getEdgeTools().clear();
+                return;
             case DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS:
                 this.getSourceDescriptions().clear();
                 return;
@@ -687,6 +724,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.isDomainBasedEdge != IS_DOMAIN_BASED_EDGE_EDEFAULT;
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
                 return this.palette != null;
+            case DiagramPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
+                return this.edgeTools != null && !this.edgeTools.isEmpty();
             case DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS:
                 return this.sourceDescriptions != null && !this.sourceDescriptions.isEmpty();
             case DiagramPackage.EDGE_DESCRIPTION__TARGET_DESCRIPTIONS:

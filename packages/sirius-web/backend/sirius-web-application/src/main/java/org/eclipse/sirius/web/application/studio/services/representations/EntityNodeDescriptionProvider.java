@@ -106,17 +106,17 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .conditionalStyles(conditionalNodeStyle)
                 .build();
 
-        var palette = this.entityNodePalette(entityNodeDescription, attributeNodeDescription);
+        entityNodeDescription.getEdgeTools().add(this.entityRelationEdgeTool(entityNodeDescription));
+        entityNodeDescription.getEdgeTools().add(this.entityContainmentEdgeTool(entityNodeDescription));
+        entityNodeDescription.getEdgeTools().add(this.entitySupertypeEdgeTool(entityNodeDescription));
+        var palette = this.entityNodePalette(attributeNodeDescription);
         entityNodeDescription.setPalette(palette);
 
         return entityNodeDescription;
     }
 
-    private NodePalette entityNodePalette(NodeDescription edgeTargetNodeDescription, NodeDescription attributeNodeDescription) {
+    private NodePalette entityNodePalette(NodeDescription attributeNodeDescription) {
         var nodeToolSection = this.entityNodeCreationTools();
-        var relationEdgeTool = this.entityRelationEdgeTool(edgeTargetNodeDescription);
-        var containmentEdgeTool = this.entityContainmentEdgeTool(edgeTargetNodeDescription);
-        var supertypeEdgeTool = this.entitySupertypeEdgeTool(edgeTargetNodeDescription);
         var labelEditTool = this.labelEditTool();
         var deleteTool = this.deleteTool();
         var dropNodeTool = this.entityDropAttributesTool(attributeNodeDescription);
@@ -125,7 +125,6 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .labelEditTool(labelEditTool)
                 .deleteTool(deleteTool)
                 .dropNodeTool(dropNodeTool)
-                .edgeTools(relationEdgeTool, containmentEdgeTool, supertypeEdgeTool)
                 .toolSections(nodeToolSection, new StudioDefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .build();
     }

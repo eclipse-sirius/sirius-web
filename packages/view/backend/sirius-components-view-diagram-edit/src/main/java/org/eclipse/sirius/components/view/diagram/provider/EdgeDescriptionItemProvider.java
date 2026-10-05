@@ -182,6 +182,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_DESCRIPTION__PALETTE);
+            this.childrenFeatures.add(DiagramPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_DESCRIPTION__STYLE);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES);
         }
@@ -253,6 +254,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
+            case DiagramPackage.EDGE_DESCRIPTION__EDGE_TOOLS:
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
             case DiagramPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -273,6 +275,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__PALETTE, studioDefaultToolsFactory.createDefaultEdgePalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, studioDefaultToolsFactory.createDefaultEdgeTool()));
 
         EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__STYLE, newEdgeStyle));

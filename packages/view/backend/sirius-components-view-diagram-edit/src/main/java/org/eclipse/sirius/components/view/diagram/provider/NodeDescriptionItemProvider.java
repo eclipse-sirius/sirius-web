@@ -212,6 +212,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE);
+            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__EDGE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
@@ -290,6 +291,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
+            case DiagramPackage.NODE_DESCRIPTION__EDGE_TOOLS:
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
             case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -316,6 +318,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE, studioDefaultToolsFactory.createDefaultNodePalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__EDGE_TOOLS, studioDefaultToolsFactory.createDefaultEdgeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS, DiagramFactory.eINSTANCE.createAction()));
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();

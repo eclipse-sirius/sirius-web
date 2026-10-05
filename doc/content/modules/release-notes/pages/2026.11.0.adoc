@@ -67,6 +67,10 @@ Downstream consumers must declare this dependency and replace the package prefix
   `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
   Other programmatic forms must contribute their own creation handler.
   The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
+- Connector tools in the diagram View DSL are now configured directly on node and edge descriptions using `edgeTools`.
+The `edgeTools` properties of node palettes, edge palettes, and node tool sections have been removed.
+Existing saved View descriptions are migrated automatically, preserving tool order; connector tools previously placed in sections become a flat list.
+Programmatic descriptions must move their tool declarations to `NodeDescriptionBuilder.edgeTools(...)` or `EdgeDescriptionBuilder.edgeTools(...)`.
 
 == Dependency updates
 
