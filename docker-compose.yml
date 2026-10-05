@@ -8,18 +8,21 @@ services:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
     healthcheck:
-      test: "exit 0"
-      start_period: 1s
+      test: ["CMD-SHELL", "pg_isready --username=username --dbname=postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
   backend:
     image: "eclipsesirius/sirius-web:${VERSION:-latest}"
+    pull_policy: always
+    restart: on-failure
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://database/postgres
       SPRING_DATASOURCE_USERNAME: username
       SPRING_DATASOURCE_PASSWORD: password
+      MANAGEMENT_HEALTH_ELASTICSEARCH_ENABLED: false
       SIRIUS_COMPONENTS_CORS_ALLOWEDORIGINPATTERNS: "*"
       SIRIUS_WEB_TREE_NEW-PALETTE_ENABLED: false
-      # No Elasticsearch in this stack: without this, its health indicator reports the backend DOWN
-      MANAGEMENT_HEALTH_ELASTICSEARCH_ENABLED: false
       SERVER_PORT: 8080
     ports:
       - 8080:8080
