@@ -136,6 +136,18 @@ public class NodeDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for EdgeTools.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder edgeTools(org.eclipse.sirius.components.view.diagram.EdgeTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.EdgeTool value : values) {
+            this.getNodeDescription().getEdgeTools().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for Actions.
      *
      * @generated

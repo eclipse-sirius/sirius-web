@@ -150,11 +150,6 @@ public class NodePaletteProvider implements INodePaletteProvider {
                 .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                 .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                 .toList());
-        tools.addAll(toolSection.getEdgeTools().stream()
-                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(viewEdgeTools -> this.edgeToolConverter.createEdgeTool(interpreter, viewEdgeTools, diagramDescription, nodeDescription, variableManager))
-                .toList());
-
         return ToolSection.newToolSection(toolSelectionId)
                 .label(toolSection.getName())
                 .iconURL(List.of())

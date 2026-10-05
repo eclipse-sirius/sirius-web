@@ -885,7 +885,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_Actions() {
+    public EReference getNodeDescription_EdgeTools() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -895,7 +895,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_Style() {
+    public EReference getNodeDescription_Actions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -905,7 +905,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ConditionalStyles() {
+    public EReference getNodeDescription_Style() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
@@ -915,7 +915,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ChildrenDescriptions() {
+    public EReference getNodeDescription_ConditionalStyles() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
@@ -925,7 +925,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_BorderNodesDescriptions() {
+    public EReference getNodeDescription_ChildrenDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
@@ -935,7 +935,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ReusedChildNodeDescriptions() {
+    public EReference getNodeDescription_BorderNodesDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
@@ -945,7 +945,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ReusedBorderNodeDescriptions() {
+    public EReference getNodeDescription_ReusedChildNodeDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
@@ -955,8 +955,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_UserResizable() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(9);
+    public EReference getNodeDescription_ReusedBorderNodeDescriptions() {
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -965,7 +965,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_DefaultWidthExpression() {
+    public EAttribute getNodeDescription_UserResizable() {
         return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(10);
     }
 
@@ -975,7 +975,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_DefaultHeightExpression() {
+    public EAttribute getNodeDescription_DefaultWidthExpression() {
         return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(11);
     }
 
@@ -985,7 +985,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_KeepAspectRatio() {
+    public EAttribute getNodeDescription_DefaultHeightExpression() {
         return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(12);
     }
 
@@ -995,7 +995,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_IsCollapsedByDefaultExpression() {
+    public EAttribute getNodeDescription_KeepAspectRatio() {
         return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(13);
     }
 
@@ -1005,8 +1005,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_InsideLabel() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(14);
+    public EAttribute getNodeDescription_IsCollapsedByDefaultExpression() {
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(14);
     }
 
     /**
@@ -1015,7 +1015,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_OutsideLabels() {
+    public EReference getNodeDescription_InsideLabel() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(15);
     }
 
@@ -1025,8 +1025,18 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getNodeDescription_OutsideLabels() {
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(16);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getNodeDescription_IsHiddenByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(16);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(17);
     }
 
     /**
@@ -1036,7 +1046,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeDescription_IsFadedByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(17);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(18);
     }
 
     /**
@@ -1105,7 +1115,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getEdgeDescription_SourceDescriptions() {
+    public EReference getEdgeDescription_EdgeTools() {
         return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
@@ -1115,7 +1125,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getEdgeDescription_TargetDescriptions() {
+    public EReference getEdgeDescription_SourceDescriptions() {
         return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
@@ -1125,8 +1135,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getEdgeDescription_SourceExpression() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(7);
+    public EReference getEdgeDescription_TargetDescriptions() {
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -1135,7 +1145,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getEdgeDescription_TargetExpression() {
+    public EAttribute getEdgeDescription_SourceExpression() {
         return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
@@ -1145,8 +1155,18 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getEdgeDescription_TargetExpression() {
+        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(9);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getEdgeDescription_Style() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(9);
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(10);
     }
 
     /**
@@ -1156,7 +1176,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EReference getEdgeDescription_ConditionalStyles() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(10);
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(11);
     }
 
     /**
@@ -2045,18 +2065,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodePalette_EdgeTools() {
-        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(5);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getNodePalette_ToolSections() {
-        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(6);
+        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -2145,18 +2155,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getEdgePalette_EdgeTools() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(7);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getEdgePalette_ToolSections() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(8);
+        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -2715,16 +2715,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeToolSection_EdgeTools() {
-        return (EReference) this.nodeToolSectionEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EClass getEdgeToolSection() {
         return this.edgeToolSectionEClass;
     }
@@ -3195,6 +3185,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.nodeDescriptionEClass = this.createEClass(NODE_DESCRIPTION);
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__COLLAPSIBLE);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__PALETTE);
+        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__EDGE_TOOLS);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__ACTIONS);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__STYLE);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CONDITIONAL_STYLES);
@@ -3218,6 +3209,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__END_LABEL_EXPRESSION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__PALETTE);
+        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__EDGE_TOOLS);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_DESCRIPTIONS);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_EXPRESSION);
@@ -3337,7 +3329,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__DROP_NODE_TOOL);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__NODE_TOOLS);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__QUICK_ACCESS_TOOLS);
-        this.createEReference(this.nodePaletteEClass, NODE_PALETTE__EDGE_TOOLS);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__TOOL_SECTIONS);
 
         this.edgePaletteEClass = this.createEClass(EDGE_PALETTE);
@@ -3348,7 +3339,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__NODE_TOOLS);
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__QUICK_ACCESS_TOOLS);
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__EDGE_TOOLS);
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__TOOL_SECTIONS);
 
         this.toolEClass = this.createEClass(TOOL);
@@ -3420,7 +3410,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.nodeToolSectionEClass = this.createEClass(NODE_TOOL_SECTION);
         this.createEReference(this.nodeToolSectionEClass, NODE_TOOL_SECTION__NODE_TOOLS);
-        this.createEReference(this.nodeToolSectionEClass, NODE_TOOL_SECTION__EDGE_TOOLS);
 
         this.edgeToolSectionEClass = this.createEClass(EDGE_TOOL_SECTION);
         this.createEReference(this.edgeToolSectionEClass, EDGE_TOOL_SECTION__NODE_TOOLS);
@@ -3589,6 +3578,9 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_Palette(), this.getNodePalette(), null, "palette", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeDescription_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getNodeDescription_EdgeTools().getEKeys().add(this.getTool_Name());
         this.initEReference(this.getNodeDescription_Actions(), this.getAction(), null, "actions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -3635,6 +3627,9 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgeDescription_Palette(), this.getEdgePalette(), null, "palette", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getEdgeDescription_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getEdgeDescription_EdgeTools().getEKeys().add(this.getTool_Name());
         this.initEReference(this.getEdgeDescription_SourceDescriptions(), this.getDiagramElementDescription(), null, "sourceDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgeDescription_TargetDescriptions(), this.getDiagramElementDescription(), null, "targetDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT,
@@ -3832,9 +3827,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEReference(this.getNodePalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getNodePalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getNodePalette_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodePalette_EdgeTools().getEKeys().add(this.getTool_Name());
         this.initEReference(this.getNodePalette_ToolSections(), this.getNodeToolSection(), null, "toolSections", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getNodePalette_ToolSections().getEKeys().add(this.getToolSection_Name());
@@ -3857,8 +3849,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEReference(this.getEdgePalette_EdgeReconnectionTools(), this.getEdgeReconnectionTool(), null, "edgeReconnectionTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getEdgePalette_EdgeReconnectionTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getEdgePalette_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgePalette_ToolSections(), this.getEdgeToolSection(), null, "toolSections", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getEdgePalette_ToolSections().getEKeys().add(this.getToolSection_Name());
@@ -3978,10 +3968,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEReference(this.getNodeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getNodeToolSection_NodeTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getNodeToolSection_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodeToolSection_EdgeTools().getEKeys().add(this.getTool_Name());
-
         this.initEClass(this.edgeToolSectionEClass, EdgeToolSection.class, "EdgeToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getEdgeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, EdgeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

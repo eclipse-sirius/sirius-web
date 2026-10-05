@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,18 +59,6 @@ public class NodeToolSectionBuilder {
     public NodeToolSectionBuilder nodeTools(org.eclipse.sirius.components.view.diagram.NodeTool ... values) {
         for (org.eclipse.sirius.components.view.diagram.NodeTool value : values) {
             this.getNodeToolSection().getNodeTools().add(value);
-        }
-        return this;
-    }
-
-    /**
-     * Setter for EdgeTools.
-     *
-     * @generated
-     */
-    public NodeToolSectionBuilder edgeTools(org.eclipse.sirius.components.view.diagram.EdgeTool ... values) {
-        for (org.eclipse.sirius.components.view.diagram.EdgeTool value : values) {
-            this.getNodeToolSection().getEdgeTools().add(value);
         }
         return this;
     }

@@ -55,6 +55,262 @@ INSERT INTO semantic_data_domain (
   '89d67892-0cc9-4ca4-b30e-28688470c0d4',
   'http://www.eclipse.org/sirius-web/diagram'
 );
+
+-- Legacy connector tools in node palettes, node tool sections, and edge palettes.
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  is_read_only,
+  created_on,
+  last_modified_on
+) VALUES (
+  'ac704000-0000-0000-0000-000000000001',
+  '89d67892-0cc9-4ca4-b30e-28688470c0d4',
+  'DiagramDescription#connectorTools migration',
+  '{
+    "json": { "version": "1.0", "encoding": "utf-8" },
+    "ns": {
+      "diagram": "http://www.eclipse.org/sirius-web/diagram",
+      "view": "http://www.eclipse.org/sirius-web/view"
+    },
+    "content": [
+      {
+        "id": "ac704000-0000-0000-0000-000000000002",
+        "eClass": "view:View",
+        "data": {
+          "descriptions": [
+            {
+              "id": "ac704000-0000-0000-0000-000000000003",
+              "eClass": "diagram:DiagramDescription",
+              "data": {
+                "name": "DiagramDescription#connectorTools migration",
+                "domainType": "flow::System",
+                "nodeDescriptions": [
+                  {
+                    "id": "ac704000-0000-0000-0000-000000000004",
+                    "eClass": "diagram:NodeDescription",
+                    "data": {
+                      "name": "Parent node",
+                      "domainType": "flow::Processor",
+                      "childrenDescriptions": [
+                        {
+                          "id": "ac704000-0000-0000-0000-000000000005",
+                          "eClass": "diagram:NodeDescription",
+                          "data": {
+                            "name": "Child node",
+                            "domainType": "flow::DataSource",
+                            "palette": {
+                              "id": "ac704000-0000-0000-0000-000000000006",
+                              "eClass": "diagram:NodePalette",
+                              "data": {
+                                "edgeTools": [
+                                  {
+                                    "id": "ac704000-0000-0000-0000-000000000007",
+                                    "eClass": "diagram:EdgeTool",
+                                    "data": {
+                                      "name": "Child node tool",
+                                      "targetElementDescriptions": ["diagram:NodeDescription ac704000-0000-0000-0000-000000000001#ac704000-0000-0000-0000-000000000004"]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ],
+                      "borderNodesDescriptions": [
+                        {
+                          "id": "ac704000-0000-0000-0000-000000000008",
+                          "eClass": "diagram:NodeDescription",
+                          "data": {
+                            "name": "Border node",
+                            "domainType": "flow::PowerInput",
+                            "palette": {
+                              "id": "ac704000-0000-0000-0000-000000000009",
+                              "eClass": "diagram:NodePalette",
+                              "data": {
+                                "edgeTools": [
+                                  {
+                                    "id": "ac704000-0000-0000-0000-000000000023",
+                                    "eClass": "diagram:EdgeTool",
+                                    "data": { "name": "Border node tool" }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ],
+                      "palette": {
+                        "id": "ac704000-0000-0000-0000-000000000024",
+                        "eClass": "diagram:NodePalette",
+                        "data": {
+                          "nodeTools": [
+                            {
+                              "id": "ac704000-0000-0000-0000-000000000025",
+                              "eClass": "diagram:NodeTool",
+                              "data": { "name": "Palette node tool" }
+                            }
+                          ],
+                          "edgeTools": [
+                            {
+                              "id": "ac704000-0000-0000-0000-000000000010",
+                              "eClass": "diagram:EdgeTool",
+                              "data": {
+                                "name": "Direct node tool 1",
+                                "preconditionExpression": "aql:self <> target",
+                                "iconURLsExpression": "/icons/connector.svg",
+                                "elementsToSelectExpression": "aql:newFlow",
+                                "targetElementDescriptions": [
+                                  "diagram:NodeDescription ac704000-0000-0000-0000-000000000001#ac704000-0000-0000-0000-000000000005",
+                                  "diagram:EdgeDescription ac704000-0000-0000-0000-000000000001#ac704000-0000-0000-0000-000000000019"
+                                ],
+                                "body": [
+                                  {
+                                    "id": "ac704000-0000-0000-0000-000000000026",
+                                    "eClass": "view:ChangeContext",
+                                    "data": {
+                                      "expression": "aql:self.eContainer()",
+                                      "children": [
+                                        {
+                                          "id": "ac704000-0000-0000-0000-000000000027",
+                                          "eClass": "view:CreateInstance",
+                                          "data": {
+                                            "typeName": "flow::DataFlow",
+                                            "referenceName": "elements",
+                                            "variableName": "newFlow"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "id": "ac704000-0000-0000-0000-000000000011",
+                              "eClass": "diagram:EdgeTool",
+                              "data": { "name": "Direct node tool 2" }
+                            }
+                          ],
+                          "toolSections": [
+                            {
+                              "id": "ac704000-0000-0000-0000-000000000012",
+                              "eClass": "diagram:NodeToolSection",
+                              "data": {
+                                "name": "First section",
+                                "nodeTools": [
+                                  {
+                                    "id": "ac704000-0000-0000-0000-000000000028",
+                                    "eClass": "diagram:NodeTool",
+                                    "data": { "name": "Section node tool" }
+                                  }
+                                ],
+                                "edgeTools": [
+                                  {
+                                    "id": "ac704000-0000-0000-0000-000000000013",
+                                    "eClass": "diagram:EdgeTool",
+                                    "data": { "name": "First section tool 1" }
+                                  },
+                                  {
+                                    "id": "ac704000-0000-0000-0000-000000000014",
+                                    "eClass": "diagram:EdgeTool",
+                                    "data": { "name": "First section tool 2" }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "id": "ac704000-0000-0000-0000-000000000015",
+                              "eClass": "diagram:NodeToolSection",
+                              "data": {
+                                "name": "Second section",
+                                "edgeTools": [
+                                  {
+                                    "id": "ac704000-0000-0000-0000-000000000016",
+                                    "eClass": "diagram:EdgeTool",
+                                    "data": { "name": "Second section tool" }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "ac704000-0000-0000-0000-000000000017",
+                    "eClass": "diagram:NodeDescription",
+                    "data": { "name": "Node without palette", "domainType": "flow::Processor" }
+                  },
+                  {
+                    "id": "ac704000-0000-0000-0000-000000000018",
+                    "eClass": "diagram:NodeDescription",
+                    "data": {
+                      "name": "Node with empty palette",
+                      "domainType": "flow::Processor",
+                      "palette": {
+                        "id": "ac704000-0000-0000-0000-000000000029",
+                        "eClass": "diagram:NodePalette",
+                        "data": { "edgeTools": [], "toolSections": [] }
+                      }
+                    }
+                  }
+                ],
+                "edgeDescriptions": [
+                  {
+                    "id": "ac704000-0000-0000-0000-000000000019",
+                    "eClass": "diagram:EdgeDescription",
+                    "data": {
+                      "name": "Data flow",
+                      "domainType": "flow::DataFlow",
+                      "palette": {
+                        "id": "ac704000-0000-0000-0000-000000000030",
+                        "eClass": "diagram:EdgePalette",
+                        "data": {
+                          "edgeTools": [
+                            {
+                              "id": "ac704000-0000-0000-0000-000000000020",
+                              "eClass": "diagram:EdgeTool",
+                              "data": {
+                                "name": "Edge tool 1",
+                                "targetElementDescriptions": ["diagram:NodeDescription ac704000-0000-0000-0000-000000000001#ac704000-0000-0000-0000-000000000004"]
+                              }
+                            },
+                            {
+                              "id": "ac704000-0000-0000-0000-000000000021",
+                              "eClass": "diagram:EdgeTool",
+                              "data": {
+                                "name": "Edge tool 2",
+                                "targetElementDescriptions": ["diagram:NodeDescription ac704000-0000-0000-0000-000000000001#ac704000-0000-0000-0000-000000000004"]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "ac704000-0000-0000-0000-000000000022",
+                    "eClass": "diagram:EdgeDescription",
+                    "data": { "name": "Edge without palette", "domainType": "flow::DataFlow" }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  false,
+  '2026-10-01 12:00:0.000',
+  '2026-10-01 12:00:0.000'
+);
+
 INSERT INTO document (
   id,
   semantic_data_id,
