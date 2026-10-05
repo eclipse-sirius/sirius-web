@@ -144,7 +144,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         setLink.setFeatureName("linkedTo");
         setLink.setValueExpression("aql:semanticEdgeTarget");
         gotoSemanticSource.getChildren().add(setLink);
-        entity1Node.getPalette().getEdgeTools().add(createLinkTo);
+        entity1Node.getEdgeTools().add(createLinkTo);
     }
 
     private void addEdgeDescription(NodeDescription entity1Node, NodeDescription entity2Node, StudioDefaultToolsFactory studioDefaultToolsFactory,

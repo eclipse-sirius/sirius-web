@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.classdiagram.tools.classnode;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 
 /**
@@ -35,16 +38,16 @@ public class ClassNodePaletteProvider {
                 )
                 .build();
 
-        var extendsClassTool = new ExtendsClassToolProvider().getTool(cache);
-        var implementsInterfaceTool = new ImplementsInterfaceToolProvider().getTool(cache);
-
         return new DiagramBuilders().newNodePalette()
                 .toolSections(newMembersToolSection)
-                .edgeTools(
-                        extendsClassTool,
-                        implementsInterfaceTool
-                )
                 .build();
+    }
+
+    public List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
+        return List.of(
+                new ExtendsClassToolProvider().getTool(cache),
+                new ImplementsInterfaceToolProvider().getTool(cache)
+        );
     }
 
 }

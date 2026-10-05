@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeDescription#isCollapsible <em>Collapsible</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getPalette <em>Palette</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getEdgeTools <em>Edge Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getChildrenLayoutStrategy <em>Children Layout
  * Strategy</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getStyle <em>Style</em>}</li>
@@ -90,6 +91,17 @@ public interface NodeDescription extends DiagramElementDescription {
      * @generated
      */
     void setPalette(NodePalette value);
+
+    /**
+     * Returns the value of the '<em><b>Edge Tools</b></em>' containment reference list. The list contents are of
+     * type {@link org.eclipse.sirius.components.view.diagram.EdgeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Edge Tools</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_EdgeTools()
+     * @model containment="true" keys="name"
+     * @generated
+     */
+    EList<EdgeTool> getEdgeTools();
 
     /**
      * Returns the value of the '<em><b>Actions</b></em>' containment reference list. The list contents are of type

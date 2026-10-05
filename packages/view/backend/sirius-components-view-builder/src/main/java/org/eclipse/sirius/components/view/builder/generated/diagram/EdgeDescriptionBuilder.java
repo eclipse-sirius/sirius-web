@@ -210,6 +210,18 @@ public class EdgeDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for EdgeTools.
+     *
+     * @generated
+     */
+    public EdgeDescriptionBuilder edgeTools(org.eclipse.sirius.components.view.diagram.EdgeTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.EdgeTool value : values) {
+            this.getEdgeDescription().getEdgeTools().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for SourceDescriptions.
      *
      * @generated

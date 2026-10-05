@@ -150,6 +150,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="collapsible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="palette" eType="#//NodePalette"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
+        eType="#//EdgeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="actions" upperBound="-1"
         eType="#//Action" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyleDescription"
@@ -213,6 +215,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDomainBasedEdge" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="palette" eType="#//EdgePalette"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
+        eType="#//EdgeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sourceDescriptions" lowerBound="1"
         upperBound="-1" eType="#//DiagramElementDescription"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetDescriptions" lowerBound="1"
@@ -396,8 +400,6 @@
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="quickAccessTools" upperBound="-1"
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
-        eType="#//EdgeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
         eType="#//NodeToolSection" containment="true" eKeys="#//ToolSection/name"/>
   </eClassifiers>
@@ -416,8 +418,6 @@
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeReconnectionTools"
         upperBound="-1" eType="#//EdgeReconnectionTool" containment="true" eKeys="#//Tool/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
-        eType="#//EdgeTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
         eType="#//EdgeToolSection" containment="true" eKeys="#//ToolSection/name"/>
   </eClassifiers>
@@ -530,8 +530,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="NodeToolSection" eSuperTypes="#//ToolSection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
-        eType="#//EdgeTool" containment="true" eKeys="#//Tool/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeToolSection" eSuperTypes="#//ToolSection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
