@@ -13,12 +13,14 @@
 package org.eclipse.sirius.components.collaborative.widget.reference.api;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 
 /**
  * Handle a reference widget create element operations.
@@ -33,9 +35,9 @@ public interface IReferenceWidgetCreateElementHandler {
 
     List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind, String descriptionId);
 
-    Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId, String descriptionId);
+    IStatus createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId, ReferenceWidget referenceWidget);
 
-    Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId, String descriptionId);
+    IStatus createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId, ReferenceWidget referenceWidget);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -60,13 +62,13 @@ public interface IReferenceWidgetCreateElementHandler {
         }
 
         @Override
-        public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId, String descriptionId) {
-            return Optional.empty();
+        public IStatus createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId, ReferenceWidget referenceWidget) {
+            return new Failure("");
         }
 
         @Override
-        public Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId, String descriptionId) {
-            return Optional.empty();
+        public IStatus createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId, ReferenceWidget referenceWidget) {
+            return new Failure("");
         }
     }
 

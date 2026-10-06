@@ -60,4 +60,14 @@ public class ReferenceMessageService implements IReferenceMessageService {
     public String failedToExecuteClearReferenceAction() {
         return this.messageSourceAccessor.getMessage(MessageConstants.FAILED_TO_EXECUTE_CLEAR_REFERENCE_ACTION);
     }
+
+    @Override
+    public String failedToExecuteCreateReferenceAction() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.FAILED_TO_EXECUTE_CREATE_REFERENCE_ACTION);
+    }
+
+    @Override
+    public String referenceNotFound(String referenceName, String className) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.REFERENCE_NOT_FOUND, new Object[] { referenceName, className });
+    }
 }

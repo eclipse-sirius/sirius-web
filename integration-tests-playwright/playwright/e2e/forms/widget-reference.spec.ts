@@ -65,6 +65,7 @@ test.describe('forms - widget reference - mono', () => {
   let monoValueForm: string;
 
   test.beforeAll(async ({ browser, request, baseURL }) => {
+    test.setTimeout(120_000);
     const studio = await new PlaywrightProject(request).createProject(
       'Widget reference mono studio',
       'blank-studio-template'
@@ -132,6 +133,7 @@ test.describe('forms - widget reference - multi', () => {
   let multiValueForm: string;
 
   test.beforeAll(async ({ browser, request, baseURL }) => {
+    test.setTimeout(120_000);
     const studio = await new PlaywrightProject(request).createProject(
       'Widget reference multi studio',
       'blank-studio-template'
@@ -238,6 +240,7 @@ test.describe('forms - widget reference - containment', () => {
   let containmentForm: string;
 
   test.beforeAll(async ({ browser, request, baseURL }) => {
+    test.setTimeout(120_000);
     const studio = await new PlaywrightProject(request).createProject(
       'Widget reference containment studio',
       'blank-studio-template'

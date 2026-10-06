@@ -107,7 +107,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .orElse(null);
 
         var clearButton = new ReferenceWidgetClearButtonDescription(variableManager -> true);
-        var createButton = new ReferenceWidgetCreateButtonDescription();
+        var createButton = new ReferenceWidgetCreateButtonDescription(variableManager -> true);
 
         return ReferenceWidgetDescription.newReferenceWidgetDescription(REFERENCE_WIDGET_DESCRIPTION_ID)
                 .targetObjectIdProvider(targetObjectIdProvider)

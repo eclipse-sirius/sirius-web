@@ -109,7 +109,14 @@ The `precondition` of an edge tool is no longer evaluated when computing if an e
 - https://github.com/eclipse-sirius/sirius-web/issues/5375[#5375] [form] Reference widgets now have an optional create button description.
 Existing persisted View descriptions are migrated to keep their create button.
 Programmatic descriptions must call `ReferenceWidgetDescription.Builder#createButtonDescription` with an instance of `org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonDescription` to retain the creation action.
-- https://github.com/eclipse-sirius/sirius-web/issues/7016[#7016] [diagram] The `getPalette` query no longer return edge tool, use `getConnectorPalette` instead if needed. 
+The View DSL adds the `ReferenceWidgetCreateButtonDescription` EClass and the `ReferenceWidgetDescription#createButton` containment reference.
+`IReferenceWidgetCreateElementHandler#createRootObject` and `createChild` now receive the `ReferenceWidget` instead of its description ID as their last argument.
+Contributed handlers must update these signatures and obtain the description ID from the widget when needed.
+These methods now return `IStatus`; a successful standard creation supplies the object in the `Success` parameters under `object`.
+The `CreateElementInReferencePayload` GraphQL union also accepts `SuccessPayload` for custom operations without an object result.
+When behavioral operations create several instances, only the first one is added to the reference at the end.
+This behavior is temporary and will change in a near future.
+- https://github.com/eclipse-sirius/sirius-web/issues/7016[#7016] [diagram] The `getPalette` query no longer return edge tool, use `getConnectorPalette` instead if needed.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Classes from the projects domain such as `Project`, `IProjectSearchService`, `IProjectCreationService` or `ProjectCreatedEvent` have been moved to the new module `sirius-web-projects-domain`.
 Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.projects.domain.Project`
@@ -163,6 +170,8 @@ Introduced the `PageInfoAssert` for testing the page info returned by query runn
 Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
 - https://github.com/eclipse-sirius/sirius-web/issues/5375[#5375] [form] Studio makers can show or hide the reference widget's create button by adding or removing its create button description.
 The form editor preview reflects this configuration.
+The create button's operation body can customize creation and referencing of the selected object, using `creationContainer`, `creationReference`, the edited `EReference` in `referenceName` and the selected `EClass` in `creationType`.
+An empty body retains the default creation behavior.
 - https://github.com/eclipse-sirius/sirius-web/issues/7034[#7034] [projects] Persist project style customizations.
 Enable flow related project style customizations when a new flow project is created.
 - https://github.com/eclipse-sirius/sirius-web/issues/7036[#7036] [projects] Clean enabled project style customizations when a project is deleted

@@ -36,6 +36,10 @@ export interface GQLErrorPayload extends GQLCreateElementInReferencePayload {
   messages: GQLMessage[];
 }
 
+export interface GQLSuccessPayload extends GQLCreateElementInReferencePayload {
+  messages: GQLMessage[];
+}
+
 export interface GQLGetChildCreationDescriptionsQueryVariables {
   editingContextId: string;
   representationId: string;
