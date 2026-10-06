@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
+import { ViewMode } from '@ObeoNetwork/gantt-task-react';
 import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
@@ -26,12 +26,12 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Tooltip from '@mui/material/Tooltip';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
 import { useFullscreen } from './useFullScreen';
-import { useTranslation } from 'react-i18next';
 
 const useToolbarStyles = makeStyles()((theme) => ({
   toolbar: {
@@ -55,9 +55,10 @@ const useToolbarStyles = makeStyles()((theme) => ({
 
 export const Toolbar = ({
   representationId,
+  viewMode,
   zoomLevel,
   columns,
-  tasks,
+  onChangeViewMode,
   onChangeZoomLevel,
   onChangeDisplayColumns,
   onChangeColumns,
@@ -71,64 +72,17 @@ export const Toolbar = ({
 
   const onShare = () => setState((prevState) => ({ ...prevState, modal: 'share' }));
   const closeModal = () => setState((prevState) => ({ ...prevState, modal: null }));
-  const isTask = (task: TaskOrEmpty): task is Task => {
-    return task.type !== 'empty';
-  };
   const onFitToScreen = () => {
-    const minTime = Math.min.apply(
-      null,
-      tasks
-        .filter((t) => isTask(t))
-        .map((t) => t as Task)
-        .filter((task) => Boolean(task.start))
-        .map((task) => (task.start ? task.start.getTime() : 0))
-    );
-    const maxTime = Math.max.apply(
-      null,
-
-      tasks
-        .filter((t) => isTask(t))
-        .map((t) => t as Task)
-        .filter((task) => Boolean(task.end))
-        .map((task) => (task.end ? task.end.getTime() : 0))
-    );
-
-    const fullTime: number = (maxTime - minTime) / 1000 / 3600;
-    let zoomLevel: ViewMode = ViewMode.Day;
-    if (!isFinite(fullTime)) {
-      zoomLevel = ViewMode.Day;
-    } else if (fullTime < 10) {
-      zoomLevel = ViewMode.Hour;
-    } else if (fullTime < 48) {
-      zoomLevel = ViewMode.QuarterDay;
-    } else if (fullTime < 24 * 4) {
-      zoomLevel = ViewMode.HalfDay;
-    } else if (fullTime < 24 * 10) {
-      zoomLevel = ViewMode.Day;
-    } else if (fullTime < 24 * 25) {
-      zoomLevel = ViewMode.TwoDays;
-    } else if (fullTime < 24 * 60) {
-      zoomLevel = ViewMode.Week;
-    } else if (fullTime < 24 * 30 * 7) {
-      zoomLevel = ViewMode.Month;
-    } else {
-      zoomLevel = ViewMode.Year;
-    }
-
-    onChangeZoomLevel(zoomLevel);
+    onChangeZoomLevel(100);
   };
-
-  useEffect(() => {
-    onFitToScreen();
-  }, []);
 
   const handleDisplayColumns = () => {
     onChangeDisplayColumns();
   };
 
-  const updateZoomLevel = (event) => {
-    const newZoomLevel = event.target.value;
-    onChangeZoomLevel(newZoomLevel);
+  const updateViewMode = (event) => {
+    const newViewMode = event.target.value;
+    onChangeViewMode(newViewMode);
   };
 
   let modalElement: React.ReactElement | null = null;
@@ -137,18 +91,12 @@ export const Toolbar = ({
   }
 
   const onZoomIn = () => {
-    if (zoomLevel !== ViewMode.Hour) {
-      const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
-      const newZoomLevel = Object.values(ViewMode).at(currentIndex - 1);
-      onChangeZoomLevel(newZoomLevel ? newZoomLevel : ViewMode.Hour);
-    }
+    const newZoomLevel = Math.max(1, Math.min(400, zoomLevel + 10));
+    onChangeZoomLevel(newZoomLevel);
   };
   const onZoomOut = () => {
-    if (zoomLevel !== ViewMode.Year) {
-      const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
-      const newZoomLevel = Object.values(ViewMode).at(currentIndex + 1);
-      onChangeZoomLevel(newZoomLevel ? newZoomLevel : ViewMode.Year);
-    }
+    const newZoomLevel = Math.max(1, Math.min(400, zoomLevel - 10));
+    onChangeZoomLevel(newZoomLevel);
   };
 
   const handleChangeColumns = (event) => {
@@ -190,11 +138,11 @@ export const Toolbar = ({
         )}
         <FormControl className={classes.selectFormControl}>
           <Select
-            value={zoomLevel}
-            onChange={updateZoomLevel}
+            value={viewMode}
+            onChange={updateViewMode}
             variant="standard"
             disableUnderline
-            title={t('zoomLevel')}
+            title={t('viewMode')}
             data-testid="zoom-level">
             <MenuItem value={ViewMode.Hour} data-testid="zoom-level-Hour">
               {t('hour')}

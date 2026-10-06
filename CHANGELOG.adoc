@@ -104,7 +104,7 @@ Contributed programmatic views not relying on View DSL should have their own imp
 - [releng] Switch to https://github.com/TNG/ArchUnit/releases/tag/v1.5.0[ArchUnit 1.5.0] and https://github.com/xmolecules/jmolecules/releases/tag/2.0.1[jmolecules 2.0.1] for our backend architecture tests.
 - [releng] Switch to https://github.com/eclipse-sirius/sirius-emf-json[EMFJson 2.5.5]
 - [releng] Switch to https://github.com/apollographql/apollo-client/releases/tag/v3.14.1[apollo-client 3.14.1]
-
+- [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.7`
 
 === Bug fixes
 
@@ -163,7 +163,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - https://github.com/eclipse-sirius/sirius-web/issues/6957[#6957] [diagram] Add translations support to manage selection diagram toolbar tool
 - https://github.com/eclipse-sirius/sirius-web/issues/6808[#6808] [diagram] Invoke manage selection diagram panel tool from the backend
 - https://github.com/eclipse-sirius/sirius-web/issues/6976[#6976] [form] Remove reference widget clear handler from refresh mechanism.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/7041[#7041] [gantt] Dissociate zoomLevel and viewMode in Gantt representation.
 
 
 == 2026.9.0
