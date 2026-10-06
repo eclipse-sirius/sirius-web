@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.widget.reference.provider;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
@@ -106,6 +105,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
+            this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON);
         }
         return this.childrenFeatures;
     }
@@ -188,6 +188,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -222,6 +223,9 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 
         newChildDescriptors
                 .add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription()));
+
+        newChildDescriptors
+                .add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription()));
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 

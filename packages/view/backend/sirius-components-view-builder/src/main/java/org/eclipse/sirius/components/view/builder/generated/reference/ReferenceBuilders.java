@@ -59,4 +59,14 @@ public class ReferenceBuilders {
         return new ReferenceWidgetClearButtonDescriptionBuilder();
     }
 
+    /**
+     * Instantiate a ReferenceWidgetCreateButtonDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ReferenceWidgetCreateButtonDescriptionBuilder newReferenceWidgetCreateButtonDescription() {
+        return new ReferenceWidgetCreateButtonDescriptionBuilder();
+    }
+
 }

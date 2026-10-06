@@ -152,6 +152,29 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
     EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles();
 
     /**
+     * Returns the value of the '<em><b>Create Button</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Create Button</em>' containment reference.
+     * @see #setCreateButton(ReferenceWidgetCreateButtonDescription)
+     * @see ReferencePackage#getReferenceWidgetDescription_CreateButton()
+     * @model containment="true"
+     * @generated
+     */
+    ReferenceWidgetCreateButtonDescription getCreateButton();
+
+    /**
+     * Sets the value of the '{@link ReferenceWidgetDescription#getCreateButton
+     * <em>Create Button</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Create Button</em>' containment reference.
+     * @see #getCreateButton()
+     * @generated
+     */
+    void setCreateButton(ReferenceWidgetCreateButtonDescription value);
+
+    /**
      * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *

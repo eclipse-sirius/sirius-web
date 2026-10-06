@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.formdescriptioneditors.IFormElementDescriptionInitializer;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
 import org.eclipse.sirius.components.view.form.ButtonDescription;
 import org.eclipse.sirius.components.view.form.FlexDirection;
@@ -65,13 +66,16 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
 
     private final List<IWidgetDescriptionProvider> widgetDescriptionProviders;
 
+    private final List<IFormElementDescriptionInitializer> widgetDescriptionInitializers;
+
     private final Counter counter;
 
     public AddWidgetEventHandler(IObjectSearchService objectSearchService, ICollaborativeFormDescriptionEditorMessageService messageService,
-            List<IWidgetDescriptionProvider> widgetDescriptionProviders, MeterRegistry meterRegistry) {
+            List<IWidgetDescriptionProvider> widgetDescriptionProviders, List<IFormElementDescriptionInitializer> widgetDescriptionInitializers, MeterRegistry meterRegistry) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
         this.widgetDescriptionProviders = Objects.requireNonNull(widgetDescriptionProviders);
+        this.widgetDescriptionInitializers = Objects.requireNonNull(widgetDescriptionInitializers);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -121,7 +125,6 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                 if (newElement instanceof FormElementDescription formElementDescription) {
                     if (newElement instanceof WidgetDescription widgetDescription) {
                         this.createWidgetChild(widgetDescription, "style");
-                        this.createWidgetChild(widgetDescription, "clearButton");
                     }
                     if (container instanceof GroupDescription groupDescription) {
                         groupDescription.getChildren().add(index, formElementDescription);
@@ -142,6 +145,8 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                     if (newElement instanceof SplitButtonDescription splitButtonDescription) {
                         this.createButton(splitButtonDescription);
                     }
+                    this.widgetDescriptionInitializers.forEach(initializer -> initializer.initialize(formElementDescription));
+
                 }
             }
         }

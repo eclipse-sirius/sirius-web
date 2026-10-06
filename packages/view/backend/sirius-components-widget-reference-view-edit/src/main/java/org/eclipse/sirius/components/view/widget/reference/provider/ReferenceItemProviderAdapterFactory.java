@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.view.widget.reference.provider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -44,11 +43,13 @@ import org.eclipse.sirius.components.view.form.util.FormSwitch;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.util.ReferenceAdapterFactory;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ConditionalReferenceWidgetDescriptionStyleItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetClearButtonDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetCreateButtonDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetDescriptionStyleItemProviderSpec;
 
@@ -120,6 +121,14 @@ public class ReferenceItemProviderAdapterFactory extends ReferenceAdapterFactory
      * @generated
      */
     protected ReferenceWidgetClearButtonDescriptionItemProvider referenceWidgetClearButtonDescriptionItemProvider;
+
+    /**
+     * This keeps track of the one adapter used for all {@link ReferenceWidgetCreateButtonDescription} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ReferenceWidgetCreateButtonDescriptionItemProvider referenceWidgetCreateButtonDescriptionItemProvider;
 
     /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -194,6 +203,21 @@ public class ReferenceItemProviderAdapterFactory extends ReferenceAdapterFactory
         }
 
         return this.referenceWidgetClearButtonDescriptionItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a {@link ReferenceWidgetCreateButtonDescription}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createReferenceWidgetCreateButtonDescriptionAdapter() {
+        if (this.referenceWidgetCreateButtonDescriptionItemProvider == null) {
+            this.referenceWidgetCreateButtonDescriptionItemProvider = new ReferenceWidgetCreateButtonDescriptionItemProviderSpec(this);
+        }
+
+        return this.referenceWidgetCreateButtonDescriptionItemProvider;
     }
 
     /**
@@ -304,6 +328,9 @@ public class ReferenceItemProviderAdapterFactory extends ReferenceAdapterFactory
             this.conditionalReferenceWidgetDescriptionStyleItemProvider.dispose();
         if (this.referenceWidgetClearButtonDescriptionItemProvider != null)
             this.referenceWidgetClearButtonDescriptionItemProvider.dispose();
+
+        if (this.referenceWidgetCreateButtonDescriptionItemProvider != null)
+            this.referenceWidgetCreateButtonDescriptionItemProvider.dispose();
     }
 
     /**

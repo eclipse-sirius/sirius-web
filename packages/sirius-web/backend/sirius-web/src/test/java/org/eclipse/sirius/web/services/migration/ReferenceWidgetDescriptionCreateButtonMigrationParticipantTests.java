@@ -28,21 +28,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Integration tests of ReferenceWidgetDescriptionClearButtonMigrationParticipant.
+ * Integration tests of ReferenceWidgetDescriptionCreateButtonMigrationParticipant.
  *
- * @author mcharfadi
+ * @author tgiraudet
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ReferenceWidgetDescriptionClearButtonMigrationParticipantTests extends AbstractIntegrationTests {
+public class ReferenceWidgetDescriptionCreateButtonMigrationParticipantTests extends AbstractIntegrationTests {
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given an old reference widget model, when it is loaded, then a clear button is added")
-    public void givenOldReferenceWidgetModelWhenItIsLoadedThenAClearButtonIsAdded() {
+    @DisplayName("Given an old reference widget model, when it is loaded, then a create button is added")
+    public void givenOldReferenceWidgetModelWhenItIsLoadedThenACreateButtonIsAdded() {
         var editingContextId = MigrationIdentifiers.MIGRATION_REFERENCE_WIDGET_DESCRIPTION_STUDIO.toString();
         var optionalEditingContext = this.editingContextSearchService.findById(editingContextId);
 
@@ -60,6 +60,6 @@ public class ReferenceWidgetDescriptionClearButtonMigrationParticipantTests exte
         assertThat(widget).isInstanceOf(ReferenceWidgetDescription.class);
         var referenceWidgetDescription = (ReferenceWidgetDescription) widget;
         assertThat(referenceWidgetDescription.getLabelExpression()).isEqualTo("Test Widget Reference");
-        assertThat(referenceWidgetDescription.getClearButton()).isNotNull();
+        assertThat(referenceWidgetDescription.getCreateButton()).isNotNull();
     }
 }

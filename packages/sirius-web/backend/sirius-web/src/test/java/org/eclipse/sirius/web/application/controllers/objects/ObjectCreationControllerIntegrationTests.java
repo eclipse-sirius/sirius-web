@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -134,6 +134,32 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
         List<List<String>> creationDescriptionIconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.childCreationDescriptions[*].iconURL");
         assertThat(creationDescriptionIconURLs).hasSize(1);
         assertThat(creationDescriptionIconURLs.get(0)).isEqualTo(List.of("/api/images/icons/svg/Default.svg"));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget description, when its child creation descriptions are requested, then the create button is available")
+    public void givenReferenceWidgetDescriptionWhenItsChildCreationDescriptionsAreRequestedThenTheCreateButtonIsAvailable() {
+        var input = new CreateChildInput(
+                UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                StudioIdentifiers.GROUP_OBJECT.toString(),
+                "children-ReferenceWidgetDescription"
+        );
+        var creationResult = this.createChildMutationRunner.run(input);
+        assertThat(creationResult.errors()).isEmpty();
+        String typename = JsonPath.read(creationResult.data(), "$.data.createChild.__typename");
+        assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
+
+        String referenceWidgetDescriptionId = JsonPath.read(creationResult.data(), "$.data.createChild.object.id");
+        var result = this.childCreationDescriptionsQueryRunner.run(Map.of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                "containerId", referenceWidgetDescriptionId
+        ));
+        assertThat(result.errors()).isEmpty();
+
+        List<String> creationDescriptionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.childCreationDescriptions[*].id");
+        assertThat(creationDescriptionIds).contains("createButton-ReferenceWidgetCreateButtonDescription");
     }
 
     @Test

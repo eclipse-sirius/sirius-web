@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.widget.reference.provider.spec;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
@@ -46,6 +45,9 @@ public class ReferenceWidgetDescriptionItemProviderSpec extends ReferenceWidgetD
 
         newChildDescriptors.add(
                 this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription()));
+
+        newChildDescriptors.add(
+                this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription()));
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 

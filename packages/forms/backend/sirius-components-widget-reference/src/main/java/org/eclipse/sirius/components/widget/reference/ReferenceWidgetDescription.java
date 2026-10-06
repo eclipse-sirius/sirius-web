@@ -64,6 +64,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private ReferenceWidgetClearButtonDescription clearButtonDescription;
 
+    private ReferenceWidgetCreateButtonDescription createButtonDescription;
+
     private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
 
     private Function<VariableManager, IStatus> setHandlerProvider;
@@ -148,6 +150,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.clearButtonDescription;
     }
 
+    public ReferenceWidgetCreateButtonDescription getCreateButtonDescription() {
+        return this.createButtonDescription;
+    }
+
     public Function<VariableManager, IStatus> getItemRemoveHandlerProvider() {
         return this.itemRemoveHandlerProvider;
     }
@@ -223,6 +229,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<Object, String> messageProvider;
 
         private ReferenceWidgetClearButtonDescription clearButtonDescription;
+
+        private ReferenceWidgetCreateButtonDescription createButtonDescription;
 
         private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
 
@@ -356,6 +364,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder createButtonDescription(ReferenceWidgetCreateButtonDescription createButtonDescription) {
+            this.createButtonDescription = Objects.requireNonNull(createButtonDescription);
+            return this;
+        }
+
         public Builder setHandlerProvider(Function<VariableManager, IStatus> setHandlerProvider) {
             this.setHandlerProvider = Objects.requireNonNull(setHandlerProvider);
             return this;
@@ -398,6 +411,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             referenceWidgetDescription.clearButtonDescription = this.clearButtonDescription; // Optional on purpose
             referenceWidgetDescription.itemRemoveHandlerProvider = this.itemRemoveHandlerProvider; // Optional on purpose
+            referenceWidgetDescription.createButtonDescription = this.createButtonDescription; // Optional on purpose
             referenceWidgetDescription.setHandlerProvider = this.setHandlerProvider; // Optional on purpose
             referenceWidgetDescription.addHandlerProvider = this.addHandlerProvider; // Optional on purpose
             referenceWidgetDescription.moveHandlerProvider = this.moveHandlerProvider;  // Optional on purpose

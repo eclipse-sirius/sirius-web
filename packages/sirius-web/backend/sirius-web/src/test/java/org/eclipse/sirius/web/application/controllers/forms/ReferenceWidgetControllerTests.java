@@ -410,6 +410,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             formId.set(form.getId());
             referenceWidget.set(new FormNavigator(form).page("Page").group("Group").findWidget("Super types", ReferenceWidget.class));
             assertThat(referenceWidget.get().isReadOnly()).isFalse();
+            assertThat(referenceWidget.get().getCreateButton()).isNotNull();
         });
 
         Runnable createElementMutation = () -> {
@@ -442,6 +443,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             formId.set(form.getId());
             referenceWidget.set(new FormNavigator(form).page("Page").group("Group").findWidget("Super types", ReferenceWidget.class));
             assertThat(referenceWidget.get().isReadOnly()).isFalse();
+            assertThat(referenceWidget.get().getCreateButton()).isNotNull();
         });
 
         Runnable createElementMutation = () -> {
@@ -475,6 +477,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             formId.set(form.getId());
             referenceWidget.set(new FormNavigator(form).page("Human").group("Core Properties").findWidget("Super Types", ReferenceWidget.class));
             assertThat(referenceWidget.get().isReadOnly()).isFalse();
+            assertThat(referenceWidget.get().getCreateButton()).isNotNull();
         });
 
         Runnable createElementMutation = () -> {
@@ -507,6 +510,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             formId.set(form.getId());
             referenceWidget.set(new FormNavigator(form).page("Human").group("Core Properties").findWidget("Super Types", ReferenceWidget.class));
             assertThat(referenceWidget.get().isReadOnly()).isFalse();
+            assertThat(referenceWidget.get().getCreateButton()).isNotNull();
         });
 
         Runnable createElementMutation = () -> {

@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.form.FormDescription
 import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.PageDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetCreateButtonDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionStyleBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
@@ -113,6 +114,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .referenceOwnerExpression("aql:self")
                 .helpExpression("aql:'Specify the super-types of ' + self.name")
                 .style(superTypesReferenceStyle)
+                .createButton(new ReferenceWidgetCreateButtonDescriptionBuilder().build())
                 .build();
         var clearButton = ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription();
         if (customClear) {

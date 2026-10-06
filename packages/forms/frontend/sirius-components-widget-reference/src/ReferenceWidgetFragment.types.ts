@@ -22,6 +22,7 @@ export interface GQLReferenceWidget extends GQLWidget {
   style: GQLReferenceWidgetStyle | null;
   ownerId: string;
   clearButton: GQLReferenceWidgetClearButton | null;
+  createButton: GQLReferenceWidgetCreateButton | null;
 }
 
 export interface GQLReferenceWidgetStyle {
@@ -48,6 +49,10 @@ export interface GQLReferenceValue {
 }
 
 export interface GQLReferenceWidgetClearButton {
+  id: string;
+}
+
+export interface GQLReferenceWidgetCreateButton {
   id: string;
 }
 

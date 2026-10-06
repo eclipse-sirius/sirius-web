@@ -71,6 +71,9 @@ Downstream consumers must declare this dependency and replace the package prefix
 A new query `connectorToolCandidateDescriptionIds(diagramElementId: ID!): [ID!]!` is used instead, it returns all element description id that are target candidate for a given source element.
 This query is using the `IConnectorToolCandidateDescriptionIdsProvider`, a default implementation is provided.
 The `precondition` of an edge tool is no longer evaluated when computing if an element should display its creation handles.
+- Reference widgets now have an optional create button description.
+  Existing persisted View descriptions are migrated to keep their create button.
+  Programmatic descriptions must explicitly configure `createButtonDescription` to keep the creation action.
 
 == Dependency updates
 
@@ -116,6 +119,8 @@ All applicable customizers are applied, but their order is unspecified.
 If multiple customizers modify the same style property, the last one wins.
 * In forms, specifiers can now configure whether reference widgets show a clear button in the View DSL.
 * In forms, specifiers can now configure reference-widget clear-button behavior through its View DSL operation body.
+* Studio makers can now show or hide the reference widget's create button by adding or removing its create button description.
+The form editor preview reflects this configuration.
 
 
 == Improvements

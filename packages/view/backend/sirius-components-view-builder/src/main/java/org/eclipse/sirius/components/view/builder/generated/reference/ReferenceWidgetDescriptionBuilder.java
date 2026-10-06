@@ -135,6 +135,16 @@ public class ReferenceWidgetDescriptionBuilder {
     }
 
     /**
+     * Setter for CreateButton.
+     *
+     * @generated
+     */
+    public ReferenceWidgetDescriptionBuilder createButton(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription value) {
+        this.getReferenceWidgetDescription().setCreateButton(value);
+        return this;
+    }
+
+    /**
      * Setter for Style.
      *
      * @generated

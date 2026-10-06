@@ -144,14 +144,16 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
                       data-testid={`${widget.label}-more`}>
                       <MoreHorizIcon />
                     </IconButton>
-                    <IconButton
-                      aria-label="add"
-                      size="small"
-                      title="Create an object"
-                      disabled={false}
-                      data-testid={`${widget.label}-add`}>
-                      <AddIcon />
-                    </IconButton>
+                    {widget.createButton ? (
+                      <IconButton
+                        aria-label="add"
+                        size="small"
+                        title="Create an object"
+                        disabled={false}
+                        data-testid={`${widget.label}-add`}>
+                        <AddIcon />
+                      </IconButton>
+                    ) : null}
                     {widget.clearButton ? (
                       <IconButton
                         aria-label="clear"

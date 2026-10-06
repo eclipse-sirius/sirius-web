@@ -63,6 +63,14 @@ public interface ReferenceFactory extends EFactory {
     ReferenceWidgetClearButtonDescription createReferenceWidgetClearButtonDescription();
 
     /**
+     * Returns a new object of class '<em>Widget Create Button Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Widget Create Button Description</em>'.
+     * @generated
+     */
+    ReferenceWidgetCreateButtonDescription createReferenceWidgetCreateButtonDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.
