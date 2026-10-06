@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 export interface MarkdownRendererProps {
+  plainTextByDefault?: boolean;
   value: string;
   placeholder: string;
   readOnly: boolean;
@@ -19,18 +20,12 @@ export interface MarkdownRendererProps {
 }
 
 export interface ContentEditableProps {
+  label: string;
   readOnly: boolean;
 }
 
-export interface UpdateValuePluginProps {
-  markdownText: string;
-}
-
-export interface OnBlurPluginProps {
-  onBlur: (markdownText: string) => void;
-  children: React.JSX.Element | Array<React.JSX.Element | null> | null;
-}
-
 export interface ToolbarPluginProps {
+  plainText: boolean;
+  onModeChange: () => void;
   readOnly: boolean;
 }
