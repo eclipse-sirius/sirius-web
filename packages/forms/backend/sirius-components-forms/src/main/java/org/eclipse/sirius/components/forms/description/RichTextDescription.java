@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,8 @@ public final class RichTextDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, List<String>> iconURLProvider;
 
+    private Function<VariableManager, Boolean> plainTextByDefaultProvider;
+
     private Function<VariableManager, String> valueProvider;
 
     private BiFunction<VariableManager, String, IStatus> newValueHandler;
@@ -58,6 +60,13 @@ public final class RichTextDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
+    }
+
+    /**
+     * Returns the provider of the initial plain-text rendering mode.
+     */
+    public Function<VariableManager, Boolean> getPlainTextByDefaultProvider() {
+        return this.plainTextByDefaultProvider;
     }
 
     public Function<VariableManager, String> getValueProvider() {
@@ -93,6 +102,8 @@ public final class RichTextDescription extends AbstractWidgetDescription {
         private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
+
+        private Function<VariableManager, Boolean> plainTextByDefaultProvider = variableManager -> false;
 
         private Function<VariableManager, String> valueProvider;
 
@@ -135,6 +146,14 @@ public final class RichTextDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        /**
+         * Sets the provider of the initial plain-text mode; by default widgets render Markdown.
+         */
+        public Builder plainTextByDefaultProvider(Function<VariableManager, Boolean> plainTextByDefaultProvider) {
+            this.plainTextByDefaultProvider = Objects.requireNonNull(plainTextByDefaultProvider);
+            return this;
+        }
+
         public Builder valueProvider(Function<VariableManager, String> valueProvider) {
             this.valueProvider = Objects.requireNonNull(valueProvider);
             return this;
@@ -165,6 +184,9 @@ public final class RichTextDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        /**
+         * Builds the description, including the provider of the initial rendering mode.
+         */
         public RichTextDescription build() {
             RichTextDescription richtextDescription = new RichTextDescription();
             richtextDescription.id = Objects.requireNonNull(this.id);
@@ -173,6 +195,7 @@ public final class RichTextDescription extends AbstractWidgetDescription {
             richtextDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             richtextDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             richtextDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
+            richtextDescription.plainTextByDefaultProvider = Objects.requireNonNull(this.plainTextByDefaultProvider);
             richtextDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
             richtextDescription.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             richtextDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

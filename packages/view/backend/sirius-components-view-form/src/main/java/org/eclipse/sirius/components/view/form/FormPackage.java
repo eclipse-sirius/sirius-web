@@ -1896,13 +1896,22 @@ public interface FormPackage extends EPackage {
     int RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>Plain Text By Default Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Rich Text Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int RICH_TEXT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+    int RICH_TEXT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Rich Text Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -7268,6 +7277,18 @@ public interface FormPackage extends EPackage {
     EAttribute getRichTextDescription_IsEnabledExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.RichTextDescription#getPlainTextByDefaultExpression <em>Plain Text By Default
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Plain Text By Default Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.RichTextDescription#getPlainTextByDefaultExpression()
+     * @see #getRichTextDescription()
+     * @generated
+     */
+    EAttribute getRichTextDescription_PlainTextByDefaultExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.SelectDescription <em>Select
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9440,6 +9461,14 @@ public interface FormPackage extends EPackage {
          * @generated
          */
         EAttribute RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getRichTextDescription_IsEnabledExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Plain Text By Default Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION = eINSTANCE.getRichTextDescription_PlainTextByDefaultExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionImpl

@@ -54,6 +54,7 @@ public class RichTextDescriptionItemProvider extends WidgetDescriptionItemProvid
 
             this.addValueExpressionPropertyDescriptor(object);
             this.addIsEnabledExpressionPropertyDescriptor(object);
+            this.addPlainTextByDefaultExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -81,6 +82,19 @@ public class RichTextDescriptionItemProvider extends WidgetDescriptionItemProvid
                 this.getString("_UI_RichTextDescription_IsEnabledExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_RichTextDescription_IsEnabledExpression_feature", "_UI_RichTextDescription_type"),
                 FormPackage.Literals.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Plain Text By Default Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addPlainTextByDefaultExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RichTextDescription_plainTextByDefaultExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RichTextDescription_plainTextByDefaultExpression_feature", "_UI_RichTextDescription_type"),
+                FormPackage.Literals.RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -158,6 +172,7 @@ public class RichTextDescriptionItemProvider extends WidgetDescriptionItemProvid
         switch (notification.getFeatureID(RichTextDescription.class)) {
             case FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
             case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
+            case FormPackage.RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
