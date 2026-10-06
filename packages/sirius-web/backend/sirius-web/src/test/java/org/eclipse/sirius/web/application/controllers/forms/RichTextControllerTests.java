@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
@@ -46,7 +47,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the textfield widget.
+ * Integration tests of the rich text widget and its initial rendering mode.
  *
  * @author sbegaudeau
  */
@@ -99,6 +100,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
                     .hasValue("Improve some features of the diagram")
                     .hasHelp("The name of the object")
                     .isNotReadOnly();
+            assertThat(richText.isPlainTextByDefault()).isTrue();
         });
 
         StepVerifier.create(flux)
@@ -107,6 +109,9 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    /**
+     * Verifies that editing refreshes the value and the evaluated mode configuration.
+     */
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a rich text widget, when it is edited, then its value is updated")
@@ -141,6 +146,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
             assertThat(richText)
                     .hasValue("None")
                     .isReadOnly();
+            assertThat(richText.isPlainTextByDefault()).isFalse();
         });
 
         StepVerifier.create(flux)

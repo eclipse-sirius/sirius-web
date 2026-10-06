@@ -15,7 +15,7 @@ import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
-test.describe('details - rich text links', () => {
+test.describe('details - rich text', () => {
   let projectId: string;
 
   test.beforeEach(async ({ page, request }) => {
@@ -33,6 +33,60 @@ test.describe('details - rich text links', () => {
 
   test.afterEach(async ({ request }) => {
     await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('source edits survive switching and save only when leaving the widget', async ({ page }) => {
+    const richText = new PlaywrightDetails(page).detailsLocator.getByTestId('Description');
+    const editor = richText.getByRole('textbox');
+    const toggle = richText.getByRole('button', { name: 'Plain text', exact: true });
+    const edits: string[] = [];
+    page.on('request', (request) => {
+      if (request.method() === 'POST' && request.url().endsWith('/api/graphql')) {
+        const data = request.postDataJSON();
+        if (data?.operationName === 'editRichText') {
+          edits.push(data.variables.input.newValue);
+        }
+      }
+    });
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    await toggle.click();
+    await editor.fill('');
+    await editor.pressSequentially('- [ ] literal');
+    await expect(editor).toHaveText('- [ ] literal');
+    await expect(editor.locator('ul')).toHaveCount(0);
+    const source = '**bold** and _italic_\n\n- [ ] todo\n';
+    await editor.press('ControlOrMeta+A');
+    await editor.press('Backspace');
+    await expect(editor).toHaveText('');
+    await editor.evaluate((element, text) => {
+      const event = new ClipboardEvent('paste', { bubbles: true, cancelable: true });
+      // Firefox does not expose synthetic DataTransfer content during paste events.
+      Object.defineProperty(event, 'clipboardData', {
+        value: { getData: (format: string) => (format === 'text/plain' ? text : '<b>unwanted HTML formatting</b>') },
+      });
+      element.dispatchEvent(event);
+    }, source);
+    await expect(editor).toContainText('**bold** and _italic_');
+    await expect(editor.locator('strong, ul')).toHaveCount(0);
+    await toggle.click();
+    await expect(editor.locator('strong')).toHaveText('bold');
+    await toggle.click();
+    await expect(editor).toContainText('**bold** and _italic_');
+    expect(edits).toEqual([]);
+    await page.getByTestId('upload-document-icon').focus();
+    await expect.poll(() => edits).toEqual([source]);
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+
+    await page.reload();
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.expand('detailsOpenTab.xml');
+    await explorer.expand('Project1');
+    await explorer.select('Component');
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    await expect(editor.locator('strong')).toHaveText('bold');
+    await toggle.click();
+    await page.getByTestId('upload-document-icon').focus();
+    expect(edits).toEqual([source]);
   });
 
   test('when a link is inserted, then it can be opened, edited, and deleted', async ({ page }) => {

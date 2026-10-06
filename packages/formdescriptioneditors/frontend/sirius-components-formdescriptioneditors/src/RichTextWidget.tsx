@@ -27,6 +27,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 import { makeStyles, withStyles } from 'tss-react/mui';
 import { useEffect, useRef, useState } from 'react';
+import { RichTextWidgetState } from './RichTextWidget.types';
 import { RichTextWidgetProps } from './WidgetEntry.types';
 import { useTranslation } from 'react-i18next';
 
@@ -85,7 +86,7 @@ const StyledToggleButtonGroup = withStyles(ToggleButtonGroup, (theme) => ({
 
 export const RichTextWidget = ({ widget }: RichTextWidgetProps) => {
   const { classes } = useStyles();
-  const [selected, setSelected] = useState<boolean>(false);
+  const [state, setState] = useState<RichTextWidgetState>({ plainText: false, selected: false });
   const { selection } = useSelection();
   const { t } = useTranslation('sirius-components-formdescriptioneditors', { keyPrefix: 'richTextWidget' });
   const ref = useRef<HTMLInputElement | null>(null);
@@ -93,86 +94,105 @@ export const RichTextWidget = ({ widget }: RichTextWidgetProps) => {
   useEffect(() => {
     if (ref.current && selection.entries.find((entry) => entry.id === widget.id)) {
       ref.current.focus();
-      setSelected(true);
+      setState((prevState) => ({ ...prevState, selected: true }));
     } else {
-      setSelected(false);
+      setState((prevState) => ({ ...prevState, selected: false }));
     }
   }, [selection, widget]);
 
   return (
     <div>
       <div className={classes.propertySectionLabel}>
-        <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
+        <Typography variant="subtitle2" className={state.selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <div
         className={classes.focusable}
-        onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
+        onFocus={() => setState((prevState) => ({ ...prevState, selected: true }))}
+        onBlur={() => setState((prevState) => ({ ...prevState, selected: false }))}
         ref={ref}
         tabIndex={0}>
         <Paper elevation={0} className={classes.paper}>
           <StyledToggleButtonGroup size="small">
             <ToggleButton
-              classes={{ root: classes.button }}
-              selected
-              disabled={false}
-              value={'paragraph'}
-              key={'paragraph'}>
-              <SubjectIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton
-              classes={{ root: classes.button }}
-              selected={false}
-              disabled={false}
-              value={'header1'}
-              key={'header1'}>
-              <TitleIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton
-              classes={{ root: classes.button }}
-              selected={false}
-              disabled={false}
-              value={'bullet-list'}
-              key={'bullet-list'}>
-              <FormatListBulletedIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton
-              classes={{ root: classes.button }}
-              selected={false}
-              disabled={false}
-              value={'number-list'}
-              key={'number-list'}>
-              <FormatListNumberedIcon fontSize="small" />
+              value="plain-text"
+              selected={state.plainText}
+              onClick={() => setState((prevState) => ({ ...prevState, plainText: !prevState.plainText }))}
+              aria-label={t('plainText')}>
+              {t('plainText')}
             </ToggleButton>
           </StyledToggleButtonGroup>
-          <Divider flexItem orientation="vertical" className={classes.divider} />
-          <StyledToggleButtonGroup size="small">
-            <ToggleButton classes={{ root: classes.button }} disabled={false} value={'bold'} key={'bold'}>
-              <FormatBoldIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton classes={{ root: classes.button }} value={'italic'} key={'italic'}>
-              <FormatItalicIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton classes={{ root: classes.button }} disabled={false} value={'code'} key={'code'}>
-              <CodeIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton
-              classes={{ root: classes.button }}
-              disabled={false}
-              value={'strikethrough'}
-              key={'strikethrough'}>
-              <StrikethroughSIcon fontSize="small" />
-            </ToggleButton>
-          </StyledToggleButtonGroup>
+          {!state.plainText ? (
+            <>
+              <StyledToggleButtonGroup size="small">
+                <ToggleButton
+                  classes={{ root: classes.button }}
+                  selected
+                  disabled={false}
+                  value={'paragraph'}
+                  key={'paragraph'}>
+                  <SubjectIcon fontSize="small" />
+                </ToggleButton>
+                <ToggleButton
+                  classes={{ root: classes.button }}
+                  selected={false}
+                  disabled={false}
+                  value={'header1'}
+                  key={'header1'}>
+                  <TitleIcon fontSize="small" />
+                </ToggleButton>
+                <ToggleButton
+                  classes={{ root: classes.button }}
+                  selected={false}
+                  disabled={false}
+                  value={'bullet-list'}
+                  key={'bullet-list'}>
+                  <FormatListBulletedIcon fontSize="small" />
+                </ToggleButton>
+                <ToggleButton
+                  classes={{ root: classes.button }}
+                  selected={false}
+                  disabled={false}
+                  value={'number-list'}
+                  key={'number-list'}>
+                  <FormatListNumberedIcon fontSize="small" />
+                </ToggleButton>
+              </StyledToggleButtonGroup>
+              <Divider flexItem orientation="vertical" className={classes.divider} />
+              <StyledToggleButtonGroup size="small">
+                <ToggleButton classes={{ root: classes.button }} disabled={false} value={'bold'} key={'bold'}>
+                  <FormatBoldIcon fontSize="small" />
+                </ToggleButton>
+                <ToggleButton classes={{ root: classes.button }} value={'italic'} key={'italic'}>
+                  <FormatItalicIcon fontSize="small" />
+                </ToggleButton>
+                <ToggleButton classes={{ root: classes.button }} disabled={false} value={'code'} key={'code'}>
+                  <CodeIcon fontSize="small" />
+                </ToggleButton>
+                <ToggleButton
+                  classes={{ root: classes.button }}
+                  disabled={false}
+                  value={'strikethrough'}
+                  key={'strikethrough'}>
+                  <StrikethroughSIcon fontSize="small" />
+                </ToggleButton>
+              </StyledToggleButtonGroup>
+            </>
+          ) : null}
         </Paper>
         <div className={classes.editorContainer}>
-          <Typography variant="h4">{t('richTextDocument')}</Typography>
-          <Typography variant="body1" gutterBottom>
-            Your <b>rich text</b>.
-          </Typography>
+          {state.plainText ? (
+            <Typography component="pre">{`# ${t('richTextDocument')}\n\nYour **rich text**.`}</Typography>
+          ) : (
+            <>
+              <Typography variant="h4">{t('richTextDocument')}</Typography>
+              <Typography variant="body1" gutterBottom>
+                Your <b>rich text</b>.
+              </Typography>
+            </>
+          )}
         </div>
       </div>
     </div>

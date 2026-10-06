@@ -14,6 +14,7 @@
     "item2.2": "Item 2.2"
   },
   "richTextWidget": {
+    "plainText": "Plain text",
     "richTextDocument": "Rich text document",
     "yourRichText": "Your <b>rich text</b>."
   },
