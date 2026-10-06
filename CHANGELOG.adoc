@@ -109,6 +109,11 @@ The `precondition` of an edge tool is no longer evaluated when computing if an e
 - https://github.com/eclipse-sirius/sirius-web/issues/5375[#5375] [form] Reference widgets now have an optional create button description.
 Existing persisted View descriptions are migrated to keep their create button.
 Programmatic descriptions must call `ReferenceWidgetDescription.Builder#createButtonDescription` with an instance of `org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonDescription` to retain the creation action.
+The View DSL adds the `ReferenceWidgetCreateButtonDescription` EClass and the `ReferenceWidgetDescription#createButton` containment reference.
+`IReferenceWidgetCreateElementHandler#createRootObject` and `createChild` now receive the `ReferenceWidget` instead of its description ID as their last argument.
+Contributed handlers must update these signatures and obtain the description ID from the widget when needed.
+These methods now return `IStatus`; a successful standard creation supplies the object in the `Success` parameters under `object`.
+The `CreateElementInReferencePayload` GraphQL union also accepts `SuccessPayload` for custom operations without an object result.
 
 
 === Dependency update
@@ -156,6 +161,8 @@ Introduced the `PageInfoAssert` for testing the page info returned by query runn
 Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
 - https://github.com/eclipse-sirius/sirius-web/issues/5375[#5375] [form] Studio makers can show or hide the reference widget's create button by adding or removing its create button description.
 The form editor preview reflects this configuration.
+The create button's operation body can customize creation and referencing of the selected object, using `creationContainer`, `creationReference`, the edited `EReference` in `referenceName` and the selected `EClass` in `creationType`.
+An empty body retains the default creation behavior.
 
 
 === Improvements

@@ -89,7 +89,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
             builder.clearButtonDescription(new ReferenceWidgetClearButtonDescription(variableManager -> true));
         }
         if (referenceDescription.getCreateButton() != null) {
-            builder.createButtonDescription(new ReferenceWidgetCreateButtonDescription());
+            builder.createButtonDescription(new ReferenceWidgetCreateButtonDescription(variableManager -> true));
         }
         return builder;
     }

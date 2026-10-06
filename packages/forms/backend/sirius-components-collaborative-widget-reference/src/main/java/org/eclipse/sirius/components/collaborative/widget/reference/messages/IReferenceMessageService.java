@@ -31,6 +31,10 @@ public interface IReferenceMessageService {
 
     String failedToExecuteClearReferenceAction();
 
+    String failedToExecuteCreateReferenceAction();
+
+    String referenceNotFound(String referenceName, String className);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -65,6 +69,16 @@ public interface IReferenceMessageService {
 
         @Override
         public String failedToExecuteClearReferenceAction() {
+            return "";
+        }
+
+        @Override
+        public String failedToExecuteCreateReferenceAction() {
+            return "";
+        }
+
+        @Override
+        public String referenceNotFound(String referenceName, String className) {
             return "";
         }
 

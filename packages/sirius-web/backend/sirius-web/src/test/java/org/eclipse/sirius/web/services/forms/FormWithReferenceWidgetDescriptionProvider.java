@@ -29,12 +29,15 @@ import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescri
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetCreateButtonDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionStyleBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.CreateInstanceBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.UnsetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
@@ -100,53 +103,18 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
     }
 
     private FormDescription createFormDescription(boolean customClear) {
-        var superTypesReferenceStyle = new ReferenceWidgetDescriptionStyleBuilder()
-                .bold(true)
-                .italic(true)
-                .strikeThrough(true)
-                .underline(true)
-                .build();
-
-        var superTypesReference = new ReferenceWidgetDescriptionBuilder()
-                .name("Super types reference")
-                .labelExpression("Super types")
-                .referenceNameExpression("superTypes")
-                .referenceOwnerExpression("aql:self")
-                .helpExpression("aql:'Specify the super-types of ' + self.name")
-                .style(superTypesReferenceStyle)
-                .createButton(new ReferenceWidgetCreateButtonDescriptionBuilder().build())
-                .build();
-        var clearButton = ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription();
-        if (customClear) {
-            clearButton.getBody().add(new SetValueBuilder()
-                    .featureName("name")
-                    .valueExpression("Cleared by custom action")
-                    .build());
-            clearButton.getBody().add(new UnsetValueBuilder()
-                    .featureName("superTypes")
-                    .build());
-        }
-        superTypesReference.setClearButton(clearButton);
-
         var nameTextfield = new TextfieldDescriptionBuilder()
                 .name("Name")
                 .labelExpression("Name")
                 .valueExpression("aql:self.name")
                 .build();
 
-        var readOnlySuperTypesReference = new ReferenceWidgetDescriptionBuilder()
-                .name("Read-only super types reference")
-                .labelExpression("Read-only super types")
-                .referenceNameExpression("superTypes")
-                .referenceOwnerExpression("aql:self")
-                .isEnabledExpression("aql:false")
-                .build();
-
         var groupDescription = new GroupDescriptionBuilder()
                 .name("Group")
                 .labelExpression("Group")
                 .semanticCandidatesExpression("aql:self")
-                .children(nameTextfield, superTypesReference, readOnlySuperTypesReference)
+                .children(nameTextfield)
+                .children(this.createReferenceWidgetDescriptions(customClear))
                 .build();
 
         var pageDescription = new PageDescriptionBuilder()
@@ -170,5 +138,99 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .domainType("domain:Entity")
                 .pages(pageDescription)
                 .build();
+    }
+
+    private ReferenceWidgetDescription[] createReferenceWidgetDescriptions(boolean customClear) {
+        var superTypesReferenceStyle = new ReferenceWidgetDescriptionStyleBuilder()
+                .bold(true)
+                .italic(true)
+                .strikeThrough(true)
+                .underline(true)
+                .build();
+
+        var superTypesReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Super types reference")
+                .labelExpression("Super types")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .helpExpression("aql:'Specify the super-types of ' + self.name")
+                .style(superTypesReferenceStyle)
+                .createButton(new ReferenceWidgetCreateButtonDescriptionBuilder().build())
+                .build();
+
+        var clearButton = ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription();
+        if (customClear) {
+            clearButton.getBody().add(new SetValueBuilder()
+                    .featureName("name")
+                    .valueExpression("Cleared by custom action")
+                    .build());
+            clearButton.getBody().add(new UnsetValueBuilder()
+                    .featureName("superTypes")
+                    .build());
+        }
+        superTypesReference.setClearButton(clearButton);
+
+        var readOnlySuperTypesReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Read-only super types reference")
+                .labelExpression("Read-only super types")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .isEnabledExpression("aql:false")
+                .build();
+
+        var customCreationReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Custom creation super types")
+                .labelExpression("Custom creation super types")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .createButton(new ReferenceWidgetCreateButtonDescriptionBuilder()
+                        .body(new SetValueBuilder()
+                                .featureName("name")
+                                .valueExpression("aql:'Custom creation executed'")
+                                .build())
+                        .build())
+                .build();
+
+        var instanceCreationReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Instance creation super types")
+                .labelExpression("Instance creation super types")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .createButton(new ReferenceWidgetCreateButtonDescriptionBuilder()
+                        .body(new ChangeContextBuilder()
+                                .expression("aql:creationContainer")
+                                .children(new CreateInstanceBuilder()
+                                        .typeName("domain::Entity")
+                                        .referenceName("types")
+                                        .variableName("createdEntity")
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+
+        var failingCreationReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Failing creation super types")
+                .labelExpression("Failing creation super types")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .createButton(new ReferenceWidgetCreateButtonDescriptionBuilder()
+                        .body(new ChangeContextBuilder().expression("aql:null").build())
+                        .build())
+                .build();
+
+        var hiddenCreateButtonReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Hidden create button")
+                .labelExpression("Hidden create button")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .createButton(new ReferenceWidgetCreateButtonDescriptionBuilder()
+                        .preconditionExpression("aql:false")
+                        .build())
+                .build();
+
+        return new ReferenceWidgetDescription[] {
+            superTypesReference, readOnlySuperTypesReference, customCreationReference,
+            instanceCreationReference, failingCreationReference, hiddenCreateButtonReference,
+        };
     }
 }

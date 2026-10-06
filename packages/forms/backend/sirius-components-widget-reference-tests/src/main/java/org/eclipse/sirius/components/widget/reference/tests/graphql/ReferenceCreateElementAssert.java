@@ -17,10 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInReferenceSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 
 /**
@@ -47,6 +49,13 @@ public class ReferenceCreateElementAssert {
         String objectId = JsonPath.read(this.result.data(), "$.data.createElementInReference.object.id");
         assertThat(objectId).isNotBlank();
         return objectId;
+    }
+
+    public ReferenceCreateElementAssert isSuccessWithoutResult() {
+        assertThat(this.result.errors()).isEmpty();
+        Map<String, Object> payload = JsonPath.read(this.result.data(), "$.data.createElementInReference");
+        assertThat(payload).containsEntry("__typename", SuccessPayload.class.getSimpleName()).doesNotContainKey("object");
+        return this;
     }
 
     public ReferenceCreateElementAssert isError() {
