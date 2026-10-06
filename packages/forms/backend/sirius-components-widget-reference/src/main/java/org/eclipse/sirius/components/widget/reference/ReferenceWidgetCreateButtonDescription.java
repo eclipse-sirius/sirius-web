@@ -13,10 +13,19 @@
 
 package org.eclipse.sirius.components.widget.reference;
 
+import java.util.Objects;
+import java.util.function.Function;
+
+import org.eclipse.sirius.components.representations.VariableManager;
+
 /**
  * Describes the presence of a clear button on a reference widget.
  *
  * @author tgiraudet
  */
-public record ReferenceWidgetCreateButtonDescription() {
+public record ReferenceWidgetCreateButtonDescription(Function<VariableManager, Boolean> preconditionProvider) {
+
+    public ReferenceWidgetCreateButtonDescription {
+        Objects.requireNonNull(preconditionProvider);
+    }
 }

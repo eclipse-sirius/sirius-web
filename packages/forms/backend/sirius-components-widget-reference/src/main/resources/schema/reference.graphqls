@@ -116,7 +116,7 @@ input CreateElementInReferenceInput {
   descriptionId: ID!
 }
 
-union CreateElementInReferencePayload = CreateElementInReferenceSuccessPayload | ErrorPayload
+union CreateElementInReferencePayload = CreateElementInReferenceSuccessPayload | SuccessPayload | ErrorPayload
 
 type CreateElementInReferenceSuccessPayload {
   id: ID!

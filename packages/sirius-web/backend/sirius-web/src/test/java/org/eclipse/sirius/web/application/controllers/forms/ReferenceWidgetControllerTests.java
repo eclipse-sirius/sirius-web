@@ -166,6 +166,33 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Test
     @GivenSiriusWebServer
+    @DisplayName("Given a reference widget with a false create button precondition, when it is displayed, then the create button is hidden")
+    public void givenReferenceWidgetWithFalseCreateButtonPreconditionWhenItIsDisplayedThenCreateButtonIsHidden() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
+                StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
+                "FormWithReferenceWidget"
+        );
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
+
+        Consumer<Object> contentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var referenceWidget = groupNavigator.findWidget("Hidden create button", ReferenceWidget.class);
+            assertThat(referenceWidget.getCreateButton()).isNull();
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(contentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a reference widget, when its options are requested, then some values are returned")
     public void givenReferenceWidgetWhenItsOptionsAreRequestedThenSomeValuesAreReturned() {
         var input = new CreateRepresentationInput(
@@ -534,6 +561,123 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Test
     @GivenSiriusWebServer
+    @DisplayName("Given a View reference creation body using CreateInstance, when creating an element, then the created object is returned")
+    public void givenViewReferenceCreationBodyUsingCreateInstanceWhenCreatingElementThenTheCreatedObjectIsReturned() {
+        var formId = new AtomicReference<String>();
+        var referenceWidget = new AtomicReference<ReferenceWidget>();
+        var createdObjectId = new AtomicReference<String>();
+        int initialTypeCount = this.getDomainTypeCount();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            referenceWidget.set(new FormNavigator(form).page("Page").group("Group").findWidget("Instance creation super types", ReferenceWidget.class));
+            assertThat(referenceWidget.get().getCreateButton()).isNotNull();
+        });
+
+        Runnable createElementMutation = () -> {
+            var widget = referenceWidget.get();
+            var creationDescriptionId = this.getChildCreationDescriptionId(formId.get(), widget);
+            var input = new CreateElementInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    formId.get(), widget.getId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), null, creationDescriptionId, widget.getDescriptionId());
+            createdObjectId.set(this.referenceCreateElementExecutor.execute(input).isSuccess().getObjectId());
+        };
+
+        StepVerifier.create(this.givenViewReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(createElementMutation)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var entity = this.getCreatedEntity(createdObjectId.get());
+        assertThat(entity.eContainer()).isInstanceOf(Domain.class);
+        assertThat(((Domain) entity.eContainer()).getTypes()).contains(entity);
+        assertThat(this.getDomainTypeCount()).isEqualTo(initialTypeCount + 1);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a custom View reference creation body, when root creation is requested, then it executes without returning an object")
+    public void givenCustomViewReferenceCreationBodyWhenRootCreationIsRequestedThenItExecutesWithoutReturningAnObject() {
+        var formId = new AtomicReference<String>();
+        var referenceWidget = new AtomicReference<ReferenceWidget>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            referenceWidget.set(new FormNavigator(form).page("Page").group("Group").findWidget("Custom creation super types", ReferenceWidget.class));
+            assertThat(referenceWidget.get().getCreateButton()).isNotNull();
+            assertThat(referenceWidget.get()).hasValueWithLabel("NamedElement");
+        });
+
+        Runnable createElementMutation = () -> {
+            var widget = referenceWidget.get();
+            var creationDescriptionId = this.getRootCreationDescriptionId(formId.get(), widget);
+            var input = new CreateElementInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    formId.get(), widget.getId(), StudioIdentifiers.DOMAIN_DOCUMENT.toString(), DomainPackage.eNS_URI, creationDescriptionId, widget.getDescriptionId());
+            this.referenceCreateElementExecutor.execute(input).isSuccessWithoutResult();
+        };
+
+        StepVerifier.create(this.givenViewReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(createElementMutation)
+                .consumeNextWith(assertRefreshedFormThat(form -> {
+                    var widget = new FormNavigator(form).page("Page").group("Group").findWidget("Custom creation super types", ReferenceWidget.class);
+                    assertThat(widget).hasValueWithLabel("NamedElement");
+                    assertThat(widget.getReferenceValues()).hasSize(1);
+                }))
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var owner = this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString());
+        assertThat(owner.getName()).isEqualTo("Custom creation executed");
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a custom View reference creation body, when child creation is requested, then it executes without returning an object")
+    public void givenCustomViewReferenceCreationBodyWhenChildCreationIsRequestedThenItExecutesWithoutReturningAnObject() {
+        var formId = new AtomicReference<String>();
+        var referenceWidget = new AtomicReference<ReferenceWidget>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            referenceWidget.set(new FormNavigator(form).page("Page").group("Group").findWidget("Custom creation super types", ReferenceWidget.class));
+            assertThat(referenceWidget.get().getCreateButton()).isNotNull();
+            assertThat(referenceWidget.get()).hasValueWithLabel("NamedElement");
+        });
+
+        Runnable createElementMutation = () -> {
+            var widget = referenceWidget.get();
+            var creationDescriptionId = this.getChildCreationDescriptionId(formId.get(), widget);
+            var input = new CreateElementInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    formId.get(), widget.getId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), null, creationDescriptionId, widget.getDescriptionId());
+            this.referenceCreateElementExecutor.execute(input).isSuccessWithoutResult();
+        };
+
+        StepVerifier.create(this.givenViewReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(createElementMutation)
+                .consumeNextWith(assertRefreshedFormThat(form -> {
+                    var widget = new FormNavigator(form).page("Page").group("Group").findWidget("Custom creation super types", ReferenceWidget.class);
+                    assertThat(widget).hasValueWithLabel("NamedElement");
+                    assertThat(widget.getReferenceValues()).hasSize(1);
+                }))
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var owner = this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString());
+        assertThat(owner.getName()).isEqualTo("Custom creation executed");
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a failing View reference creation body, when creating an element, then an error is returned and no object is created")
+    public void givenFailingViewReferenceCreationBodyWhenCreatingElementThenErrorIsReturnedAndNoObjectIsCreated() {
+        this.assertCreateElementRejected(this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
+                "Failing creation super types", "Failed to execute the create reference action", false);
+    }
+
+    @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form without a create handler, when creating an element, then an error is returned and no object is created")
     public void givenFormWithoutCreateHandlerWhenCreatingElementThenErrorIsReturnedAndNoObjectIsCreated() {
         this.assertCreateElementRejected(this.formWithUnhandledReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
@@ -577,7 +721,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     }
 
     private String getRootCreationDescriptionId(String formId, ReferenceWidget widget) {
-        var variables = Map.<String, Object>of(
+        var variables = Map.<String, Object> of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 "representationId", formId,
                 "domainId", DomainPackage.eNS_URI,
@@ -589,7 +733,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     }
 
     private String getChildCreationDescriptionId(String formId, ReferenceWidget widget) {
-        var variables = Map.<String, Object>of(
+        var variables = Map.<String, Object> of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 "representationId", formId,
                 "containerId", StudioIdentifiers.DOMAIN_OBJECT.toString(),
