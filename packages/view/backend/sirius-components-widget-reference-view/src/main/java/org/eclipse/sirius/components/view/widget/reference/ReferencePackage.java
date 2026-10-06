@@ -164,13 +164,22 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Create Button</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
      * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
+    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -361,12 +370,30 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION = 3;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetCreateButtonDescriptionImpl
+     * <em>Widget Create Button Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetCreateButtonDescriptionImpl
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetCreateButtonDescription()
+     * @generated
+     */
+    int REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION = 4;
+
+    /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
     int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION = 0;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION = 0;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -377,6 +404,14 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__BODY = 1;
 
     /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION__BODY = 1;
+
+    /**
      * The number of structural features of the '<em>Widget Clear Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -385,12 +420,28 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION_FEATURE_COUNT = 2;
 
     /**
+     * The number of structural features of the '<em>Widget Create Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION_FEATURE_COUNT = 2;
+
+    /**
      * The number of operations of the '<em>Widget Clear Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
     int REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The number of operations of the '<em>Widget Create Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription <em>Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
@@ -445,6 +496,17 @@ public interface ReferencePackage extends EPackage {
      * @generated
      */
     EReference getReferenceWidgetDescription_ClearButton();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getCreateButton <em>Clear Button</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Clear Button</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getCreateButton()
+     * @see #getReferenceWidgetDescription()
+     * @generated
+     */
+    EReference getReferenceWidgetDescription_CreateButton();
 
     /**
      * Returns the meta object for the containment reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
@@ -510,6 +572,16 @@ public interface ReferencePackage extends EPackage {
     EClass getReferenceWidgetClearButtonDescription();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription <em>Widget Create Button Description</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Widget Create Button Description</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription
+     * @generated
+     */
+    EClass getReferenceWidgetCreateButtonDescription();
+
+    /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getPreconditionExpression
      * <em>Precondition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -521,6 +593,17 @@ public interface ReferencePackage extends EPackage {
     EAttribute getReferenceWidgetClearButtonDescription_PreconditionExpression();
 
     /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription#getPreconditionExpression
+     * <em>Precondition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription#getPreconditionExpression()
+     * @see #getReferenceWidgetCreateButtonDescription()
+     * @generated
+     */
+    EAttribute getReferenceWidgetCreateButtonDescription_PreconditionExpression();
+
+    /**
      * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription#getBody
      * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -530,6 +613,17 @@ public interface ReferencePackage extends EPackage {
      * @generated
      */
     EReference getReferenceWidgetClearButtonDescription_Body();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription#getBody
+     * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription#getBody()
+     * @see #getReferenceWidgetCreateButtonDescription()
+     * @generated
+     */
+    EReference getReferenceWidgetCreateButtonDescription_Body();
 
     /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getIsEnabledExpression
@@ -624,6 +718,14 @@ public interface ReferencePackage extends EPackage {
         EReference REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getReferenceWidgetDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Create Button</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON = eINSTANCE.getReferenceWidgetDescription_CreateButton();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget
          * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -665,6 +767,16 @@ public interface ReferencePackage extends EPackage {
         EClass REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION = eINSTANCE.getReferenceWidgetClearButtonDescription();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetCreateButtonDescriptionImpl
+         * <em>Widget Create Button Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetCreateButtonDescriptionImpl
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetCreateButtonDescription()
+         * @generated
+         */
+        EClass REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION = eINSTANCE.getReferenceWidgetCreateButtonDescription();
+
+        /**
          * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
@@ -672,11 +784,25 @@ public interface ReferencePackage extends EPackage {
         EAttribute REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getReferenceWidgetClearButtonDescription_PreconditionExpression();
 
         /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getReferenceWidgetCreateButtonDescription_PreconditionExpression();
+
+        /**
          * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__BODY = eINSTANCE.getReferenceWidgetClearButtonDescription_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION__BODY = eINSTANCE.getReferenceWidgetCreateButtonDescription_Body();
 
         /**
          * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--

@@ -293,15 +293,17 @@ export const ValuedReferenceAutocomplete = ({
                     onClick={onMoreClick}>
                     <MoreHorizIcon />
                   </IconButton>
-                  <IconButton
-                    aria-label="add"
-                    size="small"
-                    title={t('createObject')}
-                    disabled={readOnly || widget.readOnly}
-                    data-testid={`${widget.label}-add`}
-                    onClick={onCreateClick}>
-                    <AddIcon />
-                  </IconButton>
+                  {widget.createButton ? (
+                    <IconButton
+                      aria-label="add"
+                      size="small"
+                      title={t('createObject')}
+                      disabled={readOnly || widget.readOnly}
+                      data-testid={`${widget.label}-add`}
+                      onClick={onCreateClick}>
+                      <AddIcon />
+                    </IconButton>
+                  ) : null}
                   {widget.clearButton ? (
                     <IconButton
                       aria-label="clear"

@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
@@ -67,6 +68,11 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseReferenceWidgetClearButtonDescription(ReferenceWidgetClearButtonDescription object) {
             return ReferenceAdapterFactory.this.createReferenceWidgetClearButtonDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseReferenceWidgetCreateButtonDescription(ReferenceWidgetCreateButtonDescription object) {
+            return ReferenceAdapterFactory.this.createReferenceWidgetCreateButtonDescriptionAdapter();
         }
 
         @Override
@@ -198,6 +204,21 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createReferenceWidgetClearButtonDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link ReferenceWidgetCreateButtonDescription <em>Widget
+     * Create Button Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see ReferenceWidgetCreateButtonDescription
+     * @generated
+     */
+    public Adapter createReferenceWidgetCreateButtonDescriptionAdapter() {
         return null;
     }
 

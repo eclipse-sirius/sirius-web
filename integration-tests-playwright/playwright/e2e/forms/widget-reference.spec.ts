@@ -40,12 +40,15 @@ const createFormWithWidgetReference = async (
   await details.setText('Label Expression', widgetLabel);
   await details.setText('Reference Name Expression', reference);
   await explorer.createNewObject('ReferenceWidgetDescription', 'clearButton-ReferenceWidgetClearButtonDescription');
+  await explorer.createNewObject('ReferenceWidgetDescription', 'createButton-ReferenceWidgetCreateButtonDescription');
   await explorer.expand(name);
 };
 
 let flowProjectId: string;
 
 test.beforeEach(async ({ page, request }) => {
+  test.slow();
+
   const flow = await new PlaywrightProject(request).createProject('Widget reference flow', 'flow-template');
   flowProjectId = flow.projectId;
   await page.goto(`/projects/${flowProjectId}/edit`);

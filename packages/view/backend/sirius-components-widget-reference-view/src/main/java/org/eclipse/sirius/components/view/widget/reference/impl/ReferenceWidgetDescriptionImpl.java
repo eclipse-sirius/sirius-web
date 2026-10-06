@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.widget.reference.impl;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -27,6 +26,7 @@ import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
@@ -146,6 +146,16 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @ordered
      */
     protected EList<ConditionalReferenceWidgetDescriptionStyle> conditionalStyles;
+
+    /**
+     * The cached value of the '{@link #getCreateButton() <em>Create Button</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getCreateButton()
+     * @generated
+     * @ordered
+     */
+    protected ReferenceWidgetCreateButtonDescription createButton;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -354,6 +364,54 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @generated
      */
     @Override
+    public ReferenceWidgetCreateButtonDescription getCreateButton() {
+        return this.createButton;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetCreateButton(ReferenceWidgetCreateButtonDescription newCreateButton, NotificationChain msgs) {
+        ReferenceWidgetCreateButtonDescription oldCreateButton = this.createButton;
+        this.createButton = newCreateButton;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, oldCreateButton, newCreateButton);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setCreateButton(ReferenceWidgetCreateButtonDescription newCreateButton) {
+        if (newCreateButton != this.createButton) {
+            NotificationChain msgs = null;
+            if (this.createButton != null)
+                msgs = ((InternalEObject) this.createButton).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, null, msgs);
+            if (newCreateButton != null)
+                msgs = ((InternalEObject) newCreateButton).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, null, msgs);
+            msgs = this.basicSetCreateButton(newCreateButton, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, newCreateButton, newCreateButton));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
@@ -364,6 +422,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.basicSetStyle(null, msgs);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON:
+                return this.basicSetCreateButton(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -414,6 +474,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.getStyle();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.getConditionalStyles();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON:
+                return this.getCreateButton();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -450,6 +512,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 this.getConditionalStyles().clear();
                 this.getConditionalStyles().addAll((Collection<? extends ConditionalReferenceWidgetDescriptionStyle>) newValue);
                 return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON:
+                this.setCreateButton((ReferenceWidgetCreateButtonDescription) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -483,6 +548,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
                 return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON:
+                this.setCreateButton((ReferenceWidgetCreateButtonDescription) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -509,6 +577,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.style != null;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON:
+                return this.createButton != null;
         }
         return super.eIsSet(featureID);
     }

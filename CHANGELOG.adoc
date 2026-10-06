@@ -101,11 +101,14 @@ Programmatic form descriptions should manually add it through `ReferenceWidgetDe
 `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
 Other programmatic forms must contribute their own creation handler.
 The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
-- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [core] Update the signature of some provisional APIs related to the new refresh strategy for representation event processors. 
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [core] Update the signature of some provisional APIs related to the new refresh strategy for representation event processors.
 - https://github.com/eclipse-sirius/sirius-web/issues/5509[#5509] [diagram] The `getPalette` query is no longer used to compute if a node has an edge creation tool (and thus if a diagram element should render edge creation handles).
 A new query `connectorToolCandidateDescriptionIds(diagramElementId: ID!): [ID!]!` is used instead, it returns all elements description ids that are target candidate for a given source element.
 This query is using the `IConnectorToolCandidateDescriptionIdsProvider`, a default implementation is provided.
 The `precondition` of an edge tool is no longer evaluated when computing if an element should display its creation handles.
+- https://github.com/eclipse-sirius/sirius-web/issues/5375[#5375] [form] Reference widgets now have an optional create button description.
+Existing persisted View descriptions are migrated to keep their create button.
+Programmatic descriptions must call `ReferenceWidgetDescription.Builder#createButtonDescription` with an instance of `org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonDescription` to retain the creation action.
 
 
 === Dependency update
@@ -151,6 +154,8 @@ Introduced the `PageInfoAssert` for testing the page info returned by query runn
 - https://github.com/eclipse-sirius/sirius-web/issues/7017[#7017] [projects] Add the project style customization domain.
 - https://github.com/eclipse-sirius/sirius-web/issues/7053[#7053] [projects] Use a single source of truth to determine project style customization activation state.
 Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
+- https://github.com/eclipse-sirius/sirius-web/issues/5375[#5375] [form] Studio makers can show or hide the reference widget's create button by adding or removing its create button description.
+The form editor preview reflects this configuration.
 
 
 === Improvements

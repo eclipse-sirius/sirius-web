@@ -29,6 +29,9 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButton
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonComponentProps;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponentProps;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButton;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonComponent;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonComponentProps;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +57,8 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
             result = Optional.of(props instanceof ReferenceWidgetComponentProps);
         } else if (ReferenceWidgetClearButtonComponent.class.equals(componentType)) {
             result = Optional.of(props instanceof ReferenceWidgetClearButtonComponentProps);
+        } else if (ReferenceWidgetCreateButtonComponent.class.equals(componentType)) {
+            result = Optional.of(props instanceof ReferenceWidgetCreateButtonComponentProps);
         }
         return result;
     }
@@ -65,6 +70,8 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
             result = Optional.of(props instanceof ReferenceElementProps);
         } else if (Objects.equals(type, ReferenceWidgetClearButton.TYPE)) {
             result = Optional.of(props instanceof ReferenceWidgetClearButtonComponentProps);
+        } else if (Objects.equals(type, ReferenceWidgetCreateButton.TYPE)) {
+            result = Optional.of(props instanceof ReferenceWidgetCreateButtonComponentProps);
         }
         return result;
     }
@@ -80,10 +87,17 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
 
         if (Objects.equals(type, ReferenceWidgetClearButton.TYPE) && elementProps instanceof ReferenceWidgetClearButtonComponentProps(String id)) {
             result = Optional.of(new ReferenceWidgetClearButton(id));
+        } else if (Objects.equals(type, ReferenceWidgetCreateButton.TYPE) && elementProps instanceof ReferenceWidgetCreateButtonComponentProps(String id)) {
+            result = Optional.of(new ReferenceWidgetCreateButton(id));
         } else if (Objects.equals(type, ReferenceElementProps.TYPE) && elementProps instanceof ReferenceElementProps props) {
             ReferenceWidgetClearButton clearButton = children.stream()
                     .filter(ReferenceWidgetClearButton.class::isInstance)
                     .map(ReferenceWidgetClearButton.class::cast)
+                    .findFirst()
+                    .orElse(null);
+            ReferenceWidgetCreateButton createButton = children.stream()
+                    .filter(ReferenceWidgetCreateButton.class::isInstance)
+                    .map(ReferenceWidgetCreateButton.class::cast)
                     .findFirst()
                     .orElse(null);
             var builder = ReferenceWidget.newReferenceWidget(props.getId())
@@ -105,6 +119,9 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                     .moveHandler(props.getMoveHandler());
             if (clearButton != null) {
                 builder.clearButton(clearButton);
+            }
+            if (createButton != null) {
+                builder.createButton(createButton);
             }
             if (props.getHelpTextProvider() != null) {
                 builder.helpTextProvider(props.getHelpTextProvider());

@@ -207,6 +207,18 @@ const clearButtonField: SelectionNode = {
   },
 };
 
+const createButtonField: SelectionNode = {
+  kind: Kind.FIELD,
+  name: {
+    kind: Kind.NAME,
+    value: 'createButton',
+  },
+  selectionSet: {
+    kind: Kind.SELECTION_SET,
+    selections: [idField],
+  },
+};
+
 export const referenceWidgetDocumentTransform = new DocumentTransform((document) => {
   if (shouldTransform(document)) {
     return visit(document, {
@@ -227,6 +239,7 @@ export const referenceWidgetDocumentTransform = new DocumentTransform((document)
               referenceValuesField,
               styleField,
               clearButtonField,
+              createButtonField,
             ],
           },
           typeCondition: {

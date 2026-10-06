@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.emf.widget.reference.ReferenceWidgetSt
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.util.ReferenceSwitch;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
 import org.springframework.stereotype.Service;
@@ -86,6 +87,9 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                 .messageProvider(object -> "");
         if (referenceDescription.getClearButton() != null) {
             builder.clearButtonDescription(new ReferenceWidgetClearButtonDescription(variableManager -> true));
+        }
+        if (referenceDescription.getCreateButton() != null) {
+            builder.createButtonDescription(new ReferenceWidgetCreateButtonDescription());
         }
         return builder;
     }

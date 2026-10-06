@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.springframework.stereotype.Service;
 
@@ -106,6 +107,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .orElse(null);
 
         var clearButton = new ReferenceWidgetClearButtonDescription(variableManager -> true);
+        var createButton = new ReferenceWidgetCreateButtonDescription();
 
         return ReferenceWidgetDescription.newReferenceWidgetDescription(REFERENCE_WIDGET_DESCRIPTION_ID)
                 .targetObjectIdProvider(targetObjectIdProvider)
@@ -125,6 +127,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .isManyProvider(this::isMany)
                 .styleProvider(variableManager -> null)
                 .clearButtonDescription(clearButton)
+                .createButtonDescription(createButton)
                 .ownerIdProvider(this::getOwnerId)
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())

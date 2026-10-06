@@ -20,6 +20,7 @@ type ReferenceWidget implements Widget {
   style: ReferenceWidgetStyle
   ownerId: ID!
   clearButton: ReferenceWidgetClearButton
+  createButton: ReferenceWidgetCreateButton
 }
 
 type ReferenceWidgetStyle {
@@ -32,6 +33,10 @@ type ReferenceWidgetStyle {
 }
 
 type ReferenceWidgetClearButton {
+  id: ID!
+}
+
+type ReferenceWidgetCreateButton {
   id: ID!
 }
 

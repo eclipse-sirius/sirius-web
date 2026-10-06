@@ -77,6 +77,9 @@ public class ReferenceWidgetComponent implements IComponent {
         if (referenceDescription.getClearButtonDescription() != null && referenceDescription.getClearButtonDescription().preconditionProvider().apply(variableManager)) {
             children.add(new Element(ReferenceWidgetClearButtonComponent.class, new ReferenceWidgetClearButtonComponentProps(id)));
         }
+        if (referenceDescription.getCreateButtonDescription() != null) {
+            children.add(new Element(ReferenceWidgetCreateButtonComponent.class, new ReferenceWidgetCreateButtonComponentProps(id)));
+        }
 
         var builder = ReferenceElementProps.newReferenceElementProps(id)
                 .label(label)

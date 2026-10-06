@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceW
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
@@ -67,6 +68,13 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * @generated
      */
     private EClass referenceWidgetClearButtonDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass referenceWidgetCreateButtonDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -216,6 +224,16 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * @generated
      */
     @Override
+    public EReference getReferenceWidgetDescription_CreateButton() {
+        return (EReference) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getReferenceWidgetDescriptionStyle() {
         return this.referenceWidgetDescriptionStyleEClass;
     }
@@ -256,6 +274,16 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * @generated
      */
     @Override
+    public EClass getReferenceWidgetCreateButtonDescription() {
+        return this.referenceWidgetCreateButtonDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getReferenceWidgetClearButtonDescription_PreconditionExpression() {
         return (EAttribute) this.referenceWidgetClearButtonDescriptionEClass.getEStructuralFeatures().get(0);
     }
@@ -266,8 +294,28 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * @generated
      */
     @Override
+    public EAttribute getReferenceWidgetCreateButtonDescription_PreconditionExpression() {
+        return (EAttribute) this.referenceWidgetCreateButtonDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getReferenceWidgetClearButtonDescription_Body() {
         return (EReference) this.referenceWidgetClearButtonDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getReferenceWidgetCreateButtonDescription_Body() {
+        return (EReference) this.referenceWidgetCreateButtonDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -310,6 +358,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON);
         this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__STYLE);
         this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON);
 
         this.referenceWidgetDescriptionStyleEClass = this.createEClass(REFERENCE_WIDGET_DESCRIPTION_STYLE);
         this.createEReference(this.referenceWidgetDescriptionStyleEClass, REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR);
@@ -319,6 +368,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         this.referenceWidgetClearButtonDescriptionEClass = this.createEClass(REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION);
         this.createEAttribute(this.referenceWidgetClearButtonDescriptionEClass, REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION);
         this.createEReference(this.referenceWidgetClearButtonDescriptionEClass, REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION__BODY);
+
+        this.referenceWidgetCreateButtonDescriptionEClass = this.createEClass(REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION);
+        this.createEAttribute(this.referenceWidgetCreateButtonDescriptionEClass, REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION__PRECONDITION_EXPRESSION);
+        this.createEReference(this.referenceWidgetCreateButtonDescriptionEClass, REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION__BODY);
     }
 
     /**
@@ -368,6 +421,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getReferenceWidgetDescription_ConditionalStyles(), this.getConditionalReferenceWidgetDescriptionStyle(), null, "conditionalStyles", null, 0, -1,
                 ReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getReferenceWidgetDescription_CreateButton(), this.getReferenceWidgetCreateButtonDescription(), null, "createButton", null, 0, 1, ReferenceWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.referenceWidgetDescriptionStyleEClass, ReferenceWidgetDescriptionStyle.class, "ReferenceWidgetDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getReferenceWidgetDescriptionStyle_Color(), theViewPackage.getUserColor(), null, "color", null, 0, 1, ReferenceWidgetDescriptionStyle.class, !IS_TRANSIENT,
@@ -381,6 +436,13 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         this.initEAttribute(this.getReferenceWidgetClearButtonDescription_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1,
                 ReferenceWidgetClearButtonDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getReferenceWidgetClearButtonDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, ReferenceWidgetClearButtonDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.referenceWidgetCreateButtonDescriptionEClass, ReferenceWidgetCreateButtonDescription.class, "ReferenceWidgetCreateButtonDescription", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getReferenceWidgetCreateButtonDescription_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1,
+                ReferenceWidgetCreateButtonDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getReferenceWidgetCreateButtonDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, ReferenceWidgetCreateButtonDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
