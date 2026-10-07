@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Failure;
@@ -52,8 +54,11 @@ public class StudioEditingContextActionHandler implements IEditingContextActionH
 
     private final IDomainNameProvider domainNameProvider;
 
-    public StudioEditingContextActionHandler(IDomainNameProvider domainNameProvider) {
+    private final List<IMigrationParticipant> migrationParticipants;
+
+    public StudioEditingContextActionHandler(IDomainNameProvider domainNameProvider, List<IMigrationParticipant> migrationParticipants) {
         this.domainNameProvider = Objects.requireNonNull(domainNameProvider);
+        this.migrationParticipants = Objects.requireNonNull(migrationParticipants);
     }
 
     @Override
@@ -76,7 +81,12 @@ public class StudioEditingContextActionHandler implements IEditingContextActionH
             Domain domain = DomainFactory.eINSTANCE.createDomain();
             domain.setName(this.domainNameProvider.getSampleDomainName());
             resource.getContents().add(domain);
-            resource.eAdapters().add(new ResourceMetadataAdapter("Domain"));
+
+            var resourceMetadataAdapter = new ResourceMetadataAdapter("Domain");
+            var migrationService = new MigrationService(this.migrationParticipants);
+            resourceMetadataAdapter.addMigrationData(migrationService.getMostRecentParticipantMigrationData());
+            resource.eAdapters().add(resourceMetadataAdapter);
+            
             resourceSet.getResources().add(resource);
 
             return (IStatus) new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
@@ -92,7 +102,12 @@ public class StudioEditingContextActionHandler implements IEditingContextActionH
 
             JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
             resource.getContents().add(newView);
-            resource.eAdapters().add(new ResourceMetadataAdapter("View"));
+
+            var resourceMetadataAdapter = new ResourceMetadataAdapter("View");
+            var migrationService = new MigrationService(this.migrationParticipants);
+            resourceMetadataAdapter.addMigrationData(migrationService.getMostRecentParticipantMigrationData());
+            resource.eAdapters().add(resourceMetadataAdapter);
+
             resourceSet.getResources().add(resource);
 
             return (IStatus) new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());

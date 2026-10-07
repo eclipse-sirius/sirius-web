@@ -122,6 +122,7 @@ The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationD
 - https://github.com/eclipse-sirius/sirius-web/issues/2770[#2770] [diagram] Prevent React Flow handle warnings while computing the initial diagram layout.
 - https://github.com/eclipse-sirius/sirius-web/issues/6992[#6992] [diagram] Add missing palette for the views explorer representation
 - https://github.com/eclipse-sirius/sirius-web/issues/6969[#6969] [diagram] Fix an issue where the global selection was not correctly updated after opening the palette on the diagram.
+- https://github.com/eclipse-sirius/sirius-web/issues/7049[#7049] [sirius-web] Fix an issue where the migration participant of a view model created outside a template was not set correctly during the first persistance operation.
 
 
 === New Features
