@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -26,11 +28,19 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
 import org.eclipse.sirius.components.collaborative.dto.InvokeEditingContextActionInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.migration.MigrationService;
+import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.tests.CurrentEditingContextQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.EditingContextActionsQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscriptionRunner;
 import org.eclipse.sirius.components.graphql.tests.EditingContextQueryRunner;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.InvokeEditingContextActionMutationRunner;
+import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.services.DefaultEditingContextActionProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioEditingContextActionProvider;
@@ -75,10 +85,16 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     private InvokeEditingContextActionMutationRunner invokeEditingContextActionMutationRunner;
 
     @Autowired
+    private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
+    @Autowired
     private EditingContextEventSubscriptionRunner editingContextEventSubscriptionRunner;
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
+    @Autowired
+    private List<IMigrationParticipant> migrationParticipants;
 
     @BeforeEach
     public void beforeEach() {
@@ -174,5 +190,71 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
                 .then(() -> invokeEditingContextActionTask.accept(createEmptyDocumentInput))
                 .thenCancel()
                 .verify(Duration.ofSeconds(5));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a blank studio, when the create empty view action is invoked, then the created view has migration data")
+    public void givenBlankStudioWhenCreateEmptyViewActionIsInvokedThenCreatedViewHasMigrationData() {
+        var editingContextId = StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString();
+        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), editingContextId);
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
+
+        var existingViews = new HashSet<View>();
+        var recordExistingViewsInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, (editingContext, input) -> {
+            existingViews.addAll(this.getStudioViews((IEMFEditingContext) editingContext));
+            return new SuccessPayload(input.id());
+        });
+        Runnable recordExistingViews = () -> StepVerifier.create(this.executeEditingContextFunctionRunner.execute(recordExistingViewsInput))
+                .expectNextMatches(SuccessPayload.class::isInstance)
+                .expectComplete()
+                .verify(Duration.ofSeconds(5));
+
+        var checkMigrationDataInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, (editingContext, input) ->
+                new ExecuteEditingContextFunctionSuccessPayload(input.id(), this.getStudioViews((IEMFEditingContext) editingContext)));
+        var expectedMigrationData = new MigrationService(this.migrationParticipants).getMostRecentParticipantMigrationData();
+
+        Runnable invokeEditingContextAction = () -> {
+            var input = new InvokeEditingContextActionInput(UUID.randomUUID(), editingContextId, StudioEditingContextActionProvider.EMPTY_VIEW_ID);
+            var result = this.invokeEditingContextActionMutationRunner.run(input);
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+            TestTransaction.start();
+
+            String typename = JsonPath.read(result.data(), "$.data.invokeEditingContextAction.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Runnable checkMigrationData = () -> StepVerifier.create(this.executeEditingContextFunctionRunner.execute(checkMigrationDataInput))
+                .assertNext(payload -> {
+                    assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+                    var result = ((ExecuteEditingContextFunctionSuccessPayload) payload).result();
+                    assertThat(result).isInstanceOf(List.class);
+                    assertThat((List<?>) result).hasSize(existingViews.size() + 1);
+                    assertThat((List<?>) result).filteredOn(view -> !existingViews.contains(view))
+                            .singleElement().isInstanceOfSatisfying(View.class, view ->
+                                    assertThat(view.eResource().eAdapters()).filteredOn(ResourceMetadataAdapter.class::isInstance)
+                                            .singleElement().isInstanceOfSatisfying(ResourceMetadataAdapter.class, resourceMetadataAdapter ->
+                                                    assertThat(resourceMetadataAdapter.getLastMigrationData()).isEqualTo(expectedMigrationData)));
+                })
+                .expectComplete()
+                .verify(Duration.ofSeconds(5));
+
+        StepVerifier.create(flux)
+                .then(recordExistingViews)
+                .then(invokeEditingContextAction)
+                .then(checkMigrationData)
+                .thenCancel()
+                .verify(Duration.ofSeconds(5));
+    }
+
+    private List<View> getStudioViews(IEMFEditingContext editingContext) {
+        return editingContext.getDomain().getResourceSet().getResources().stream()
+                .filter(resource -> IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
+                .flatMap(resource -> resource.getContents().stream())
+                .filter(View.class::isInstance)
+                .map(View.class::cast)
+                .toList();
     }
 }
