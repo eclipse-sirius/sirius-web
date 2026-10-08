@@ -124,11 +124,12 @@ If multiple customizers modify the same style property, the last one wins.
 - Extract the logic to check if a project has the FLOW nature into a dedicated predicate.
 - Introduced the `PageInfoAssert` for testing the page info returned by query runner when using the cursor-based pagination in integration tests.
 - Export `FilterBarContext` from `sirius-components-trees` in order to reuse filter bar logic more easily.
+- Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
 
 
 == Deprecation warnings
 
-- Improve the consitency of the variables used.
+- Improve the consistency of the variables used.
 For that the available variables will be found in dedicated variables classes such as:
 * `org.eclipse.sirius.components.representations.RepresentationVariables`
 * `org.eclipse.sirius.components.core.api.variables.CoreVariables`

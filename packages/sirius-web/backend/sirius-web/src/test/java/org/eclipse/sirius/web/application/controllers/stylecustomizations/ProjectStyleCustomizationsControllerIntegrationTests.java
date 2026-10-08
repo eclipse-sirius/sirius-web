@@ -67,7 +67,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankStartCursor()
                         .hasNonBlankEndCursor()
                         .hasCount(1))
-                .hasStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE);
+                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankStartCursor()
                         .hasNonBlankEndCursor()
                         .hasCount(1))
-                .hasStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
+                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasBlankStartCursor()
                         .hasBlankEndCursor()
                         .hasCount(0))
-                .hasStyleCustomizationIds();
+                .hasExactlyStyleCustomizationIds();
     }
 
     @Test
@@ -121,7 +121,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasBlankStartCursor()
                         .hasBlankEndCursor()
                         .hasCount(0))
-                .hasStyleCustomizationIds();
+                .hasExactlyStyleCustomizationIds();
     }
 
     @Test
@@ -140,7 +140,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankStartCursor()
                         .hasNonBlankEndCursor()
                         .hasCount(1))
-                .hasStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
+                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
     }
 
     @Test
@@ -159,7 +159,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankStartCursor()
                         .hasNonBlankEndCursor()
                         .hasCount(1))
-                .hasStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE);
+                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE);
     }
 
     @Test
@@ -178,7 +178,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankStartCursor()
                         .hasNonBlankEndCursor()
                         .hasCount(2))
-                .hasStyleCustomizationIds(
+                .hasExactlyStyleCustomizationIds(
                         FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE,
                         FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
     }
@@ -198,7 +198,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasBlankStartCursor()
                         .hasBlankEndCursor()
                         .hasCount(0))
-                .hasStyleCustomizationIds();
+                .hasExactlyStyleCustomizationIds();
     }
 
 }

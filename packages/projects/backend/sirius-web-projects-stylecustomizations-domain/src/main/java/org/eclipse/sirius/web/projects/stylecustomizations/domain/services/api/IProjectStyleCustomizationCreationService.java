@@ -12,21 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api;
 
-import java.util.List;
-
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
- * Used to retrieve project style customizations.
+ * Used to create project style customizations.
  *
  * @author gcoutable
  * @since 2026.11.0
  */
-public interface IProjectStyleCustomizationSearchService {
-
-    boolean existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference<Project, String> projectReference, String styleCustomizationDescriptionId);
-
-    List<ProjectStyleCustomization> findAllByProjectId(AggregateReference<Project, String> projectReference);
+public interface IProjectStyleCustomizationCreationService {
+    IResult<ProjectStyleCustomization> createProjectStyleCustomization(ICause cause, AggregateReference<Project, String> project, String styleCustomizationDescriptionId);
 }
