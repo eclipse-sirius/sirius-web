@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,6 +56,15 @@ public class ViewToolFinder implements IViewToolFinder {
                 .flatMap(viewNodeDescription -> new ToolFinder().getEdgeToolByIdFromNodeDescription(viewNodeDescription, toolId))
                 .or(() -> this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, diagramElementDescriptionId)
                         .flatMap(viewEdgeDescription -> new ToolFinder().getEdgeToolByIdFromEdgeDescription(viewEdgeDescription, toolId)));
+    }
+
+    @Override
+    public Optional<NodeTool> findConnectorNodeTool(IEditingContext editingContext, String diagramElementDescriptionId, String toolId) {
+        var toolFinder = new ToolFinder();
+        return this.viewDiagramDescriptionSearchService.findViewNodeDescriptionById(editingContext, diagramElementDescriptionId)
+                .flatMap(viewNodeDescription -> toolFinder.getConnectorNodeToolById(viewNodeDescription, toolId))
+                .or(() -> this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, diagramElementDescriptionId)
+                        .flatMap(viewEdgeDescription -> toolFinder.getConnectorNodeToolById(viewEdgeDescription, toolId)));
     }
 
     @Override

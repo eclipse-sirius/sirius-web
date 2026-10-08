@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
+import { GQLPalette, GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import { OnConnectEnd } from '@xyflow/react';
 
 export interface UseConnectorValue {
@@ -47,29 +47,6 @@ export interface GQLDiagramDescription extends GQLRepresentationDescription {
   palette: GQLPalette;
 }
 
-export interface GQLPalette {
-  id: string;
-  paletteEntries: GQLPaletteEntry[];
-}
-
-export interface GQLPaletteEntry {
-  id: string;
-  __typename: string;
-}
-export interface GQLPaletteDivider extends GQLPaletteEntry {}
-
-export interface GQLToolSection extends GQLPaletteEntry {
-  label: string;
-  iconURL: string[];
-  tools: GQLTool[];
-}
-
-export interface GQLToolSection {
-  id: string;
-  label: string;
-  tools: GQLTool[];
-  __typename: string;
-}
 export interface GQLSingleClickOnTwoDiagramElementsTool extends GQLTool {
   candidates: GQLSingleClickOnTwoDiagramElementsCandidate[];
   dialogDescriptionId: string;

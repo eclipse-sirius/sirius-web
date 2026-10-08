@@ -29,7 +29,6 @@ import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProv
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
-import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -106,9 +105,14 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .conditionalStyles(conditionalNodeStyle)
                 .build();
 
-        entityNodeDescription.getEdgeTools().add(this.entityRelationEdgeTool(entityNodeDescription));
-        entityNodeDescription.getEdgeTools().add(this.entityContainmentEdgeTool(entityNodeDescription));
-        entityNodeDescription.getEdgeTools().add(this.entitySupertypeEdgeTool(entityNodeDescription));
+        var connectorTool = new EdgeToolBuilder()
+                .name("Entity relationships")
+                .targetElementDescriptions(entityNodeDescription)
+                .palette(new DiagramBuilders().newNodePalette()
+                        .nodeTools(this.entityRelationNodeTool(), this.entityContainmentNodeTool(), this.entitySupertypeNodeTool())
+                        .build())
+                .build();
+        entityNodeDescription.getEdgeTools().add(connectorTool);
         var palette = this.entityNodePalette(attributeNodeDescription);
         entityNodeDescription.setPalette(palette);
 
@@ -129,7 +133,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
     }
 
-    private EdgeTool entityRelationEdgeTool(NodeDescription edgeTargetNodeDescription) {
+    private NodeTool entityRelationNodeTool() {
         var createInstance = new ViewBuilders().newCreateInstance()
                 .typeName("domain::Relation")
                 .variableName("newInstance")
@@ -151,22 +155,19 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 )
                 .build();
 
-        return new EdgeToolBuilder()
+        var body = new ViewBuilders().newChangeContext()
+                .expression("aql:semanticEdgeSource")
+                .children(createInstance)
+                .build();
+
+        return new NodeToolBuilder()
                 .name("Relation")
                 .iconURLsExpression("aql:'/icons/full/obj16/Relation.svg'")
-                .targetElementDescriptions(edgeTargetNodeDescription)
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:semanticEdgeSource")
-                                .children(
-                                        createInstance
-                                )
-                                .build()
-                )
+                .body(body)
                 .build();
     }
 
-    private EdgeTool entityContainmentEdgeTool(NodeDescription edgeTargetNodeDescription) {
+    private NodeTool entityContainmentNodeTool() {
         var createInstance = new ViewBuilders().newCreateInstance()
                 .typeName("domain::Relation")
                 .variableName("newInstance")
@@ -196,37 +197,31 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 )
                 .build();
 
-        return new EdgeToolBuilder()
+        var body = new ViewBuilders().newChangeContext()
+                .expression("aql:semanticEdgeSource")
+                .children(createInstance)
+                .build();
+
+        return new NodeToolBuilder()
                 .name("Containment")
                 .iconURLsExpression("aql:'/icons/full/obj16/Relation.svg'")
-                .targetElementDescriptions(edgeTargetNodeDescription)
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:semanticEdgeSource")
-                                .children(
-                                        createInstance
-                                )
-                                .build()
-                )
+                .body(body)
                 .build();
     }
 
-    private EdgeTool entitySupertypeEdgeTool(NodeDescription edgeTargetNodeDescription) {
-        return new EdgeToolBuilder()
+    private NodeTool entitySupertypeNodeTool() {
+        var body = new ViewBuilders().newChangeContext()
+                .expression("aql:semanticEdgeSource")
+                .children(new ViewBuilders().newSetValue()
+                        .featureName("superTypes")
+                        .valueExpression("aql:semanticEdgeTarget")
+                        .build())
+                .build();
+
+        return new NodeToolBuilder()
                 .name("Supertype")
                 .iconURLsExpression("aql:'/icons/full/obj16/Relation.svg'")
-                .targetElementDescriptions(edgeTargetNodeDescription)
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:semanticEdgeSource")
-                                .children(
-                                        new ViewBuilders().newSetValue()
-                                                .featureName("superTypes")
-                                                .valueExpression("aql:semanticEdgeTarget")
-                                                .build()
-                                )
-                                .build()
-                )
+                .body(body)
                 .build();
     }
 

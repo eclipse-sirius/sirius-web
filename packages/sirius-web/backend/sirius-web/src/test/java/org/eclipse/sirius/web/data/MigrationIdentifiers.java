@@ -88,6 +88,8 @@ public final class MigrationIdentifiers {
     
     public static final String MIGRATION_DIAGRAM_DESCRIPTION_CONNECTOR_TOOLS_STUDIO_DIAGRAM = "DiagramDescription#connectorTools migration";
 
+    public static final String MIGRATION_EDGE_TOOL_PALETTE_STUDIO_DIAGRAM = "EdgeTool#palette migration";
+
     private MigrationIdentifiers() {
         // Prevent instantiation
     }

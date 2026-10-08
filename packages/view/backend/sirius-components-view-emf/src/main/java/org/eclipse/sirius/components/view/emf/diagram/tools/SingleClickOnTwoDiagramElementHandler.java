@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewToolFinder;
@@ -75,8 +76,8 @@ public class SingleClickOnTwoDiagramElementHandler implements ISingleClickOnTwoD
                 .or(() -> this.diagramQueryService.findEdgeById(diagram, sourceDiagramElementId).map(Edge::getDescriptionId));
 
         if (optionalDiagramElementDescriptionId.isPresent()) {
-            var optionalEdgeTool = this.viewToolFinder.findEdgeTool(editingContext, diagram.getDescriptionId(), optionalDiagramElementDescriptionId.get(), toolId);
-            return optionalEdgeTool.isPresent();
+            return this.viewToolFinder.findConnectorNodeTool(editingContext, optionalDiagramElementDescriptionId.get(), toolId).isPresent()
+                    || this.viewToolFinder.findEdgeTool(editingContext, diagram.getDescriptionId(), optionalDiagramElementDescriptionId.get(), toolId).isPresent();
         }
         return false;
     }
@@ -93,15 +94,26 @@ public class SingleClickOnTwoDiagramElementHandler implements ISingleClickOnTwoD
                 .or(() -> this.diagramQueryService.findEdgeById(diagram, sourceDiagramElementId).map(Edge::getDescriptionId));
 
         if (optionalDiagramElementDescriptionId.isPresent()) {
-            var optionalEdgeTool = this.viewToolFinder.findEdgeTool(editingContext, diagram.getDescriptionId(), optionalDiagramElementDescriptionId.get(), toolId);
-            if (optionalEdgeTool.isPresent()) {
-                result = this.executeTool(editingContext, diagramContext, sourceDiagramElementId, targetDiagramElementId, variables, optionalEdgeTool.get());
+            Optional<? extends Tool> optionalTool = this.viewToolFinder.findConnectorNodeTool(editingContext, optionalDiagramElementDescriptionId.get(), toolId);
+            if (optionalTool.isEmpty()) {
+                optionalTool = this.viewToolFinder.findEdgeTool(editingContext, diagram.getDescriptionId(), optionalDiagramElementDescriptionId.get(), toolId)
+                        .map(this::getExecutableTool);
+            }
+            if (optionalTool.isPresent()) {
+                result = this.executeTool(editingContext, diagramContext, sourceDiagramElementId, targetDiagramElementId, variables, optionalTool.get());
             }
         }
         return result;
     }
 
-    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, String sourceDiagramElementId, String targetDiagramElementId, List<ToolVariable> variables, EdgeTool edgeTool) {
+    private Tool getExecutableTool(EdgeTool edgeTool) {
+        if (edgeTool.getPalette() != null && !edgeTool.getPalette().getNodeTools().isEmpty()) {
+            return edgeTool.getPalette().getNodeTools().get(0);
+        }
+        return edgeTool;
+    }
+
+    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, String sourceDiagramElementId, String targetDiagramElementId, List<ToolVariable> variables, Tool tool) {
         String diagramDescriptionId = diagramContext.diagram().getDescriptionId();
         var optionalViewDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescriptionId);
         if (optionalViewDiagramDescription.isPresent() && optionalViewDiagramDescription.get().eContainer() instanceof View view) {
@@ -110,7 +122,7 @@ public class SingleClickOnTwoDiagramElementHandler implements ISingleClickOnTwoD
             var optionalVariableManager = this.singleClickOnTwoDiagramElementsVariableManagerProvider.getVariableManager(editingContext, diagramContext, sourceDiagramElementId, targetDiagramElementId, variables);
             if (optionalVariableManager.isPresent()) {
                 VariableManager childVariableManager = optionalVariableManager.get().createChild();
-                return this.toolExecutor.executeTool(edgeTool, interpreter, childVariableManager);
+                return this.toolExecutor.executeTool(tool, interpreter, childVariableManager);
             }
         }
         return new Failure("");

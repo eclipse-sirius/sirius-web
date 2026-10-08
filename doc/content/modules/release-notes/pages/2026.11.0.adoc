@@ -75,6 +75,9 @@ The `precondition` of an edge tool is no longer evaluated when computing if an e
 The `edgeTools` properties of node palettes, edge palettes, and node tool sections have been removed.
 Existing saved View descriptions are migrated automatically, preserving tool order; connector tools previously placed in sections become a flat list.
 Programmatic descriptions must move their tool declarations to `NodeDescriptionBuilder.edgeTools(...)` or `EdgeDescriptionBuilder.edgeTools(...)`.
+Each edge tool can now have its own palette.
+Existing edge tool actions are moved into a same-named tool in that palette automatically.
+Programmatic descriptions should configure the edge tool palette and its tools instead of placing actions directly in the connector tool body.
 
 == Dependency updates
 

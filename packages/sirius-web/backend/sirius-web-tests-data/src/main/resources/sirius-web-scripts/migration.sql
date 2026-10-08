@@ -56,6 +56,129 @@ INSERT INTO semantic_data_domain (
   'http://www.eclipse.org/sirius-web/diagram'
 );
 
+-- Connector tool bodies before EdgeTool#palette migration.
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  is_read_only,
+  created_on,
+  last_modified_on
+) VALUES (
+  'c0710000-0000-0000-0000-000000000001',
+  '89d67892-0cc9-4ca4-b30e-28688470c0d4',
+  'EdgeTool#palette migration',
+  '{
+    "json": { "version": "1.0", "encoding": "utf-8" },
+    "ns": {
+      "diagram": "http://www.eclipse.org/sirius-web/diagram",
+      "view": "http://www.eclipse.org/sirius-web/view"
+    },
+    "content": [
+      {
+        "id": "c0710000-0000-0000-0000-000000000002",
+        "eClass": "view:View",
+        "data": {
+          "descriptions": [
+            {
+              "id": "c0710000-0000-0000-0000-000000000003",
+              "eClass": "diagram:DiagramDescription",
+              "data": {
+                "name": "EdgeTool#palette migration",
+                "domainType": "flow::System",
+                "nodeDescriptions": [
+                  {
+                    "id": "c0710000-0000-0000-0000-000000000004",
+                    "eClass": "diagram:NodeDescription",
+                    "data": {
+                      "name": "Source node",
+                      "domainType": "flow::Processor",
+                      "edgeTools": [
+                        {
+                          "id": "c0710000-0000-0000-0000-000000000005",
+                          "eClass": "diagram:EdgeTool",
+                          "data": {
+                            "name": "Node connector",
+                            "preconditionExpression": "aql:self <> target",
+                            "iconURLsExpression": "/icons/connector.svg",
+                            "elementsToSelectExpression": "aql:newFlow",
+                            "dialogDescription": {
+                              "id": "c0710000-0000-0000-0000-000000000006",
+                              "eClass": "diagram:SelectionDialogDescription",
+                              "data": { "descriptionExpression": "Select a target" }
+                            },
+                            "body": [
+                              {
+                                "id": "c0710000-0000-0000-0000-000000000007",
+                                "eClass": "view:ChangeContext",
+                                "data": { "expression": "aql:source" }
+                              },
+                              {
+                                "id": "c0710000-0000-0000-0000-000000000008",
+                                "eClass": "view:ChangeContext",
+                                "data": { "expression": "aql:target" }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "id": "c0710000-0000-0000-0000-000000000009",
+                          "eClass": "diagram:EdgeTool",
+                          "data": { "name": "Node connector without body" }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "edgeDescriptions": [
+                  {
+                    "id": "c0710000-0000-0000-0000-000000000010",
+                    "eClass": "diagram:EdgeDescription",
+                    "data": {
+                      "name": "Data flow",
+                      "domainType": "flow::DataFlow",
+                      "edgeTools": [
+                        {
+                          "id": "c0710000-0000-0000-0000-000000000011",
+                          "eClass": "diagram:EdgeTool",
+                          "data": {
+                            "name": "Edge connector",
+                            "body": [
+                              {
+                                "id": "c0710000-0000-0000-0000-000000000012",
+                                "eClass": "view:ChangeContext",
+                                "data": { "expression": "aql:first" }
+                              },
+                              {
+                                "id": "c0710000-0000-0000-0000-000000000013",
+                                "eClass": "view:ChangeContext",
+                                "data": { "expression": "aql:second" }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "id": "c0710000-0000-0000-0000-000000000014",
+                          "eClass": "diagram:EdgeTool",
+                          "data": { "name": "Edge connector without body" }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  false,
+  '2026-10-07 12:00:0.000',
+  '2026-10-07 12:00:0.000'
+);
+
 -- Legacy connector tools in node palettes, node tool sections, and edge palettes.
 INSERT INTO document (
   id,
