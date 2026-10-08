@@ -20,24 +20,20 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
+import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import { $setSelection, TextNode } from 'lexical';
-import { FocusEvent, useCallback, useEffect } from 'react';
+import { $createParagraphNode, $createTextNode, $getRoot, $setSelection, TextNode } from 'lexical';
+import { FocusEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { CLOSE_LINK_EDITOR_COMMAND, LinkEditorPlugin } from './LinkEditorPlugin';
 import { ListPlugin } from './ListPlugin';
 import { markdownTransformers } from './MarkdownTransformers';
-import {
-  ContentEditableProps,
-  MarkdownRendererProps,
-  OnBlurPluginProps,
-  UpdateValuePluginProps,
-} from './MarkdownRenderer.types';
+import { ContentEditableProps, MarkdownRendererProps } from './MarkdownRenderer.types';
 import { ToolbarPlugin } from './ToolbarPlugin';
 
-const ContentEditable = ({ readOnly }: ContentEditableProps): React.JSX.Element => {
+const ContentEditable = ({ readOnly, label }: ContentEditableProps): React.JSX.Element => {
   const [editor] = useLexicalComposerContext();
   const ref = useCallback(
     (rootElement: null | HTMLElement) => {
@@ -45,23 +41,67 @@ const ContentEditable = ({ readOnly }: ContentEditableProps): React.JSX.Element 
     },
     [editor]
   );
-  return <div ref={ref} contentEditable={!readOnly} spellCheck={false}></div>;
+  return (
+    <div
+      ref={ref}
+      role="textbox"
+      aria-label={label}
+      aria-multiline="true"
+      aria-readonly={readOnly}
+      contentEditable={!readOnly}
+      spellCheck={false}></div>
+  );
 };
 
-const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): React.JSX.Element | null => {
+const MarkdownEditor = ({
+  value,
+  placeholder,
+  readOnly,
+  onBlur,
+  plainTextByDefault = false,
+}: MarkdownRendererProps) => {
   const [editor] = useLexicalComposerContext();
+  const { classes } = useMarkdownRendererStyles();
+  const [plainText, setPlainText] = useState<boolean>(plainTextByDefault);
+  const draft = useRef<{ value: string; source: string; serialized: string }>({ value, source: value, serialized: '' });
+
+  const readSource = () =>
+    editor.read(() => {
+      const serialized = plainText ? $getRoot().getTextContent() : $convertToMarkdownString(markdownTransformers);
+      return serialized === draft.current.serialized ? draft.current.source : serialized;
+    });
+
   useEffect(() => {
+    editor.setEditable(!readOnly);
+  }, [editor, readOnly]);
+
+  useEffect(() => {
+    if (value !== draft.current.value) {
+      draft.current = { value, source: value, serialized: '' };
+    }
     editor.update(() => {
-      $convertFromMarkdownString(markdownText, markdownTransformers);
+      if (plainText) {
+        $getRoot()
+          .clear()
+          .append($createParagraphNode().append($createTextNode(draft.current.source)));
+      } else {
+        $convertFromMarkdownString(draft.current.source, markdownTransformers);
+      }
+      draft.current.serialized = plainText
+        ? $getRoot().getTextContent()
+        : $convertToMarkdownString(markdownTransformers);
       $setSelection(null);
     });
     editor.dispatchCommand(CLOSE_LINK_EDITOR_COMMAND, undefined);
-  }, [editor, markdownText]);
-  return null;
-};
+  }, [editor, value, plainText]);
 
-const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): React.JSX.Element => {
-  const [editor] = useLexicalComposerContext();
+  const toggleMode = () => {
+    draft.current.source = readSource();
+    editor.dispatchCommand(CLOSE_LINK_EDITOR_COMMAND, undefined);
+    setPlainText(!plainText);
+  };
+  const TextPlugin = plainText ? PlainTextPlugin : RichTextPlugin;
+
   return (
     <div
       onBlur={(event: FocusEvent<HTMLDivElement, Element>) => {
@@ -69,13 +109,28 @@ const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): React.JSX.Elemen
           event.relatedTarget instanceof Element && event.relatedTarget.closest('[data-testid="link-editor"]') !== null;
         if (!event.currentTarget.contains(event.relatedTarget) && !focusMovedToLinkEditor) {
           editor.dispatchCommand(CLOSE_LINK_EDITOR_COMMAND, undefined);
-          editor.getEditorState().read(() => {
-            const markdown = $convertToMarkdownString(markdownTransformers);
-            onBlur(markdown);
-          });
+          if (!readOnly) {
+            onBlur(readSource());
+          }
         }
       }}>
-      {children}
+      <ToolbarPlugin readOnly={readOnly} plainText={plainText} onModeChange={toggleMode} />
+      <div className={classes.editorContainer}>
+        {!plainText ? (
+          <>
+            <MarkdownShortcutPlugin transformers={markdownTransformers} />
+            <LinkPlugin />
+            {!readOnly ? <LinkEditorPlugin /> : null}
+            <ListPlugin />
+            <TabIndentationPlugin />
+          </>
+        ) : null}
+        <TextPlugin
+          contentEditable={<ContentEditable readOnly={readOnly} label={placeholder} />}
+          placeholder={<div className={classes.editorPlaceholder}>{placeholder}</div>}
+          ErrorBoundary={LexicalErrorBoundary}
+        />
+      </div>
     </div>
   );
 };
@@ -218,7 +273,7 @@ const useMarkdownRendererStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const MarkdownRenderer = ({ value, placeholder, readOnly, onBlur }: MarkdownRendererProps) => {
+export const MarkdownRenderer = (props: MarkdownRendererProps) => {
   const { classes } = useMarkdownRendererStyles();
   const theme = {
     placeholder: classes.editorPlaceholder,
@@ -255,22 +310,7 @@ export const MarkdownRenderer = ({ value, placeholder, readOnly, onBlur }: Markd
   };
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <OnBlurPlugin onBlur={onBlur}>
-        <UpdateValuePlugin markdownText={value} />
-        {!readOnly ? <ToolbarPlugin readOnly={readOnly} /> : null}
-        <div className={classes.editorContainer}>
-          <MarkdownShortcutPlugin transformers={markdownTransformers} />
-          <LinkPlugin />
-          {!readOnly ? <LinkEditorPlugin /> : null}
-          <ListPlugin />
-          <RichTextPlugin
-            contentEditable={<ContentEditable readOnly={readOnly} />}
-            placeholder={<div className={classes.editorPlaceholder}>{placeholder}</div>}
-            ErrorBoundary={LexicalErrorBoundary}
-          />
-          <TabIndentationPlugin />
-        </div>
-      </OnBlurPlugin>
+      <MarkdownEditor {...props} />
     </LexicalComposer>
   );
 };
