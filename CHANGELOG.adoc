@@ -144,6 +144,8 @@ Implement `IStyleCustomizationDescriptionProvider` to provide a list of style cu
 - https://github.com/eclipse-sirius/sirius-web/issues/7015[#7015] [projects] Add support for project style customizations cursor pagination.
 Introduced the `PageInfoAssert` for testing the page info returned by query runner when using the cursor-based pagination in integration tests.
 - https://github.com/eclipse-sirius/sirius-web/issues/7017[#7017] [projects] Add the project style customization domain.
+- https://github.com/eclipse-sirius/sirius-web/issues/7053[#7053] [projects] Use a single source of truth to determine project style customization activation state.
+Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
 
 
 === Improvements

@@ -46,9 +46,21 @@ public class ProjectStyleCustomizationsAssert {
         return this;
     }
 
-    public ProjectStyleCustomizationsAssert hasStyleCustomizationIds(String... expectedIds) {
+    public ProjectStyleCustomizationsAssert hasExactlyStyleCustomizationIds(String... expectedIds) {
         List<String> styleCustomizationIds = JsonPath.read(this.result.data(), "$.data.viewer.project.styleCustomizations.edges[*].node.id");
         assertThat(styleCustomizationIds).containsExactly(expectedIds);
+        return this;
+    }
+
+    public ProjectStyleCustomizationsAssert hasEnabledStyleCustomizationCount(int expectedStyleCustomizationsEnabled) {
+        List<String> styleCustomizationIds = JsonPath.read(this.result.data(), "$.data.viewer.project.styleCustomizations.edges[?(@.node.enabled == true)].node.id");
+        assertThat(styleCustomizationIds).hasSize(expectedStyleCustomizationsEnabled);
+        return this;
+    }
+
+    public ProjectStyleCustomizationsAssert hasEnabledStyleCustomizationIds(String... expectedEnabledIds) {
+        List<String> styleCustomizationIds = JsonPath.read(this.result.data(), "$.data.viewer.project.styleCustomizations.edges[?(@.node.enabled == true)].node.id");
+        assertThat(styleCustomizationIds).contains(expectedEnabledIds);
         return this;
     }
 }

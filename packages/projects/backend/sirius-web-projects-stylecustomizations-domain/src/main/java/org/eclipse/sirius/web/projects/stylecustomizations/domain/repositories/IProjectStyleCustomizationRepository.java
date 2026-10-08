@@ -10,23 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api;
+package org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories;
 
 import java.util.List;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
- * Used to retrieve project style customizations.
+ * Repository used to persist the project style customization aggregate.
  *
  * @author gcoutable
  * @since 2026.11.0
  */
-public interface IProjectStyleCustomizationSearchService {
+public interface IProjectStyleCustomizationRepository {
+    boolean existsByProjectIdAndStyleCustomizationDescriptionId(String projectId, String styleCustomizationDescriptionId);
 
-    boolean existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference<Project, String> projectReference, String styleCustomizationDescriptionId);
+    List<ProjectStyleCustomization> findAllByProjectId(String projectId);
 
-    List<ProjectStyleCustomization> findAllByProjectId(AggregateReference<Project, String> projectReference);
+    ProjectStyleCustomization save(ProjectStyleCustomization projectStyleCustomization);
+
+    void deleteAll();
 }

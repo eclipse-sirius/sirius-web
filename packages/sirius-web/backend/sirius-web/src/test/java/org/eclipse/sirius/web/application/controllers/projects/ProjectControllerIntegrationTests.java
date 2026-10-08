@@ -21,12 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
-import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
@@ -37,15 +35,15 @@ import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ProjectEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectsQueryRunner;
-import org.eclipse.sirius.web.tests.graphql.RenameProjectMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.RenameProjectExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.data.domain.ScrollPosition;
-import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.relay.Relay;
@@ -68,7 +66,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     private ProjectsQueryRunner projectsQueryRunner;
 
     @Autowired
-    private RenameProjectMutationRunner renameProjectMutationRunner;
+    private RenameProjectExecutor renameProjectExecutor;
 
     @Autowired
     private ProjectEventSubscriptionRunner projectEventSubscriptionRunner;
@@ -356,18 +354,11 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given an existing project to rename, when the mutation is performed, then the project is renamed")
-    public void givenExistingProjectToRenameWhenMutationIsPerformedThenProjectIsRenamed() {
+    public void givenExistingProjectToRenameWhenMutationIsPerformedThenProjectIsRenamed(CapturedOutput capturedOutput) {
         assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isTrue();
 
         var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT, "New Name");
-        var result = this.renameProjectMutationRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        String typename = JsonPath.read(result.data(), "$.data.renameProject.__typename");
-        assertThat(typename).isEqualTo(RenameProjectSuccessPayload.class.getSimpleName());
+        this.renameProjectExecutor.execute(input, capturedOutput).isSuccess();
 
         var optionalProject = this.projectSearchService.findById(TestIdentifiers.UML_SAMPLE_PROJECT);
         assertThat(optionalProject).isPresent();
@@ -379,54 +370,32 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given an existing project to rename, when the mutation is performed with an invalid name, then an error is returned")
-    public void givenExistingProjectToRenameWhenMutationIsPerformedWithInvalidNameThenAnErrorIsReturned() {
+    public void givenExistingProjectToRenameWhenMutationIsPerformedWithInvalidNameThenAnErrorIsReturned(CapturedOutput capturedOutput) {
         assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isTrue();
 
         var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT, "");
-        var result = this.renameProjectMutationRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        String typename = JsonPath.read(result.data(), "$.data.renameProject.__typename");
-        assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+        this.renameProjectExecutor.execute(input, capturedOutput).isError();
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given an invalid project to rename, when the mutation is performed, then an error is returned")
-    public void givenInvalidProjectToRenameWhenMutationIsPerformedThenAnErrorIsReturned() {
+    public void givenInvalidProjectToRenameWhenMutationIsPerformedThenAnErrorIsReturned(CapturedOutput capturedOutput) {
         assertThat(this.projectSearchService.existsById(TestIdentifiers.INVALID_PROJECT)).isFalse();
 
         var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.INVALID_PROJECT, "New Name");
-        var result = this.renameProjectMutationRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        String typename = JsonPath.read(result.data(), "$.data.renameProject.__typename");
-        assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+        this.renameProjectExecutor.execute(input, capturedOutput).isError();
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a project, when the project is renamed, then a project event is emitted")
-    public void givenProjectWhenTheProjectIsRenamedThenProjectEventIsEmitted() {
+    public void givenProjectWhenTheProjectIsRenamedThenProjectEventIsEmitted(CapturedOutput capturedOutput) {
         var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
         var flux = this.projectEventSubscriptionRunner.run(projectEventInput).flux();
 
         var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, "New Name");
-        Runnable renameProjectTask = () -> {
-            var result = this.renameProjectMutationRunner.run(input);
-            String typename = JsonPath.read(result.data(), "$.data.renameProject.__typename");
-            assertThat(typename).isEqualTo(RenameProjectSuccessPayload.class.getSimpleName());
-
-            TestTransaction.flagForCommit();
-            TestTransaction.end();
-            TestTransaction.start();
-        };
+        Runnable renameProjectTask = () -> this.renameProjectExecutor.execute(input, capturedOutput).isSuccess();
 
         StepVerifier.create(flux)
                 .then(renameProjectTask)
