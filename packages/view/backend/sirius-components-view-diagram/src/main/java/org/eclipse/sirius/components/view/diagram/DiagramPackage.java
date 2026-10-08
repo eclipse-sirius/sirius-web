@@ -3197,13 +3197,21 @@ public interface DiagramPackage extends EPackage {
     int EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION = TOOL_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL__PALETTE = TOOL_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 4;
+    int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6512,6 +6520,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getEdgeTool_ElementsToSelectExpression();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getPalette <em>Palette</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Palette</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgeTool#getPalette()
+     * @see #getEdgeTool()
+     */
+    EReference getEdgeTool_Palette();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool
      * <em>Edge Reconnection Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -8887,6 +8907,13 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION = eINSTANCE.getEdgeTool_ElementsToSelectExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Palette</b></em>' containment reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_TOOL__PALETTE = eINSTANCE.getEdgeTool_Palette();
 
         /**
          * The meta object literal for the

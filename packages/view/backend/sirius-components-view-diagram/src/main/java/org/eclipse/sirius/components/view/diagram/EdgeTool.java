@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getDialogDescription <em>Dialog Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getElementsToSelectExpression <em>Elements To Select
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getPalette <em>Palette</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeTool()
@@ -115,5 +116,26 @@ public interface EdgeTool extends Tool {
      * @generated
      */
     void setElementsToSelectExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Palette</em>' containment reference.
+     * @see #setPalette(NodePalette)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeTool_Palette()
+     * @model containment="true"
+     * @generated
+     */
+    NodePalette getPalette();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getPalette <em>Palette</em>}' containment reference.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value the new value of the '<em>Palette</em>' containment reference.
+     * @see #getPalette()
+     * @generated
+     */
+    void setPalette(NodePalette value);
 
 } // EdgeTool

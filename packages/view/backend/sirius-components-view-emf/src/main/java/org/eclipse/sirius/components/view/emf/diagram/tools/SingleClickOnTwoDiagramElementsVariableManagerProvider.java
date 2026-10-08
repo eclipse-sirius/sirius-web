@@ -86,7 +86,7 @@ public class SingleClickOnTwoDiagramElementsVariableManagerProvider implements I
                     .filter(Node.class::isInstance)
                     .map(Node.class::cast)
                     .orElse(null));
-            variableManager.put(DiagramVariables.SELECTED_EDGE.name(), optionalTargetDiagramElement
+            variableManager.put(DiagramVariables.SELECTED_EDGE.name(), optionalSourceDiagramElement
                     .filter(Edge.class::isInstance)
                     .map(Edge.class::cast)
                     .orElse(null));

@@ -196,6 +196,9 @@ On top of the properties of all node style descriptions, the ellipse one adds th
 
 * `palette: NodePalette` Used to configure the palette of the node. This palette is accessible thanks to a right click on a node. It can contain tools to create new elements in the diagram or to perform actions on the node or its target semantic element.
 * `edgeTools: List<EdgeTool>` Contains zero or more tools offered when creating a connection from a node with this description to a compatible node or edge. Configure these tools directly under the node description.
+Each connector tool can contain a `palette: NodePalette` whose node tools define the actions available for that connection.
+The connector palette displays the direct node tools from the first connector tool's palette.
+To offer several connector actions, place them in that one palette and include all of their target descriptions in its owning edge tool's `targetElementDescriptions`.
 * `actions: Action` Used to display actions on the node being rendered. Actions are displayed as a clickable icon to trigger some specific behavior.
 
 

@@ -114,7 +114,8 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable requestConnectorPalette = () -> this.connectorPaletteExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), siriusWebInfrastructureNodeId.get(), siriusWebApplicationNodeId.get())
-                .hasPaletteEntriesLabel(paletteEntries -> assertThat(paletteEntries).contains("New dependencies"));
+                .hasPaletteEntriesLabel(paletteEntries -> assertThat(paletteEntries).contains("New dependencies"))
+                .hasPaletteEntriesId(paletteEntries -> assertThat(paletteEntries).contains(this.edgeDiagramDescriptionProvider.getNewDependencyToolId()));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

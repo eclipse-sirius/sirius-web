@@ -55,8 +55,13 @@ public class EdgeToolConverter implements IEdgeToolConverter {
         String toolId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(viewEdgeTool).toString().getBytes()).toString();
         List<String> iconURLs = this.getIconURLs(viewEdgeTool, interpreter, variableManager);
         String dialogDescriptionId = "";
-        if (viewEdgeTool.getDialogDescription() != null) {
-            dialogDescriptionId = this.diagramIdProvider.getId(viewEdgeTool.getDialogDescription());
+        var dialogDescription = viewEdgeTool.getDialogDescription();
+        if (viewEdgeTool.getPalette() != null && !viewEdgeTool.getPalette().getNodeTools().isEmpty()
+                && viewEdgeTool.getPalette().getNodeTools().get(0).getDialogDescription() != null) {
+            dialogDescription = viewEdgeTool.getPalette().getNodeTools().get(0).getDialogDescription();
+        }
+        if (dialogDescription != null) {
+            dialogDescriptionId = this.diagramIdProvider.getId(dialogDescription);
         }
 
         List<SingleClickOnTwoDiagramElementsCandidate> candidates = List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()

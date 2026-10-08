@@ -112,6 +112,7 @@ public class EdgeToolItemProvider extends ToolItemProvider {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_TOOL__DIALOG_DESCRIPTION);
+            this.childrenFeatures.add(DiagramPackage.Literals.EDGE_TOOL__PALETTE);
         }
         return this.childrenFeatures;
     }
@@ -177,6 +178,7 @@ public class EdgeToolItemProvider extends ToolItemProvider {
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION:
+            case DiagramPackage.EDGE_TOOL__PALETTE:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -196,6 +198,7 @@ public class EdgeToolItemProvider extends ToolItemProvider {
         SelectionDialogTreeDescription selectionDialogTreeDescription = DiagramFactory.eINSTANCE.createSelectionDialogTreeDescription();
         selectionDialogDescription.setSelectionDialogTreeDescription(selectionDialogTreeDescription);
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_TOOL__DIALOG_DESCRIPTION, selectionDialogDescription));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_TOOL__PALETTE, DiagramFactory.eINSTANCE.createNodePalette()));
     }
 
 }
