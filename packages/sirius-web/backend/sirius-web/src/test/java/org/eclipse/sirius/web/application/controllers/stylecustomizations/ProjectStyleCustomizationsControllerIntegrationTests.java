@@ -67,7 +67,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankStartCursor()
                         .hasNonBlankEndCursor()
                         .hasCount(1))
-                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE);
+                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankStartCursor()
                         .hasNonBlankEndCursor()
                         .hasCount(1))
-                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
+                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS);
     }
 
     @Test
@@ -128,7 +128,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
     @GivenSiriusWebServer
     @DisplayName("Given a set of style customizations of a project, When a valid after query is performed, then the style customizations are returned")
     public void givenSetOfStyleCustomizationsOfProjectWhenValidAfterQueryIsPerformedThenStyleCustomizationsAreReturned() {
-        var cursorProjectId = new Relay().toGlobalId("StyleCustomization", FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE);
+        var cursorProjectId = new Relay().toGlobalId("StyleCustomization", FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS);
         Map<String, Object> variables = Map.of("projectId", FlowIdentifier.PROJECT_ID, "after", cursorProjectId);
         var result = this.projectStyleCustomizationsQueryRunner.run(variables);
 
@@ -140,14 +140,14 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankStartCursor()
                         .hasNonBlankEndCursor()
                         .hasCount(1))
-                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
+                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS);
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a set of style customizations of a project, When a valid before query is performed, then the style customizations are returned")
     public void givenSetOfStyleCustomizationsOfProjectWhenValidBeforeQueryIsPerformedThenStyleCustomizationsAreReturned() {
-        var cursorProjectId = new Relay().toGlobalId("StyleCustomization", FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
+        var cursorProjectId = new Relay().toGlobalId("StyleCustomization", FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS);
         Map<String, Object> variables = Map.of("projectId", FlowIdentifier.PROJECT_ID, "before", cursorProjectId);
         var result = this.projectStyleCustomizationsQueryRunner.run(variables);
 
@@ -159,7 +159,7 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankStartCursor()
                         .hasNonBlankEndCursor()
                         .hasCount(1))
-                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE);
+                .hasExactlyStyleCustomizationIds(FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS);
     }
 
     @Test
@@ -179,8 +179,8 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
                         .hasNonBlankEndCursor()
                         .hasCount(2))
                 .hasExactlyStyleCustomizationIds(
-                        FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE,
-                        FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI);
+                        FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS,
+                        FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS);
     }
 
     @Test

@@ -12,14 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.flow.starter.services;
 
-import fr.obeo.dsl.designer.sample.flow.Named;
+import fr.obeo.dsl.designer.sample.flow.CompositeProcessor;
+import fr.obeo.dsl.designer.sample.flow.PoweredStatus;
 
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
-import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -32,14 +32,15 @@ import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.I
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * The flow node style customizer updating the style, color, and size the border of flow elements when their name contains "da be di da be dai".
+ * The flow node style customizer updating the background color of flow element when their name contains "I'm Blue".
  *
  * @author gcoutable
  */
 @Service
-public class DabediNodeStyleCustomizer implements INodeStyleCustomizer {
+public class PowerStatusNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final boolean nodeCustomizationEnabled;
 
@@ -49,8 +50,12 @@ public class DabediNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService;
 
-    public DabediNodeStyleCustomizer(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate,
-            IProjectEditingContextService projectEditingContextService, IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService) {
+    public PowerStatusNodeStyleCustomizer(
+            @Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled,
+            IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate,
+            IProjectEditingContextService projectEditingContextService,
+            IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService
+    ) {
         this.nodeCustomizationEnabled = nodeCustomizationEnabled;
         this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
@@ -58,6 +63,7 @@ public class DabediNodeStyleCustomizer implements INodeStyleCustomizer {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public INodeStyle customize(VariableManager variableManager, DiagramDescription diagramDescription, NodeDescription nodeDescription, INodeStyle nodeStyle) {
         INodeStyle customizeStyle = nodeStyle;
         if (this.nodeCustomizationEnabled && nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {
@@ -68,19 +74,33 @@ public class DabediNodeStyleCustomizer implements INodeStyleCustomizer {
             var isEnabled = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                     .map(IEditingContext::getId)
                     .flatMap(this.projectEditingContextService::getProjectId)
-                    .map(projectId -> this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(projectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI))
+                    .map(projectId -> this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(projectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS))
                     .orElse(Boolean.FALSE);
             if (isFlowProject && isEnabled) {
-                var optionalNamed = variableManager.get(RepresentationVariables.SELF.name(), Named.class);
-                if (optionalNamed.isPresent() && optionalNamed.get().getName().contains("da be di da be dai")) {
-                    customizeStyle = RectangularNodeStyle.newRectangularNodeStyle(rectangularNodeStyle)
-                            .borderSize(5)
-                            .borderColor("#231664")
-                            .borderStyle(LineStyle.Dash)
-                            .build();
+                var optionalCompositeProcessor = variableManager.get(RepresentationVariables.SELF.name(), CompositeProcessor.class);
+                if (optionalCompositeProcessor.isPresent()) {
+                    customizeStyle = this.customizeNodeStyle(rectangularNodeStyle, optionalCompositeProcessor.get());
                 }
             }
         }
         return customizeStyle;
+    }
+
+    private INodeStyle customizeNodeStyle(RectangularNodeStyle rectangularNodeStyle, CompositeProcessor compositeProcessor) {
+        RectangularNodeStyle customizedNodeStyle = rectangularNodeStyle;
+        if (compositeProcessor.getPowerStatus() == PoweredStatus.NONE) {
+            customizedNodeStyle = RectangularNodeStyle.newRectangularNodeStyle(rectangularNodeStyle)
+                    .borderColor("#EF5350")
+                    .build();
+        } else if (compositeProcessor.getPowerStatus() == PoweredStatus.LOW) {
+            customizedNodeStyle = RectangularNodeStyle.newRectangularNodeStyle(rectangularNodeStyle)
+                    .borderColor("#FF9800")
+                    .build();
+        } else if (compositeProcessor.getPowerStatus() == PoweredStatus.OK) {
+            customizedNodeStyle = RectangularNodeStyle.newRectangularNodeStyle(rectangularNodeStyle)
+                    .borderColor("#4CAF50")
+                    .build();
+        }
+        return customizedNodeStyle;
     }
 }

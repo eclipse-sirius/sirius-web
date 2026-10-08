@@ -156,6 +156,8 @@ Introduced the `PageInfoAssert` for testing the page info returned by query runn
 Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
 - https://github.com/eclipse-sirius/sirius-web/issues/5375[#5375] [form] Studio makers can show or hide the reference widget's create button by adding or removing its create button description.
 The form editor preview reflects this configuration.
+- https://github.com/eclipse-sirius/sirius-web/issues/7034[#7034] [projects] Persist project style customizations.
+Enable flow related project style customizations when a new flow project is created.
 
 
 === Improvements
