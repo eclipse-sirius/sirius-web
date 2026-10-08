@@ -12,7 +12,7 @@
  *******************************************************************************/
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { ProjectSettingTabProps } from '../ProjectSettingsView.types';
@@ -23,6 +23,7 @@ import {
 import { ProjectStyleCustomizationsTable } from './ProjectStyleCustomizationsTable';
 import { useProjectStyleCustomizations } from './useProjectStyleCustomizations';
 import { GQLProjectStyleCustomization } from './useProjectStyleCustomizations.types';
+import { useUpdateProjectStyleCustomizationState } from './useUpdateProjectStyleCustomizationState';
 
 export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
   const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
@@ -36,12 +37,24 @@ export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
     endCursor: null,
   });
 
-  const { data, loading } = useProjectStyleCustomizations(
+  const { data, loading, refreshStyleCustomization } = useProjectStyleCustomizations(
     projectId,
     state.startCursor,
     state.endCursor,
     state.pageSize
   );
+
+  const { updateProjectStyleCustomizationState, updateSuccess } = useUpdateProjectStyleCustomizationState();
+
+  useEffect(() => {
+    if (updateSuccess) {
+      refreshStyleCustomization();
+    }
+  }, [updateSuccess, refreshStyleCustomization]);
+
+  const handleUpdateStyleCustomizationState = (styleCustomizationDescriptionId: string, enable: boolean) => {
+    updateProjectStyleCustomizationState(projectId, styleCustomizationDescriptionId, enable);
+  };
 
   const onPreviousPage = () => {
     setState((prevState) => ({
@@ -91,6 +104,7 @@ export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
         onNextPage={onNextPage}
         pageSize={state.pageSize}
         onPageSizeChange={onPageSizeChange}
+        onUpdateStyleCustomizationState={handleUpdateStyleCustomizationState}
       />
     </Box>
   );

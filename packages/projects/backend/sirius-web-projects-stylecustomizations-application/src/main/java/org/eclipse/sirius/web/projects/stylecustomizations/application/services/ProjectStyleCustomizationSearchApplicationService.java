@@ -22,10 +22,11 @@ import org.eclipse.sirius.web.core.domain.pagination.Window;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.StyleCustomizationDTO;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.api.IProjectStyleCustomizationSearchApplicationService;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.api.IStyleCustomizationDescriptionProvider;
-import org.eclipse.sirius.web.projects.stylecustomizations.application.services.api.IStyleCustomizationMapper;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,13 +39,13 @@ public class ProjectStyleCustomizationSearchApplicationService implements IProje
 
     private final List<IStyleCustomizationDescriptionProvider> styleCustomizationDescriptionProviders;
 
-    private final IStyleCustomizationMapper styleCustomizationMapper;
+    private final IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService;
 
     private final Logger logger = LoggerFactory.getLogger(ProjectStyleCustomizationSearchApplicationService.class);
 
-    public ProjectStyleCustomizationSearchApplicationService(List<IStyleCustomizationDescriptionProvider> styleCustomizationDescriptionProviders, IStyleCustomizationMapper styleCustomizationMapper) {
+    public ProjectStyleCustomizationSearchApplicationService(List<IStyleCustomizationDescriptionProvider> styleCustomizationDescriptionProviders, IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService) {
         this.styleCustomizationDescriptionProviders = Objects.requireNonNull(styleCustomizationDescriptionProviders);
-        this.styleCustomizationMapper = Objects.requireNonNull(styleCustomizationMapper);
+        this.projectStyleCustomizationSearchService = Objects.requireNonNull(projectStyleCustomizationSearchService);
     }
 
     @Override
@@ -67,7 +68,11 @@ public class ProjectStyleCustomizationSearchApplicationService implements IProje
             }
         }
 
-        return window.map(styleCustomizationDescription -> this.styleCustomizationMapper.toDTO(projectId, styleCustomizationDescription));
+        var enabledProjectStyleCustomizations = this.projectStyleCustomizationSearchService.findAllByProjectId(AggregateReference.to(projectId));
+        return window.map(styleCustomizationDescription -> {
+            var isEnabled = enabledProjectStyleCustomizations.contains(String.join("#", projectId, styleCustomizationDescription.id()));
+            return new StyleCustomizationDTO(styleCustomizationDescription.id(), styleCustomizationDescription.label(), styleCustomizationDescription.description(), isEnabled);
+        });
     }
 
     private List<StyleCustomizationDescription> getStyleCustomizationDescriptions(String projectId) {

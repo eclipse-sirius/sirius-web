@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api;
 
+import java.util.List;
+
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
@@ -23,4 +25,6 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 public interface IProjectStyleCustomizationSearchService {
 
     boolean existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference<Project, String> projectReference, String styleCustomizationDescriptionId);
+
+    List<String> findAllByProjectId(AggregateReference<Project, String> projectReference);
 }
