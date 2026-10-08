@@ -33,9 +33,14 @@ public class FilterNodeCustomizationCapabilityVoter implements ICapabilityVoter 
 
     @Override
     public CapabilityVote vote(String type, String identifier, String capability) {
-        if (SiriusWebCapabilities.PROJECT_SETTINGS_APPEARANCE_TAB.equals(type) && !this.projectAppearanceSettingsEnabled) {
-            return CapabilityVote.DENIED;
+        CapabilityVote vote = CapabilityVote.ABSTAIN;
+        if (SiriusWebCapabilities.PROJECT_SETTINGS_APPEARANCE_TAB.equals(type)) {
+            if (this.projectAppearanceSettingsEnabled) {
+                vote = CapabilityVote.GRANTED;
+            } else {
+                vote = CapabilityVote.DENIED;
+            }
         }
-        return CapabilityVote.GRANTED;
+        return vote;
     }
 }

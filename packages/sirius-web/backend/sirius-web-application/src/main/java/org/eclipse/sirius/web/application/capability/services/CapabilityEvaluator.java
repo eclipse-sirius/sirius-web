@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
+import org.eclipse.sirius.web.application.capability.services.api.IDefaultCapabilityEvaluator;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,15 +30,22 @@ public class CapabilityEvaluator implements ICapabilityEvaluator {
 
     private final List<ICapabilityVoter> capabilityVoters;
 
-    public CapabilityEvaluator(List<ICapabilityVoter> capabilityVoters) {
+    private final IDefaultCapabilityEvaluator defaultCapabilityEvaluator;
+
+    public CapabilityEvaluator(List<ICapabilityVoter> capabilityVoters, IDefaultCapabilityEvaluator defaultCapabilityEvaluator) {
         this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+        this.defaultCapabilityEvaluator = Objects.requireNonNull(defaultCapabilityEvaluator);
     }
 
     @Override
     public boolean hasCapability(String type, String identifier, String capability) {
-        return this.capabilityVoters.stream()
+        var votes = this.capabilityVoters.stream()
                 .map(voter -> voter.vote(type, identifier, capability))
                 .filter(vote -> !CapabilityVote.ABSTAIN.equals(vote))
-                .allMatch(CapabilityVote.GRANTED::equals);
+                .toList();
+        if (!votes.isEmpty()) {
+            return votes.stream().allMatch(CapabilityVote.GRANTED::equals);
+        }
+        return this.defaultCapabilityEvaluator.hasCapability();
     }
 }
