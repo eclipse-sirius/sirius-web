@@ -16,8 +16,8 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.projects.domain.Nature;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
 import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;

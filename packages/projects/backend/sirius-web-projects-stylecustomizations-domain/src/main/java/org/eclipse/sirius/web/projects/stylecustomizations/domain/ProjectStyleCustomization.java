@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**

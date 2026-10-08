@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.IProjectStyleCustomizationRepository;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationCreationService;

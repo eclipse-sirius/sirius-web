@@ -16,12 +16,12 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
+import org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
 import org.eclipse.sirius.web.view.fork.dto.ForkSemanticDataUpdatedEvent;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;

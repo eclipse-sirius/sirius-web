@@ -51,6 +51,11 @@
 		</dependency>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
+            <artifactId>sirius-web-projects-domain</artifactId>
+            <version>2026.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-web-projects-stylecustomizations-application</artifactId>
             <version>2026.9.3</version>
         </dependency>

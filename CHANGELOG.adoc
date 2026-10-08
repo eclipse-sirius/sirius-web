@@ -102,6 +102,12 @@ Programmatic form descriptions should manually add it through `ReferenceWidgetDe
 Other programmatic forms must contribute their own creation handler.
 The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [core] Update the signature of some provisional APIs related to the new refresh strategy for representation event processors. 
+- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Classes from the projects domain such as `Project`, `IProjectSearchService`, `IProjectCreationService` or `ProjectCreatedEvent` have been moved to the new module `sirius-web-projects-domain`.
+Imports of these classes must be updated to:
+* `org.eclipse.sirius.web.projects.domain.Project`
+* `org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService`
+* `org.eclipse.sirius.web.projects.domain.services.api.IProjectCreationService`
+* `org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent`
 
 
 === Dependency update

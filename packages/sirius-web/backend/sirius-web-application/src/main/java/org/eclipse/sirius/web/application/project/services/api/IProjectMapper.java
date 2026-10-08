@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.project.services.api;
 
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.domain.Project;
 
 /**
  * Used to convert a project to a DTO.
