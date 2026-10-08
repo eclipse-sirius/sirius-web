@@ -375,7 +375,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
             var paletteProvider = new ClassNodePaletteProvider();
             var palette = paletteProvider.getNodePalette(cache);
             classNodeDescription.setPalette(palette);
-            classNodeDescription.getEdgeTools().addAll(paletteProvider.getEdgeTools(cache));
+            classNodeDescription.getEdgeTools().add(paletteProvider.getConnectorTool(cache));
 
             diagramDescription.getNodeDescriptions().add(classNodeDescription);
         }
