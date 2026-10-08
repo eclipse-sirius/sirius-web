@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.palette.dto.ITool;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 
 /**
  * Used to create edge tools.
@@ -29,6 +30,20 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
  */
 public interface IEdgeToolConverter {
     ITool createEdgeTool(AQLInterpreter interpreter, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager);
+
+    /**
+     * Returns an edge tool from a node tool declared inside the palette of an edge tool.
+     *
+     * @param viewNodeTool The node tool
+     * @param viewEdgeTool The edge tool parent
+     * @param diagramDescription The diagram description
+     * @param diagramElementDescription The diagram element description
+     * @param variableManager The variableManager
+     * @param interpreter The AQL interpreter
+     * @return The candidates of the edge tool
+     * @since v2026.11.0
+     */
+    ITool createEdgeToolFromNodeTool(NodeTool viewNodeTool, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager, AQLInterpreter interpreter);
 
     /**
      * Returns the candidates of the given edge tool.

@@ -157,3 +157,6 @@ An edge can have multiple labels which are computed thanks to dedicated expressi
 
 * `palette: EdgePalette` Used to configure the palette of the edge. This palette is accessible thanks to a right click on an edge. It can contain tools to create new elements in the diagram or to perform actions on the edge.
 * `edgeTools: List<EdgeTool>` Contains zero or more tools offered when creating a connection from an edge with this description to a compatible node or edge. Configure these tools directly under the edge description.
+Each edge tool can contain a `palette: NodePalette` whose node tools define the actions available for that connection.
+The palette displays the tools of the first edge tool's palette.
+If no palette is contained in the edge tool then the body of the edge tool will be executed (without rendering a palette).

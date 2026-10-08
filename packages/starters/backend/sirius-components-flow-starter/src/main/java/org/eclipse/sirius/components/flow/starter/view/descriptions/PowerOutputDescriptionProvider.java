@@ -99,23 +99,26 @@ public class PowerOutputDescriptionProvider implements INodeDescriptionProvider 
                 )
                 .build();
 
+        var body = new ViewBuilders().newChangeContext()
+                .expression("var:semanticEdgeSource")
+                .children(new ViewBuilders().newCreateInstance()
+                        .typeName("flow::PowerLink")
+                        .referenceName("links")
+                        .variableName("newPowerLink")
+                        .children(setPowerLink)
+                        .build())
+                .build();
+
         var powerInputNodeDescription = cache.getNodeDescription(PowerInputDescriptionProvider.NAME).orElse(null);
         return this.diagramBuilderHelper.newEdgeTool()
                 .name("Power Link")
                 .targetElementDescriptions(powerInputNodeDescription)
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("var:semanticEdgeSource")
-                                .children(
-                                        new ViewBuilders().newCreateInstance()
-                                                .typeName("flow::PowerLink")
-                                                .referenceName("links")
-                                                .variableName("newPowerLink")
-                                                .children(setPowerLink)
-                                                .build()
-                                )
-                                .build()
-                )
+                .palette(this.diagramBuilderHelper.newNodePalette()
+                        .nodeTools(this.diagramBuilderHelper.newNodeTool()
+                                .name("Power Link")
+                                .body(body)
+                                .build())
+                        .build())
                 .build();
     }
 }

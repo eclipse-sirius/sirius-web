@@ -12,11 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.classdiagram.tools.classnode;
 
-import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
-import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.InterfaceNodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 
 /**
  * Used to create the "implements interface" tool.
@@ -25,23 +23,16 @@ import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptio
  */
 public class ImplementsInterfaceToolProvider {
 
-    public EdgeTool getTool(IViewDiagramElementFinder cache) {
-        var interfaceNodeDescription = cache.getNodeDescription(InterfaceNodeDescriptionProvider.NAME).orElse(null);
-
-        return new DiagramBuilders().newEdgeTool()
+    public NodeTool getTool() {
+        return new DiagramBuilders().newNodeTool()
                 .name("Implements interface")
-                .targetElementDescriptions(interfaceNodeDescription)
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:semanticEdgeSource")
-                                .children(
-                                        new ViewBuilders().newSetValue()
-                                                .featureName("implements")
-                                                .valueExpression("aql:semanticEdgeTarget")
-                                                .build()
-                                )
-                                .build()
-                )
+                .body(new ViewBuilders().newChangeContext()
+                        .expression("aql:semanticEdgeSource")
+                        .children(new ViewBuilders().newSetValue()
+                                .featureName("implements")
+                                .valueExpression("aql:semanticEdgeTarget")
+                                .build())
+                        .build())
                 .description("This Tool allows to create a new implements relationship between two interfaces.")
                 .build();
     }

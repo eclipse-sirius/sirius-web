@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram.tools;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescrip
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewToolImageProvider;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IEdgeToolConverter;
@@ -53,16 +55,44 @@ public class EdgeToolConverter implements IEdgeToolConverter {
     @Override
     public ITool createEdgeTool(AQLInterpreter interpreter, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager) {
         String toolId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(viewEdgeTool).toString().getBytes()).toString();
-        List<String> iconURLs = this.getIconURLs(viewEdgeTool, interpreter, variableManager);
+        List<String> iconURLs = this.getIconURLs(viewEdgeTool.getIconURLsExpression(), interpreter, variableManager);
         String dialogDescriptionId = "";
-        if (viewEdgeTool.getDialogDescription() != null) {
-            dialogDescriptionId = this.diagramIdProvider.getId(viewEdgeTool.getDialogDescription());
+
+        var dialogDescription = viewEdgeTool.getDialogDescription();
+        if (dialogDescription != null) {
+            dialogDescriptionId = this.diagramIdProvider.getId(dialogDescription);
         }
 
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(viewEdgeTool.getName())
                 .iconURL(iconURLs)
                 .candidates(this.getConnectorToolsCandidates(viewEdgeTool, diagramDescription, diagramElementDescription))
+                .dialogDescriptionId(dialogDescriptionId)
+                .build();
+    }
+
+    @Override
+    public ITool createEdgeToolFromNodeTool(NodeTool viewNodeTool, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        String toolId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(viewNodeTool).toString().getBytes()).toString();
+
+        List<String> iconURLProvider = this.getIconURLs(viewNodeTool.getIconURLsExpression(), interpreter, variableManager);
+        String dialogDescriptionId = "";
+        if (viewNodeTool.getDialogDescription() != null) {
+            dialogDescriptionId = this.diagramIdProvider.getId(viewNodeTool.getDialogDescription());
+        }
+
+        List<SingleClickOnTwoDiagramElementsCandidate> candidates = List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
+                .sources(List.of(diagramElementDescription))
+                .targets(viewEdgeTool.getTargetElementDescriptions().stream()
+                        .map(viewDiagramElementDescription -> this.diagramDescriptionService.findDiagramElementDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription)))
+                        .flatMap(Optional::stream)
+                        .toList())
+                .build());
+
+        return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
+                .label(viewNodeTool.getName())
+                .iconURL(iconURLProvider)
+                .candidates(candidates)
                 .dialogDescriptionId(dialogDescriptionId)
                 .build();
     }
@@ -78,9 +108,8 @@ public class EdgeToolConverter implements IEdgeToolConverter {
                 .build());
     }
 
-    private List<String> getIconURLs(EdgeTool edgeTool, AQLInterpreter interpreter, VariableManager variableManager) {
-        List<String> iconURL = null;
-        String iconURLsExpression = edgeTool.getIconURLsExpression();
+    private List<String> getIconURLs(String iconURLsExpression, AQLInterpreter interpreter, VariableManager variableManager) {
+        List<String> iconURL = new ArrayList<>();
         if (iconURLsExpression == null || iconURLsExpression.isBlank()) {
             iconURL = List.of(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON);
         } else {
@@ -88,4 +117,5 @@ public class EdgeToolConverter implements IEdgeToolConverter {
         }
         return iconURL;
     }
+
 }

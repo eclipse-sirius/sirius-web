@@ -37,6 +37,12 @@ public class ConnectorPaletteAssert {
         return this;
     }
 
+    public ConnectorPaletteAssert hasQuickAccessToolId(Consumer<List<String>> consumer) {
+        List<String> quickAccessToolIds = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.connectorPalette.quickAccessTools[*].id");
+        consumer.accept(quickAccessToolIds);
+        return this;
+    }
+
     public ConnectorPaletteAssert hasPaletteEntriesLabel(Consumer<List<String>> consumer) {
         List<String> paletteEntryLabels = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries[*].label");
         consumer.accept(paletteEntryLabels);

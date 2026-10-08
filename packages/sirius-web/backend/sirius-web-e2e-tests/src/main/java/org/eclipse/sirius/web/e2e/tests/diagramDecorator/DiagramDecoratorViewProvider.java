@@ -248,30 +248,31 @@ public class DiagramDecoratorViewProvider implements IE2EViewProvider {
     }
 
     private EdgeTool createEgeCreationTool(String name, DiagramElementDescription target, String typeName, String referenceName) {
+        var body = new ViewBuilders().newChangeContext()
+                .expression("aql:semanticEdgeSource.eContainer()")
+                .children(new ViewBuilders().newCreateInstance()
+                        .typeName(typeName)
+                        .referenceName(referenceName)
+                        .variableName("newInstance")
+                        .children(new ViewBuilders().newChangeContext()
+                                .expression("aql:newInstance")
+                                .children(new ViewBuilders().newSetValue()
+                                                .featureName("source")
+                                                .valueExpression("aql:semanticEdgeSource")
+                                                .build(),
+                                        new ViewBuilders().newSetValue()
+                                                .featureName("target")
+                                                .valueExpression("aql:semanticEdgeTarget")
+                                                .build())
+                                .build())
+                        .build())
+                .build();
+
         return new DiagramBuilders().newEdgeTool()
                 .name(name)
                 .targetElementDescriptions(target)
-                .body(new ViewBuilders().newChangeContext()
-                        .expression("aql:semanticEdgeSource.eContainer()")
-                        .children(new ViewBuilders().newCreateInstance()
-                                .typeName(typeName)
-                                .referenceName(referenceName)
-                                .variableName("newInstance")
-                                .children(new ViewBuilders().newChangeContext()
-                                        .expression("aql:newInstance")
-                                        .children(new ViewBuilders().newSetValue()
-                                                        .featureName("source")
-                                                        .valueExpression("aql:semanticEdgeSource")
-                                                        .build(),
-                                                new ViewBuilders().newSetValue()
-                                                        .featureName("target")
-                                                        .valueExpression("aql:semanticEdgeTarget")
-                                                        .build())
-                                        .build())
-                                .build()
-                        )
-                        .build()
-                )
+                .name(name)
+                .body(body)
                 .build();
     }
 

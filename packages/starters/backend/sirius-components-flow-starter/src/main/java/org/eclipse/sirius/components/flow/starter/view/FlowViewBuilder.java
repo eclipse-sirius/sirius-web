@@ -211,7 +211,12 @@ public class FlowViewBuilder {
         return this.diagramBuilderHelper.newEdgeTool()
                 .name("Indirect Dependencies")
                 .targetElementDescriptions(processorNodeDescription)
-                .body(changeContext.build())
+                .palette(this.diagramBuilderHelper.newNodePalette()
+                        .nodeTools(this.diagramBuilderHelper.newNodeTool()
+                                .name("Indirect Dependencies")
+                                .body(changeContext.build())
+                                .build())
+                        .build())
                 .build();
     }
 

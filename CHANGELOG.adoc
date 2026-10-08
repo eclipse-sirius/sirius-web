@@ -136,6 +136,10 @@ A new API has been added to replace `addHandlerProvider`: `IReferenceWidgetAddEl
 Two implementations of `IReferenceWidgetAddElementHandler`, `ViewReferenceWidgetAddElementHandler` for View-based representation and `DetailsViewReferenceWidgetAddElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
 Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetAddElementHandler`.
 The `add` reference widget feature cannot use rendering AQL variables such as the one provided by a `For` element.
+- https://github.com/eclipse-sirius/sirius-web/issues/6721[#6721] Each `EdgeTool` can now own a `Palette`; its actions are defined by tools in that palette.
+If there is no palette declared, then the body of the first candidate edge tool will be executed.
+Existing edge tool bodies are moved into a same-named node tool in each edge tool's palette during migration.
+Programmatic View DSLs can configure `EdgeToolBuilder.palette(...)` and the contained node tools, or use `EdgeToolBuilder.body(...)` for direct execution without displaying a palette.
 
 
 === Dependency update

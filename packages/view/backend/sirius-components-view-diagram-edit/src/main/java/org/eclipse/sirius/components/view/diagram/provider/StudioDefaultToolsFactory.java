@@ -65,6 +65,11 @@ public class StudioDefaultToolsFactory {
     public EdgeTool createDefaultEdgeTool() {
         EdgeTool newEdgeTool = DiagramFactory.eINSTANCE.createEdgeTool();
         newEdgeTool.setName("Create Edge");
+        NodePalette palette = DiagramFactory.eINSTANCE.createNodePalette();
+        NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeTool.setName(newEdgeTool.getName());
+        palette.getNodeTools().add(nodeTool);
+        newEdgeTool.setPalette(palette);
         return newEdgeTool;
     }
 
