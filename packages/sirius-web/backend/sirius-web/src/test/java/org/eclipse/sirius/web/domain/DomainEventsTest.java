@@ -22,11 +22,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNameUpdatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
-import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdatedEvent;
@@ -40,6 +35,11 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDo
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
+import org.eclipse.sirius.web.projects.domain.Project;
+import org.eclipse.sirius.web.projects.domain.events.ProjectNameUpdatedEvent;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectUpdateService;
+import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.BeforeEach;

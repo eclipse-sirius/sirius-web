@@ -18,8 +18,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.eclipse.sirius.web.projects.semanticdata.domain.events.ProjectSemanticDataCreatedEvent;
 import org.eclipse.sirius.web.projects.semanticdata.domain.events.ProjectSemanticDataDeletedEvent;
 import org.eclipse.sirius.web.projects.semanticdata.domain.events.ProjectSemanticDataNameUpdatedEvent;

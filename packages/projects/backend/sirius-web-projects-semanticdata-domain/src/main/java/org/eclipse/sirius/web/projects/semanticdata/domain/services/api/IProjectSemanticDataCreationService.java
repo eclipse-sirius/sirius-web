@@ -16,8 +16,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.results.IResult;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 

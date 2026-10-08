@@ -27,9 +27,9 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectZipConten
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.projects.domain.Project;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectCreationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

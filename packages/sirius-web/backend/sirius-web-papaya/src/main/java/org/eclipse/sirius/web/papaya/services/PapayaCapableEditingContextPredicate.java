@@ -18,10 +18,10 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.projects.domain.Nature;
+import org.eclipse.sirius.web.projects.domain.Project;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.papaya.projecttemplates.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.papaya.services.api.IPapayaCapableEditingContextPredicate;
 import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;

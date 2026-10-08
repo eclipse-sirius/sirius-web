@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.projects;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
+import org.eclipse.sirius.web.projects.domain.repositories.api.IProjectSearchRepositoryDelegate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.simple.JdbcClient;

@@ -18,8 +18,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationCreatedEvent;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
