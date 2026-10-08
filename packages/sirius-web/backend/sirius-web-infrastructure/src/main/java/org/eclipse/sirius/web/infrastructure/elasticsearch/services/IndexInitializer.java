@@ -19,10 +19,10 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.core.domain.pagination.Window;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexCreationService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexUpdateService;
+import org.eclipse.sirius.web.projects.domain.Project;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
 import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
 import org.springframework.boot.CommandLineRunner;

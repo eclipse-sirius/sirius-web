@@ -63,6 +63,7 @@ import reactor.core.scheduler.Schedulers;
     "org.eclipse.sirius.web.domain",
     "org.eclipse.sirius.web.images",
     "org.eclipse.sirius.web.library.domain",
+    "org.eclipse.sirius.web.projects",
     "org.eclipse.sirius.web.projects.images",
     "org.eclipse.sirius.web.projects.semanticdata",
     "org.eclipse.sirius.web.projects.stylecustomizations",

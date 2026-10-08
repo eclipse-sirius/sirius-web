@@ -21,7 +21,7 @@ import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayloa
 import org.eclipse.sirius.web.application.project.services.api.IProjectUpdateApplicationService;
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

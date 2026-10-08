@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.results.IResult;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 

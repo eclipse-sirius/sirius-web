@@ -24,7 +24,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.services.ExceptionInjectionTransformer;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.RenameProjectMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;

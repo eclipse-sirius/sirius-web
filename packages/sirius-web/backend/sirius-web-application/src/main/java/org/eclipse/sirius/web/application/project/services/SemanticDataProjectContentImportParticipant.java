@@ -42,11 +42,11 @@ import org.eclipse.sirius.web.application.project.services.api.IRewriteProxiesSe
 import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
 import org.eclipse.sirius.web.domain.events.IDomainEvent;
+import org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.projects.semanticdata.domain.events.ProjectSemanticDataCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

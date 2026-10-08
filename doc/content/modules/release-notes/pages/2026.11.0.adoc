@@ -75,6 +75,13 @@ The `precondition` of an edge tool is no longer evaluated when computing if an e
   Existing persisted View descriptions are migrated to keep their create button.
   Programmatic descriptions must explicitly configure `createButtonDescription` to keep the creation action.
 - The `getPalette` query no longer return edge tool, use `getConnectorPalette` instead if needed.
+  - Classes from the projects domain such as `Project`, `IProjectSearchService`, `IProjectCreationService` or `ProjectCreatedEvent` have been moved to the new module `sirius-web-projects-domain`.
+Imports of these classes must be updated to:
+* `org.eclipse.sirius.web.projects.domain.Project`
+* `org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService`
+* `org.eclipse.sirius.web.projects.domain.services.api.IProjectCreationService`
+* `org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent`
+
 
 == Dependency updates
 

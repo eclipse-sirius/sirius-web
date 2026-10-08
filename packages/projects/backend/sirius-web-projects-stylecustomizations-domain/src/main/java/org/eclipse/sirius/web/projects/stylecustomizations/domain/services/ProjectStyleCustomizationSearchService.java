@@ -15,9 +15,9 @@ package org.eclipse.sirius.web.projects.stylecustomizations.domain.services;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.IProjectStyleCustomizationRepository;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;

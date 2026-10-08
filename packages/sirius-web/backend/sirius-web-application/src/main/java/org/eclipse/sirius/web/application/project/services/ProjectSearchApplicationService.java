@@ -20,7 +20,7 @@ import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
 import org.eclipse.sirius.web.core.domain.pagination.Window;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

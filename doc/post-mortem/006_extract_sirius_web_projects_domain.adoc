@@ -1,0 +1,42 @@
+= 006 - Extracting the Sirius Web projects domain module
+
+This post-mortem records the next implementation step of xref:../adrs/237_improve_the_modularity_of_sirius_web_domain.adoc[ADR-237 - Improve the Modularity of Sirius Web Domain].
+It covers the issue https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868].
+
+== Goal
+
+The Project bounded context was still implemented inside `sirius-web-domain`, preventing its aggregate, services, and events from being reused independently of the remaining bounded contexts.
+
+The goal was to extract the complete projects domain into a dedicated Maven module with the stable namespace `org.eclipse.sirius.web.projects.domain`, while preserving the existing persistence model and behavior.
+
+== What changed
+
+The change introduced `sirius-web-projects-domain` in `packages/projects/backend` and registered it before the other projects subdomain modules.
+The module includes the standard Maven, Eclipse, Checkstyle, JaCoCo, resources, and architecture-test configuration established by the previous domain extractions.
+
+The Project aggregate, Nature value type, events, repositories, creation, deletion, validation, search, and update services, and their public service APIs moved from `org.eclipse.sirius.web.domain.boundedcontexts.project` to `org.eclipse.sirius.web.projects.domain`.
+The old package no longer contains Project domain implementation types.
+
+The new module has explicit dependencies on `sirius-web-core-domain` and `sirius-web-domain`.
+The latter remains necessary for shared `IDomainEvent` and `IMessageService` types that do not belong to the Project bounded context.
+
+All Java consumers were updated to the new namespace.
+The projects subdomains now depend directly on the new main projects-domain module, and its application, infrastructure, starter, and coverage consumers declare the dependency explicitly.
+`JDBCConfiguration` scans `org.eclipse.sirius.web.projects.domain`, preserving Spring Data JDBC repository discovery.
+
+== What worked well
+
+* Moving the complete Project slice made its public API and its relationship to the projects subdomains explicit.
+* Retaining the aggregate mapping and repository queries avoided a database migration during the module-boundary refactoring.
+* The standard architecture-test suite protects the new namespace and preserves the existing coding and Spring conventions.
+
+== Lessons and follow-up
+
+Future extractions should move a complete bounded-context slice, retain only explicit dependencies on types outside that ownership boundary, update repository scanning, and make direct consumer dependencies visible in Maven.
+
+The remaining dependency on `sirius-web-domain` is intentional until its shared events and message-service APIs have been extracted to their owning reusable modules.
+
+== Verification
+
+The new module, its direct production consumers, and the Sirius Web application and infrastructure consumers passed focused Maven reactor builds.
+The migration also verified that no Java import still references `org.eclipse.sirius.web.domain.boundedcontexts.project`.

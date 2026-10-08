@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.application.projectsemanticdata.listeners;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
+import org.eclipse.sirius.web.projects.domain.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataDeletionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

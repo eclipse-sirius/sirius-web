@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.flow.starter.services;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
+import org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationCreationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;

@@ -1,0 +1,59 @@
+/*******************************************************************************
+ * Copyright (c) 2024, 2026 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.web.projects.domain.services;
+
+import java.util.Objects;
+
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.Failure;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.projects.domain.repositories.IProjectRepository;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectDeletionService;
+import org.springframework.stereotype.Service;
+
+/**
+ * Used to delete projects.
+ *
+ * @author sbegaudeau
+ */
+@Service
+public class ProjectDeletionService implements IProjectDeletionService {
+
+    private final IProjectRepository projectRepository;
+
+    private final IMessageService messageService;
+
+    public ProjectDeletionService(IProjectRepository projectRepository, IMessageService messageService) {
+        this.projectRepository = Objects.requireNonNull(projectRepository);
+        this.messageService = Objects.requireNonNull(messageService);
+    }
+
+    @Override
+    public IResult<Void> deleteProject(ICause cause, String projectId) {
+        IResult<Void> result = null;
+
+        var optionalProject = this.projectRepository.findById(projectId);
+        if (optionalProject.isPresent()) {
+            var project = optionalProject.get();
+            project.dispose(cause);
+            this.projectRepository.delete(project);
+            result = new Success<>(null);
+        } else {
+            result = new Failure<>(this.messageService.notFound());
+        }
+
+        return result;
+    }
+}
