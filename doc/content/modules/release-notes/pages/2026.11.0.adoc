@@ -88,13 +88,16 @@ Imports of these classes must be updated to:
 - `org.eclipse.sirius.components.widget.reference.ReferenceWidget` now requires `targetObjectId`.
 - Connector tools in the diagram View DSL are now configured directly on node and edge descriptions using `edgeTools`.
 The `edgeTools` properties of node palettes, edge palettes, and node tool sections have been removed.
-Existing saved View descriptions are migrated automatically, preserving tool order; connector tools previously placed in sections become a flat list.
+Existing saved View descriptions are migrated automatically, preserving tool order; edge tools previously placed in sections become a flat list.
 Programmatic descriptions must move their tool declarations to `NodeDescriptionBuilder.edgeTools(...)` or `EdgeDescriptionBuilder.edgeTools(...)`.
 - `addHandlerProvider` has been removed from `ReferenceWidgetDescription`.
   A new API has been added to replace `addHandlerProvider`: `IReferenceWidgetAddElementHandler`, a candidate to handle the add event.
   Two implementations of `IReferenceWidgetAddElementHandler`, `ViewReferenceWidgetAddElementHandler` for View-based representation and `DetailsViewReferenceWidgetAddElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
   Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetAddElementHandler`.
   The `add` reference widget feature cannot use rendering AQL variables such as the one provided by a `For` element.
+- Each edge tool can now have its own palette, without a palette the body of the edge tool will be executed when making a connection.
+Existing edge tool actions are moved into a same-named tool in that palette automatically.
+Programmatic descriptions can configure the edge tool palette and its tools or rely on the edge tool body in order to offer a default behavior (without rendering a palette).
 
 
 == Dependency updates

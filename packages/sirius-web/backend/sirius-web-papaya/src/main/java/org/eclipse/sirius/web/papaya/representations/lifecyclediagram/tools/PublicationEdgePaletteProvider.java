@@ -36,7 +36,9 @@ public class PublicationEdgePaletteProvider {
         var channelNodeDescription = cache.getNodeDescription(ChannelNodeDescriptionProvider.NAME).orElse(null);
 
         var channelEdgeTool = new EdgeToolBuilder()
-                .body(new ChangeContextBuilder().expression("aql:semanticEdgeSource")
+                .name("Channel")
+                .body(new ChangeContextBuilder()
+                        .expression("aql:semanticEdgeSource")
                         .children(new SetValueBuilder()
                                 .featureName("channel")
                                 .valueExpression("aql:semanticEdgeTarget")

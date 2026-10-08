@@ -137,9 +137,14 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         EdgeTool createLinkTo = DiagramFactory.eINSTANCE.createEdgeTool();
         createLinkTo.setName("Link to");
         createLinkTo.getTargetElementDescriptions().add(entity2Node);
+        var palette = DiagramFactory.eINSTANCE.createNodePalette();
+        var nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeTool.setName(createLinkTo.getName());
+        palette.getNodeTools().add(nodeTool);
+        createLinkTo.setPalette(palette);
         ChangeContext gotoSemanticSource = ViewFactory.eINSTANCE.createChangeContext();
         gotoSemanticSource.setExpression("aql:semanticEdgeSource");
-        createLinkTo.getBody().add(gotoSemanticSource);
+        nodeTool.getBody().add(gotoSemanticSource);
         SetValue setLink = ViewFactory.eINSTANCE.createSetValue();
         setLink.setFeatureName("linkedTo");
         setLink.setValueExpression("aql:semanticEdgeTarget");

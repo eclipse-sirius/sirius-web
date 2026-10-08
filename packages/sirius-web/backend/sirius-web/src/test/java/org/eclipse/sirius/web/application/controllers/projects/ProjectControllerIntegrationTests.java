@@ -25,6 +25,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
+import org.eclipse.sirius.web.data.EdgeOnEdgeIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
@@ -140,10 +141,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(count).isEqualTo(2);
 
         List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
-        assertThat(projectIds).hasSize(2);
+        assertThat(projectIds).hasSize(2).contains(EdgeOnEdgeIdentifiers.PROJECT_ID);
 
         List<String> natures = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.natures[*].name");
-        assertThat(natures).hasSize(2);
+        assertThat(natures).containsExactly("siriusComponents://nature?kind=studio");
     }
 
     @Test
@@ -169,10 +170,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(count).isEqualTo(2);
 
         List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
-        assertThat(projectIds).hasSize(2);
+        assertThat(projectIds).hasSize(2).contains(EdgeOnEdgeIdentifiers.PROJECT_ID);
 
         List<String> natures = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.natures[*].name");
-        assertThat(natures).hasSize(2);
+        assertThat(natures).containsExactly("siriusComponents://nature?kind=studio");
     }
 
     @Test
