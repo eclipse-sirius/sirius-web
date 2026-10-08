@@ -12,7 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.flow.starter.services;
 
-import fr.obeo.dsl.designer.sample.flow.Named;
+import fr.obeo.dsl.designer.sample.flow.CompositeProcessor;
+import fr.obeo.dsl.designer.sample.flow.FlowElementStatus;
 
 import java.util.Objects;
 
@@ -31,14 +32,15 @@ import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.I
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * The flow node style customizer updating the background color of flow element when their name contains "I'm Blue".
+ * The flow node style customizer updating the style, color, and size the border of flow elements when their name contains "da be di da be dai".
  *
  * @author gcoutable
  */
 @Service
-public class BlueNodeStyleCustomizer implements INodeStyleCustomizer {
+public class StatusNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final boolean nodeCustomizationEnabled;
 
@@ -48,9 +50,12 @@ public class BlueNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService;
 
-    public BlueNodeStyleCustomizer(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate,
+    public StatusNodeStyleCustomizer(
+            @Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled,
+            IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate,
             IProjectEditingContextService projectEditingContextService,
-            IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService) {
+            IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService
+    ) {
         this.nodeCustomizationEnabled = nodeCustomizationEnabled;
         this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
@@ -58,6 +63,7 @@ public class BlueNodeStyleCustomizer implements INodeStyleCustomizer {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public INodeStyle customize(VariableManager variableManager, DiagramDescription diagramDescription, NodeDescription nodeDescription, INodeStyle nodeStyle) {
         INodeStyle customizeStyle = nodeStyle;
         if (this.nodeCustomizationEnabled && nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {
@@ -68,13 +74,13 @@ public class BlueNodeStyleCustomizer implements INodeStyleCustomizer {
             var isEnabled = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                     .map(IEditingContext::getId)
                     .flatMap(this.projectEditingContextService::getProjectId)
-                    .map(projectId -> this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(projectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_I_M_BLUE))
+                    .map(projectId -> this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(projectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS))
                     .orElse(Boolean.FALSE);
             if (isFlowProject && isEnabled) {
-                var optionalNamed = variableManager.get(RepresentationVariables.SELF.name(), Named.class);
-                if (optionalNamed.isPresent() && optionalNamed.get().getName().contains("I'm Blue")) {
+                var optionalCompositeProcessor = variableManager.get(RepresentationVariables.SELF.name(), CompositeProcessor.class);
+                if (optionalCompositeProcessor.isPresent() && optionalCompositeProcessor.get().getStatus() == FlowElementStatus.INACTIVE) {
                     customizeStyle = RectangularNodeStyle.newRectangularNodeStyle(rectangularNodeStyle)
-                            .background("#5668EB")
+                            .background("#FFFFFF")
                             .build();
                 }
             }

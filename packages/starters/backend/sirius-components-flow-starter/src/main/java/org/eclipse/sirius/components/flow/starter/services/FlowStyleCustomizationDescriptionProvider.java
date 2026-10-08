@@ -30,9 +30,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlowStyleCustomizationDescriptionProvider implements IStyleCustomizationDescriptionProvider {
 
-    public static final String FLOW_STYLE_CUSTOMIZATION_I_M_BLUE = "flow-style-customization-I-m-blue";
+    public static final String FLOW_STYLE_CUSTOMIZATION_POWER_STATUS = "flow-style-customization-power-status";
 
-    public static final String FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI = "flow-style-customization-da-be-di-da-be-dai";
+    public static final String FLOW_STYLE_CUSTOMIZATION_STATUS = "flow-style-customization-status";
 
     private final boolean nodeCustomizationEnabled;
 
@@ -46,10 +46,11 @@ public class FlowStyleCustomizationDescriptionProvider implements IStyleCustomiz
     @Override
     public List<StyleCustomizationDescription> getStyleCustomizationDescriptions(String projectId) {
         if (this.nodeCustomizationEnabled && this.hasFlowNature(projectId)) {
-            return List.of(new StyleCustomizationDescription(FLOW_STYLE_CUSTOMIZATION_I_M_BLUE, "I'm blue style customization",
-                            "Change the background of flow element graphical node to blue if label contains 'I'm Blue'"),
-                    new StyleCustomizationDescription(FLOW_STYLE_CUSTOMIZATION_DA_BE_DI_DA_BE_DAI, "Da be di da be dai style customization",
-                            "Change the border style of node if label contains 'Da be di da be dai'"));
+            return List.of(
+                    new StyleCustomizationDescription(FLOW_STYLE_CUSTOMIZATION_POWER_STATUS, "Power Status",
+                            "Change the style of flow elements depending on their power status"),
+                    new StyleCustomizationDescription(FLOW_STYLE_CUSTOMIZATION_STATUS, "Status",
+                            "Change the style of flow elements depending on their status"));
         }
         return List.of();
     }

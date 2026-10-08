@@ -31,7 +31,7 @@ public class FlowIdentifier {
 
     public static final String FLOW_DATA_SOURCE_1 = "2c6c3606-5ed2-35f1-b05e-cba434e1a812";
 
-    public static final String FLOW_COMPOSITE_PROCESSOR_1 = "655fe01a-0a64-3b6f-91d6-1eff88b11dbf";
+    public static final String FLOW_COMPOSITE_PROCESSOR_1 = "aac30ae6-05b1-4e98-9e97-e3b440d43e17";
 
     public static final String FLOW_EDGE_DATA_FLOW_1 = "2415b5f8-c769-3999-ada1-c4d07e629e83";
 
