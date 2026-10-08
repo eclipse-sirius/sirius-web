@@ -31,20 +31,15 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditRectangularNodeAppearanceExecutor;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.data.FlowIdentifier;
-import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.IProjectStyleCustomizationRepository;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.graphql.RenameProjectExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -72,20 +67,9 @@ public class NodeStyleCustomizerControllerTests  extends AbstractIntegrationTest
     @Autowired
     private EditRectangularNodeAppearanceExecutor editRectangularNodeAppearanceExecutor;
 
-    @Autowired
-    private RenameProjectExecutor renameProjectExecutor;
-
-    @Autowired
-    private IProjectStyleCustomizationRepository projectStyleCustomizationRepository;
-
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
-    }
-
-    @AfterEach
-    public void afterEach() {
-        this.projectStyleCustomizationRepository.deleteAll();
     }
 
     private Flux<Object> givenDiagramSubscription() {
@@ -102,10 +86,7 @@ public class NodeStyleCustomizerControllerTests  extends AbstractIntegrationTest
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a flow node in a topography diagram, when conditions activating node style customization are met, then node style customizations are applied")
-    public void givenFlowNodeInTopographyDiagramWhenConditionsActivatingNodeStyleCustomizationAreMetThenNodeStyleCustomizationsAreApplied(CapturedOutput capturedOutput) {
-        var input = new RenameProjectInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, "Flow - with style");
-        this.renameProjectExecutor.execute(input, capturedOutput).isSuccess();
-
+    public void givenFlowNodeInTopographyDiagramWhenConditionsActivatingNodeStyleCustomizationAreMetThenNodeStyleCustomizationsAreApplied() {
         var flux = this.givenDiagramSubscription();
 
         var diagramId = new AtomicReference<String>();
@@ -180,10 +161,7 @@ public class NodeStyleCustomizerControllerTests  extends AbstractIntegrationTest
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a node with a customized style, when its appearance is edited manually, then the manual changes take precedence")
-    public void givenNodeWithCustomizedStyleWhenItsAppearanceIsEditedManuallyThenManualChangeTakePrecedence(CapturedOutput capturedOutput) {
-        var input = new RenameProjectInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, "Flow - with style");
-        this.renameProjectExecutor.execute(input, capturedOutput).isSuccess();
-
+    public void givenNodeWithCustomizedStyleWhenItsAppearanceIsEditedManuallyThenManualChangeTakePrecedence() {
         var flux = this.givenDiagramSubscription();
 
         var diagramId = new AtomicReference<String>();

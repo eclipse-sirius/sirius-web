@@ -13,8 +13,13 @@
 package org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
+import org.springframework.data.jdbc.repository.query.Query;
+import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.ListPagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository used to persist the project style customization aggregate.
@@ -22,12 +27,19 @@ import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCu
  * @author gcoutable
  * @since 2026.11.0
  */
-public interface IProjectStyleCustomizationRepository {
+@Repository
+public interface IProjectStyleCustomizationRepository extends ListPagingAndSortingRepository<ProjectStyleCustomization, UUID>, ListCrudRepository<ProjectStyleCustomization, UUID> {
+
+    @Query("""
+        SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+        FROM project_style_customization projectStyleCustomization
+        WHERE projectStyleCustomization.project_id = :projectId AND projectStyleCustomization.style_customization_description_id = :styleCustomizationDescriptionId
+        """)
     boolean existsByProjectIdAndStyleCustomizationDescriptionId(String projectId, String styleCustomizationDescriptionId);
 
+    @Query("""
+        SELECT * FROM project_style_customization projectStyleCustomization
+        WHERE projectStyleCustomization.project_id = :projectId
+        """)
     List<ProjectStyleCustomization> findAllByProjectId(String projectId);
-
-    ProjectStyleCustomization save(ProjectStyleCustomization projectStyleCustomization);
-
-    void deleteAll();
 }

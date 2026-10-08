@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Application service used to search project style customizations.
@@ -50,6 +51,7 @@ public class ProjectStyleCustomizationSearchApplicationService implements IProje
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Window<StyleCustomizationDTO> getStyleCustomizations(String projectId, KeysetScrollPosition position, int limit) {
         Window<StyleCustomizationDescription> window = new Window<>(List.of(), index -> position, false, false);
 

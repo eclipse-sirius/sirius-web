@@ -146,6 +146,8 @@ Introduced the `PageInfoAssert` for testing the page info returned by query runn
 - https://github.com/eclipse-sirius/sirius-web/issues/7017[#7017] [projects] Add the project style customization domain.
 - https://github.com/eclipse-sirius/sirius-web/issues/7053[#7053] [projects] Use a single source of truth to determine project style customization activation state.
 Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
+- https://github.com/eclipse-sirius/sirius-web/issues/7034[#7034] [projects] Persist project style customizations.
+Enable flow related project style customizations when a new flow project is created.
 
 
 === Improvements
