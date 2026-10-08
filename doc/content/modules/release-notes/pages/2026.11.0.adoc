@@ -125,6 +125,7 @@ If multiple customizers modify the same style property, the last one wins.
 - Introduced the `PageInfoAssert` for testing the page info returned by query runner when using the cursor-based pagination in integration tests.
 - Export `FilterBarContext` from `sirius-components-trees` in order to reuse filter bar logic more easily.
 - Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
+- Add the ability to customize the default result of the `ICapabilityEvaluator` instead of defaulting to `true` when no `ICapabilityVoter` takes part in the evaluation.
 
 
 == Deprecation warnings
