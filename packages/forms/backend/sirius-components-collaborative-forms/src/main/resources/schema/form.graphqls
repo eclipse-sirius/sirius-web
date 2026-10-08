@@ -393,6 +393,7 @@ type RichText implements Widget {
   iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  plainTextByDefault: Boolean!
   readOnly: Boolean!
   value: String!
 }

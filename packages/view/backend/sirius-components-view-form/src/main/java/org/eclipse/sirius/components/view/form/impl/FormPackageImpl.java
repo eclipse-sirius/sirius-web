@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1846,6 +1846,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EAttribute getRichTextDescription_PlainTextByDefaultExpression() {
+        return (EAttribute) this.richTextDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getSelectDescription() {
         return this.selectDescriptionEClass;
     }
@@ -2964,6 +2974,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEAttribute(this.richTextDescriptionEClass, RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION);
         this.createEReference(this.richTextDescriptionEClass, RICH_TEXT_DESCRIPTION__BODY);
         this.createEAttribute(this.richTextDescriptionEClass, RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION);
+        this.createEAttribute(this.richTextDescriptionEClass, RICH_TEXT_DESCRIPTION__PLAIN_TEXT_BY_DEFAULT_EXPRESSION);
 
         this.selectDescriptionEClass = this.createEClass(SELECT_DESCRIPTION);
         this.createEAttribute(this.selectDescriptionEClass, SELECT_DESCRIPTION__VALUE_EXPRESSION);
@@ -3455,6 +3466,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEReference(this.getRichTextDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, RichTextDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getRichTextDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, RichTextDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRichTextDescription_PlainTextByDefaultExpression(), theViewPackage.getInterpretedExpression(), "plainTextByDefaultExpression", "aql:false", 0, 1, RichTextDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.selectDescriptionEClass, SelectDescription.class, "SelectDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,6 +74,11 @@ public class RichTextDescriptionConverter implements IWidgetDescriptionConverter
                     .idProvider(new WidgetIdProvider())
                     .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewRichTextDescription.getLabelExpression()))
+                    .plainTextByDefaultProvider(variableManager -> Optional.ofNullable(viewRichTextDescription.getPlainTextByDefaultExpression())
+                            .filter(expression -> !expression.isBlank())
+                            .flatMap(expression -> interpreter.evaluateExpression(variableManager.getVariables(), expression).asObject())
+                            .filter(Boolean.TRUE::equals)
+                            .isPresent())
                     .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewRichTextDescription.getIsEnabledExpression()))
                     .valueProvider(new StringValueProvider(interpreter, viewRichTextDescription.getValueExpression()))
                     .newValueHandler(new NewValueHandler<>(interpreter, this.operationExecutor, this.feedbackMessageService, viewRichTextDescription.getBody()))
