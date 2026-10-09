@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.viewsexplorer.services.ViewsExplorerTreeDescriptionProvider;
 import org.springframework.stereotype.Service;
 
@@ -87,11 +88,13 @@ public class ViewsExplorerEventProcessorFactory implements IRepresentationEventP
 
             String expandedIdsParam = parameters.get("expandedIds").get(0);
             var expanded = this.urlParser.getParameterEntries(expandedIdsParam);
+            String searchedValue = parameters.getOrDefault(TreeRenderer.SEARCHED_VALUE, List.of()).stream().findFirst().orElse("");
 
             TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(representationId)
                     .treeDescription(treeDescription)
                     .activeFilterIds(List.of())
                     .expanded(expanded)
+                    .searchedValue(searchedValue)
                     .targetObject(editingContext)
                     .editingContext(editingContext)
                     .build();

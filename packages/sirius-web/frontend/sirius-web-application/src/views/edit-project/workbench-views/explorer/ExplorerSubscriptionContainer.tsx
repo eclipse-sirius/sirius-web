@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useEffect, useState } from 'react';
+import { FilterBarContext, FilterBarContextValue } from '@eclipse-sirius/sirius-components-trees';
+import { useContext, useEffect, useState } from 'react';
 import { ExplorerContext } from './ExplorerContext';
 import {
   ExplorerSubscriptionContainerProps,
@@ -35,11 +36,14 @@ export const ExplorerSubscriptionContainer = ({
     tree: null,
   });
 
+  const { filterBarTreeFiltering, filterBarText } = useContext<FilterBarContextValue>(FilterBarContext);
+
   const { payload } = useExplorerSubscription(
     editingContextId,
     activeTreeDescriptionId,
     activeTreeFilterIds,
     expanded,
+    filterBarTreeFiltering ? filterBarText : '',
     maxDepth
   );
 
