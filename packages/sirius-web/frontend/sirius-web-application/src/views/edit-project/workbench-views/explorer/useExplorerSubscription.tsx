@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,11 +24,14 @@ import {
   UseExplorerSubscriptionValue,
 } from './useExplorerSubscription.types';
 
+const SEARCH_MAX_DEPTH = 50;
+
 export const useExplorerSubscription = (
   editingContextId: string,
   treeDescriptionId: string,
   activeFilterIds: string[],
   expanded: string[],
+  searchedValue: string,
   maxDepth: number
 ): UseExplorerSubscriptionValue => {
   const [state, setState] = useState<UseExplorerSubscriptionState>({
@@ -42,7 +45,9 @@ export const useExplorerSubscription = (
     editingContextId,
     representationId: `explorer://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}&expandedIds=[${expanded
       .map(encodeURIComponent)
-      .join(',')}]&activeFilterIds=[${activeFilterIds.map(encodeURIComponent).join(',')}]`,
+      .join(',')}]&activeFilterIds=[${activeFilterIds.map(encodeURIComponent).join(',')}]${
+      searchedValue ? `&searchedValue=${encodeURIComponent(searchedValue)}` : ''
+    }`,
   };
 
   const variables: GQLExplorerEventVariables = { input };
@@ -61,7 +66,7 @@ export const useExplorerSubscription = (
   };
 
   const { loading } = useSubscription<GQLExplorerEventData, GQLExplorerEventVariables>(
-    gql(getTreeEventSubscription(maxDepth, 'explorerEvent', 'ExplorerEventInput')),
+    gql(getTreeEventSubscription(searchedValue ? SEARCH_MAX_DEPTH : maxDepth, 'explorerEvent', 'ExplorerEventInput')),
     {
       variables,
       fetchPolicy: 'no-cache',

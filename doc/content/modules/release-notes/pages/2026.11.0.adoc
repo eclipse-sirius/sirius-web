@@ -112,6 +112,7 @@ All applicable customizers are applied, but their order is unspecified.
 If multiple customizers modify the same style property, the last one wins.
 * In forms, specifiers can now configure whether reference widgets show a clear button in the View DSL.
 * In forms, specifiers can now configure reference-widget clear-button behavior through its View DSL operation body.
+* The Explorer text filter now searches inside the whole tree when the filter button inside the filter is activated.
 
 
 == Improvements
