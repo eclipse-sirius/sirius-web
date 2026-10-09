@@ -48,6 +48,8 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private boolean many;
 
+    private boolean selectable;
+
     private ReferenceWidgetStyle style;
 
     private String ownerId;
@@ -100,6 +102,10 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public boolean isContainment() {
         return this.containment;
+    }
+
+    public boolean isSelectable() {
+        return this.selectable;
     }
 
     public boolean isMany() {
@@ -169,6 +175,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private boolean containment;
 
         private boolean many;
+
+        private boolean selectable = true;
 
         private ReferenceWidgetStyle style;
 
@@ -248,6 +256,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder selectable(boolean selectable) {
+            this.selectable = selectable;
+            return this;
+        }
+
         public Builder many(boolean many) {
             this.many = many;
             return this;
@@ -303,6 +316,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.referenceName = Objects.requireNonNull(this.referenceName);
             referenceWidget.containment = this.containment;
             referenceWidget.many = this.many;
+            referenceWidget.selectable = this.selectable;
             referenceWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidget.readOnly = this.readOnly;
             referenceWidget.style = this.style; // Optional on purpose

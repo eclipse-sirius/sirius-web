@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAdd;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
@@ -73,6 +74,11 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseReferenceWidgetCreateButtonDescription(ReferenceWidgetCreateButtonDescription object) {
             return ReferenceAdapterFactory.this.createReferenceWidgetCreateButtonDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseReferenceWidgetAdd(ReferenceWidgetAdd object) {
+            return ReferenceAdapterFactory.this.createReferenceWidgetAddAdapter();
         }
 
         @Override
@@ -219,6 +225,20 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createReferenceWidgetCreateButtonDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link ReferenceWidgetAdd <em>Widget Add</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see ReferenceWidgetAdd
+     * @generated
+     */
+    public Adapter createReferenceWidgetAddAdapter() {
         return null;
     }
 

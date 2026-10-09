@@ -93,6 +93,9 @@ public class ViewReferenceWidgetAddElementHandler implements IReferenceWidgetAdd
     @Override
     public IStatus add(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, List<String> newValueIds) {
         var optionalWidgetDescription = this.findReferenceWidgetDescription(editingContext, referenceWidget.getDescriptionId());
+        if (optionalWidgetDescription.isPresent() && optionalWidgetDescription.get().getAdd() == null) {
+            return new Success();
+        }
         var optionalOwner = this.objectSearchService.getObject(editingContext, referenceWidget.getOwnerId());
         Optional<Object> optionalSelf = this.objectSearchService.getObject(editingContext, referenceWidget.getTargetObjectId());
         var newValues = newValueIds.stream().flatMap(id -> this.flatMapAndLogMessageIfAbsent(editingContext, id)).toList();
@@ -100,17 +103,17 @@ public class ViewReferenceWidgetAddElementHandler implements IReferenceWidgetAdd
 
         if (optionalWidgetDescription.isPresent() && optionalOwner.isPresent() && optionalSelf.isPresent() && optionalOwner.get() instanceof EObject owner) {
             var widgetDescription = optionalWidgetDescription.get();
-            var body = widgetDescription.getBody();
+            var add = widgetDescription.getAdd();
             var feature = owner.eClass().getEStructuralFeature(referenceWidget.getReferenceName());
             var self = optionalSelf.get();
 
             if (feature instanceof EReference reference) {
-                if (!body.isEmpty() && EcoreUtil.getRootContainer(widgetDescription) instanceof View view) {
-                    // If we have a body then the behavior is the interpretation of the body
-                    result = this.addFromOperation(editingContext, view, self, owner, reference, newValues, body);
-                } else {
+                if (add.getBody().isEmpty()) {
                     // When the reference widget doesn't provide any body, we fall back to the default behavior
                     result = this.defaultAdd(owner, reference, newValues);
+                } else if (EcoreUtil.getRootContainer(widgetDescription) instanceof View view) {
+                    // If we have a body then the behavior is the interpretation of the body
+                    result = this.addFromOperation(editingContext, view, self, owner, reference, newValues, add.getBody());
                 }
             } else {
                 result = new Failure(this.referenceMessageService.referenceNotFound(referenceWidget.getReferenceName(), owner.eClass().getName()));

@@ -103,6 +103,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON);
+            this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON);
@@ -186,6 +187,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON:
@@ -226,6 +228,8 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 
         newChildDescriptors
                 .add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD, ReferenceFactory.eINSTANCE.createReferenceWidgetAdd()));
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 
