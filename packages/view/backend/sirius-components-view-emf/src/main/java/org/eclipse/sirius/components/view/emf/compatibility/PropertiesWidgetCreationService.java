@@ -212,7 +212,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .itemRemoveHandlerProvider(variableManager -> this.handleRemoveValue(variableManager, feature))
                 .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, feature))
-                .addHandlerProvider(variableManager -> this.handleAddReferenceValues(variableManager, feature))
                 .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(variableManager, feature))
                 .build();
     }

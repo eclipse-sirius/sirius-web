@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.widget.reference.handlers;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -22,14 +21,17 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetAddElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.AddReferenceValuesInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -54,16 +56,24 @@ public class AddReferenceValuesEventHandler implements IFormEventHandler {
 
     private final IObjectSearchService objectSearchService;
 
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    private final List<IReferenceWidgetAddElementHandler> referenceWidgetAddElementHandlers;
+
     private final IReferenceMessageService messageService;
 
     private final Counter counter;
 
     private final Logger logger = LoggerFactory.getLogger(AddReferenceValuesEventHandler.class);
 
-    public AddReferenceValuesEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService, MeterRegistry meterRegistry) {
+    public AddReferenceValuesEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService,
+            IRepresentationDescriptionSearchService representationDescriptionSearchService,
+            List<IReferenceWidgetAddElementHandler> referenceWidgetAddElementHandlers, MeterRegistry meterRegistry) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
-        this.messageService = Objects.requireNonNull(messageService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.referenceWidgetAddElementHandlers = Objects.requireNonNull(referenceWidgetAddElementHandlers);
+        this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -87,11 +97,15 @@ public class AddReferenceValuesEventHandler implements IFormEventHandler {
                     .filter(ReferenceWidget.class::isInstance)
                     .map(ReferenceWidget.class::cast);
 
+            var optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId());
+
             IStatus status;
             if (optionalWidget.isPresent() && optionalWidget.get().isReadOnly()) {
                 status = new Failure(this.messageService.unableToEditReadOnlyWidget());
+            } else if (optionalWidget.isPresent() && optionalFormDescription.isPresent() && optionalFormDescription.get() instanceof FormDescription formDescription) {
+                status = this.add(editingContext, formDescription, optionalWidget.get(), input.newValueIds());
             } else {
-                status = this.callAddHandler(editingContext, optionalWidget, input.newValueIds());
+                status = new Failure(this.messageService.invalidIds());
             }
 
             if (status instanceof Success success) {
@@ -120,20 +134,11 @@ public class AddReferenceValuesEventHandler implements IFormEventHandler {
         payloadSink.tryEmitValue(payload);
     }
 
-    private IStatus callAddHandler(IEditingContext editingContext, Optional<ReferenceWidget> optionalWidget, List<String> newValueIds) {
-        IStatus result = new Success();
-
-        List<Object> values = this.resolve(editingContext, newValueIds);
-        if (values.size() != newValueIds.size()) {
-            result = new Failure(this.messageService.invalidIds());
-        } else {
-            result = optionalWidget.map(ReferenceWidget::getAddHandler).map(handler -> handler.apply(values)).orElse(new Failure(""));
-        }
-        return result;
+    private IStatus add(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, List<String> newValueIds) {
+        return this.referenceWidgetAddElementHandlers.stream()
+                .filter(handler -> handler.canHandle(formDescription))
+                .findFirst()
+                .map(clearHandler -> clearHandler.add(editingContext, formDescription, referenceWidget, newValueIds))
+                .orElseGet(() -> new Failure(this.messageService.noHandlerFound()));
     }
-
-    private List<Object> resolve(IEditingContext editingContext, List<String> ids) {
-        return ids.stream().flatMap(id -> this.objectSearchService.getObject(editingContext, id).stream()).toList();
-    }
-
 }
