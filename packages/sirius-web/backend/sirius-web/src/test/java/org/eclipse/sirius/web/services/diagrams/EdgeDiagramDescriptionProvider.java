@@ -78,7 +78,7 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
     }
 
     public String getNewDependencyToolId() {
-        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.edgeTool).toString().getBytes()).toString();
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.edgeTool.getPalette().getNodeTools().get(0)).toString().getBytes()).toString();
     }
 
     private View createView() {
@@ -194,17 +194,18 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
                 .name("New dependencies")
                 .preconditionExpression("aql:semanticEdgeSource.dependencies->excludes(semanticEdgeTarget)")
                 .targetElementDescriptions(targetElementDescriptions)
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:semanticEdgeSource")
-                                .children(
-                                        new ViewBuilders().newSetValue()
+                .palette(new DiagramBuilders().newNodePalette()
+                        .nodeTools(new DiagramBuilders().newNodeTool()
+                                .name("New dependencies")
+                                .body(new ViewBuilders().newChangeContext()
+                                        .expression("aql:semanticEdgeSource")
+                                        .children(new ViewBuilders().newSetValue()
                                                 .featureName("dependencies")
                                                 .valueExpression("aql:self.dependencies->including(semanticEdgeTarget)")
-                                                .build()
-                                )
-                                .build()
-                )
+                                                .build())
+                                        .build())
+                                .build())
+                        .build())
                 .build();
     }
 

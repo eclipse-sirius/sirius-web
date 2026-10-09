@@ -304,6 +304,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeTool/iconURLsExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeTool/dialogDescription"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeTool/elementsToSelectExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeTool/palette"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//EdgeReconnectionTool"/>
     <genClasses ecoreClass="diagram.ecore#//LabelEditTool">

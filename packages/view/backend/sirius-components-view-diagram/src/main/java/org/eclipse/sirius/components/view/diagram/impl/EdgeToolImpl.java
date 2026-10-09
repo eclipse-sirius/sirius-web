@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Edge Tool</b></em>'. <!-- end-user-doc -->
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
  * Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolImpl#getElementsToSelectExpression <em>Elements To
  * Select Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolImpl#getPalette <em>Palette</em>}</li>
  * </ul>
  *
  * @generated
@@ -104,6 +106,15 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
      * @ordered
      */
     protected String elementsToSelectExpression = ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPalette()
+     * @generated
+     * @ordered
+     */
+    protected NodePalette palette;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -237,10 +248,60 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
      * @generated
      */
     @Override
+    public NodePalette getPalette() {
+        return this.palette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetPalette(NodePalette newPalette, NotificationChain msgs) {
+        NodePalette oldPalette = this.palette;
+        this.palette = newPalette;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_TOOL__PALETTE, oldPalette, newPalette);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPalette(NodePalette newPalette) {
+        if (newPalette != this.palette) {
+            NotificationChain msgs = null;
+            if (this.palette != null)
+                msgs = ((InternalEObject) this.palette).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.EDGE_TOOL__PALETTE, null, msgs);
+            if (newPalette != null)
+                msgs = ((InternalEObject) newPalette).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.EDGE_TOOL__PALETTE, null, msgs);
+            msgs = this.basicSetPalette(newPalette, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_TOOL__PALETTE, newPalette, newPalette));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.EDGE_TOOL__DIALOG_DESCRIPTION:
                 return this.basicSetDialogDescription(null, msgs);
+            case DiagramPackage.EDGE_TOOL__PALETTE:
+                return this.basicSetPalette(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -261,6 +322,8 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
                 return this.getDialogDescription();
             case DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
                 return this.getElementsToSelectExpression();
+            case DiagramPackage.EDGE_TOOL__PALETTE:
+                return this.getPalette();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -287,6 +350,9 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
             case DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
                 this.setElementsToSelectExpression((String) newValue);
                 return;
+            case DiagramPackage.EDGE_TOOL__PALETTE:
+                this.setPalette((NodePalette) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -311,6 +377,9 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
             case DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
                 this.setElementsToSelectExpression(ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT);
                 return;
+            case DiagramPackage.EDGE_TOOL__PALETTE:
+                this.setPalette((NodePalette) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -331,6 +400,8 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
                 return this.dialogDescription != null;
             case DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
                 return ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT == null ? this.elementsToSelectExpression != null : !ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT.equals(this.elementsToSelectExpression);
+            case DiagramPackage.EDGE_TOOL__PALETTE:
+                return this.palette != null;
         }
         return super.eIsSet(featureID);
     }

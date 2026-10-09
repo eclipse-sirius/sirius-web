@@ -145,13 +145,6 @@ public class ToolFinder {
         return edgeTools;
     }
 
-    public List<NodeTool> findQuickAccessEdgeTools(EdgeDescription edgeDescription) {
-        return Optional.ofNullable(edgeDescription)
-                .map(EdgeDescription::getPalette)
-                .map(EdgePalette::getQuickAccessTools)
-                .orElse(new BasicEList<>());
-    }
-
     public List<DiagramToolSection> findToolSections(DiagramDescription diagramDescription) {
         return Optional.ofNullable(diagramDescription)
                 .map(DiagramDescription::getPalette)
@@ -193,18 +186,22 @@ public class ToolFinder {
 
     public Optional<NodeTool> getNodeToolByIdFromNodeDescription(NodeDescription viewNodeDescription, String toolId) {
         if (viewNodeDescription.getPalette() != null) {
-            return viewNodeDescription.getPalette().getToolSections().stream()
-                .flatMap(nodeToolSection -> nodeToolSection.getNodeTools().stream())
-                .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
-                .findFirst()
-                .or(() -> viewNodeDescription.getPalette().getQuickAccessTools().stream()
-                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
-                        .findFirst())
-                .or(() -> viewNodeDescription.getPalette().getNodeTools().stream()
-                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
-                        .findFirst());
+            return this.getNodeToolInPalette(viewNodeDescription.getPalette(), toolId);
         }
         return Optional.empty();
+    }
+
+    public Optional<NodeTool> getNodeToolInPalette(NodePalette palette, String toolId) {
+        return palette.getToolSections().stream()
+                .flatMap(diagramToolSection -> diagramToolSection.getNodeTools().stream())
+                .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                .findFirst()
+                .or(() -> palette.getQuickAccessTools().stream()
+                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                        .findFirst())
+                .or(() -> palette.getNodeTools().stream()
+                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                        .findFirst());
     }
 
     public Optional<NodeTool> getNodeToolByIdFromEdgeDescription(EdgeDescription viewEdgeDescription, String toolId) {
@@ -248,6 +245,13 @@ public class ToolFinder {
     public Optional<EdgeTool> getEdgeToolByIdFromEdgeDescription(EdgeDescription viewEdgeDescription, String toolId) {
         return viewEdgeDescription.getEdgeTools().stream()
                 .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                .findFirst();
+    }
+
+    public Optional<NodeTool> getConnectorNodeToolById(DiagramElementDescription diagramElementDescription, String toolId) {
+        return this.findEdgeTools(diagramElementDescription).stream()
+                .map(EdgeTool::getPalette)
+                .flatMap(nodePalette -> this.getNodeToolInPalette(nodePalette, toolId).stream())
                 .findFirst();
     }
 

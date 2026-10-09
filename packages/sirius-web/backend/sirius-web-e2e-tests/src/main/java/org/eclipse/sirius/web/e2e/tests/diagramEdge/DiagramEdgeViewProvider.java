@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -98,15 +99,18 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                         .body(new ViewBuilders().newChangeContext().expression("aql:diagramServices.hide(Sequence{selectedNode})").build())
                         .build())
                 .build());
-        nodeDescription1.getEdgeTools().add(this.createEgeCreationTool("E1toE2A", nodeDescription2, edgeDescription1.getDomainType(), "toEdge1"));
-        nodeDescription1.getEdgeTools().add(this.createEgeCreationTool("E1toE2B", nodeDescription2, edgeDescription2.getDomainType(), "toEdge2"));
+        nodeDescription1.getEdgeTools().add(this.createConnectorTool("E1toE2", nodeDescription2,
+                this.createEdgeCreationNodeTool("E1toE2A", edgeDescription1.getDomainType(), "toEdge1"),
+                this.createEdgeCreationNodeTool("E1toE2B", edgeDescription2.getDomainType(), "toEdge2")));
 
         edgeDescription1.setPalette(new DiagramBuilders().newEdgePalette().build());
-        edgeDescription1.getEdgeTools().add(this.createEgeCreationTool("EdgeToE2", nodeDescription2, edgeDescription3.getDomainType(), "toEdge3"));
+        edgeDescription1.getEdgeTools().add(this.createConnectorTool("EdgeToE2", nodeDescription2,
+                this.createEdgeCreationNodeTool("EdgeToE2", edgeDescription3.getDomainType(), "toEdge3")));
 
         nodeDescription2.setPalette(new DiagramBuilders().newNodePalette().build());
-        nodeDescription2.getEdgeTools().add(this.createEgeCreationTool("E2ToEdge1A", edgeDescription1, edgeDescription4.getDomainType(), "toEdge4"));
-        nodeDescription2.getEdgeTools().add(this.createEgeCreationTool("E2ToEdge1B", edgeDescription1, edgeDescription5.getDomainType(), "toEdge5"));
+        nodeDescription2.getEdgeTools().add(this.createConnectorTool("E2ToEdge1", edgeDescription1,
+                this.createEdgeCreationNodeTool("E2ToEdge1A", edgeDescription4.getDomainType(), "toEdge4"),
+                this.createEdgeCreationNodeTool("E2ToEdge1B", edgeDescription5.getDomainType(), "toEdge5")));
 
         var toolbar = new DiagramBuilders().newDiagramToolbar()
                 .expandedByDefault(true)
@@ -303,31 +307,40 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .build();
     }
 
-    private EdgeTool createEgeCreationTool(String name, DiagramElementDescription target, String typeName, String referenceName) {
+    private EdgeTool createConnectorTool(String name, DiagramElementDescription target, NodeTool... nodeTools) {
         return new DiagramBuilders().newEdgeTool()
                 .name(name)
                 .targetElementDescriptions(target)
-                .body(new ViewBuilders().newChangeContext()
-                        .expression("aql:semanticEdgeSource.eContainer()")
-                        .children(new ViewBuilders().newCreateInstance()
-                                .typeName(typeName)
-                                .referenceName(referenceName)
-                                .variableName("newInstance")
-                                .children(new ViewBuilders().newChangeContext()
-                                        .expression("aql:newInstance")
-                                        .children(new ViewBuilders().newSetValue()
-                                                        .featureName("source")
-                                                        .valueExpression("aql:semanticEdgeSource")
-                                                        .build(),
-                                                new ViewBuilders().newSetValue()
-                                                        .featureName("target")
-                                                        .valueExpression("aql:semanticEdgeTarget")
-                                                        .build())
-                                        .build())
-                                .build()
-                        )
-                        .build()
-                )
+                .palette(new DiagramBuilders().newNodePalette()
+                        .nodeTools(nodeTools)
+                        .build())
+                .build();
+    }
+
+    private NodeTool createEdgeCreationNodeTool(String name, String typeName, String referenceName) {
+        var body = new ViewBuilders().newChangeContext()
+                .expression("aql:semanticEdgeSource.eContainer()")
+                .children(new ViewBuilders().newCreateInstance()
+                        .typeName(typeName)
+                        .referenceName(referenceName)
+                        .variableName("newInstance")
+                        .children(new ViewBuilders().newChangeContext()
+                                .expression("aql:newInstance")
+                                .children(new ViewBuilders().newSetValue()
+                                                .featureName("source")
+                                                .valueExpression("aql:semanticEdgeSource")
+                                                .build(),
+                                        new ViewBuilders().newSetValue()
+                                                .featureName("target")
+                                                .valueExpression("aql:semanticEdgeTarget")
+                                                .build())
+                                .build())
+                        .build())
+                .build();
+
+        return new DiagramBuilders().newNodeTool()
+                .name(name)
+                .body(body)
                 .build();
     }
 

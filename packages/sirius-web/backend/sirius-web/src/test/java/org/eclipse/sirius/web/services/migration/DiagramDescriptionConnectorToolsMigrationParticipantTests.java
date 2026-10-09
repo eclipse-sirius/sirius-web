@@ -109,7 +109,12 @@ public class DiagramDescriptionConnectorToolsMigrationParticipantTests extends A
         assertThat(nodeTool.getPreconditionExpression()).isEqualTo("aql:self <> target");
         assertThat(nodeTool.getIconURLsExpression()).isEqualTo("/icons/connector.svg");
         assertThat(nodeTool.getElementsToSelectExpression()).isEqualTo("aql:newFlow");
-        assertThat(nodeTool.getBody()).singleElement().isInstanceOfSatisfying(ChangeContext.class, changeContext -> {
+        assertThat(nodeTool.getBody()).isEmpty();
+        assertThat(nodeTool.getPalette().getNodeTools()).singleElement().satisfies(paletteNodeTool -> {
+            assertThat(paletteNodeTool.getName()).isEqualTo(nodeTool.getName());
+            assertThat(paletteNodeTool.getBody()).hasSize(1);
+        });
+        assertThat(nodeTool.getPalette().getNodeTools().get(0).getBody().get(0)).isInstanceOfSatisfying(ChangeContext.class, changeContext -> {
             assertThat(changeContext.getExpression()).isEqualTo("aql:self.eContainer()");
             assertThat(changeContext.getChildren()).singleElement().isInstanceOfSatisfying(CreateInstance.class, createInstance -> {
                 assertThat(createInstance.getTypeName()).isEqualTo("flow::DataFlow");

@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.studio.services.representations.api.IDomainDiagramDescriptionProvider;
@@ -63,6 +64,9 @@ public class PaletteToolProviderControllerTests extends AbstractIntegrationTests
     @Autowired
     private PaletteQueryRunner paletteQueryRunner;
 
+    @Autowired
+    private ConnectorPaletteExecutor connectorPaletteExecutor;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -93,9 +97,12 @@ public class PaletteToolProviderControllerTests extends AbstractIntegrationTests
             var result = this.paletteQueryRunner.run(variables);
 
             List<String> paletteEntriesLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
-            assertThat(paletteEntriesLabels).containsExactly("Relation", "Containment", "Supertype", "Attributes", "Show/Hide", "Edit");
+            assertThat(paletteEntriesLabels).containsExactly("Entity relationships", "Attributes", "Show/Hide", "Edit");
             List<String> paletteEntriesToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
             assertThat(paletteEntriesToolsLabels).containsExactly("Text", "Boolean", "Number", "Hide", "extraTool", "Edit", "Delete from model");
+
+            this.connectorPaletteExecutor.execute(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), nodeId.get(), nodeId.get())
+                    .hasPaletteEntriesLabel(labels -> assertThat(labels).containsExactly("Relation", "Containment", "Supertype"));
         };
 
         StepVerifier.create(flux)
