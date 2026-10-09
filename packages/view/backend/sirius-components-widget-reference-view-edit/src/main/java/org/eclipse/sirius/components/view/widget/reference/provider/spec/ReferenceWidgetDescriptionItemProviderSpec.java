@@ -49,6 +49,8 @@ public class ReferenceWidgetDescriptionItemProviderSpec extends ReferenceWidgetD
         newChildDescriptors.add(
                 this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription()));
 
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD, ReferenceFactory.eINSTANCE.createReferenceWidgetAdd()));
+
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 
         newChildDescriptors.add(

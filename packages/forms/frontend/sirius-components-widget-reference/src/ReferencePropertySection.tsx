@@ -395,7 +395,7 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
     event.preventDefault();
     if (readOnly || widget.readOnly) {
       addErrorMessage('This widget is currently read-only');
-    } else {
+    } else if (widget.selectable) {
       const dragSourcesStringified = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
       if (dragSourcesStringified) {
         const sources = JSON.parse(dragSourcesStringified);

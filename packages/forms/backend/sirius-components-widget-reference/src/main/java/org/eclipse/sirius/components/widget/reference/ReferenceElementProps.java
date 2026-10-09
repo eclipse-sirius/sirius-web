@@ -62,6 +62,8 @@ public final class ReferenceElementProps implements IProps {
 
     private boolean many;
 
+    private boolean selectable;
+
     private ReferenceWidgetStyle style;
 
     private String ownerId;
@@ -126,6 +128,10 @@ public final class ReferenceElementProps implements IProps {
 
     public boolean isContainment() {
         return this.containment;
+    }
+
+    public boolean isSelectable() {
+        return this.selectable;
     }
 
     public boolean isMany() {
@@ -196,6 +202,8 @@ public final class ReferenceElementProps implements IProps {
         private boolean containment;
 
         private boolean many;
+
+        private boolean selectable = true;
 
         private ReferenceWidgetStyle style;
 
@@ -268,6 +276,11 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder selectable(boolean selectable) {
+            this.selectable = selectable;
+            return this;
+        }
+
         public Builder many(boolean many) {
             this.many = many;
             return this;
@@ -318,6 +331,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.referenceName = Objects.requireNonNull(this.referenceName);
             referenceElementProps.containment = this.containment;
             referenceElementProps.many = this.many;
+            referenceElementProps.selectable = this.selectable;
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceElementProps.style = this.style; // Optional on purpose
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);

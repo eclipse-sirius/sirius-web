@@ -161,7 +161,7 @@ export const TransferModal = ({
   const handleDropRight = (event: React.DragEvent) => {
     event.preventDefault();
     const dragSourcesStringified = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
-    if (dragSourcesStringified) {
+    if (widget.selectable && dragSourcesStringified) {
       const sources = JSON.parse(dragSourcesStringified);
       if (Array.isArray(sources) && sources.length > 0) {
         const newElementIds = sources.filter(
@@ -198,7 +198,9 @@ export const TransferModal = ({
   };
 
   const handleDispatchRight = () => {
-    addElements(state.selectedTreeItemIds);
+    if (widget.selectable) {
+      addElements(state.selectedTreeItemIds);
+    }
   };
 
   const handleDispatchLeft = () => {
@@ -206,6 +208,9 @@ export const TransferModal = ({
   };
 
   const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => {
+    if (!widget.selectable) {
+      return;
+    }
     var newSelection = treeItemClick(event, tree, item, state.selectedTreeItemIds, widget.reference.manyValued);
     setState((prevState) => ({
       ...prevState,
@@ -258,6 +263,7 @@ export const TransferModal = ({
             <IconButton
               onClick={handleDispatchRight}
               disabled={
+                !widget.selectable ||
                 !state.selectedTreeItemIds.some(
                   (selectedId) => !state.right.some((rightEntry) => rightEntry.id === selectedId)
                 )

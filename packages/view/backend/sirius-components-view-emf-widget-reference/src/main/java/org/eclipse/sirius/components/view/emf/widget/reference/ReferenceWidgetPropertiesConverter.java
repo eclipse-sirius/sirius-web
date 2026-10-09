@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.BooleanValueProvider;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.representations.RepresentationVariables;
@@ -91,14 +92,29 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
                 .itemIconURLProvider(this::getItemIconURL)
                 .ownerKindProvider(this::getOwnerKind)
                 .referenceKindProvider(variableManager -> this.getReferenceKind(interpreter, variableManager, viewReferenceWidgetDescription))
-                .referenceNameProvider(variableManager -> new StringValueProvider(interpreter, Optional.ofNullable(viewReferenceWidgetDescription.getReferenceNameExpression()).orElse("")).apply(variableManager))
+                .referenceNameProvider(
+                        variableManager -> new StringValueProvider(interpreter, Optional.ofNullable(viewReferenceWidgetDescription.getReferenceNameExpression()).orElse("")).apply(variableManager))
                 .isContainmentProvider(variableManager -> this.isContainment(interpreter, variableManager, viewReferenceWidgetDescription))
                 .isManyProvider(variableManager -> this.isMany(interpreter, variableManager, viewReferenceWidgetDescription))
+                .selectableProvider(this.getSelectableProvider(interpreter, viewReferenceWidgetDescription))
                 .ownerIdProvider(variableManager -> this.getOwnerId(interpreter, viewReferenceWidgetDescription, variableManager))
                 .styleProvider(this.getStyleProvider(viewReferenceWidgetDescription, interpreter))
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "");
+    }
+
+    private Function<VariableManager, Boolean> getSelectableProvider(AQLInterpreter interpreter, ReferenceWidgetDescription referenceDescription) {
+        Function<VariableManager, Boolean> precondition = variableManager -> true;
+        if (referenceDescription.getAdd() != null) {
+            var preconditionExpression = referenceDescription.getAdd().getPreconditionExpression();
+            if (preconditionExpression != null && !preconditionExpression.isBlank()) {
+                precondition = new BooleanValueProvider(interpreter, preconditionExpression);
+            }
+        }
+        Function<VariableManager, Boolean> addPrecondition = precondition;
+        return variableManager -> !this.isMany(interpreter, variableManager, referenceDescription)
+                || referenceDescription.getAdd() != null && addPrecondition.apply(variableManager);
     }
 
     private Function<VariableManager, Boolean> getReadOnlyValueProvider(AQLInterpreter interpreter, String expression) {

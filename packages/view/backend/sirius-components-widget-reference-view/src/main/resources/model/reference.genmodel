@@ -19,6 +19,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute reference.ecore#//ReferenceWidgetDescription/referenceNameExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescription/body"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescription/clearButton"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescription/add"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescription/conditionalStyles"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescription/createButton"/>
@@ -30,6 +31,10 @@
     <genClasses ecoreClass="reference.ecore#//ReferenceWidgetClearButtonDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute reference.ecore#//ReferenceWidgetClearButtonDescription/preconditionExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetClearButtonDescription/body"/>
+    </genClasses>
+    <genClasses ecoreClass="reference.ecore#//ReferenceWidgetAdd">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetAdd/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute reference.ecore#//ReferenceWidgetAdd/preconditionExpression"/>
     </genClasses>
 
     <genClasses ecoreClass="reference.ecore#//ReferenceWidgetCreateButtonDescription">

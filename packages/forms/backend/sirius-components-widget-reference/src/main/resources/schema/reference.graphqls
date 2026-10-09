@@ -15,6 +15,7 @@ type ReferenceWidget implements Widget {
   iconURL: [String!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
+  selectable: Boolean!
   reference: Reference!
   referenceValues: [ReferenceValue!]!
   style: ReferenceWidgetStyle
