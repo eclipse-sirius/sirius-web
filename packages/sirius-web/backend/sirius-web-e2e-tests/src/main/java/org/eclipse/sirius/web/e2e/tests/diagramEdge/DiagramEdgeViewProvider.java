@@ -97,19 +97,16 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                         .name("Hide")
                         .body(new ViewBuilders().newChangeContext().expression("aql:diagramServices.hide(Sequence{selectedNode})").build())
                         .build())
-                .edgeTools(
-                        this.createEgeCreationTool("E1toE2A", nodeDescription2, edgeDescription1.getDomainType(), "toEdge1"),
-                        this.createEgeCreationTool("E1toE2B", nodeDescription2, edgeDescription2.getDomainType(), "toEdge2")
-                ).build());
+                .build());
+        nodeDescription1.getEdgeTools().add(this.createEgeCreationTool("E1toE2A", nodeDescription2, edgeDescription1.getDomainType(), "toEdge1"));
+        nodeDescription1.getEdgeTools().add(this.createEgeCreationTool("E1toE2B", nodeDescription2, edgeDescription2.getDomainType(), "toEdge2"));
 
-        edgeDescription1.setPalette(new DiagramBuilders().newEdgePalette().edgeTools(
-                this.createEgeCreationTool("EdgeToE2", nodeDescription2, edgeDescription3.getDomainType(), "toEdge3")
-        ).build());
+        edgeDescription1.setPalette(new DiagramBuilders().newEdgePalette().build());
+        edgeDescription1.getEdgeTools().add(this.createEgeCreationTool("EdgeToE2", nodeDescription2, edgeDescription3.getDomainType(), "toEdge3"));
 
-        nodeDescription2.setPalette(new DiagramBuilders().newNodePalette().edgeTools(
-                this.createEgeCreationTool("E2ToEdge1A", edgeDescription1, edgeDescription4.getDomainType(), "toEdge4"),
-                this.createEgeCreationTool("E2ToEdge1B", edgeDescription1, edgeDescription5.getDomainType(), "toEdge5")
-        ).build());
+        nodeDescription2.setPalette(new DiagramBuilders().newNodePalette().build());
+        nodeDescription2.getEdgeTools().add(this.createEgeCreationTool("E2ToEdge1A", edgeDescription1, edgeDescription4.getDomainType(), "toEdge4"));
+        nodeDescription2.getEdgeTools().add(this.createEgeCreationTool("E2ToEdge1B", edgeDescription1, edgeDescription5.getDomainType(), "toEdge5"));
 
         var toolbar = new DiagramBuilders().newDiagramToolbar()
                 .expandedByDefault(true)

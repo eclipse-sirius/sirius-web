@@ -109,6 +109,10 @@ The `precondition` of an edge tool is no longer evaluated when computing if an e
 - https://github.com/eclipse-sirius/sirius-web/issues/5375[#5375] [form] Reference widgets now have an optional create button description.
 Existing persisted View descriptions are migrated to keep their create button.
 Programmatic descriptions must call `ReferenceWidgetDescription.Builder#createButtonDescription` with an instance of `org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonDescription` to retain the creation action.
+- https://github.com/eclipse-sirius/sirius-web/issues/7040[#7040] [diagram] Connector tools are now contained directly by `NodeDescription` and `EdgeDescription` in their `edgeTools` reference.
+The `edgeTools` references and builder methods have been removed from `NodePalette`, `EdgePalette`, and `NodeToolSection`.
+Programmatic View DSLs must use `NodeDescription#getEdgeTools()`, `EdgeDescription#getEdgeTools()`, or the corresponding description builders' `edgeTools(...)` methods.
+Existing View descriptions are migrated automatically.
 
 
 === Dependency update

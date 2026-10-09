@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.migration.MigrationVersionComparator;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
@@ -175,7 +176,7 @@ public class NodeDescriptionLabelExpressionMigrationParticipantTests extends Abs
                 .orElse(false);
 
         var optionalLastMigrationData = this.migrationParticipants.stream()
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion).reversed())
+                .sorted(Comparator.comparing(IMigrationParticipant::getVersion, new MigrationVersionComparator()).reversed())
                 .map(migrationParticipant -> new MigrationData(migrationParticipant.getClass().getSimpleName(), migrationParticipant.getVersion()))
                 .findFirst();
         assertThat(optionalLastMigrationData).isPresent();

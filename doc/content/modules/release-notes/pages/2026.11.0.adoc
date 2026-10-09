@@ -74,6 +74,10 @@ The `precondition` of an edge tool is no longer evaluated when computing if an e
 - Reference widgets now have an optional create button description.
   Existing persisted View descriptions are migrated to keep their create button.
   Programmatic descriptions must explicitly configure `createButtonDescription` to keep the creation action.
+- Connector tools in the diagram View DSL are now configured directly on node and edge descriptions using `edgeTools`.
+The `edgeTools` properties of node palettes, edge palettes, and node tool sections have been removed.
+Existing saved View descriptions are migrated automatically, preserving tool order; connector tools previously placed in sections become a flat list.
+Programmatic descriptions must move their tool declarations to `NodeDescriptionBuilder.edgeTools(...)` or `EdgeDescriptionBuilder.edgeTools(...)`.
 
 == Dependency updates
 
