@@ -103,16 +103,89 @@ public class ReferenceWidgetAddControllerTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a reference widget in View, when adding a reference value, then the existing value is preserved and the form is refreshed")
-    public void givenReferenceWidgetInViewWhenAddingReferenceValueThenExistingValueIsPreservedAndFormIsRefreshed() {
+    @DisplayName("Given a reference widget with an empty add, when adding a reference value, then the existing value is preserved and the form is refreshed")
+    public void givenReferenceWidgetWithEmptyAddWhenAddingReferenceValueThenExistingValueIsPreservedAndFormIsRefreshed() {
         this.assertReferenceValueAdded(this.givenViewReferenceFormSubscription(), "Page", "Group", "Super types", "Human");
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a reference widget with a custom add body, when adding a reference value, then the custom body updates the reference and the name")
-    public void givenReferenceWidgetWithCustomAddBodyWhenAddingReferenceValueThenCustomBodyUpdatesReferenceAndName() {
+    @DisplayName("Given a reference widget without an add, when adding a reference value, then the reference is unchanged")
+    public void givenReferenceWidgetWithoutAddWhenAddingReferenceValueThenReferenceIsUnchanged() {
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var widget = new FormNavigator(form).page("Page").group("Group").findWidget("Super types without add", ReferenceWidget.class);
+            assertThat(widget.isReadOnly()).isFalse();
+            assertThat(widget.isMany()).isTrue();
+            assertThat(widget.isSelectable()).isFalse();
+            var singleValuedWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Target type without add", ReferenceWidget.class);
+            assertThat(singleValuedWidget.isMany()).isFalse();
+            assertThat(singleValuedWidget.isSelectable()).isTrue();
+            assertThat(widget.getReferenceValues()).extracting(ReferenceValue::getId)
+                    .containsExactly(StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString());
+            referenceWidgetId.set(widget.getId());
+        });
+
+        Runnable addReferenceValue = () -> this.referenceAddValuesExecutor.execute(new AddReferenceValuesInput(UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get(),
+                List.of(StudioIdentifiers.ROOT_ENTITY_OBJECT.toString()))).isSuccess();
+
+        StepVerifier.create(this.givenViewReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(addReferenceValue)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var entity = this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString());
+        assertThat(entity.getName()).isEqualTo("Human");
+        assertThat(entity.getSuperTypes()).extracting(this.identityService::getId)
+                .containsExactly(StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString());
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget with a custom add operation, when adding a reference value, then the custom body updates the reference and the name")
+    public void givenReferenceWidgetWithCustomAddWhenAddingReferenceValueThenCustomBodyUpdatesReferenceAndName() {
         this.assertReferenceValueAdded(this.givenViewReferenceFormSubscription(), "Page", "Group", "Super types with custom add", "Added by custom action");
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget with a dynamic add precondition, when semantic data changes, then selection follows the evaluated precondition")
+    public void givenReferenceWidgetWithDynamicAddPreconditionWhenSemanticDataChangesThenSelectionFollowsTheEvaluatedPrecondition() {
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var group = new FormNavigator(form).page("Page").group("Group");
+            var customAddWidget = group.findWidget("Super types with custom add", ReferenceWidget.class);
+            assertThat(customAddWidget.isSelectable()).isTrue();
+            referenceWidgetId.set(customAddWidget.getId());
+            assertThat(group.findWidget("Super types with dynamic add precondition", ReferenceWidget.class).isSelectable()).isTrue();
+        });
+
+        Runnable addReferenceValue = () -> this.referenceAddValuesExecutor.execute(new AddReferenceValuesInput(UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get(),
+                List.of(StudioIdentifiers.ROOT_ENTITY_OBJECT.toString()))).isSuccess();
+
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var group = new FormNavigator(form).page("Page").group("Group");
+            assertThat(group.findWidget("Super types with dynamic add precondition", ReferenceWidget.class).isSelectable()).isFalse();
+            assertThat(group.findWidget("Super types", ReferenceWidget.class).isSelectable()).isTrue();
+        });
+
+        StepVerifier.create(this.givenViewReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(addReferenceValue)
+                .consumeNextWith(updatedFormContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        assertThat(this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()).getName()).isEqualTo("Added by custom action");
     }
 
     @Test
@@ -130,6 +203,7 @@ public class ReferenceWidgetAddControllerTests extends AbstractIntegrationTests 
             formId.set(form.getId());
             var widget = new FormNavigator(form).page(pageLabel).group(groupLabel).findWidget(widgetLabel, ReferenceWidget.class);
             assertThat(widget.isReadOnly()).isFalse();
+            assertThat(widget.isSelectable()).isTrue();
             assertThat(widget.getReferenceValues())
                     .extracting(ReferenceValue::getId)
                     .containsExactly(StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString());

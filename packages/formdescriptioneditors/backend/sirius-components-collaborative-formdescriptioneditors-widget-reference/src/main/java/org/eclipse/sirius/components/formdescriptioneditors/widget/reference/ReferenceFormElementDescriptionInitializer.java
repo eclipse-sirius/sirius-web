@@ -32,6 +32,7 @@ public class ReferenceFormElementDescriptionInitializer implements IFormElementD
         if (formElementDescription instanceof ReferenceWidgetDescription referenceWidgetDescription) {
             referenceWidgetDescription.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
             referenceWidgetDescription.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
+            referenceWidgetDescription.setAdd(ReferenceFactory.eINSTANCE.createReferenceWidgetAdd());
         }
     }
 }

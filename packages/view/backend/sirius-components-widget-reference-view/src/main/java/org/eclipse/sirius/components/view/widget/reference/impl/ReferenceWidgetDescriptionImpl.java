@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAdd;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
@@ -126,6 +127,16 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @ordered
      */
     protected ReferenceWidgetClearButtonDescription clearButton;
+
+    /**
+     * The cached value of the '{@link #getAdd() <em>Add</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getAdd()
+     * @generated
+     * @ordered
+     */
+    protected ReferenceWidgetAdd add;
 
     /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
@@ -278,6 +289,59 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      *
      * @generated
      */
+    @Override
+    public ReferenceWidgetAdd getAdd() {
+        return this.add;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetAdd(ReferenceWidgetAdd newAdd, NotificationChain msgs) {
+        ReferenceWidgetAdd oldAdd = this.add;
+        this.add = newAdd;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD, oldAdd, newAdd);
+            if (msgs == null) {
+                msgs = notification;
+            } else {
+                msgs.add(notification);
+            }
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setAdd(ReferenceWidgetAdd newAdd) {
+        if (newAdd != this.add) {
+            NotificationChain msgs = null;
+            if (this.add != null) {
+                msgs = ((InternalEObject) this.add).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD, null, msgs);
+            }
+            if (newAdd != null) {
+                msgs = ((InternalEObject) newAdd).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD, null, msgs);
+            }
+            msgs = this.basicSetAdd(newAdd, msgs);
+            if (msgs != null) {
+                msgs.dispatch();
+            }
+        } else if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD, newAdd, newAdd));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public NotificationChain basicSetClearButton(ReferenceWidgetClearButtonDescription newClearButton, NotificationChain msgs) {
         ReferenceWidgetClearButtonDescription oldClearButton = this.clearButton;
         this.clearButton = newClearButton;
@@ -418,6 +482,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
                 return this.basicSetClearButton(null, msgs);
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD:
+                return this.basicSetAdd(null, msgs);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.basicSetStyle(null, msgs);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -470,6 +536,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.getBody();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
                 return this.getClearButton();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD:
+                return this.getAdd();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.getStyle();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -504,6 +572,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
                 this.setClearButton((ReferenceWidgetClearButtonDescription) newValue);
+                return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD:
+                this.setAdd((ReferenceWidgetAdd) newValue);
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ReferenceWidgetDescriptionStyle) newValue);
@@ -542,6 +613,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
                 this.setClearButton((ReferenceWidgetClearButtonDescription) null);
                 return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD:
+                this.setAdd((ReferenceWidgetAdd) null);
+                return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ReferenceWidgetDescriptionStyle) null);
                 return;
@@ -573,6 +647,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.body != null && !this.body.isEmpty();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
                 return this.clearButton != null;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD:
+                return this.add != null;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.style != null;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:

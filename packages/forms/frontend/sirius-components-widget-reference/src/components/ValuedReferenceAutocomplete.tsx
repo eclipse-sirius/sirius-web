@@ -179,7 +179,7 @@ export const ValuedReferenceAutocomplete = ({
   const handleAutocompleteChange = (_event, updatedValues: GQLReferenceValue[], reason: string) => {
     if (reason === 'removeOption') {
       handleRemoveReferenceValue(updatedValues);
-    } else {
+    } else if (widget.selectable) {
       const newValueIds = getOnlyNewValueIds(updatedValues);
       if (widget.reference.manyValued) {
         addReferenceValues(newValueIds);
@@ -201,7 +201,9 @@ export const ValuedReferenceAutocomplete = ({
   }, [widget]);
 
   let placeholder: string;
-  if (widget.reference.manyValued) {
+  if (!widget.selectable) {
+    placeholder = '';
+  } else if (widget.reference.manyValued) {
     placeholder = t('values');
   } else {
     placeholder = widget.referenceValues.length > 0 ? '' : t('value');
@@ -212,7 +214,9 @@ export const ValuedReferenceAutocomplete = ({
       multiple
       filterSelectedOptions
       disabled={readOnly || widget.readOnly}
-      open={state.open}
+      readOnly={!widget.selectable}
+      forcePopupIcon={widget.selectable}
+      open={widget.selectable && state.open}
       onOpen={() =>
         setState((prevState) => {
           return {
@@ -265,7 +269,7 @@ export const ValuedReferenceAutocomplete = ({
               onClick={() => optionClickHandler(option)}
               {...tagProps}
               disabled={false}
-              onDelete={readOnly || widget.readOnly ? undefined : onDelete}
+              onDelete={readOnly || widget.readOnly ? undefined : onDelete ?? (() => removeReferenceValue(option.id))}
             />
           );
         })

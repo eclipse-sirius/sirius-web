@@ -288,27 +288,6 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
         return result;
     }
 
-    private IStatus handleAddReferenceValues(VariableManager variableManager) {
-        IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
-        Optional<List<Object>> newValues = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, (Class<List<Object>>) (Class<?>) List.class);
-
-        if (newValues.isEmpty()) {
-            result = this.createErrorStatus("Something went wrong while adding reference values.");
-        } else if (referenceOwner != null && optionalEReference.isPresent()) {
-            EReference reference = optionalEReference.get();
-            if (reference.isMany()) {
-                ((List<Object>) referenceOwner.eGet(reference)).addAll(newValues.get());
-            } else {
-                new Failure("Single-valued reference can only accept a single value");
-            }
-        } else {
-            result = this.createErrorStatus("Something went wrong while adding reference values.");
-        }
-        return result;
-    }
-
     private IStatus handleMoveReferenceValue(VariableManager variableManager) {
         IStatus result = this.createErrorStatus("Something went wrong while reordering reference values.");
         EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);

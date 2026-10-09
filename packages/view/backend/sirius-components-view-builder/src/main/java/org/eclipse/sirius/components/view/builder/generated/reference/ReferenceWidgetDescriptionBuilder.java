@@ -145,6 +145,16 @@ public class ReferenceWidgetDescriptionBuilder {
     }
 
     /**
+     * Setter for Add.
+     *
+     * @generated
+     */
+    public ReferenceWidgetDescriptionBuilder add(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAdd value) {
+        this.getReferenceWidgetDescription().setAdd(value);
+        return this;
+    }
+
+    /**
      * Setter for Style.
      *
      * @generated

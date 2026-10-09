@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptio
 import org.eclipse.sirius.components.view.builder.generated.form.PageDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetCreateButtonDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetAddBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionStyleBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
@@ -93,14 +94,21 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .referenceNameExpression("superTypes")
                 .referenceOwnerExpression("aql:self")
                 .build();
-        customAddReference.getBody().add(new SetValueBuilder()
+        var add = new ReferenceWidgetAddBuilder();
+
+        var operation1 = new SetValueBuilder()
                 .featureName("name")
                 .valueExpression("Added by custom action")
-                .build());
-        customAddReference.getBody().add(new SetValueBuilder()
+                .build();
+
+        var operation2 = new SetValueBuilder()
                 .featureName("superTypes")
                 .valueExpression("aql:self.superTypes->union(newValue)")
-                .build());
+                .build();
+
+        add.body(operation1, operation2);
+
+        customAddReference.setAdd(add.build());
         this.formDescription.getPages().get(0).getGroups().get(0).getChildren().add(customAddReference);
         textfieldFormView.getDescriptions().add(this.formDescription);
         textfieldFormView.getDescriptions().add(this.formDescriptionWithDefaultClear);
@@ -130,6 +138,8 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .semanticCandidatesExpression("aql:self")
                 .children(nameTextfield)
                 .children(this.createReferenceWidgetDescriptions(customClear))
+                .children(this.createReferenceWidgetDescriptionsWithoutAdd())
+                .children(this.createReferenceWidgetDescriptionWithDynamicAddPrecondition())
                 .build();
 
         var pageDescription = new PageDescriptionBuilder()
@@ -170,6 +180,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .referenceOwnerExpression("aql:self")
                 .helpExpression("aql:'Specify the super-types of ' + self.name")
                 .style(superTypesReferenceStyle)
+                .add(new ReferenceWidgetAddBuilder().preconditionExpression("").build())
                 .createButton(new ReferenceWidgetCreateButtonDescriptionBuilder().build())
                 .build();
 
@@ -191,6 +202,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .referenceNameExpression("superTypes")
                 .referenceOwnerExpression("aql:self")
                 .isEnabledExpression("aql:false")
+                .add(new ReferenceWidgetAddBuilder().build())
                 .build();
 
         var customCreationReference = new ReferenceWidgetDescriptionBuilder()
@@ -247,5 +259,34 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
             superTypesReference, readOnlySuperTypesReference, customCreationReference,
             instanceCreationReference, failingCreationReference, hiddenCreateButtonReference,
         };
+    }
+
+    private ReferenceWidgetDescription[] createReferenceWidgetDescriptionsWithoutAdd() {
+        var withoutAddReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Super types without add")
+                .labelExpression("Super types without add")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .createButton(new ReferenceWidgetCreateButtonDescriptionBuilder().build())
+                .build();
+
+        var singleValuedWithoutAddReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Target type without add")
+                .labelExpression("Target type without add")
+                .referenceNameExpression("targetType")
+                .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
+                .build();
+
+        return new ReferenceWidgetDescription[] { withoutAddReference, singleValuedWithoutAddReference };
+    }
+
+    private ReferenceWidgetDescription createReferenceWidgetDescriptionWithDynamicAddPrecondition() {
+        return new ReferenceWidgetDescriptionBuilder()
+                .name("Super types with dynamic add precondition")
+                .labelExpression("Super types with dynamic add precondition")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .add(new ReferenceWidgetAddBuilder().preconditionExpression("aql:self.name = 'Human'").build())
+                .build();
     }
 }
