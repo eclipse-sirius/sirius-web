@@ -14,10 +14,6 @@ import { GQLTree } from '@eclipse-sirius/sirius-components-trees';
 
 export interface ExplorerSubscriptionContainerProps {
   editingContextId: string;
-  activeTreeDescriptionId: string;
-  activeTreeFilterIds: string[];
-  expanded: string[];
-  maxDepth: number;
   children: JSX.Element;
 }
 

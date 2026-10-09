@@ -12,8 +12,20 @@
  *******************************************************************************/
 
 import { TreeFilter, useTreeFilters } from '@eclipse-sirius/sirius-components-trees';
-import { useEffect, useState } from 'react';
-import { UseTreeFilteringState, UseTreeFilteringValue } from './useTreeFiltering.types';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  ExplorerFilterContextProviderProps,
+  ExplorerFilterContextState,
+  ExplorerFilterContextValue,
+} from './ExplorerFilterContext.types';
+import { ExplorerInteractionContext } from './ExplorerInteractionContext';
+import { ExplorerInteractionContextValue } from './ExplorerInteractionContext.types';
+
+const defaultValue: ExplorerFilterContextValue = {
+  loading: false,
+  treeFilters: [],
+  setTreeFilters: () => {},
+};
 
 const convertGQLTreeFiltersToTreeFilters = (gqlTreeFilter): TreeFilter => {
   return {
@@ -23,15 +35,19 @@ const convertGQLTreeFiltersToTreeFilters = (gqlTreeFilter): TreeFilter => {
   };
 };
 
-export const useTreeFiltering = (
-  editingContextId: string,
-  activeTreeDescriptionId: string | null,
-  configuredTreeFilters: TreeFilter[]
-): UseTreeFilteringValue => {
+export const ExplorerFilterContext = React.createContext<ExplorerFilterContextValue>(defaultValue);
+
+export const ExplorerFilterContextProvider = ({
+  editingContextId,
+  initialTreeFilters,
+  children,
+}: ExplorerFilterContextProviderProps) => {
+  const { activeTreeDescriptionId } = useContext<ExplorerInteractionContextValue>(ExplorerInteractionContext);
+
   const { loading, treeFilters } = useTreeFilters(editingContextId, activeTreeDescriptionId);
 
-  const [state, setState] = useState<UseTreeFilteringState>({
-    treeFilters: configuredTreeFilters,
+  const [state, setState] = useState<ExplorerFilterContextState>({
+    treeFilters: initialTreeFilters,
   });
 
   useEffect(() => {
@@ -60,9 +76,14 @@ export const useTreeFiltering = (
     });
   };
 
-  return {
-    loading,
-    treeFilters: state.treeFilters,
-    setTreeFilters,
-  };
+  return (
+    <ExplorerFilterContext.Provider
+      value={{
+        loading,
+        setTreeFilters,
+        treeFilters: state.treeFilters,
+      }}>
+      {children}
+    </ExplorerFilterContext.Provider>
+  );
 };

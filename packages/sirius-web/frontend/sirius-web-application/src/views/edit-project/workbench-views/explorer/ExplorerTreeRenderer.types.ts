@@ -15,7 +15,4 @@ export interface ExplorerRendererProps {
   editingContextId: string;
   readOnly: boolean;
   target: HTMLDivElement | null;
-  expanded: string[];
-  maxDepth: number;
-  onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void;
 }

@@ -22,6 +22,8 @@ import {
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ExplorerContext } from './ExplorerContext';
 import { ExplorerContextValue } from './ExplorerContext.types';
+import { ExplorerInteractionContext } from './ExplorerInteractionContext';
+import { ExplorerInteractionContextValue } from './ExplorerInteractionContext.types';
 import {
   ExplorerSelectionContextProviderProps,
   ExplorerSelectionContextState,
@@ -41,10 +43,10 @@ export const ExplorerSelectionContext = React.createContext<ExplorerSelectionCon
 
 export const ExplorerSelectionContextProvider = ({
   editingContextId,
-  expanded,
-  onExpandedElementChange,
   children,
 }: ExplorerSelectionContextProviderProps) => {
+  const { onExpandedElementChange, expanded } = useContext<ExplorerInteractionContextValue>(ExplorerInteractionContext);
+
   const [state, setState] = useState<ExplorerSelectionContextState>({
     selectedTreeItemIds: [],
     singleTreeItemSelected: null,

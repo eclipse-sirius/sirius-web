@@ -31,7 +31,5 @@ export interface ExplorerSelectionContextState {
 export interface ExplorerSelectionContextProviderProps {
   editingContextId: string;
   refHandle: ForwardedRef<WorkbenchViewHandle>;
-  expanded: string[];
-  onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void;
   children: React.ReactNode;
 }

@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  FilterBarContext,
+  FilterBarContextValue,
   GQLGetExpandAllTreePathVariables,
   GQLTreeItem,
   TreeItemContextMenuComponentProps,
@@ -20,7 +22,7 @@ import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import { Fragment, forwardRef, useEffect } from 'react';
+import { Fragment, forwardRef, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const ExpandAllTreeItemContextMenuContribution = forwardRef(
@@ -30,18 +32,22 @@ export const ExpandAllTreeItemContextMenuContribution = forwardRef(
   ) => {
     const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
     const { t } = useTranslation('sirius-web-application', { keyPrefix: 'expandAllTreeItemContextMenuContribution' });
+    const { filterBarTreeFiltering } = useContext<FilterBarContextValue>(FilterBarContext);
+
     useEffect(() => {
       if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
         const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
           expandAllTreePathData.viewer.editingContext.expandAllTreePath;
-        const newExpanded: string[] = [...expanded];
+        const idsToExpand = new Set(treeItemIdsToExpand ?? []);
 
-        treeItemIdsToExpand?.forEach((itemToExpand) => {
-          if (!expanded.includes(itemToExpand)) {
-            newExpanded.push(itemToExpand);
-          }
-        });
-        onExpandedElementChange(newExpanded, expandedMaxDepth);
+        if (filterBarTreeFiltering) {
+          // During search, the expanded prop carries the collapsed item IDs.
+          const newCollapsed = expanded.filter((id) => !idsToExpand.has(id));
+          onExpandedElementChange(newCollapsed, expandedMaxDepth);
+        } else {
+          const newExpanded = [...new Set([...expanded, ...idsToExpand])];
+          onExpandedElementChange(newExpanded, expandedMaxDepth);
+        }
         onClose();
       }
     }, [expandAllTreePathData]);
