@@ -101,6 +101,7 @@ Programmatic form descriptions should manually add it through `ReferenceWidgetDe
 `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
 Other programmatic forms must contribute their own creation handler.
 The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [core] Update the signature of some provisional APIs related to the new refresh strategy for representation event processors. 
 
 
 === Dependency update
@@ -178,6 +179,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - https://github.com/eclipse-sirius/sirius-web/issues/6976[#6976] [form] Remove reference widget clear handler from refresh mechanism.
 - https://github.com/eclipse-sirius/sirius-web/issues/6973[#6973] [form] We can now customize the reference widget clear button behavior through the View DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/7063[#7063] [sirius-web] Add the ability to customize the default result of the `ICapabilityEvaluator` instead of defaulting to `true` when no `ICapabilityVoter` takes part in the evaluation.
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [gantt] Perform the refresh of the Gantt representation outside of its event processor by leveraging new APIs.
 
 
 

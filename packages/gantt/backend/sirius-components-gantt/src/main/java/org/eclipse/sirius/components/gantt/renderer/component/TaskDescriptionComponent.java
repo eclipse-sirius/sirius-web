@@ -145,7 +145,7 @@ public class TaskDescriptionComponent implements IComponent {
 
         List<Element> childrenElements = Stream.concat(childrenTaskDescription, reusedTaskDescriptions)
                 .map(childTaskDescription -> {
-                    TaskDescriptionComponentProps taskComponentProps = new TaskDescriptionComponentProps(variableManager, childTaskDescription, previousSubTasks, this.props.parentElementId(), this.props.id2tasksDescription(), this.props.ganttEvent());
+                    TaskDescriptionComponentProps taskComponentProps = new TaskDescriptionComponentProps(variableManager, childTaskDescription, previousSubTasks, this.props.parentElementId(), this.props.id2tasksDescription(), this.props.events());
                     return new Element(TaskDescriptionComponent.class, taskComponentProps);
                 }).toList();
 
@@ -159,11 +159,12 @@ public class TaskDescriptionComponent implements IComponent {
 
     private boolean computeCollapsed(Optional<Task> previousTaskOptional) {
         return previousTaskOptional.map(previousTask -> {
-            return this.props.ganttEvent()
+            return this.props.events().stream()
                     .filter(ChangeGanttTaskCollapseStateEvent.class::isInstance)
                     .map(ChangeGanttTaskCollapseStateEvent.class::cast)
                     .filter(event -> event.taskId().equals(previousTask.id()))
                     .map(ChangeGanttTaskCollapseStateEvent::collapsed)
+                    .findFirst()
                     .orElse(previousTask.detail().collapsed());
         })
         .orElse(false);
