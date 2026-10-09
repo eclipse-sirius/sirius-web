@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.eclipse.sirius.web.projects.images.domain.event.ProjectImageCreatedEvent;
 import org.eclipse.sirius.web.projects.images.domain.event.ProjectImageDeletedEvent;
 import org.eclipse.sirius.web.projects.images.domain.event.ProjectImageLabelUpdatedEvent;

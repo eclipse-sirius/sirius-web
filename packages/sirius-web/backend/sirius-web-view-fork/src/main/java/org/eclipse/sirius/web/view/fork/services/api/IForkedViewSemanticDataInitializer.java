@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.view.fork.services.api;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**

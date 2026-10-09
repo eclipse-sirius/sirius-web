@@ -24,7 +24,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportParticipant;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.domain.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -32,6 +32,7 @@
     </distributionManagement>
 
     <modules>
+        <module>sirius-web-projects-domain</module>
         <module>sirius-web-projects-images-domain</module>
         <module>sirius-web-projects-images-infrastructure</module>
         <module>sirius-web-projects-semanticdata-domain</module>

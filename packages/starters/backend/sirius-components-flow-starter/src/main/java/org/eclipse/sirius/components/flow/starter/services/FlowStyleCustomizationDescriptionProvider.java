@@ -15,8 +15,8 @@ package org.eclipse.sirius.components.flow.starter.services;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.projects.domain.Nature;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.StyleCustomizationDescription;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.api.IStyleCustomizationDescriptionProvider;
 import org.springframework.beans.factory.annotation.Value;

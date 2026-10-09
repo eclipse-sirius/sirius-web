@@ -67,6 +67,13 @@ Downstream consumers must declare this dependency and replace the package prefix
   `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
   Other programmatic forms must contribute their own creation handler.
   The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
+  - Classes from the projects domain such as `Project`, `IProjectSearchService`, `IProjectCreationService` or `ProjectCreatedEvent` have been moved to the new module `sirius-web-projects-domain`.
+Imports of these classes must be updated to:
+* `org.eclipse.sirius.web.projects.domain.Project`
+* `org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService`
+* `org.eclipse.sirius.web.projects.domain.services.api.IProjectCreationService`
+* `org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent`
+
 
 == Dependency updates
 

@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.index.services.api.IIndexEntry;
 import org.eclipse.sirius.web.application.index.services.api.IIndexQueryService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.projects.domain.Project;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
 import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;

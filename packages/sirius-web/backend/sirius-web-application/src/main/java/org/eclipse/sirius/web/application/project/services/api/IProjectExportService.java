@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services.api;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.projects.domain.Project;
 
 /**
  * Used to download a project as a zip.

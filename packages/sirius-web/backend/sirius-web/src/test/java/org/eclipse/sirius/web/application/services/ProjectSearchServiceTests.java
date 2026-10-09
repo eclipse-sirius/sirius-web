@@ -28,8 +28,8 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.core.domain.pagination.Window;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.projects.domain.Project;
+import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

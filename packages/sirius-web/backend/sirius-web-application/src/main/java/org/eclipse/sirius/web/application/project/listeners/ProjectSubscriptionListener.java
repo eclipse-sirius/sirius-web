@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.services.api.IProjectSubscriptions;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNameUpdatedEvent;
+import org.eclipse.sirius.web.projects.domain.events.ProjectDeletedEvent;
+import org.eclipse.sirius.web.projects.domain.events.ProjectNameUpdatedEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
 

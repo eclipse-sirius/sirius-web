@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
+import org.eclipse.sirius.web.projects.domain.Project;
+import org.eclipse.sirius.web.projects.domain.repositories.api.IProjectSearchRepositoryDelegate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 /**

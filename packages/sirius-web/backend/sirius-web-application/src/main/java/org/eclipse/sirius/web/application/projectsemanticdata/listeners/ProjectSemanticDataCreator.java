@@ -14,8 +14,8 @@ package org.eclipse.sirius.web.application.projectsemanticdata.listeners;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
+import org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataCreationService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
