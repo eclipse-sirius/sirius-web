@@ -104,6 +104,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON);
+            this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD_BODY);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
         }
@@ -186,6 +187,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD_BODY:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -222,6 +224,8 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 
         newChildDescriptors
                 .add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD_BODY, ReferenceFactory.eINSTANCE.createReferenceWidgetAddBody()));
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 

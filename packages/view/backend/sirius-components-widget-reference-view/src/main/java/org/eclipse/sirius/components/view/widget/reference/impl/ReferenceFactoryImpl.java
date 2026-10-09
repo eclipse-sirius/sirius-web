@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAddBody;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
@@ -72,6 +73,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
                 return this.createConditionalReferenceWidgetDescriptionStyle();
             case ReferencePackage.REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION:
                 return this.createReferenceWidgetClearButtonDescription();
+            case ReferencePackage.REFERENCE_WIDGET_ADD_BODY:
+                return this.createReferenceWidgetAddBody();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -119,6 +122,17 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
     public ReferenceWidgetClearButtonDescription createReferenceWidgetClearButtonDescription() {
         ReferenceWidgetClearButtonDescriptionImpl referenceWidgetClearButtonDescription = new ReferenceWidgetClearButtonDescriptionImpl();
         return referenceWidgetClearButtonDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ReferenceWidgetAddBody createReferenceWidgetAddBody() {
+        ReferenceWidgetAddBodyImpl referenceWidgetAddBody = new ReferenceWidgetAddBodyImpl();
+        return referenceWidgetAddBody;
     }
 
     /**
