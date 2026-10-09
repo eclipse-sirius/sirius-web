@@ -27,7 +27,8 @@ At the moment, we have only deprecated `VariableManager.SELF` which has been rep
 We will not remove existing variable constants such as `VariableManager.SELF` and `IEditingContext.EDITING_CONTEXT` soon, but we will start using these new locations for the variables in our own codebase.
 When we will be satisfied with the use of these new variable declarations, we will change their annotation from `@Deprecated(since = "...")` to `@Deprecated(since = "...", forRemoval = true)` and warn downstream consumers in the CHANGELOG and release notes of that version that they should migrate to the new variable declarations.
 Then, we will remove the existing variable declarations in a future release.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/7055 [form] Variable `newValue` for reference widget `add` behavior is deprecated, use `newValues` instead.
+`newValue` is still valid for the `set` behavior.
 
 === Breaking changes
 
@@ -124,6 +125,11 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.projects.domain.services.api.IProjectCreationService`
 * `org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent`
 - [form] `org.eclipse.sirius.components.widget.reference.ReferenceWidget` now requires `targetObjectId`.
+- https://github.com/eclipse-sirius/sirius-web/issues/7055 [form] Remove the reference widget add handler from the refresh mechanism.
+`addHandlerProvider` has been removed from `ReferenceWidgetDescription`.
+A new API has been added to replace `addHandlerProvider`: `IReferenceWidgetAddElementHandler`, a candidate to handle the add event.
+Two implementations of `IReferenceWidgetAddElementHandler`, `ViewReferenceWidgetAddElementHandler` for View-based representation and `DetailsViewReferenceWidgetAddElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
+Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetAddElementHandler`.
 
 
 === Dependency update
