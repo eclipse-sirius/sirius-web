@@ -131,7 +131,6 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .itemRemoveHandlerProvider(this::handleRemoveValue)
                 .setHandlerProvider(this::handleSetReference)
-                .addHandlerProvider(this::handleAddReferenceValues)
                 .moveHandlerProvider(this::handleMoveReferenceValue)
                 .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .build();

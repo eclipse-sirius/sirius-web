@@ -25,6 +25,10 @@ public final class MessageConstants {
     public static final String UNABLE_TO_EDIT_READONLY_WIDGET = "UNABLE_TO_EDIT_READONLY_WIDGET";
     public static final String UNABLE_TO_CLEAR_REFERENCE = "UNABLE_TO_CLEAR_REFERENCE";
     public static final String FAILED_TO_EXECUTE_CLEAR_REFERENCE_ACTION = "FAILED_TO_EXECUTE_CLEAR_REFERENCE_ACTION";
+    public static final String UNABLE_TO_EXECUTE_ADD_ACTION = "UNABLE_TO_EXECUTE_ADD_ACTION";
+    public static final String REFERENCE_NOT_FOUND = "REFERENCE_NOT_FOUND";
+    public static final String OBJECT_NOT_FOUND = "OBJECT_NOT_FOUND";
+    public static final String UNABLE_TO_SET_REFERENCE_VALUE = "UNABLE_TO_SET_REFERENCE_VALUE";
 
     private MessageConstants() {
         // Prevent instantiation
