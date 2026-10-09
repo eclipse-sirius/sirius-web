@@ -145,18 +145,20 @@ public class ComponentPageDescriptionProvider implements IPageDescriptionProvide
                 .referenceNameExpression("aql:'dependencies'")
                 .clearButton(new ReferenceBuilders().newReferenceWidgetClearButtonDescription().build())
                 .style(dependenciesStyle)
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:self")
-                                .children(
-                                        new ViewBuilders().newSetValue()
-                                                .featureName("dependencies")
-                                                .valueExpression("aql:newValue")
+                .addBody(
+                        new ReferenceBuilders().newReferenceWidgetAddBody().body(
+                                        new ViewBuilders().newChangeContext()
+                                                .expression("aql:self")
+                                                .children(
+                                                        new ViewBuilders().newSetValue()
+                                                                .featureName("dependencies")
+                                                                .valueExpression("aql:newValue")
+                                                                .build()
+                                                )
                                                 .build()
                                 )
                                 .build()
-                )
-                .build();
+                ).build();
     }
 
     private ListDescription getUsedAsDependencyByWidget() {

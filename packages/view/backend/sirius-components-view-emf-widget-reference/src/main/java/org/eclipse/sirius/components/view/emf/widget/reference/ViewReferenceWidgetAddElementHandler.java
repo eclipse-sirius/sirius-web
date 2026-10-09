@@ -99,13 +99,13 @@ public class ViewReferenceWidgetAddElementHandler implements IReferenceWidgetAdd
 
         if (optionalWidgetDescription.isPresent() && optionalOwner.isPresent() && optionalOwner.get() instanceof EObject owner) {
             var widgetDescription = optionalWidgetDescription.get();
-            var body = widgetDescription.getBody();
+            var body = widgetDescription.getAddBody();
             var feature = owner.eClass().getEStructuralFeature(referenceWidget.getReferenceName());
 
             if (feature instanceof EReference reference) {
-                if (!body.isEmpty() && EcoreUtil.getRootContainer(widgetDescription) instanceof View view) {
+                if (body != null && EcoreUtil.getRootContainer(widgetDescription) instanceof View view) {
                     // If we have a body then the behavior is the interpretation of the body
-                    result = this.addFromOperation(editingContext, view, owner, reference, newValues, body);
+                    result = this.addFromOperation(editingContext, view, owner, reference, newValues, body.getBody());
                 } else {
                     // When the reference widget doesn't provide any body, we fall back to the default behavior
                     result = this.defaultAdd(owner, reference, newValues);

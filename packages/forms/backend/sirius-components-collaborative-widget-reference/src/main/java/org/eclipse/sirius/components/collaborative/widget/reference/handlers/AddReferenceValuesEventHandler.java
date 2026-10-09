@@ -110,7 +110,7 @@ public class AddReferenceValuesEventHandler implements IFormEventHandler {
 
             if (status instanceof Success success) {
                 this.logger.atInfo()
-                        .setMessage("New value added")
+                        .setMessage("Add reference value action succeed")
                         .addKeyValue("editingContextId", editingContext.getId())
                         .addKeyValue("representationId", input.representationId())
                         .addKeyValue("widgetId", input.referenceWidgetId())
@@ -120,7 +120,7 @@ public class AddReferenceValuesEventHandler implements IFormEventHandler {
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput, success.getParameters());
             } else if (status instanceof Failure failure) {
                 this.logger.atWarn()
-                        .setMessage("Addition of a new value in the reference widget failed")
+                        .setMessage("Add reference value action failed")
                         .addKeyValue("editingContextId", editingContext.getId())
                         .addKeyValue("representationId", input.representationId())
                         .addKeyValue("widgetId", input.referenceWidgetId())

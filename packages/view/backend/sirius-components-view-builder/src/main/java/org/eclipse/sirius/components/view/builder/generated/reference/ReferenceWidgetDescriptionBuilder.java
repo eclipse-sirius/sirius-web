@@ -135,6 +135,16 @@ public class ReferenceWidgetDescriptionBuilder {
     }
 
     /**
+     * Setter for AddBody.
+     *
+     * @generated
+     */
+    public ReferenceWidgetDescriptionBuilder addBody(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAddBody value) {
+        this.getReferenceWidgetDescription().setAddBody(value);
+        return this;
+    }
+
+    /**
      * Setter for Style.
      *
      * @generated
