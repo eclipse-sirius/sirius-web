@@ -68,10 +68,8 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
         }
         if (viewReferenceWidgetDescription.getBody().isEmpty()) {
             referenceWidgetDescriptionBuilder.setHandlerProvider(variableManager -> this.handleSetReference(interpreter, variableManager, viewReferenceWidgetDescription));
-            referenceWidgetDescriptionBuilder.addHandlerProvider(variableManager -> this.handleAddReference(interpreter, variableManager, viewReferenceWidgetDescription));
         } else {
             referenceWidgetDescriptionBuilder.setHandlerProvider(variableManager -> this.newValueHandler(interpreter, variableManager, viewReferenceWidgetDescription.getBody()));
-            referenceWidgetDescriptionBuilder.addHandlerProvider(variableManager -> this.newValueHandler(interpreter, variableManager, viewReferenceWidgetDescription.getBody()));
         }
     }
 
@@ -141,26 +139,6 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
             }
         } else {
             result = this.createErrorStatus("Something went wrong while setting the reference value.");
-        }
-        return result;
-    }
-
-    private IStatus handleAddReference(AQLInterpreter interpreter, VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
-        IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject owner = this.getReferenceOwner(interpreter, variableManager, referenceDescription.getReferenceOwnerExpression());
-        String referenceName = new StringValueProvider(interpreter, Optional.ofNullable(referenceDescription.getReferenceNameExpression()).orElse("")).apply(variableManager);
-        Optional<List<Object>> newValues = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, (Class<List<Object>>) (Class<?>) List.class);
-
-        if (newValues.isEmpty()) {
-            result = this.createErrorStatus("Something went wrong while adding reference values.");
-        } else if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
-            if (reference.isMany()) {
-                ((List<Object>) owner.eGet(reference)).addAll(newValues.get());
-            } else {
-                new Failure("Single-valued reference can only accept a single value");
-            }
-        } else {
-            result = this.createErrorStatus("Something went wrong while adding reference values.");
         }
         return result;
     }

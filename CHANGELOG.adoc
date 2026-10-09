@@ -101,7 +101,12 @@ Programmatic form descriptions should manually add it through `ReferenceWidgetDe
 `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
 Other programmatic forms must contribute their own creation handler.
 The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
-- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [core] Update the signature of some provisional APIs related to the new refresh strategy for representation event processors. 
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [core] Update the signature of some provisional APIs related to the new refresh strategy for representation event processors.
+- https://github.com/eclipse-sirius/sirius-web/issues/7055 [form] Remove the reference widget add handler from the refresh mechanism.
+`addHandlerProvider` has been removed from `ReferenceWidgetDescription`.
+A new API has been added to replace `addHandlerProvider`: `IReferenceWidgetAddElementHandler`, a candidate to handle the add event.
+Two implementations of `IReferenceWidgetAddElementHandler`, `ViewReferenceWidgetAddElementHandler` for View-based representation and `DetailsViewReferenceWidgetAddElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
+Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetAddElementHandler`.
 
 
 === Dependency update
