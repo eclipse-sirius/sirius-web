@@ -54,8 +54,6 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private Function<Object, IStatus> setHandler;
 
-    private Function<List<?>, IStatus> addHandler;
-
     private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
     private String descriptionId;
@@ -116,10 +114,6 @@ public final class ReferenceWidget extends AbstractWidget {
         return this.setHandler;
     }
 
-    public Function<List<?>, IStatus> getAddHandler() {
-        return this.addHandler;
-    }
-
     public Function<MoveReferenceValueHandlerParameters, IStatus> getMoveHandler() {
         return this.moveHandler;
     }
@@ -167,10 +161,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private String ownerId;
 
         private ReferenceWidgetClearButton clearButton;
-        
-        private Function<Object, IStatus> setHandler;
 
-        private Function<List<?>, IStatus> addHandler;
+        private Function<Object, IStatus> setHandler;
 
         private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
@@ -260,11 +252,6 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder addHandler(Function<List<?>, IStatus> addHandler) {
-            this.addHandler = Objects.requireNonNull(addHandler);
-            return this;
-        }
-
         public Builder moveHandler(Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler) {
             this.moveHandler = Objects.requireNonNull(moveHandler);
             return this;
@@ -295,7 +282,6 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.ownerId = Objects.requireNonNull(this.ownerId);
             referenceWidget.clearButton = this.clearButton; // Optional on purpose
             referenceWidget.setHandler = this.setHandler; // Optional on purpose
-            referenceWidget.addHandler = this.addHandler; // Optional on purpose
             referenceWidget.moveHandler = this.moveHandler; // Optional on purpose
             return referenceWidget;
         }
