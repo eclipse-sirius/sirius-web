@@ -83,6 +83,21 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
         View textfieldFormView = viewBuilder.build();
         this.formDescription = this.createFormDescription(true);
         this.formDescriptionWithDefaultClear = this.createFormDescription(false);
+        var customAddReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Super types with custom add")
+                .labelExpression("Super types with custom add")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .build();
+        customAddReference.getBody().add(new SetValueBuilder()
+                .featureName("name")
+                .valueExpression("Added by custom action")
+                .build());
+        customAddReference.getBody().add(new SetValueBuilder()
+                .featureName("superTypes")
+                .valueExpression("aql:self.superTypes->union(newValue)")
+                .build());
+        this.formDescription.getPages().get(0).getGroups().get(0).getChildren().add(customAddReference);
         textfieldFormView.getDescriptions().add(this.formDescription);
         textfieldFormView.getDescriptions().add(this.formDescriptionWithDefaultClear);
 
