@@ -17,25 +17,40 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.jspecify.annotations.Nullable;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * The aggregate root of the project style customization bounded context.
  *
  * @author gcoutable
  */
-public class ProjectStyleCustomization {
+@Table("project_style_customization")
+public class ProjectStyleCustomization extends AbstractValidatingAggregateRoot<ProjectStyleCustomization> implements Persistable<UUID> {
 
+    @Transient
+    private boolean isNew;
+
+    @Id
     private UUID id;
 
+    @Column("project_id")
     private AggregateReference<Project, String> project;
 
+    @Column("style_customization_description_id")
     private String styleCustomizationDescriptionId;
 
     private Instant createdOn;
 
-    public UUID getId() {
+    @Override
+    public @Nullable UUID getId() {
         return this.id;
     }
 
@@ -49,6 +64,11 @@ public class ProjectStyleCustomization {
 
     public Instant getCreatedOn() {
         return this.createdOn;
+    }
+
+    @Override
+    public boolean isNew() {
+        return this.isNew;
     }
 
     public static Builder newProjectStyleCustomization() {
@@ -80,6 +100,7 @@ public class ProjectStyleCustomization {
         public ProjectStyleCustomization build(ICause cause) {
             var projectStyleCustomization = new ProjectStyleCustomization();
 
+            projectStyleCustomization.isNew = true;
             projectStyleCustomization.id = UUID.randomUUID();
             projectStyleCustomization.project = Objects.requireNonNull(this.project);
             projectStyleCustomization.styleCustomizationDescriptionId = Objects.requireNonNull(this.styleCustomizationDescriptionId);
