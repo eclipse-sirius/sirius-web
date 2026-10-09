@@ -43,6 +43,7 @@ import {
   GQLGetDomainsQueryVariables,
   GQLGetRootObjectCreationDescriptionsQueryData,
   GQLGetRootObjectCreationDescriptionsQueryVariables,
+  GQLSuccessPayload,
 } from './CreateModal.types';
 
 const useStyle = makeStyles()((theme) => ({
@@ -67,6 +68,12 @@ const createElementInReferenceMutation = gql`
           label
           kind
         }
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
         messages {
           body
           level
@@ -147,6 +154,9 @@ const getDomainsQuery = gql`
 
 const isErrorPayload = (payload: GQLCreateElementInReferencePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+
+const isSuccessPayload = (payload: GQLCreateElementInReferencePayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 const isCreateElementSuccessPayload = (
   payload: GQLCreateElementInReferencePayload
@@ -269,6 +279,10 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         if (isCreateElementSuccessPayload(createElementInReference)) {
           const { object } = createElementInReference;
           onClose(object.id);
+        }
+        if (isSuccessPayload(createElementInReference)) {
+          addMessages(createElementInReference.messages);
+          onClose(null);
         }
       }
     }

@@ -82,7 +82,12 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
                 }
 
                 if (referenceDescription.getCreateButton() != null) {
-                    builder.createButtonDescription(new org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonDescription());
+                    var preconditionExpression = referenceDescription.getCreateButton().getPreconditionExpression();
+                    Function<VariableManager, Boolean> precondition = variableManager -> true;
+                    if (preconditionExpression != null && !preconditionExpression.isBlank()) {
+                        precondition = new BooleanValueProvider(interpreter, preconditionExpression);
+                    }
+                    builder.createButtonDescription(new org.eclipse.sirius.components.widget.reference.ReferenceWidgetCreateButtonDescription(precondition));
                 }
 
                 var referenceWidgetDescription = builder.build();

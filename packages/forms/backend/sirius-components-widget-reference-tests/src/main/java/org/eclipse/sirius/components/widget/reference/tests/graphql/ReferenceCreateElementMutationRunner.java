@@ -32,6 +32,12 @@ public class ReferenceCreateElementMutationRunner implements IMutationRunner<Cre
             mutation createElementInReference($input: CreateElementInReferenceInput!) {
               createElementInReference(input: $input) {
                 __typename
+                ... on SuccessPayload {
+                  messages {
+                    body
+                    level
+                  }
+                }
                 ... on ErrorPayload {
                   messages {
                     body

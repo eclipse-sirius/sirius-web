@@ -74,6 +74,8 @@ The `precondition` of an edge tool is no longer evaluated when computing if an e
 - Reference widgets now have an optional create button description.
   Existing persisted View descriptions are migrated to keep their create button.
   Programmatic descriptions must explicitly configure `createButtonDescription` to keep the creation action.
+  Custom creation handlers must replace the last description ID argument of `createRootObject` and `createChild` with the `ReferenceWidget`.
+  These methods now return `IStatus`, and custom operations can succeed without returning an object.
 
 == Dependency updates
 
@@ -121,6 +123,8 @@ If multiple customizers modify the same style property, the last one wins.
 * In forms, specifiers can now configure reference-widget clear-button behavior through its View DSL operation body.
 * Studio makers can now show or hide the reference widget's create button by adding or removing its create button description.
 The form editor preview reflects this configuration.
+The create button description can contain operations to customize its behavior.
+When its body is empty, the button retains the default creation behavior.
 
 
 == Improvements

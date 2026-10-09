@@ -30,12 +30,15 @@ import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateEl
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.springframework.stereotype.Service;
 
@@ -64,17 +67,14 @@ public class CreateElementEventHandler implements IFormEventHandler {
 
     private final Counter counter;
 
-    private final IFeedbackMessageService feedbackMessageService;
-
     public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService,
             List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
+            MeterRegistry meterRegistry) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.referenceWidgetCreateElementHandlers = Objects.requireNonNull(referenceWidgetCreateElementHandlers);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -108,13 +108,13 @@ public class CreateElementEventHandler implements IFormEventHandler {
                 if (optionalHandler.isPresent()) {
                     var handler = optionalHandler.get();
 
-                    var optionalObject = this.createElement(editingContext, handler, input);
+                    var status = this.createElement(editingContext, handler, input, optionalWidget.get());
 
-                    if (optionalObject.isPresent()) {
-                        payload = new CreateElementInReferenceSuccessPayload(formInput.id(), optionalObject.get(), this.feedbackMessageService.getFeedbackMessages());
+                    if (status instanceof Success success) {
+                        payload = this.createSuccessPayload(formInput.id(), success);
                         changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
-                    } else {
-                        payload = new ErrorPayload(input.id(), this.feedbackMessageService.getFeedbackMessages());
+                    } else if (status instanceof Failure failure) {
+                        payload = new ErrorPayload(input.id(), failure.getMessages());
                     }
                 } else {
                     payload = new ErrorPayload(input.id(), this.messageService.noHandlerFound());
@@ -129,15 +129,23 @@ public class CreateElementEventHandler implements IFormEventHandler {
         payloadSink.tryEmitValue(payload);
     }
 
-    private Optional<Object> createElement(IEditingContext editingContext, IReferenceWidgetCreateElementHandler handler, CreateElementInput input) {
+    private IPayload createSuccessPayload(UUID id, Success success) {
+        var object = success.getParameters().get("object");
+        if (object != null) {
+            return new CreateElementInReferenceSuccessPayload(id, object, success.getMessages());
+        }
+        return new SuccessPayload(id, success.getMessages());
+    }
+
+    private IStatus createElement(IEditingContext editingContext, IReferenceWidgetCreateElementHandler handler, CreateElementInput input, ReferenceWidget referenceWidget) {
         if (input.domainId() == null) {
             EObject parent = this.objectSearchService.getObject(editingContext, input.containerId())
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast)
                     .orElse(null);
-            return handler.createChild(editingContext, parent, input.creationDescriptionId(), input.descriptionId());
+            return handler.createChild(editingContext, parent, input.creationDescriptionId(), referenceWidget);
         } else {
-            return handler.createRootObject(editingContext, UUID.fromString(input.containerId()), input.domainId(), input.creationDescriptionId(), input.descriptionId());
+            return handler.createRootObject(editingContext, UUID.fromString(input.containerId()), input.domainId(), input.creationDescriptionId(), referenceWidget);
         }
     }
 
