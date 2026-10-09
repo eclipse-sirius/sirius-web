@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAddBody;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
@@ -122,6 +123,13 @@ public class ReferenceSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case ReferencePackage.REFERENCE_WIDGET_ADD_BODY: {
+                ReferenceWidgetAddBody referenceWidgetAddBody = (ReferenceWidgetAddBody) theEObject;
+                T result = this.caseReferenceWidgetAddBody(referenceWidgetAddBody);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -185,6 +193,21 @@ public class ReferenceSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseReferenceWidgetClearButtonDescription(ReferenceWidgetClearButtonDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Widget Add Body</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Widget Add Body</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseReferenceWidgetAddBody(ReferenceWidgetAddBody object) {
         return null;
     }
 

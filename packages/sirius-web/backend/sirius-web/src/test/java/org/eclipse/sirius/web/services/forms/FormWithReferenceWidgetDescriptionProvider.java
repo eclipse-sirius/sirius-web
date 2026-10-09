@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.form.FormDescription
 import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.PageDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetAddBodyBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionStyleBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
@@ -89,14 +90,21 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .referenceNameExpression("superTypes")
                 .referenceOwnerExpression("aql:self")
                 .build();
-        customAddReference.getBody().add(new SetValueBuilder()
+        var addBody = new ReferenceWidgetAddBodyBuilder();
+
+        var operation1 = new SetValueBuilder()
                 .featureName("name")
                 .valueExpression("Added by custom action")
-                .build());
-        customAddReference.getBody().add(new SetValueBuilder()
+                .build();
+
+        var operation2 = new SetValueBuilder()
                 .featureName("superTypes")
                 .valueExpression("aql:self.superTypes->union(newValue)")
-                .build());
+                .build();
+
+        addBody.body(operation1, operation2);
+
+        customAddReference.setAddBody(addBody.build());
         this.formDescription.getPages().get(0).getGroups().get(0).getChildren().add(customAddReference);
         textfieldFormView.getDescriptions().add(this.formDescription);
         textfieldFormView.getDescriptions().add(this.formDescriptionWithDefaultClear);

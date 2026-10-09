@@ -48,6 +48,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescri
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.util.ReferenceAdapterFactory;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ConditionalReferenceWidgetDescriptionStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetAddBodyItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetClearButtonDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetDescriptionStyleItemProviderSpec;
@@ -197,6 +198,30 @@ public class ReferenceItemProviderAdapterFactory extends ReferenceAdapterFactory
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAddBody} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ReferenceWidgetAddBodyItemProvider referenceWidgetAddBodyItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAddBody}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createReferenceWidgetAddBodyAdapter() {
+        if (this.referenceWidgetAddBodyItemProvider == null) {
+            this.referenceWidgetAddBodyItemProvider = new ReferenceWidgetAddBodyItemProviderSpec(this);
+        }
+
+        return this.referenceWidgetAddBodyItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -304,6 +329,8 @@ public class ReferenceItemProviderAdapterFactory extends ReferenceAdapterFactory
             this.conditionalReferenceWidgetDescriptionStyleItemProvider.dispose();
         if (this.referenceWidgetClearButtonDescriptionItemProvider != null)
             this.referenceWidgetClearButtonDescriptionItemProvider.dispose();
+        if (this.referenceWidgetAddBodyItemProvider != null)
+            this.referenceWidgetAddBodyItemProvider.dispose();
     }
 
     /**

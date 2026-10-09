@@ -107,6 +107,9 @@ The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationD
 A new API has been added to replace `addHandlerProvider`: `IReferenceWidgetAddElementHandler`, a candidate to handle the add event.
 Two implementations of `IReferenceWidgetAddElementHandler`, `ViewReferenceWidgetAddElementHandler` for View-based representation and `DetailsViewReferenceWidgetAddElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
 Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetAddElementHandler`.
+- https://github.com/eclipse-sirius/sirius-web/issues/7056[#7056] [form] `body` reference of `ReferenceWidget` in View DSL cannot be used to describe the behavior of the add element feature anymore.
+Instead, use `addBody`.
+Existing representations have been migrated but programmatic one must be migrated manually.
 
 
 === Dependency update
@@ -185,6 +188,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - https://github.com/eclipse-sirius/sirius-web/issues/6973[#6973] [form] We can now customize the reference widget clear button behavior through the View DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/7063[#7063] [sirius-web] Add the ability to customize the default result of the `ICapabilityEvaluator` instead of defaulting to `true` when no `ICapabilityVoter` takes part in the evaluation.
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [gantt] Perform the refresh of the Gantt representation outside of its event processor by leveraging new APIs.
+- https://github.com/eclipse-sirius/sirius-web/issues/7056[#7056] [form] Reference widget in View DSL now have a dedicated body for add: `AddBody`.
 
 
 

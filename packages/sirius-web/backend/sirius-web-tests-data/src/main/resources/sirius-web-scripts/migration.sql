@@ -2520,7 +2520,22 @@ INSERT INTO document (id, semantic_data_id, name, content, is_read_only, created
                       "eClass": "reference:ReferenceWidgetDescription",
                       "data": {
                         "labelExpression": "Test Widget Reference",
-                        "referenceNameExpression": "target"
+                        "referenceNameExpression": "target",
+                        "body": [{
+                          "id": "609719c4-87ac-4f0a-8be3-e720351a05d3",
+                          "eClass": "view:ChangeContext",
+                          "data": {
+                            "expression": "aql:self",
+                            "children": [{
+                              "id": "c8546d89-d139-4d52-b090-5d23f583ae33",
+                              "eClass": "view:SetValue",
+                              "data": {
+                                "featureName": "target",
+                                "valueExpression": "aql:newValue"
+                              }
+                            }]
+                          }
+                        }]
                       }
                     }]
                   }
