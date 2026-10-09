@@ -17,18 +17,15 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventHandler;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventProcessor;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttInput;
-import org.eclipse.sirius.components.collaborative.gantt.service.GanttCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
@@ -46,57 +43,46 @@ import reactor.core.publisher.Sinks.One;
  */
 public class GanttEventProcessor implements IGanttEventProcessor {
 
-    private final Logger logger = LoggerFactory.getLogger(GanttEventProcessor.class);
-
     private final IEditingContext editingContext;
 
     private final ISubscriptionManager subscriptionManager;
-
-    private final GanttCreationService ganttCreationService;
-
-    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
-
-    private final GanttContext ganttContext;
 
     private final GanttEventFlux ganttEventFlux;
 
     private final List<IGanttEventHandler> ganttEventHandlers;
 
-    private final IRepresentationSearchService representationSearchService;
+    private GanttContext ganttContext;
 
-    public GanttEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, GanttCreationService ganttCreationService,
-            IRepresentationSearchService representationSearchService, List<IGanttEventHandler> ganttEventHandlers, GanttContext ganttContext,
-            IRepresentationPersistenceStrategy representationPersistenceStrategy) {
-        this.logger.atTrace()
-                .setMessage("Creating the gantt event processor {}")
-                .addArgument(ganttContext.getGantt().getId())
-                .log();
+    private final Logger logger = LoggerFactory.getLogger(GanttEventProcessor.class);
 
+    public GanttEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, List<IGanttEventHandler> ganttEventHandlers, GanttContext ganttContext) {
         this.editingContext = Objects.requireNonNull(editingContext);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
-        this.ganttCreationService = Objects.requireNonNull(ganttCreationService);
         this.ganttEventHandlers = Objects.requireNonNull(ganttEventHandlers);
         this.ganttContext = Objects.requireNonNull(ganttContext);
-        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
-
-        // We automatically refresh the representation before using it since things may have changed since the moment it
-        // has been saved in the database.
-        Gantt gantt = this.ganttCreationService.refresh(this.editingContext, ganttContext).orElse(null);
-        this.ganttContext.update(gantt);
-
-        this.ganttEventFlux = new GanttEventFlux(gantt);
-
+        this.ganttEventFlux = new GanttEventFlux(this.ganttContext.representation());
     }
+
 
     @Override
     public IRepresentation getRepresentation() {
-        return this.ganttContext.getGantt();
+        return this.ganttContext.representation();
+    }
+
+    @Override
+    public GanttContext getRepresentationContext() {
+        return this.ganttContext;
     }
 
     @Override
     public ISubscriptionManager getSubscriptionManager() {
         return this.subscriptionManager;
+    }
+
+    @Override
+    public void update(ICause cause, GanttContext representationContext) {
+        this.ganttContext = representationContext;
+        this.ganttEventFlux.ganttRefreshed(cause, representationContext.representation());
     }
 
     @Override
@@ -120,42 +106,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
-        if (this.shouldRefresh(changeDescription)) {
-            String ganttId = this.ganttContext.getGantt().getId();
-            Gantt refreshedGanttRepresentation = this.ganttCreationService.refresh(this.editingContext, this.ganttContext).orElse(null);
-
-            this.ganttContext.reset();
-            this.ganttContext.update(refreshedGanttRepresentation);
-
-            if (refreshedGanttRepresentation != null) {
-                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, refreshedGanttRepresentation);
-                this.logger.atTrace()
-                        .setMessage("Gantt refreshed: {}")
-                        .addArgument(ganttId)
-                        .log();
-            } else {
-                this.logger.atWarn()
-                        .setMessage("Gantt refresh failed: {}")
-                        .addArgument(ganttId)
-                        .log();
-            }
-
-            this.ganttEventFlux.ganttRefreshed(changeDescription.getCause(), this.ganttContext.getGantt());
-        } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.ganttContext.getGantt().getId())) {
-            Optional<Gantt> reloadedGantt = this.representationSearchService.findById(this.editingContext, this.ganttContext.getGantt().getId(), Gantt.class);
-            if (reloadedGantt.isPresent()) {
-                this.ganttContext.update(reloadedGantt.get());
-                this.ganttEventFlux.ganttRefreshed(changeDescription.getCause(), this.ganttContext.getGantt());
-            }
-        }
-    }
-
-    /**
-     * A gantt representation is refreshed if there is a semantic change.
-     */
-    private boolean shouldRefresh(ChangeDescription changeDescription) {
-        String kind = changeDescription.getKind();
-        return ChangeKind.SEMANTIC_CHANGE.equals(kind) || GanttChangeKind.GANTT_REPRESENTATION_UPDATE.equals(kind);
+        // Do nothing
     }
 
     @Override
@@ -168,7 +119,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     @Override
     public void dispose() {
-        String id = Optional.ofNullable(this.ganttContext.getGantt())
+        String id = Optional.ofNullable(this.ganttContext.representation())
                 .map(Gantt::id)
                 .orElse(null);
 

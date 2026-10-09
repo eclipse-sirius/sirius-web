@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,16 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.gantt.api;
 
+import java.util.Optional;
+
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.gantt.Gantt;
-import org.eclipse.sirius.components.gantt.renderer.events.IGanttEvent;
 
 /**
- * Information used to perform some operations on the gantt representation.
+ * Used to perform the initial refresh of the gantt representation for its event processor.
  *
- * @author lfasani
+ * @author sbegaudeau
+ * @since v2026.11.0
  */
-public interface IGanttContext {
-    Gantt getGantt();
-
-    void setGanttEvent(IGanttEvent ganttEvent);
+public interface IGanttEventProcessorInitializer {
+    Optional<Gantt> getRefreshedRepresentation(IEditingContext editingContext, String representationId);
 }

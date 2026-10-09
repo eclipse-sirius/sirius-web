@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,7 +67,7 @@ public class GanttComponent implements IComponent {
 
         List<Element> children = ganttDescription.taskDescriptions().stream()
                 .map(taskDescription -> {
-                    TaskDescriptionComponentProps taskComponentProps = new TaskDescriptionComponentProps(variableManager, taskDescription, previousTasks, ganttId, id2TaskDescription, this.props.ganttEventOptional());
+                    TaskDescriptionComponentProps taskComponentProps = new TaskDescriptionComponentProps(variableManager, taskDescription, previousTasks, ganttId, id2TaskDescription, this.props.events());
                     return new Element(TaskDescriptionComponent.class, taskComponentProps);
                 }).toList();
 
@@ -103,7 +103,7 @@ public class GanttComponent implements IComponent {
     private List<GanttColumn> computeColumn(Optional<Gantt> optionalPreviousGantt) {
         return optionalPreviousGantt.map(previousGantt -> {
             List<GanttColumn> columns = previousGantt.columns();
-            return this.props.ganttEventOptional()
+            return this.props.events().stream()
                     .filter(ChangeGanttColumnEvent.class::isInstance)
                     .map(ChangeGanttColumnEvent.class::cast)
                     .map(event -> {
@@ -112,6 +112,7 @@ public class GanttComponent implements IComponent {
                         newGanttColumns.add(new GanttColumn(event.columnId(), event.displayed(), event.width()));
                         return newGanttColumns;
                     })
+                    .findFirst()
                     .orElse(columns);
         })
         .orElse(getDefaultColumns());

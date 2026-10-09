@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.gantt.service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.gantt.GanttContext;
-import org.eclipse.sirius.components.collaborative.gantt.api.IGanttContext;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -61,38 +61,17 @@ public class GanttCreationService implements IGanttCreationService {
     }
 
     @Override
-    public Gantt create(Object targetObject, GanttDescription ganttDescription, IEditingContext editingContext) {
-        Gantt newGanttDiagram = this.doRender(targetObject, editingContext, ganttDescription, Optional.empty());
-        return newGanttDiagram;
-    }
-
-    @Override
-    public Optional<Gantt> refresh(IEditingContext editingContext, GanttContext ganttContext) {
-        var optionalObject = this.objectSearchService.getObject(editingContext, ganttContext.getGantt().targetObjectId());
-        var optionalGanttDescription = this.representationDescriptionSearchService.findById(editingContext, ganttContext.getGantt().getDescriptionId())
-                .filter(GanttDescription.class::isInstance)
-                .map(GanttDescription.class::cast);
-
-        if (optionalObject.isPresent() && optionalGanttDescription.isPresent()) {
-            Object object = optionalObject.get();
-            GanttDescription ganttDescription = optionalGanttDescription.get();
-            Gantt gantt = this.doRender(object, editingContext, ganttDescription, Optional.of(ganttContext));
-            return Optional.of(gantt);
-        }
-        return Optional.empty();
-    }
-
-    private Gantt doRender(Object targetObject, IEditingContext editingContext, GanttDescription ganttDescription, Optional<GanttContext> optionalGanttContext) {
+    public Gantt create(IEditingContext editingContext, GanttDescription ganttDescription, Object targetObject, GanttContext ganttContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
         variableManager.put(RepresentationVariables.SELF.name(), targetObject);
         variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
 
-        Optional<Gantt> optionalPreviousGantt = optionalGanttContext.map(IGanttContext::getGantt);
-        Optional<IGanttEvent> optionalGanttEvent = optionalGanttContext.map(IGanttContext::getGanttEvent);
+        Optional<Gantt> optionalPreviousGantt = Optional.ofNullable(ganttContext).map(GanttContext::representation);
+        List<IGanttEvent> events = Optional.ofNullable(ganttContext).map(GanttContext::events).orElse(List.of());
 
-        GanttComponentProps ganttComponentProps = new GanttComponentProps(variableManager, ganttDescription, optionalPreviousGantt, optionalGanttEvent);
+        GanttComponentProps ganttComponentProps = new GanttComponentProps(variableManager, ganttDescription, optionalPreviousGantt, events);
 
         Element element = new Element(GanttComponent.class, ganttComponentProps);
         Gantt newGantt = new GanttRenderer().render(element);

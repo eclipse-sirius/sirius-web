@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.gantt.renderer.component;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.gantt.Gantt;
@@ -25,5 +26,5 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author lfasani
  */
-public record GanttComponentProps(VariableManager variableManager, GanttDescription ganttDescription, Optional<Gantt> previousGantt, Optional<IGanttEvent> ganttEventOptional) implements IProps {
+public record GanttComponentProps(VariableManager variableManager, GanttDescription ganttDescription, Optional<Gantt> previousGantt, List<IGanttEvent> events) implements IProps {
 }

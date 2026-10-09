@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.gantt.renderer.component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.description.TaskDescription;
@@ -27,6 +26,11 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author lfasani
  */
-public record TaskDescriptionComponentProps(VariableManager variableManager, TaskDescription taskDescription, List<Task> previousTasks, String parentElementId,
-        Map<String, TaskDescription> id2tasksDescription, Optional<IGanttEvent> ganttEvent) implements IProps {
+public record TaskDescriptionComponentProps(
+        VariableManager variableManager,
+        TaskDescription taskDescription,
+        List<Task> previousTasks,
+        String parentElementId,
+        Map<String, TaskDescription> id2tasksDescription,
+        List<IGanttEvent> events) implements IProps {
 }

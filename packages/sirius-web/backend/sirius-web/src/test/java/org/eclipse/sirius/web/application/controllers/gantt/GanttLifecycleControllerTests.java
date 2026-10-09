@@ -28,8 +28,10 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.gantt.GanttRefresher;
 import org.eclipse.sirius.components.collaborative.gantt.dto.GanttRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskMutationRunner;
@@ -81,6 +83,9 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private IRepresentationContentRepository representationContentRepository;
+
+    @Autowired
+    private GanttRefresher ganttRefresher;
 
     @BeforeEach
     public void beforeEach() {
@@ -161,7 +166,8 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
                         .findFirst()
                         .ifPresentOrElse(representationEventProcessor -> {
                             IInput reloadInput = UUID::randomUUID;
-                            representationEventProcessor.refresh(new ChangeDescription(ChangeKind.RELOAD_REPRESENTATION, ganttId.get(), reloadInput));
+                            IEditingContext editingContext = PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID::toString;
+                            this.ganttRefresher.refresh(editingContext, representationEventProcessor, new ChangeDescription(ChangeKind.RELOAD_REPRESENTATION, ganttId.get(), reloadInput));
                         }, () -> fail("Missing representation event processor"));
             };
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
