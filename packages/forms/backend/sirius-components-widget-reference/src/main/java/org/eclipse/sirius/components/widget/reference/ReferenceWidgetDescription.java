@@ -70,8 +70,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, IStatus> setHandlerProvider;
 
-    private Function<VariableManager, IStatus> addHandlerProvider;
-
     private Function<VariableManager, IStatus> moveHandlerProvider;
 
     private ReferenceWidgetDescription() {
@@ -162,10 +160,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.setHandlerProvider;
     }
 
-    public Function<VariableManager, IStatus> getAddHandlerProvider() {
-        return this.addHandlerProvider;
-    }
-
     public Function<VariableManager, IStatus> getMoveHandlerProvider() {
         return this.moveHandlerProvider;
     }
@@ -235,8 +229,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
 
         private Function<VariableManager, IStatus> setHandlerProvider;
-
-        private Function<VariableManager, IStatus> addHandlerProvider;
 
         private Function<VariableManager, IStatus> moveHandlerProvider;
 
@@ -374,11 +366,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
-        public Builder addHandlerProvider(Function<VariableManager, IStatus> addHandlerProvider) {
-            this.addHandlerProvider = Objects.requireNonNull(addHandlerProvider);
-            return this;
-        }
-
         public Builder moveHandlerProvider(Function<VariableManager, IStatus> moveHandlerProvider) {
             this.moveHandlerProvider = Objects.requireNonNull(moveHandlerProvider);
             return this;
@@ -413,7 +400,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.itemRemoveHandlerProvider = this.itemRemoveHandlerProvider; // Optional on purpose
             referenceWidgetDescription.createButtonDescription = this.createButtonDescription; // Optional on purpose
             referenceWidgetDescription.setHandlerProvider = this.setHandlerProvider; // Optional on purpose
-            referenceWidgetDescription.addHandlerProvider = this.addHandlerProvider; // Optional on purpose
             referenceWidgetDescription.moveHandlerProvider = this.moveHandlerProvider;  // Optional on purpose
             return referenceWidgetDescription;
         }

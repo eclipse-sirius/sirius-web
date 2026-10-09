@@ -70,8 +70,6 @@ public final class ReferenceElementProps implements IProps {
 
     private Function<Object, IStatus> setHandler;
 
-    private Function<List<?>, IStatus> addHandler;
-
     private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
     private ReferenceElementProps() {
@@ -150,10 +148,6 @@ public final class ReferenceElementProps implements IProps {
         return this.setHandler;
     }
 
-    public Function<List<?>, IStatus> getAddHandler() {
-        return this.addHandler;
-    }
-
     public Function<MoveReferenceValueHandlerParameters, IStatus> getMoveHandler() {
         return this.moveHandler;
     }
@@ -210,8 +204,6 @@ public final class ReferenceElementProps implements IProps {
         private List<Element> children;
 
         private Function<Object, IStatus> setHandler;
-
-        private Function<List<?>, IStatus> addHandler;
 
         private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
@@ -301,11 +293,6 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
-        public Builder addHandler(Function<List<?>, IStatus> addHandler) {
-            this.addHandler = Objects.requireNonNull(addHandler);
-            return this;
-        }
-
         public Builder moveHandler(Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler) {
             this.moveHandler = Objects.requireNonNull(moveHandler);
             return this;
@@ -336,7 +323,6 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
             referenceElementProps.children = Objects.requireNonNull(this.children);
             referenceElementProps.setHandler = this.setHandler; // Optional on purpose
-            referenceElementProps.addHandler = this.addHandler; // Optional on purpose
             referenceElementProps.moveHandler = this.moveHandler;  // Optional on purpose
             return referenceElementProps;
         }
