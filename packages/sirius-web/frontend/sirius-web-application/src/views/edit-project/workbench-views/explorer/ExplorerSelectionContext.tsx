@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import { Selection, SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLGetTreePathVariables,
@@ -18,16 +19,38 @@ import {
   useTreePath,
   useTreeSelection,
 } from '@eclipse-sirius/sirius-components-trees';
-import { useCallback, useEffect, useState } from 'react';
-import { UseExplorerSelectionState, UseExplorerSelectionValue } from './useExplorerSelection.types';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { ExplorerContext } from './ExplorerContext';
+import { ExplorerContextValue } from './ExplorerContext.types';
+import {
+  ExplorerSelectionContextProviderProps,
+  ExplorerSelectionContextState,
+  ExplorerSelectionContextValue,
+} from './ExplorerSelectionContext.types';
+import { useExplorerViewHandle } from './useExplorerViewHandle';
 
-export const useExplorerSelection = (
-  editingContextId: string,
-  treeId: string | null,
-  expanded: string[],
-  onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void
-): UseExplorerSelectionValue => {
-  const [state, setState] = useState<UseExplorerSelectionState>({
+const defaultValue: ExplorerSelectionContextValue = {
+  selectedTreeItemIds: [],
+  singleTreeItemSelected: null,
+  setSelectedTreeItemIds: () => {},
+  onRevealSelection: () => {},
+  onTreeItemClick: () => {},
+  applySelection: () => {},
+};
+
+export const ExplorerSelectionContext = React.createContext<ExplorerSelectionContextValue>(defaultValue);
+
+export const ExplorerSelectionContextProvider = ({
+  id,
+  activeTreeDescriptionId,
+  treeFilters,
+  editingContextId,
+  refHandle,
+  expanded,
+  onExpandedElementChange,
+  children,
+}: ExplorerSelectionContextProviderProps) => {
+  const [state, setState] = useState<ExplorerSelectionContextState>({
     selectedTreeItemIds: [],
     singleTreeItemSelected: null,
   });
@@ -35,6 +58,8 @@ export const useExplorerSelection = (
   const { selection, setSelection } = useSelection();
   const { getTreePath, data: treePathData } = useTreePath();
   const { treeItemClick } = useTreeSelection();
+  const { tree } = useContext<ExplorerContextValue>(ExplorerContext);
+  const treeId = !!tree ? tree.id : null;
 
   const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => {
     var localSelection = treeItemClick(event, tree, item, state.selectedTreeItemIds, true);
@@ -109,12 +134,19 @@ export const useExplorerSelection = (
     });
   };
 
-  return {
-    selectedTreeItemIds: state.selectedTreeItemIds,
-    singleTreeItemSelected: state.singleTreeItemSelected,
-    setSelectedTreeItemIds,
-    applySelection,
-    onRevealSelection,
-    onTreeItemClick,
-  };
+  useExplorerViewHandle(id, treeId, treeFilters, activeTreeDescriptionId, applySelection, refHandle);
+
+  return (
+    <ExplorerSelectionContext.Provider
+      value={{
+        applySelection,
+        onRevealSelection,
+        onTreeItemClick,
+        selectedTreeItemIds: state.selectedTreeItemIds,
+        setSelectedTreeItemIds,
+        singleTreeItemSelected: state.singleTreeItemSelected,
+      }}>
+      {children}
+    </ExplorerSelectionContext.Provider>
+  );
 };
