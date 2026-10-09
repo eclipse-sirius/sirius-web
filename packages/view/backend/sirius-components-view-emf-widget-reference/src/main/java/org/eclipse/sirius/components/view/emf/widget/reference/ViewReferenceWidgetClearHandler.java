@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetClearHandler;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.ReferenceWidgetVariables;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -53,8 +54,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ViewReferenceWidgetClearHandler implements IReferenceWidgetClearHandler {
-
-    private static final String REFERENCE_NAME = "referenceName";
 
     private final ViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
@@ -120,20 +119,26 @@ public class ViewReferenceWidgetClearHandler implements IReferenceWidgetClearHan
                     status = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
                 }
             } else if (EcoreUtil.getRootContainer(referenceWidgetDescription) instanceof View view) {
-                VariableManager variableManager = new VariableManager();
-                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
-                variableManager.put(RepresentationVariables.SELF.name(), object);
-                variableManager.put(REFERENCE_NAME, referenceWidget.getReferenceName());
+                var feature = object.eClass().getEStructuralFeature(referenceWidget.getReferenceName());
 
-                var result = this.operationExecutor.execute(this.viewAQLInterpreterFactory.createInterpreter(editingContext, view), variableManager,
-                        referenceWidgetDescription.getClearButton().getBody());
-                if (result.status() == OperationExecutionStatus.FAILURE) {
-                    List<Message> errorMessages = new ArrayList<>();
-                    errorMessages.add(new Message(this.messageService.failedToExecuteClearReferenceAction(), MessageLevel.ERROR));
-                    errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
-                    status = new Failure(errorMessages);
+                if (feature instanceof EReference reference) {
+                    VariableManager variableManager = new VariableManager();
+                    variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
+                    variableManager.put(RepresentationVariables.SELF.name(), object);
+                    variableManager.put(ReferenceWidgetVariables.REFERENCE.name(), reference);
+
+                    var result = this.operationExecutor.execute(this.viewAQLInterpreterFactory.createInterpreter(editingContext, view), variableManager,
+                            referenceWidgetDescription.getClearButton().getBody());
+                    if (result.status() == OperationExecutionStatus.FAILURE) {
+                        List<Message> errorMessages = new ArrayList<>();
+                        errorMessages.add(new Message(this.messageService.failedToExecuteClearReferenceAction(), MessageLevel.ERROR));
+                        errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
+                        status = new Failure(errorMessages);
+                    } else {
+                        status = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
+                    }
                 } else {
-                    status = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
+                    status = new Failure(this.messageService.referenceNotFound(referenceWidget.getReferenceName(), object.eClass().getName()));
                 }
             }
         }
