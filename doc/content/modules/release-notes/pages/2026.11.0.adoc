@@ -90,6 +90,11 @@ Imports of these classes must be updated to:
 The `edgeTools` properties of node palettes, edge palettes, and node tool sections have been removed.
 Existing saved View descriptions are migrated automatically, preserving tool order; connector tools previously placed in sections become a flat list.
 Programmatic descriptions must move their tool declarations to `NodeDescriptionBuilder.edgeTools(...)` or `EdgeDescriptionBuilder.edgeTools(...)`.
+- `addHandlerProvider` has been removed from `ReferenceWidgetDescription`.
+  A new API has been added to replace `addHandlerProvider`: `IReferenceWidgetAddElementHandler`, a candidate to handle the add event.
+  Two implementations of `IReferenceWidgetAddElementHandler`, `ViewReferenceWidgetAddElementHandler` for View-based representation and `DetailsViewReferenceWidgetAddElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
+  Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetAddElementHandler`.
+  The `add` reference widget feature cannot use rendering AQL variables such as the one provided by a `For` element.
 
 
 == Dependency updates

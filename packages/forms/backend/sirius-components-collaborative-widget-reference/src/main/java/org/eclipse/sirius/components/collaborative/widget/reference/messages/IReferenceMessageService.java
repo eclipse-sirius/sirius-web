@@ -35,6 +35,12 @@ public interface IReferenceMessageService {
 
     String referenceNotFound(String referenceName, String className);
 
+    String unableToExecuteAddAction();
+
+    String objectNotFound(String objectId);
+
+    String unableToSetReferenceValue();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -82,5 +88,19 @@ public interface IReferenceMessageService {
             return "";
         }
 
+        @Override
+        public String unableToExecuteAddAction() {
+            return "";
+        }
+
+        @Override
+        public String objectNotFound(String objectId) {
+            return "";
+        }
+
+        @Override
+        public String unableToSetReferenceValue() {
+            return "";
+        }
     }
 }

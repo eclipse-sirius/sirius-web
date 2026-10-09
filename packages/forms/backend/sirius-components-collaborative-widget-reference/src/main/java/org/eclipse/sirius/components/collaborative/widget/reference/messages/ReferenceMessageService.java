@@ -70,4 +70,19 @@ public class ReferenceMessageService implements IReferenceMessageService {
     public String referenceNotFound(String referenceName, String className) {
         return this.messageSourceAccessor.getMessage(MessageConstants.REFERENCE_NOT_FOUND, new Object[] { referenceName, className });
     }
+
+    @Override
+    public String unableToExecuteAddAction() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.UNABLE_TO_EXECUTE_ADD_ACTION);
+    }
+
+    @Override
+    public String objectNotFound(String objectId) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.OBJECT_NOT_FOUND, new Object[] { objectId });
+    }
+
+    @Override
+    public String unableToSetReferenceValue() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.UNABLE_TO_SET_REFERENCE_VALUE);
+    }
 }
