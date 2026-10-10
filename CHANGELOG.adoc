@@ -160,6 +160,7 @@ The form editor preview reflects this configuration.
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6978[#6978] [releng] Extend the Dockerfile and add build settings in `compose.override.yml` for building and running from sources.
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [validation] Perform the refresh of the validation representation outside of its representation event processor.
 A new provisional method `IValidationEventProcessor#update` is available to update the state of the validation event processor and publish a new validation representation to subscribers.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
