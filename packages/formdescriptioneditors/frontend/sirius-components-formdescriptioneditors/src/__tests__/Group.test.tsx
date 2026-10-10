@@ -30,7 +30,7 @@ import { Group } from '../Group';
 import { FormDescriptionEditorContext } from '../hooks/FormDescriptionEditorContext';
 import { DataTransfer } from './DataTransfer';
 
-crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
+vi.spyOn(crypto, 'randomUUID').mockReturnValue('48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => {
   cleanup();
