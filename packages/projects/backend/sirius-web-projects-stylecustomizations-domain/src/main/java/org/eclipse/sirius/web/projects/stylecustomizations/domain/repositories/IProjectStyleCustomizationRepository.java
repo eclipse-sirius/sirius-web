@@ -42,4 +42,5 @@ public interface IProjectStyleCustomizationRepository extends ListPagingAndSorti
         WHERE projectStyleCustomization.project_id = :projectId
         """)
     List<ProjectStyleCustomization> findAllByProjectId(String projectId);
+
 }

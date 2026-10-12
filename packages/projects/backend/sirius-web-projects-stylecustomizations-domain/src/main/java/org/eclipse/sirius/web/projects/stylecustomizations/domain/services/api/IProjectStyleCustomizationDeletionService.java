@@ -1,0 +1,28 @@
+/*******************************************************************************
+ * Copyright (c) 2026 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api;
+
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.projects.domain.Project;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+
+/**
+ * Used to delete project style customizations.
+ *
+ * @author gcoutable
+ */
+public interface IProjectStyleCustomizationDeletionService {
+
+    IResult<Void> deleteProjectStyleCustomizationsByProjectId(ICause cause, AggregateReference<Project, String> project);
+}
