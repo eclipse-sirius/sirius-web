@@ -74,10 +74,13 @@ public class ViewReferenceWidgetCreateElementExecutor implements IViewReferenceW
             var optionalOwner = this.objectSearchService.getObject(editingContext, referenceWidget.getOwnerId())
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast);
-            if (optionalOwner.isPresent() && optionalOwner.get().eClass().getEStructuralFeature(referenceWidget.getReferenceName()) instanceof EReference reference) {
+            var optionalSelf = this.objectSearchService.getObject(editingContext, referenceWidget.getTargetObjectId());
+
+            if (optionalOwner.isPresent() && optionalSelf.isPresent() && optionalOwner.get().eClass().getEStructuralFeature(referenceWidget.getReferenceName()) instanceof EReference reference) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
-                variableManager.put(RepresentationVariables.SELF.name(), optionalOwner.get());
+                variableManager.put(RepresentationVariables.SELF.name(), optionalSelf.get());
+                variableManager.put(ReferenceWidgetVariables.REFERENCE_OWNER.name(), optionalOwner.get());
                 variableManager.put(ReferenceWidgetVariables.REFERENCE.name(), reference);
                 variableManager.put(ReferenceWidgetVariables.CREATION_CONTAINER.name(), creationContainer);
                 variableManager.put(ReferenceWidgetVariables.CREATION_REFERENCE.name(), creationReference);

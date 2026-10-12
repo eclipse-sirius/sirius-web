@@ -101,6 +101,7 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                     .findFirst()
                     .orElse(null);
             var builder = ReferenceWidget.newReferenceWidget(props.getId())
+                    .targetObjectId(props.getTargetObjectId())
                     .descriptionId(props.getDescriptionId())
                     .label(props.getLabel())
                     .iconURL(props.getIconURL())

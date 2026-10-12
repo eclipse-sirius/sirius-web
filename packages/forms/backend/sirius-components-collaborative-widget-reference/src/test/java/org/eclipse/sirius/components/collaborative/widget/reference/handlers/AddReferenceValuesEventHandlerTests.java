@@ -87,6 +87,7 @@ public class AddReferenceValuesEventHandlerTests {
         };
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
+                .targetObjectId("")
                 .diagnostics(Collections.emptyList())
                 .referenceValues(List.of())
                 .referenceOptionsProvider(List::of)
@@ -160,6 +161,7 @@ public class AddReferenceValuesEventHandlerTests {
         };
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
+                .targetObjectId("")
                 .diagnostics(Collections.emptyList())
                 .referenceValues(List.of())
                 .referenceOptionsProvider(List::of)

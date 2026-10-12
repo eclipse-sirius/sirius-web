@@ -22,6 +22,8 @@ import org.eclipse.sirius.components.representations.Variable;
  */
 public final class ReferenceWidgetVariables {
 
+    public static final Variable REFERENCE_OWNER = new Variable("referenceOwner", Object.class, false, "The object owning the reference attached to the reference widget");
+
     public static final Variable REFERENCE = new Variable("reference", Object.class, false, "The reference handled by the reference widget");
 
     public static final Variable CREATION_CONTAINER = new Variable("creationContainer", Object.class, false, "The container chosen for the new instance");

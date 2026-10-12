@@ -80,6 +80,7 @@ public class RemoveReferenceValueEventHandlerTests {
                 .build();
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(REF_WIDGET_ID)
+                .targetObjectId("")
                 .diagnostics(Collections.emptyList())
                 .referenceValues(List.of(referenceValue))
                 .referenceOptionsProvider(List::of)
@@ -158,6 +159,7 @@ public class RemoveReferenceValueEventHandlerTests {
                 .build();
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(REF_WIDGET_ID)
+                .targetObjectId("")
                 .diagnostics(Collections.emptyList())
                 .referenceValues(List.of(referenceValue))
                 .referenceOptionsProvider(List::of)

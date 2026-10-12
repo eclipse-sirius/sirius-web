@@ -36,6 +36,8 @@ public final class ReferenceElementProps implements IProps {
 
     private String id;
 
+    private String targetObjectId;
+
     private String label;
 
     private List<String> iconURL;
@@ -82,6 +84,10 @@ public final class ReferenceElementProps implements IProps {
 
     public String getId() {
         return this.id;
+    }
+
+    public String getTargetObjectId() {
+        return this.targetObjectId;
     }
 
     public String getLabel() {
@@ -173,10 +179,14 @@ public final class ReferenceElementProps implements IProps {
 
         private final String id;
 
+        private String targetObjectId;
+
         private String label;
 
         private List<String> iconURL;
+
         private boolean readOnly;
+
         private Supplier<String> helpTextProvider;
 
         private List<ReferenceValue> values;
@@ -209,6 +219,11 @@ public final class ReferenceElementProps implements IProps {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder targetObjectId(String targetObjectId) {
+            this.targetObjectId = Objects.requireNonNull(targetObjectId);
+            return this;
         }
 
         public Builder label(String label) {
@@ -304,6 +319,7 @@ public final class ReferenceElementProps implements IProps {
         public ReferenceElementProps build() {
             ReferenceElementProps referenceElementProps = new ReferenceElementProps();
             referenceElementProps.id = Objects.requireNonNull(this.id);
+            referenceElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             referenceElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             referenceElementProps.label = Objects.requireNonNull(this.label);
             referenceElementProps.iconURL = this.iconURL;

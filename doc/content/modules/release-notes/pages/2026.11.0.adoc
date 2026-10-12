@@ -85,6 +85,7 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService`
 * `org.eclipse.sirius.web.projects.domain.services.api.IProjectCreationService`
 * `org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent`
+- `org.eclipse.sirius.components.widget.reference.ReferenceWidget` now requires `targetObjectId`.
 
 
 == Dependency updates
