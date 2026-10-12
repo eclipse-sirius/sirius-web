@@ -74,6 +74,7 @@ public class ClearReferenceEventHandlerTests {
         };
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
+                .targetObjectId("")
                 .diagnostics(Collections.emptyList())
                 .referenceValues(List.of())
                 .referenceOptionsProvider(List::of)

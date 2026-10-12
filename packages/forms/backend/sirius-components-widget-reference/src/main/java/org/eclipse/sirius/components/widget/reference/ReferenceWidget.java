@@ -32,6 +32,8 @@ import org.eclipse.sirius.components.widget.reference.dto.MoveReferenceValueHand
 @Immutable
 public final class ReferenceWidget extends AbstractWidget {
 
+    private String targetObjectId;
+
     private List<ReferenceValue> referenceValues;
 
     private Supplier<List<ReferenceValue>> referenceOptionsProvider;
@@ -68,6 +70,10 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public static Builder newReferenceWidget(String id) {
         return new Builder(id);
+    }
+
+    public String getTargetObjectId() {
+        return this.targetObjectId;
     }
 
     public List<ReferenceValue> getReferenceValues() {
@@ -144,6 +150,8 @@ public final class ReferenceWidget extends AbstractWidget {
 
         private final String id;
 
+        private String targetObjectId;
+
         private String label;
 
         private List<String> iconURL = List.of();
@@ -186,6 +194,11 @@ public final class ReferenceWidget extends AbstractWidget {
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder targetObjectId(String targetObjectId) {
+            this.targetObjectId = Objects.requireNonNull(targetObjectId);
+            return this;
         }
 
         public Builder label(String label) {
@@ -291,6 +304,7 @@ public final class ReferenceWidget extends AbstractWidget {
         public ReferenceWidget build() {
             ReferenceWidget referenceWidget = new ReferenceWidget();
             referenceWidget.id = Objects.requireNonNull(this.id);
+            referenceWidget.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             referenceWidget.descriptionId = Objects.requireNonNull(this.descriptionId);
             referenceWidget.label = Objects.requireNonNull(this.label);
             referenceWidget.iconURL = Objects.requireNonNull(this.iconURL);

@@ -61,6 +61,7 @@ public class ReferenceValueOptionsEventHandlerTests {
                 .build();
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
+                .targetObjectId("")
                 .diagnostics(Collections.emptyList())
                 .referenceValues(List.of())
                 .referenceOptionsProvider(() -> List.of(referenceValue))

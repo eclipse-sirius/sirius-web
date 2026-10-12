@@ -103,6 +103,8 @@ public class ViewReferenceWidgetClearHandler implements IReferenceWidgetClearHan
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast);
 
+        var optionalSelf = this.objectSearchService.getObject(editingContext, referenceWidget.getTargetObjectId());
+
         IStatus status = new Failure(this.messageService.failedToExecuteClearReferenceAction());
 
         if (optionalReferenceOwner.isPresent()) {
@@ -118,13 +120,14 @@ public class ViewReferenceWidgetClearHandler implements IReferenceWidgetClearHan
                     }
                     status = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
                 }
-            } else if (EcoreUtil.getRootContainer(referenceWidgetDescription) instanceof View view) {
+            } else if (EcoreUtil.getRootContainer(referenceWidgetDescription) instanceof View view && optionalSelf.isPresent()) {
                 var feature = object.eClass().getEStructuralFeature(referenceWidget.getReferenceName());
 
                 if (feature instanceof EReference reference) {
                     VariableManager variableManager = new VariableManager();
                     variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
-                    variableManager.put(RepresentationVariables.SELF.name(), object);
+                    variableManager.put(RepresentationVariables.SELF.name(), optionalSelf.get());
+                    variableManager.put(ReferenceWidgetVariables.REFERENCE_OWNER.name(), object);
                     variableManager.put(ReferenceWidgetVariables.REFERENCE.name(), reference);
 
                     var result = this.operationExecutor.execute(this.viewAQLInterpreterFactory.createInterpreter(editingContext, view), variableManager,
