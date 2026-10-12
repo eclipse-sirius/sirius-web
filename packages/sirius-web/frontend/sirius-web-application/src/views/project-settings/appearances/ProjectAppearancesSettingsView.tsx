@@ -36,7 +36,7 @@ export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
     endCursor: null,
   });
 
-  const { data, loading } = useProjectStyleCustomizations(
+  const { data, loading, refreshStyleCustomization } = useProjectStyleCustomizations(
     projectId,
     state.startCursor,
     state.endCursor,
@@ -91,6 +91,7 @@ export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
         onNextPage={onNextPage}
         pageSize={state.pageSize}
         onPageSizeChange={onPageSizeChange}
+        onChange={refreshStyleCustomization}
       />
     </Box>
   );

@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.data.FlowIdentifier;
+import org.eclipse.sirius.web.projects.stylecustomizations.application.dto.UpdateProjectStyleCustomizationStateInput;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationCreatedEvent;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationDeletedEvent;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
@@ -30,6 +31,7 @@ import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectExecutor;
 import org.eclipse.sirius.web.tests.graphql.DeleteProjectExecutor;
+import org.eclipse.sirius.web.tests.graphql.UpdateProjectStyleCustomizationStateExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -63,6 +65,9 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
     private DeleteProjectExecutor deleteProjectExecutor;
 
     @Autowired
+    private UpdateProjectStyleCustomizationStateExecutor updateProjectStyleCustomizationStateExecutor;
+
+    @Autowired
     private IDomainEventCollector domainEventCollector;
 
     @BeforeEach
@@ -94,5 +99,32 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
 
         assertThat(this.domainEventCollector.getDomainEvents()).filteredOn(ProjectStyleCustomizationDeletedEvent.class::isInstance).hasSize(2);
         assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS)).isFalse();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a disabled project style customization, when it is enabled, then it becomes active")
+    public void givenDisabledProjectStyleCustomizationWhenEnabledThenItBecomesActive(CapturedOutput capturedOutput) {
+        String arbitraryStyleCustomizationId = "arbitrary-style-customization-id";
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), arbitraryStyleCustomizationId)).isFalse();
+
+        var input = new UpdateProjectStyleCustomizationStateInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, arbitraryStyleCustomizationId, true);
+        this.updateProjectStyleCustomizationStateExecutor.execute(input, capturedOutput).isSuccess();
+
+        assertThat(this.domainEventCollector.getDomainEvents()).filteredOn(ProjectStyleCustomizationCreatedEvent.class::isInstance).hasSize(1);
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), arbitraryStyleCustomizationId)).isTrue();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given an enabled project style customization, when it is disabled, then it becomes inactive")
+    public void givenEnabledProjectStyleCustomizationWhenDisabledThenItBecomesInactive(CapturedOutput capturedOutput) {
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS)).isTrue();
+
+        var input = new UpdateProjectStyleCustomizationStateInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS, false);
+        this.updateProjectStyleCustomizationStateExecutor.execute(input, capturedOutput).isSuccess();
+
+        assertThat(this.domainEventCollector.getDomainEvents()).filteredOn(ProjectStyleCustomizationDeletedEvent.class::isInstance).hasSize(1);
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS)).isFalse();
     }
 }

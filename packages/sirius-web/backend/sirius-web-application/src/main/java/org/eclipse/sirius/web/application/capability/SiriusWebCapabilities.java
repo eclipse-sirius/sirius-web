@@ -106,6 +106,13 @@ public final class SiriusWebCapabilities {
          * @since v2026.11.0
          */
         public static final String LIST_STYLE_CUSTOMIZATIONS = "list-style-customizations";
+
+        /**
+         * Used to check if the state of a project style customizations can be updated.
+         *
+         * @since v2026.11.0
+         */
+        public static final String UPDATE_STYLE_CUSTOMIZATIONS_STATE = "update-style-customizations-state";
     }
 
     public static final String LIBRARY = "Library";

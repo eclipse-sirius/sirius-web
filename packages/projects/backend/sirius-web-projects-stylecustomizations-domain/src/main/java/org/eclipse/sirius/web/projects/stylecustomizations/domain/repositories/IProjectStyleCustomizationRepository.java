@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.ProjectStyleCustomization;
@@ -43,4 +44,9 @@ public interface IProjectStyleCustomizationRepository extends ListPagingAndSorti
         """)
     List<ProjectStyleCustomization> findAllByProjectId(String projectId);
 
+    @Query("""
+        SELECT * FROM project_style_customization projectStyleCustomization
+        WHERE projectStyleCustomization.project_id = :projectId AND projectStyleCustomization.style_customization_description_id = :styleCustomizationDescriptionId
+        """)
+    Optional<ProjectStyleCustomization> findByProjectIdAndStyleCustomizationDescriptionId(String projectId, String styleCustomizationDescriptionId);
 }

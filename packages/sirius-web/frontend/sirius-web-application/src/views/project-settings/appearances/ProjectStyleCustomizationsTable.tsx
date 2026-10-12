@@ -12,12 +12,12 @@
  *******************************************************************************/
 
 import { useTableTranslation } from '@eclipse-sirius/sirius-components-tables';
-import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CursorBasedPagination } from '../../../table/CursorBasedPagination';
+import { ProjectStyleCustomizationsCheckbox } from './ProjectStyleCustomizationsCheckbox';
 import { ProjectStyleCustomizationsTableProps } from './ProjectStyleCustomizationsTable.types';
 import { GQLProjectStyleCustomization } from './useProjectStyleCustomizations.types';
 
@@ -31,6 +31,7 @@ export const ProjectStyleCustomizationsTable = ({
   onNextPage,
   pageSize,
   onPageSizeChange,
+  onChange,
 }: ProjectStyleCustomizationsTableProps) => {
   const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
     keyPrefix: 'styleCustomizationTable',
@@ -43,7 +44,14 @@ export const ProjectStyleCustomizationsTable = ({
         accessorKey: 'enabled',
         header: '',
         size: 50,
-        Cell: ({ cell }) => <Checkbox disabled checked={cell.getValue<boolean>()} />,
+        Cell: ({ cell, row }) => (
+          <ProjectStyleCustomizationsCheckbox
+            styleCustomizationDescriptionId={row.original.id}
+            disabled={loading}
+            checked={cell.getValue<boolean>()}
+            onUpdated={onChange}
+          />
+        ),
       },
       {
         accessorFn: (row) => row.name,
@@ -58,7 +66,7 @@ export const ProjectStyleCustomizationsTable = ({
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
     ],
-    [t]
+    [t, loading, onChange]
   );
 
   const table = useMaterialReactTable<GQLProjectStyleCustomization>({
