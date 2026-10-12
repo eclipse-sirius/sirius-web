@@ -10,11 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
 import { FilterBar, FilterBarContext, FilterBarContextValue, TreeView } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
 import { useContext } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from './context-menu-contributions/duplicate-object/DuplicateObjectKeyboardShortcut';
+import { ExplorerContext } from './ExplorerContext';
+import { ExplorerContextValue } from './ExplorerContext.types';
+import { ExplorerSelectionContext } from './ExplorerSelectionContext';
+import { ExplorerSelectionContextValue } from './ExplorerSelectionContext.types';
 import { ExplorerRendererProps } from './ExplorerTreeRenderer.types';
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -29,19 +34,18 @@ const useStyles = makeStyles()((theme: Theme) => ({
 export const ExplorerTreeRenderer = ({
   editingContextId,
   readOnly,
-  tree,
-  selectedTreeItem,
-  selectedTreeItemIds,
   target,
   expanded,
   maxDepth,
-  onTreeItemClick,
-  selectTreeItems,
   onExpandedElementChange,
 }: ExplorerRendererProps) => {
   const { classes: styles } = useStyles();
   const { isOpen, filterBarText, filterBarTreeFiltering, setFilterBarText, setFilterBarTreeFiltering, onClose } =
     useContext<FilterBarContextValue>(FilterBarContext);
+  const { selectedTreeItemIds, singleTreeItemSelected, onTreeItemClick, setSelectedTreeItemIds } =
+    useContext<ExplorerSelectionContextValue>(ExplorerSelectionContext);
+
+  const { tree } = useContext<ExplorerContextValue>(ExplorerContext);
 
   let filterBar: JSX.Element = <div />;
   if (isOpen) {
@@ -61,13 +65,17 @@ export const ExplorerTreeRenderer = ({
     );
   }
 
+  if (!tree) {
+    return <RepresentationLoadingIndicator />;
+  }
+
   return (
     <DuplicateObjectKeyboardShortcut
       target={target}
       editingContextId={editingContextId}
       readOnly={readOnly}
-      selectedTreeItem={selectedTreeItem}
-      selectTreeItems={selectTreeItems}>
+      selectedTreeItem={singleTreeItemSelected}
+      selectTreeItems={setSelectedTreeItemIds}>
       {filterBar}
       <div className={styles.treeContent}>
         <TreeView
@@ -80,7 +88,7 @@ export const ExplorerTreeRenderer = ({
           expanded={expanded}
           maxDepth={maxDepth}
           onTreeItemClick={onTreeItemClick}
-          selectTreeItems={selectTreeItems}
+          selectTreeItems={setSelectedTreeItemIds}
           selectedTreeItemIds={selectedTreeItemIds}
           data-testid="explorer://"
           useTreePalette={tree.capabilities.useTreePalette}
