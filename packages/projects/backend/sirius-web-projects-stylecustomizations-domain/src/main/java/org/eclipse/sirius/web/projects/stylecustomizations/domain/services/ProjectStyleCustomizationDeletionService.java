@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.projects.stylecustomizations.domain.services;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.projects.domain.Project;
@@ -43,5 +44,17 @@ public class ProjectStyleCustomizationDeletionService implements IProjectStyleCu
         projectStyleCustomizations.forEach(projectStyleCustomization -> projectStyleCustomization.dispose(cause));
         this.projectStyleCustomizationRepository.deleteAll(projectStyleCustomizations);
         return new Success<>(null);
+    }
+
+    @Override
+    public IResult<Void> deleteByProjectIdAndStyleDescriptionId(ICause cause, AggregateReference<Project, String> project, String styleCustomizationId) {
+        var optionalProjectStyleCustomization = this.projectStyleCustomizationRepository.findByProjectIdAndStyleCustomizationDescriptionId(project.getId(), styleCustomizationId);
+        if (optionalProjectStyleCustomization.isPresent()) {
+            var projectStyleCustomization = optionalProjectStyleCustomization.get();
+            projectStyleCustomization.dispose(cause);
+            this.projectStyleCustomizationRepository.delete(projectStyleCustomization);
+            return new Success<>(null);
+        }
+        return new Failure<>("");
     }
 }

@@ -64,7 +64,7 @@ export const useProjectStyleCustomizations = (
     last: before ? pageSize : null,
   };
 
-  const { data, loading, error } = useQuery<
+  const { data, loading, error, refetch } = useQuery<
     GQLGetProjectStyleCustomizationsQueryData,
     GQLGetProjectStyleCustomizationsQueryVariables
   >(getProjectStyleCustomizations, {
@@ -81,5 +81,6 @@ export const useProjectStyleCustomizations = (
   return {
     data: data ?? null,
     loading,
+    refreshStyleCustomization: refetch,
   };
 };

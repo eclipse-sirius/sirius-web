@@ -23,4 +23,5 @@ export interface ProjectStyleCustomizationsTableProps {
   onNextPage: () => void;
   pageSize: number;
   onPageSizeChange: (pageSize: number) => void;
+  onChange: () => void;
 }
