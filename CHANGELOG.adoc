@@ -158,6 +158,7 @@ Introduce the `RenameProjectExecutor` to execute the rename project mutation, an
 The form editor preview reflects this configuration.
 - https://github.com/eclipse-sirius/sirius-web/issues/7034[#7034] [projects] Persist project style customizations.
 Enable flow related project style customizations when a new flow project is created.
+- https://github.com/eclipse-sirius/sirius-web/issues/6991[#6991] [tree] The Explorer text filter now searches inside the whole tree when the filter button inside the filter is activated.
 
 
 === Improvements

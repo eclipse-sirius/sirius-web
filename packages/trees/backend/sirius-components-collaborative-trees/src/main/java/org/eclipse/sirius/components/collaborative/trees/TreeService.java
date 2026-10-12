@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.trees;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.trees.api.ITreeFilter;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
@@ -36,8 +37,11 @@ public class TreeService implements ITreeService {
 
     private final List<IRepresentationRenderVariableCustomizer> renderVariableCustomizers;
 
-    public TreeService(List<IRepresentationRenderVariableCustomizer> renderVariableCustomizers) {
+    private final ITreeFilter treeFilter;
+
+    public TreeService(List<IRepresentationRenderVariableCustomizer> renderVariableCustomizers, ITreeFilter treeFilter) {
         this.renderVariableCustomizers = Objects.requireNonNull(renderVariableCustomizers);
+        this.treeFilter = Objects.requireNonNull(treeFilter);
     }
 
     @Override
@@ -48,7 +52,8 @@ public class TreeService implements ITreeService {
         }
 
         TreeRenderer treeRenderer = new TreeRenderer(variableManager, treeCreationParameters.getTreeDescription());
-        return treeRenderer.render();
+        Tree tree = treeRenderer.render();
+        return this.treeFilter.filter(tree, treeCreationParameters.getSearchedValue());
     }
 
     private VariableManager createDefaultVariables(TreeCreationParameters treeCreationParameters) {
@@ -58,6 +63,7 @@ public class TreeService implements ITreeService {
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, treeCreationParameters.getId());
         variableManager.put(TreeRenderer.EXPANDED, treeCreationParameters.getExpanded());
         variableManager.put(TreeRenderer.ACTIVE_FILTER_IDS, treeCreationParameters.getActiveFilterIds());
+        variableManager.put(TreeRenderer.SEARCHED_VALUE, treeCreationParameters.getSearchedValue());
         return variableManager;
     }
 
