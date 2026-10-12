@@ -21,9 +21,15 @@ import org.eclipse.sirius.components.flow.starter.services.FlowProjectTemplatesP
 import org.eclipse.sirius.components.flow.starter.services.FlowStyleCustomizationDescriptionProvider;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
+import org.eclipse.sirius.web.data.FlowIdentifier;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationCreatedEvent;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationDeletedEvent;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
+import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectExecutor;
+import org.eclipse.sirius.web.tests.graphql.DeleteProjectExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,9 +59,16 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
     @Autowired
     private CreateProjectExecutor createProjectExecutor;
 
+    @Autowired
+    private DeleteProjectExecutor deleteProjectExecutor;
+
+    @Autowired
+    private IDomainEventCollector domainEventCollector;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
+        this.domainEventCollector.clear();
     }
 
     @Test
@@ -65,7 +78,21 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
         var input = new CreateProjectInput(UUID.randomUUID(), "New Flow Project", FlowProjectTemplatesProvider.FLOW_TEMPLATE_ID, List.of());
         var createdProjectId = this.createProjectExecutor.execute(input, capturedOutput).isSuccess().getProjectId();
 
+        assertThat(this.domainEventCollector.getDomainEvents()).filteredOn(ProjectStyleCustomizationCreatedEvent.class::isInstance).hasSize(2);
         assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(createdProjectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS)).isTrue();
         assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(createdProjectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS)).isTrue();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a flow project with project style customizations enabled, when the project is deleted, then the associated project style customizations are deleted")
+    public void givenAFlowProjectWithProjectStyleCustomizationsEnabledWhenTheProjectIsDeletedThenAssociatedProjectStyleCustomizationsAreDeleted(CapturedOutput capturedOutput) {
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS)).isTrue();
+
+        var input = new DeleteProjectInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID);
+        this.deleteProjectExecutor.execute(input, capturedOutput).isSuccess();
+
+        assertThat(this.domainEventCollector.getDomainEvents()).filteredOn(ProjectStyleCustomizationDeletedEvent.class::isInstance).hasSize(2);
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS)).isFalse();
     }
 }

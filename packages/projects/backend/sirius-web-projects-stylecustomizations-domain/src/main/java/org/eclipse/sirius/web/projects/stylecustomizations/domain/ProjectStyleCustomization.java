@@ -18,8 +18,9 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
-import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationCreatedEvent;
 import org.eclipse.sirius.web.projects.domain.Project;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationCreatedEvent;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.events.ProjectStyleCustomizationDeletedEvent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
@@ -69,6 +70,10 @@ public class ProjectStyleCustomization extends AbstractValidatingAggregateRoot<P
     @Override
     public boolean isNew() {
         return this.isNew;
+    }
+
+    public void dispose(ICause cause) {
+        this.registerEvent(new ProjectStyleCustomizationDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
 
     public static Builder newProjectStyleCustomization() {

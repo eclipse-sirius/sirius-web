@@ -165,6 +165,7 @@ Introduce the `RenameProjectExecutor` to execute the rename project mutation, an
 The form editor preview reflects this configuration.
 - https://github.com/eclipse-sirius/sirius-web/issues/7034[#7034] [projects] Persist project style customizations.
 Enable flow related project style customizations when a new flow project is created.
+- https://github.com/eclipse-sirius/sirius-web/issues/7036[#7036] [projects] Clean enabled project style customizations when a project is deleted
 
 
 === Improvements
