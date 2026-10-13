@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearB
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
@@ -132,6 +133,14 @@ public class ReferenceSwitch<T> extends Switch<T> {
                 return result;
             }
 
+            case ReferencePackage.REFERENCE_WIDGET_SET: {
+                ReferenceWidgetSet referenceWidgetSet = (ReferenceWidgetSet) theEObject;
+                T result = this.caseReferenceWidgetSet(referenceWidgetSet);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+
             case ReferencePackage.REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION: {
                 ReferenceWidgetCreateButtonDescription referenceWidgetCreateButtonDescription = (ReferenceWidgetCreateButtonDescription) theEObject;
                 T result = this.caseReferenceWidgetCreateButtonDescription(referenceWidgetCreateButtonDescription);
@@ -232,6 +241,21 @@ public class ReferenceSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseReferenceWidgetAdd(ReferenceWidgetAdd object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Widget Set</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Widget Set</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseReferenceWidgetSet(ReferenceWidgetSet object) {
         return null;
     }
 

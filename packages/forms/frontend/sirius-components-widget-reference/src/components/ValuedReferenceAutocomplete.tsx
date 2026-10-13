@@ -288,15 +288,17 @@ export const ValuedReferenceAutocomplete = ({
               <>
                 {params.InputProps.endAdornment}
                 <InputAdornment position="end" className={classes.endAdornmentButton}>
-                  <IconButton
-                    aria-label="edit"
-                    size="small"
-                    title={t('edit')}
-                    disabled={readOnly || widget.readOnly}
-                    data-testid={`${widget.label}-more`}
-                    onClick={onMoreClick}>
-                    <MoreHorizIcon />
-                  </IconButton>
+                  {widget.selectable ? (
+                    <IconButton
+                      aria-label="edit"
+                      size="small"
+                      title={t('edit')}
+                      disabled={readOnly || widget.readOnly}
+                      data-testid={`${widget.label}-more`}
+                      onClick={onMoreClick}>
+                      <MoreHorizIcon />
+                    </IconButton>
+                  ) : null}
                   {widget.createButton ? (
                     <IconButton
                       aria-label="add"

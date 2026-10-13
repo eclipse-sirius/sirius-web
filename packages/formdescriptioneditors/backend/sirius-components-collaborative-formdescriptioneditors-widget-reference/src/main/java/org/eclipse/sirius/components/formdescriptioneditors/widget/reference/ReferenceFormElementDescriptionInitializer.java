@@ -33,6 +33,7 @@ public class ReferenceFormElementDescriptionInitializer implements IFormElementD
             referenceWidgetDescription.setClearButton(ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription());
             referenceWidgetDescription.setCreateButton(ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription());
             referenceWidgetDescription.setAdd(ReferenceFactory.eINSTANCE.createReferenceWidgetAdd());
+            referenceWidgetDescription.setSet(ReferenceFactory.eINSTANCE.createReferenceWidgetSet());
         }
     }
 }

@@ -139,14 +139,16 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
                 <>
                   {params.InputProps.endAdornment}
                   <InputAdornment position="end">
-                    <IconButton
-                      aria-label="edit"
-                      size="small"
-                      title="Edit"
-                      disabled={false}
-                      data-testid={`${widget.label}-more`}>
-                      <MoreHorizIcon />
-                    </IconButton>
+                    {widget.selectable ? (
+                      <IconButton
+                        aria-label="edit"
+                        size="small"
+                        title="Edit"
+                        disabled={false}
+                        data-testid={`${widget.label}-more`}>
+                        <MoreHorizIcon />
+                      </IconButton>
+                    ) : null}
                     {widget.createButton ? (
                       <IconButton
                         aria-label="add"

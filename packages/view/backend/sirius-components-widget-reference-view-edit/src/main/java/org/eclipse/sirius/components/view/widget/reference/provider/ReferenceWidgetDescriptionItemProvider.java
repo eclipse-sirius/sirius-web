@@ -22,7 +22,6 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.form.provider.WidgetDescriptionItemProvider;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
@@ -101,9 +100,9 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD);
+            this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__SET);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON);
@@ -185,9 +184,9 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD:
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__SET:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON:
@@ -207,21 +206,13 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createLet()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createIf()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createFor()));
 
         newChildDescriptors
                 .add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription()));
@@ -230,6 +221,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
                 .add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription()));
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD, ReferenceFactory.eINSTANCE.createReferenceWidgetAdd()));
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__SET, ReferenceFactory.eINSTANCE.createReferenceWidgetSet()));
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 

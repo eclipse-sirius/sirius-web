@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,9 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
   const { treeItemClick } = useTreeSelection();
 
   const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => {
+    if (!widget.selectable) {
+      return;
+    }
     var newSelection = treeItemClick(event, tree, item, selectedTreeItemIds, widget.reference.manyValued);
     setSelectedTreeItemIds(newSelection.selectedTreeItemIds);
   };
@@ -71,10 +74,11 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
           variant="contained"
           color="primary"
           type="button"
+          disabled={!widget.selectable}
           data-testid="select-value"
           onClick={() => {
             const selectedElementId = selectedTreeItemIds?.length > 0 ? selectedTreeItemIds[0] : null;
-            if (selectedElementId) {
+            if (widget.selectable && selectedElementId) {
               onClose(selectedElementId);
             }
           }}>

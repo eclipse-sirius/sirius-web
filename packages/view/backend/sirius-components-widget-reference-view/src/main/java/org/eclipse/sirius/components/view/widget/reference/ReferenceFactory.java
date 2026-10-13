@@ -79,6 +79,14 @@ public interface ReferenceFactory extends EFactory {
     ReferenceWidgetAdd createReferenceWidgetAdd();
 
     /**
+     * Returns a new object of class '<em>Widget Set</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Widget Set</em>'.
+     * @generated
+     */
+    ReferenceWidgetSet createReferenceWidgetSet();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.
