@@ -112,7 +112,7 @@ public class AddReferenceValuesEventHandler implements IFormEventHandler {
                         .log();
 
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput, success.getParameters());
+                changeDescription = new ChangeDescription(success.getChangeKind(), formInput.representationId(), formInput, success.getParameters());
             } else if (status instanceof Failure failure) {
                 this.logger.atWarn()
                         .setMessage("Add reference value action failed")

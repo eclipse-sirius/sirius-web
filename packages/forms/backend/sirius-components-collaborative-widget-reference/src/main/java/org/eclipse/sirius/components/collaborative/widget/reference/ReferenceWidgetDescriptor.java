@@ -116,7 +116,6 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                     .referenceValues(props.getValues())
                     .referenceOptionsProvider(props.getOptionsProvider())
                     .ownerId(props.getOwnerId())
-                    .setHandler(props.getSetHandler())
                     .moveHandler(props.getMoveHandler());
             if (clearButton != null) {
                 builder.clearButton(clearButton);

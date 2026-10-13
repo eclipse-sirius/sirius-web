@@ -70,8 +70,6 @@ public final class ReferenceElementProps implements IProps {
 
     private List<Element> children;
 
-    private Function<Object, IStatus> setHandler;
-
     private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
     private ReferenceElementProps() {
@@ -150,10 +148,6 @@ public final class ReferenceElementProps implements IProps {
         return this.ownerId;
     }
 
-    public Function<Object, IStatus> getSetHandler() {
-        return this.setHandler;
-    }
-
     public Function<MoveReferenceValueHandlerParameters, IStatus> getMoveHandler() {
         return this.moveHandler;
     }
@@ -210,8 +204,6 @@ public final class ReferenceElementProps implements IProps {
         private String ownerId;
 
         private List<Element> children;
-
-        private Function<Object, IStatus> setHandler;
 
         private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
@@ -301,11 +293,6 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
-        public Builder setHandler(Function<Object, IStatus> setHandler) {
-            this.setHandler = Objects.requireNonNull(setHandler);
-            return this;
-        }
-
         public Builder moveHandler(Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler) {
             this.moveHandler = Objects.requireNonNull(moveHandler);
             return this;
@@ -336,7 +323,6 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.style = this.style; // Optional on purpose
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
             referenceElementProps.children = Objects.requireNonNull(this.children);
-            referenceElementProps.setHandler = this.setHandler; // Optional on purpose
             referenceElementProps.moveHandler = this.moveHandler;  // Optional on purpose
             return referenceElementProps;
         }

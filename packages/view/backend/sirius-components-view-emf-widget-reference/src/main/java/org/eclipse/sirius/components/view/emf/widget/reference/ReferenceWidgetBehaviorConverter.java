@@ -32,9 +32,7 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
-import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 import org.eclipse.sirius.components.view.emf.widget.reference.api.IReferenceWidgetBehaviorConverter;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
@@ -65,11 +63,6 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
 
         if (viewReferenceWidgetDescription.getHelpExpression() != null && !viewReferenceWidgetDescription.getHelpExpression().isBlank()) {
             referenceWidgetDescriptionBuilder.helpTextProvider(new StringValueProvider(interpreter, Optional.ofNullable(viewReferenceWidgetDescription.getHelpExpression()).orElse("")));
-        }
-        if (viewReferenceWidgetDescription.getBody().isEmpty()) {
-            referenceWidgetDescriptionBuilder.setHandlerProvider(variableManager -> this.handleSetReference(interpreter, variableManager, viewReferenceWidgetDescription));
-        } else {
-            referenceWidgetDescriptionBuilder.setHandlerProvider(variableManager -> this.newValueHandler(interpreter, variableManager, viewReferenceWidgetDescription.getBody()));
         }
     }
 
@@ -123,35 +116,6 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
             }
         }
         return result;
-    }
-
-    private IStatus handleSetReference(AQLInterpreter interpreter, VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
-        IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject owner = this.getReferenceOwner(interpreter, variableManager, referenceDescription.getReferenceOwnerExpression());
-        String referenceName = new StringValueProvider(interpreter, Optional.ofNullable(referenceDescription.getReferenceNameExpression()).orElse("")).apply(variableManager);
-        Optional<Object> item = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, Object.class);
-
-        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
-            if (reference.isMany()) {
-                result = this.createErrorStatus("Multiple-valued reference can only accept a list of values");
-            } else {
-                owner.eSet(reference, item.get());
-            }
-        } else {
-            result = this.createErrorStatus("Something went wrong while setting the reference value.");
-        }
-        return result;
-    }
-
-    private IStatus newValueHandler(AQLInterpreter interpreter, VariableManager variableManager, List<Operation> operations) {
-        var result = this.operationExecutor.execute(interpreter, variableManager, operations);
-        if (result.status() == OperationExecutionStatus.FAILURE) {
-            List<Message> errorMessages = new ArrayList<>();
-            errorMessages.add(new Message("Something went wrong while setting the reference value.", MessageLevel.ERROR));
-            errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
-            return new Failure(errorMessages);
-        }
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
     }
 
     private IStatus createErrorStatus(String message) {
