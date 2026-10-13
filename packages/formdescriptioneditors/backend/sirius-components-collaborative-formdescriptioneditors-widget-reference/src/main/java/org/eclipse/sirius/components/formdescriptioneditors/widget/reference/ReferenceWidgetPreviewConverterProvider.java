@@ -76,7 +76,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                 .referenceNameProvider(variableManager -> "")
                 .isContainmentProvider(variableManager -> false)
                 .isManyProvider(variableManager -> false)
-                .selectableProvider(variableManager -> referenceDescription.getAdd() != null)
+                .selectableProvider(variableManager -> referenceDescription.getAdd() != null || referenceDescription.getSet() != null)
                 .ownerIdProvider(variableManager -> "")
                 .itemRemoveHandlerProvider(variableManager -> new Success())
                 .moveHandlerProvider(variableManager -> new Success())
