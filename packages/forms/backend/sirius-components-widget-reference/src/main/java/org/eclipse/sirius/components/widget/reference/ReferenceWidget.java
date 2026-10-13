@@ -58,8 +58,6 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private ReferenceWidgetCreateButton createButton;
 
-    private Function<Object, IStatus> setHandler;
-
     private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
     private String descriptionId;
@@ -128,10 +126,6 @@ public final class ReferenceWidget extends AbstractWidget {
         return this.createButton;
     }
 
-    public Function<Object, IStatus> getSetHandler() {
-        return this.setHandler;
-    }
-
     public Function<MoveReferenceValueHandlerParameters, IStatus> getMoveHandler() {
         return this.moveHandler;
     }
@@ -185,8 +179,6 @@ public final class ReferenceWidget extends AbstractWidget {
         private ReferenceWidgetClearButton clearButton;
 
         private ReferenceWidgetCreateButton createButton;
-
-        private Function<Object, IStatus> setHandler;
 
         private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
@@ -286,11 +278,6 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder setHandler(Function<Object, IStatus> setHandler) {
-            this.setHandler = Objects.requireNonNull(setHandler);
-            return this;
-        }
-
         public Builder moveHandler(Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler) {
             this.moveHandler = Objects.requireNonNull(moveHandler);
             return this;
@@ -323,7 +310,6 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.ownerId = Objects.requireNonNull(this.ownerId);
             referenceWidget.clearButton = this.clearButton; // Optional on purpose
             referenceWidget.createButton = this.createButton; // Optional on purpose
-            referenceWidget.setHandler = this.setHandler; // Optional on purpose
             referenceWidget.moveHandler = this.moveHandler; // Optional on purpose
             return referenceWidget;
         }

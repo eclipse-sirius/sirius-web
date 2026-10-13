@@ -213,7 +213,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .itemRemoveHandlerProvider(variableManager -> this.handleRemoveValue(variableManager, feature))
-                .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, feature))
                 .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(variableManager, feature))
                 .build();
     }
@@ -308,42 +307,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
             return this.createErrorStatus("Something went wrong while removing a reference value.");
         }
         return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-    }
-
-    private IStatus handleSetReference(VariableManager variableManager, Object feature) {
-        IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
-        Optional<Object> item = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, Object.class);
-
-        if (referenceOwner != null && feature instanceof EReference reference) {
-            if (reference.isMany()) {
-                result = this.createErrorStatus("Multiple-valued reference can only accept a list of values");
-            } else {
-                referenceOwner.eSet(reference, item.get());
-            }
-        } else {
-            result = this.createErrorStatus("Something went wrong while setting the reference value.");
-        }
-        return result;
-    }
-
-    private IStatus handleAddReferenceValues(VariableManager variableManager, Object feature) {
-        IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
-        Optional<List<Object>> newValues = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, (Class<List<Object>>) (Class<?>) List.class);
-
-        if (newValues.isEmpty()) {
-            result = this.createErrorStatus("Something went wrong while adding reference values.");
-        } else if (referenceOwner != null && feature instanceof EReference reference) {
-            if (reference.isMany()) {
-                ((List<Object>) referenceOwner.eGet(reference)).addAll(newValues.get());
-            } else {
-                new Failure("Single-valued reference can only accept a single value");
-            }
-        } else {
-            result = this.createErrorStatus("Something went wrong while adding reference values.");
-        }
-        return result;
     }
 
     private IStatus handleMoveReferenceValue(VariableManager variableManager, Object feature) {
