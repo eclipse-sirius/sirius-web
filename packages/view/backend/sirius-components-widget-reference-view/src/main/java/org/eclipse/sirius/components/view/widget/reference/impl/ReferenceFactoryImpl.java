@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearB
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
@@ -78,6 +79,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
                 return this.createReferenceWidgetCreateButtonDescription();
             case ReferencePackage.REFERENCE_WIDGET_ADD:
                 return this.createReferenceWidgetAdd();
+            case ReferencePackage.REFERENCE_WIDGET_SET:
+                return this.createReferenceWidgetSet();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -147,6 +150,17 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
     public ReferenceWidgetAdd createReferenceWidgetAdd() {
         ReferenceWidgetAddImpl referenceWidgetAdd = new ReferenceWidgetAddImpl();
         return referenceWidgetAdd;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ReferenceWidgetSet createReferenceWidgetSet() {
+        ReferenceWidgetSetImpl referenceWidgetSet = new ReferenceWidgetSetImpl();
+        return referenceWidgetSet;
     }
 
     /**

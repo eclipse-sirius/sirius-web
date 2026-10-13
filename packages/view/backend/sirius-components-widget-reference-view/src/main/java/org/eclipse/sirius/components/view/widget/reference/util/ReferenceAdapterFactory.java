@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearB
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
@@ -79,6 +80,11 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseReferenceWidgetAdd(ReferenceWidgetAdd object) {
             return ReferenceAdapterFactory.this.createReferenceWidgetAddAdapter();
+        }
+
+        @Override
+        public Adapter caseReferenceWidgetSet(ReferenceWidgetSet object) {
+            return ReferenceAdapterFactory.this.createReferenceWidgetSetAdapter();
         }
 
         @Override
@@ -239,6 +245,20 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createReferenceWidgetAddAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link ReferenceWidgetSet <em>Widget Set</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see ReferenceWidgetSet
+     * @generated
+     */
+    public Adapter createReferenceWidgetSetAdapter() {
         return null;
     }
 

@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.widget.reference;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
@@ -29,6 +28,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * <em>Reference Name Expression</em>}</li>
  * <li>{@link ReferenceWidgetDescription#getClearButton <em>Clear Button</em>}</li>
  * <li>{@link ReferenceWidgetDescription#getAdd <em>Add</em>}</li>
+ * <li>{@link ReferenceWidgetDescription#getSet <em>Set</em>}</li>
  * </ul>
  *
  * @model
@@ -86,17 +86,6 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
     void setReferenceNameExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Body</em>' containment reference list.
-     * @model containment="true"
-     * @see ReferencePackage#getReferenceWidgetDescription_Body()
-     * @generated
-     */
-    EList<Operation> getBody();
-
-    /**
      * Returns the value of the '<em><b>Clear Button</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Clear Button</em>' containment reference.
@@ -137,6 +126,27 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setAdd(ReferenceWidgetAdd value);
+
+    /**
+     * Returns the value of the '<em><b>Set</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Set</em>' containment reference.
+     * @model containment="true"
+     * @see #setSet(ReferenceWidgetSet)
+     * @see ReferencePackage#getReferenceWidgetDescription_Set()
+     * @generated
+     */
+    ReferenceWidgetSet getSet();
+
+    /**
+     * Sets the value of the '{@link ReferenceWidgetDescription#getSet <em>Set</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Set</em>' containment reference.
+     * @see #getSet()
+     * @generated
+     */
+    void setSet(ReferenceWidgetSet value);
 
     /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc

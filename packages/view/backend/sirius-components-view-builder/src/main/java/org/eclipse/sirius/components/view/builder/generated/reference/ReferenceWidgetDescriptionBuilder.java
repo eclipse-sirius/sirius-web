@@ -113,18 +113,6 @@ public class ReferenceWidgetDescriptionBuilder {
     }
 
     /**
-     * Setter for Body.
-     *
-     * @generated
-     */
-    public ReferenceWidgetDescriptionBuilder body(org.eclipse.sirius.components.view.Operation ... values) {
-        for (org.eclipse.sirius.components.view.Operation value : values) {
-            this.getReferenceWidgetDescription().getBody().add(value);
-        }
-        return this;
-    }
-
-    /**
      * Setter for ClearButton.
      *
      * @generated
@@ -151,6 +139,16 @@ public class ReferenceWidgetDescriptionBuilder {
      */
     public ReferenceWidgetDescriptionBuilder add(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAdd value) {
         this.getReferenceWidgetDescription().setAdd(value);
+        return this;
+    }
+
+    /**
+     * Setter for Set.
+     *
+     * @generated
+     */
+    public ReferenceWidgetDescriptionBuilder set(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet value) {
+        this.getReferenceWidgetDescription().setSet(value);
         return this;
     }
 
