@@ -113,8 +113,20 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
             }
         }
         Function<VariableManager, Boolean> addPrecondition = precondition;
-        return variableManager -> !this.isMany(interpreter, variableManager, referenceDescription)
-                || referenceDescription.getAdd() != null && addPrecondition.apply(variableManager);
+        precondition = variableManager -> true;
+        if (referenceDescription.getSet() != null) {
+            var preconditionExpression = referenceDescription.getSet().getPreconditionExpression();
+            if (preconditionExpression != null && !preconditionExpression.isBlank()) {
+                precondition = new BooleanValueProvider(interpreter, preconditionExpression);
+            }
+        }
+        Function<VariableManager, Boolean> setPrecondition = precondition;
+        return variableManager -> {
+            if (this.isMany(interpreter, variableManager, referenceDescription)) {
+                return referenceDescription.getAdd() != null && addPrecondition.apply(variableManager);
+            }
+            return referenceDescription.getSet() != null && setPrecondition.apply(variableManager);
+        };
     }
 
     private Function<VariableManager, Boolean> getReadOnlyValueProvider(AQLInterpreter interpreter, String expression) {

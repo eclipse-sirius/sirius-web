@@ -12,13 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.migration.participants;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import java.util.UUID;
+
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
-import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
-import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.springframework.stereotype.Service;
 
@@ -32,20 +33,69 @@ public class ReferenceWidgetDescriptionAddMigrationParticipant implements IMigra
 
     private static final String PARTICIPANT_VERSION = "2026.11.0-202610211729";
 
+    private static final String ECLASS = "eClass";
+
+    private static final String ID = "id";
+
+    private static final String BODY = "body";
+
+    private static final String DATA = "data";
+
     @Override
     public String getVersion() {
         return PARTICIPANT_VERSION;
     }
 
     @Override
-    public void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject) {
-        if (eObject instanceof ReferenceWidgetDescription referenceWidgetDescription && referenceWidgetDescription.getAdd() == null) {
-            var add = ReferenceFactory.eINSTANCE.createReferenceWidgetAdd();
-            // `body` is both used for set and add.
-            // At the definition level, we cannot know if the widget will be used for a mono-valued (set) or multivalued (add) reference.
-            // Therefore, we only copy the existing body into `add` and let the runtime decide which one to use.
-            add.getBody().addAll(EcoreUtil.copyAll(referenceWidgetDescription.getBody()));
-            referenceWidgetDescription.setAdd(add);
+    public void preDeserialization(JsonResource resource, JsonObject jsonObject) {
+        var namespaces = jsonObject.getAsJsonObject("ns");
+        if (namespaces != null) {
+            namespaces.entrySet().stream()
+                    .filter(entry -> ReferencePackage.eNS_URI.equals(entry.getValue().getAsString()))
+                    .findFirst()
+                    .ifPresent(entry -> this.addOperation(jsonObject, entry.getKey()));
+        }
+    }
+
+    private void addOperation(JsonElement element, String prefix) {
+        if (element.isJsonObject()) {
+            var object = element.getAsJsonObject();
+            if (object.has(ECLASS) && (prefix + ":ReferenceWidgetDescription").equals(object.get(ECLASS).getAsString())) {
+                var data = object.getAsJsonObject(DATA);
+                if (data == null) {
+                    data = new JsonObject();
+                    object.add(DATA, data);
+                }
+                if (!data.has("add")) {
+                    var add = new JsonObject();
+                    add.addProperty(ID, UUID.randomUUID().toString());
+                    add.addProperty(ECLASS, prefix + ":ReferenceWidgetAdd");
+                    var addData = new JsonObject();
+                    JsonElement body = new JsonArray();
+                    if (data.has(BODY)) {
+                        body = data.get(BODY).deepCopy();
+                    }
+                    this.regenerateIds(body);
+                    addData.add(BODY, body);
+                    add.add(DATA, addData);
+                    data.add("add", add);
+                }
+            }
+            object.entrySet().forEach(entry -> this.addOperation(entry.getValue(), prefix));
+        } else if (element.isJsonArray()) {
+            element.getAsJsonArray().forEach(child -> this.addOperation(child, prefix));
+        }
+    }
+
+    private void regenerateIds(JsonElement element) {
+        if (element.isJsonObject()) {
+            var object = element.getAsJsonObject();
+            if (object.has(ECLASS) && object.has(ID)) {
+                object.addProperty(ID, UUID.randomUUID().toString());
+            }
+            object.entrySet().forEach(entry -> this.regenerateIds(entry.getValue()));
+        } else if (element.isJsonArray()) {
+            element.getAsJsonArray().forEach(this::regenerateIds);
         }
     }
 }

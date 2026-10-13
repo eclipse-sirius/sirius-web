@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceW
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetAddBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionStyleBuilder;
+import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetSetBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.CreateInstanceBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
@@ -268,6 +269,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .labelExpression("Target type")
                 .referenceNameExpression("targetType")
                 .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
+                .set(new ReferenceWidgetSetBuilder().preconditionExpression("").build())
                 .build();
 
         var customSet = new ReferenceWidgetDescriptionBuilder()
@@ -275,9 +277,11 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .labelExpression("Target type with custom set")
                 .referenceNameExpression("targetType")
                 .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
-                .body(new SetValueBuilder().featureName("name").valueExpression("Set by custom action").build(),
-                        new ChangeContextBuilder().expression("aql:referenceOwner")
-                                .children(new SetValueBuilder().featureName("targetType").valueExpression("aql:newValue").build()).build())
+                .set(new ReferenceWidgetSetBuilder()
+                        .body(new SetValueBuilder().featureName("name").valueExpression("Set by custom action").build(),
+                                new ChangeContextBuilder().expression("aql:referenceOwner")
+                                        .children(new SetValueBuilder().featureName("targetType").valueExpression("aql:newValue").build()).build())
+                        .build())
                 .build();
 
         var readOnlyTargetType = new ReferenceWidgetDescriptionBuilder()
@@ -286,9 +290,25 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .referenceNameExpression("targetType")
                 .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
                 .isEnabledExpression("aql:false")
+                .set(new ReferenceWidgetSetBuilder().build())
                 .build();
 
-        return new ReferenceWidgetDescription[] { targetType, customSet, readOnlyTargetType };
+        var withoutSet = new ReferenceWidgetDescriptionBuilder()
+                .name("Target type without set")
+                .labelExpression("Target type without set")
+                .referenceNameExpression("targetType")
+                .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
+                .build();
+
+        var dynamicSet = new ReferenceWidgetDescriptionBuilder()
+                .name("Target type with dynamic set precondition")
+                .labelExpression("Target type with dynamic set precondition")
+                .referenceNameExpression("targetType")
+                .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
+                .set(new ReferenceWidgetSetBuilder().preconditionExpression("aql:self.name = 'Human'").build())
+                .build();
+
+        return new ReferenceWidgetDescription[] { targetType, customSet, readOnlyTargetType, withoutSet, dynamicSet };
     }
 
     private ReferenceWidgetDescription[] createReferenceWidgetDescriptionsWithoutAdd() {
@@ -305,6 +325,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .labelExpression("Target type without add")
                 .referenceNameExpression("targetType")
                 .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
+                .set(new ReferenceWidgetSetBuilder().build())
                 .build();
 
         return new ReferenceWidgetDescription[] { withoutAddReference, singleValuedWithoutAddReference };

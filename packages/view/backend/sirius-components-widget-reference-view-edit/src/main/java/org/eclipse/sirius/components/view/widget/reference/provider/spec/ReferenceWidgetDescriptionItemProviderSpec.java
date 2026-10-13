@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.widget.reference.provider.spec;
 
 import java.util.Collection;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 import org.eclipse.sirius.components.view.widget.reference.provider.ReferenceWidgetDescriptionItemProvider;
@@ -37,11 +36,6 @@ public class ReferenceWidgetDescriptionItemProviderSpec extends ReferenceWidgetD
 
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createSetValue()));
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
         newChildDescriptors.add(
                 this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetClearButtonDescription()));
@@ -50,6 +44,8 @@ public class ReferenceWidgetDescriptionItemProviderSpec extends ReferenceWidgetD
                 this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON, ReferenceFactory.eINSTANCE.createReferenceWidgetCreateButtonDescription()));
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD, ReferenceFactory.eINSTANCE.createReferenceWidgetAdd()));
+
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__SET, ReferenceFactory.eINSTANCE.createReferenceWidgetSet()));
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 

@@ -129,21 +129,12 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int REFERENCE_WIDGET_DESCRIPTION__BODY = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
-
-    /**
      * The feature id for the '<em><b>Clear Button</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Add</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -152,7 +143,16 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__ADD = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+    int REFERENCE_WIDGET_DESCRIPTION__ADD = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Set</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_DESCRIPTION__SET = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -386,7 +386,7 @@ public interface ReferencePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetCreateButtonDescription()
      * @generated
      */
-    int REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION = 5;
+    int REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION = 6;
 
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -498,6 +498,50 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_ADD_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetSetImpl <em>Widget Set</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetSetImpl
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetSet()
+     * @generated
+     */
+    int REFERENCE_WIDGET_SET = 5;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_SET__BODY = 0;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_SET__PRECONDITION_EXPRESSION = 1;
+
+    /**
+     * The number of structural features of the '<em>Widget Set</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_SET_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Widget Set</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_SET_OPERATION_COUNT = 0;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription <em>Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -528,17 +572,6 @@ public interface ReferencePackage extends EPackage {
      * @generated
      */
     EAttribute getReferenceWidgetDescription_ReferenceNameExpression();
-
-    /**
-     * Returns the meta object for the containment reference list '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getBody <em>Body</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Body</em>'.
-     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getBody()
-     * @see #getReferenceWidgetDescription()
-     * @generated
-     */
-    EReference getReferenceWidgetDescription_Body();
 
     /**
      * Returns the meta object for the containment reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getClearButton <em>Clear Button</em>}'. <!--
@@ -573,6 +606,17 @@ public interface ReferencePackage extends EPackage {
      * @generated
      */
     EReference getReferenceWidgetDescription_Add();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getSet <em>Set</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Set</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getSet()
+     * @see #getReferenceWidgetDescription()
+     * @generated
+     */
+    EReference getReferenceWidgetDescription_Set();
 
     /**
      * Returns the meta object for the containment reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
@@ -726,6 +770,40 @@ public interface ReferencePackage extends EPackage {
     EAttribute getReferenceWidgetAdd_PreconditionExpression();
 
     /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet <em>Widget Set</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Widget Set</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet
+     * @generated
+     */
+    EClass getReferenceWidgetSet();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet#getBody <em>Body</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet#getBody()
+     * @see #getReferenceWidgetSet()
+     * @generated
+     */
+    EReference getReferenceWidgetSet_Body();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet#getPreconditionExpression
+     * <em>Precondition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet#getPreconditionExpression()
+     * @see #getReferenceWidgetSet()
+     * @generated
+     */
+    EAttribute getReferenceWidgetSet_PreconditionExpression();
+
+    /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getIsEnabledExpression
      * <em>Is Enabled Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -787,14 +865,6 @@ public interface ReferencePackage extends EPackage {
         EAttribute REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION = eINSTANCE.getReferenceWidgetDescription_ReferenceNameExpression();
 
         /**
-         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference REFERENCE_WIDGET_DESCRIPTION__BODY = eINSTANCE.getReferenceWidgetDescription_Body();
-
-        /**
          * The meta object literal for the '<em><b>Clear Button</b></em>' containment reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
@@ -808,6 +878,14 @@ public interface ReferencePackage extends EPackage {
          * @generated
          */
         EReference REFERENCE_WIDGET_DESCRIPTION__ADD = eINSTANCE.getReferenceWidgetDescription_Add();
+
+        /**
+         * The meta object literal for the '<em><b>Set</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_DESCRIPTION__SET = eINSTANCE.getReferenceWidgetDescription_Set();
 
         /**
          * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
@@ -937,6 +1015,31 @@ public interface ReferencePackage extends EPackage {
          * @generated
          */
         EAttribute REFERENCE_WIDGET_ADD__PRECONDITION_EXPRESSION = eINSTANCE.getReferenceWidgetAdd_PreconditionExpression();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetSetImpl <em>Widget Set</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetSetImpl
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetSet()
+         * @generated
+         */
+        EClass REFERENCE_WIDGET_SET = eINSTANCE.getReferenceWidgetSet();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_SET__BODY = eINSTANCE.getReferenceWidgetSet_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute REFERENCE_WIDGET_SET__PRECONDITION_EXPRESSION = eINSTANCE.getReferenceWidgetSet_PreconditionExpression();
 
         /**
          * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--

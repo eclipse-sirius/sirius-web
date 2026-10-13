@@ -79,4 +79,14 @@ public class ReferenceBuilders {
         return new ReferenceWidgetAddBuilder();
     }
 
+    /**
+     * Instantiate a ReferenceWidgetSetBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ReferenceWidgetSetBuilder newReferenceWidgetSet() {
+        return new ReferenceWidgetSetBuilder();
+    }
+
 }

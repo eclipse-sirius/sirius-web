@@ -42,6 +42,7 @@ const createFormWithWidgetReference = async (
   await explorer.createNewObject('ReferenceWidgetDescription', 'clearButton-ReferenceWidgetClearButtonDescription');
   await explorer.createNewObject('ReferenceWidgetDescription', 'createButton-ReferenceWidgetCreateButtonDescription');
   await explorer.createNewObject('ReferenceWidgetDescription', 'add-ReferenceWidgetAdd');
+  await explorer.createNewObject('ReferenceWidgetDescription', 'set-ReferenceWidgetSet');
   await explorer.expand(name);
 };
 
