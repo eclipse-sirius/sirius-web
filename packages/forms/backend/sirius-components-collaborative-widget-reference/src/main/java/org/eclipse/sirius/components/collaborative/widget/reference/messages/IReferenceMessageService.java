@@ -37,6 +37,8 @@ public interface IReferenceMessageService {
 
     String unableToExecuteAddAction();
 
+    String unableToExecuteSetAction();
+
     String objectNotFound(String objectId);
 
     String unableToSetReferenceValue();
@@ -90,6 +92,11 @@ public interface IReferenceMessageService {
 
         @Override
         public String unableToExecuteAddAction() {
+            return "";
+        }
+
+        @Override
+        public String unableToExecuteSetAction() {
             return "";
         }
 

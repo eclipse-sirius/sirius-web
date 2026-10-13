@@ -77,6 +77,11 @@ public class ReferenceMessageService implements IReferenceMessageService {
     }
 
     @Override
+    public String unableToExecuteSetAction() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.UNABLE_TO_EXECUTE_SET_ACTION);
+    }
+
+    @Override
     public String objectNotFound(String objectId) {
         return this.messageSourceAccessor.getMessage(MessageConstants.OBJECT_NOT_FOUND, new Object[] { objectId });
     }

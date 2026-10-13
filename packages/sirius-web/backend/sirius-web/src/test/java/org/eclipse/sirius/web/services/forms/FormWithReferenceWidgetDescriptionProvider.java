@@ -138,6 +138,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .semanticCandidatesExpression("aql:self")
                 .children(nameTextfield)
                 .children(this.createReferenceWidgetDescriptions(customClear))
+                .children(this.createReferenceWidgetDescriptionsForSet())
                 .children(this.createReferenceWidgetDescriptionsWithoutAdd())
                 .children(this.createReferenceWidgetDescriptionWithDynamicAddPrecondition())
                 .build();
@@ -259,6 +260,35 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
             superTypesReference, readOnlySuperTypesReference, customCreationReference,
             instanceCreationReference, failingCreationReference, hiddenCreateButtonReference,
         };
+    }
+
+    private ReferenceWidgetDescription[] createReferenceWidgetDescriptionsForSet() {
+        var targetType = new ReferenceWidgetDescriptionBuilder()
+                .name("Target type")
+                .labelExpression("Target type")
+                .referenceNameExpression("targetType")
+                .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
+                .build();
+
+        var customSet = new ReferenceWidgetDescriptionBuilder()
+                .name("Target type with custom set")
+                .labelExpression("Target type with custom set")
+                .referenceNameExpression("targetType")
+                .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
+                .body(new SetValueBuilder().featureName("name").valueExpression("Set by custom action").build(),
+                        new ChangeContextBuilder().expression("aql:referenceOwner")
+                                .children(new SetValueBuilder().featureName("targetType").valueExpression("aql:newValue").build()).build())
+                .build();
+
+        var readOnlyTargetType = new ReferenceWidgetDescriptionBuilder()
+                .name("Read-only target type")
+                .labelExpression("Read-only target type")
+                .referenceNameExpression("targetType")
+                .referenceOwnerExpression("aql:self.eContainer().types.relations->first()")
+                .isEnabledExpression("aql:false")
+                .build();
+
+        return new ReferenceWidgetDescription[] { targetType, customSet, readOnlyTargetType };
     }
 
     private ReferenceWidgetDescription[] createReferenceWidgetDescriptionsWithoutAdd() {
