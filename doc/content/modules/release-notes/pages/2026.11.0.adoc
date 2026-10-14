@@ -150,6 +150,8 @@ If no palette is defined inside the `edgeTool`, then the `edgeTool` body will be
 * The active representation tab is now closed automatically when it is deleted.
 * Prevent a project style customization from being registered twice for the same project.
 * The Details form in the VS Code extension no longer displays an overlapping workbench header.
+* The last visible child of a list follows its parent's rounded bottom corners when it is rectangular, including in nested lists.
+Other configured corner radii and node shapes are preserved.
 
 
 == New features
