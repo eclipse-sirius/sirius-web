@@ -228,19 +228,19 @@ export class ListNodeConverter implements INodeConverter {
 
     convertEngine.convertNodes(
       gqlDiagram,
-      gqlNode.borderNodes ?? [],
-      gqlNode,
-      nodes,
-      diagramDescription,
-      borderNodeDescriptions
-    );
-    convertEngine.convertNodes(
-      gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,
       nodes,
       diagramDescription,
       childNodeDescriptions
+    );
+    convertEngine.convertNodes(
+      gqlDiagram,
+      gqlNode.borderNodes ?? [],
+      gqlNode,
+      nodes,
+      diagramDescription,
+      borderNodeDescriptions
     );
     adaptChildrenBorderNodes(nodes, gqlNode.childNodes ?? []);
   }
