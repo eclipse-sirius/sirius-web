@@ -18,6 +18,7 @@ export interface GQLReferenceWidget extends GQLWidget {
   label: string;
   descriptionId: string;
   reference: GQLReference;
+  selectable: boolean;
   referenceValues: GQLReferenceValue[];
   style: GQLReferenceWidgetStyle | null;
   ownerId: string;

@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * <li>{@link ReferenceWidgetDescription#getReferenceNameExpression
  * <em>Reference Name Expression</em>}</li>
  * <li>{@link ReferenceWidgetDescription#getClearButton <em>Clear Button</em>}</li>
+ * <li>{@link ReferenceWidgetDescription#getAdd <em>Add</em>}</li>
  * </ul>
  *
  * @model
@@ -115,6 +116,27 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setClearButton(ReferenceWidgetClearButtonDescription value);
+
+    /**
+     * Returns the value of the '<em><b>Add</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Add</em>' containment reference.
+     * @model containment="true"
+     * @see #setAdd(ReferenceWidgetAdd)
+     * @see ReferencePackage#getReferenceWidgetDescription_Add()
+     * @generated
+     */
+    ReferenceWidgetAdd getAdd();
+
+    /**
+     * Sets the value of the '{@link ReferenceWidgetDescription#getAdd <em>Add</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Add</em>' containment reference.
+     * @see #getAdd()
+     * @generated
+     */
+    void setAdd(ReferenceWidgetAdd value);
 
     /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc

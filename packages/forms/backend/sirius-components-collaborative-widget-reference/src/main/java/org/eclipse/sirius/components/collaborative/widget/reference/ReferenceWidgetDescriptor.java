@@ -112,6 +112,7 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                     .referenceName(props.getReferenceName())
                     .containment(props.isContainment())
                     .many(props.isMany())
+                    .selectable(props.isSelectable())
                     .referenceValues(props.getValues())
                     .referenceOptionsProvider(props.getOptionsProvider())
                     .ownerId(props.getOwnerId())

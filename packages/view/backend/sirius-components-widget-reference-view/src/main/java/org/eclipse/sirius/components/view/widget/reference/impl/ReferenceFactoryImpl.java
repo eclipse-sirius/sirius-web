@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAdd;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
@@ -73,9 +74,10 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
                 return this.createConditionalReferenceWidgetDescriptionStyle();
             case ReferencePackage.REFERENCE_WIDGET_CLEAR_BUTTON_DESCRIPTION:
                 return this.createReferenceWidgetClearButtonDescription();
-
             case ReferencePackage.REFERENCE_WIDGET_CREATE_BUTTON_DESCRIPTION:
                 return this.createReferenceWidgetCreateButtonDescription();
+            case ReferencePackage.REFERENCE_WIDGET_ADD:
+                return this.createReferenceWidgetAdd();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -134,6 +136,17 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
     public ReferenceWidgetCreateButtonDescription createReferenceWidgetCreateButtonDescription() {
         ReferenceWidgetCreateButtonDescriptionImpl referenceWidgetCreateButtonDescription = new ReferenceWidgetCreateButtonDescriptionImpl();
         return referenceWidgetCreateButtonDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ReferenceWidgetAdd createReferenceWidgetAdd() {
+        ReferenceWidgetAddImpl referenceWidgetAdd = new ReferenceWidgetAddImpl();
+        return referenceWidgetAdd;
     }
 
     /**

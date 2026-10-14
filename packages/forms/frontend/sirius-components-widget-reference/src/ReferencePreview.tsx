@@ -98,6 +98,8 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
         multiple
         filterSelectedOptions
         disabled={false}
+        readOnly={!widget.selectable}
+        forcePopupIcon={widget.selectable}
         open={false}
         loading={false}
         options={options}
@@ -105,7 +107,7 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
         disableClearable
         renderTags={(value, getTagProps) =>
           value.map(({ label, iconURL }, index) => {
-            const { key, ...tagProps } = getTagProps({ index });
+            const { key, onDelete, ...tagProps } = getTagProps({ index });
             return (
               <Chip
                 key={key}
@@ -118,6 +120,7 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
                   </div>
                 }
                 {...tagProps}
+                onDelete={onDelete ?? (() => {})}
               />
             );
           })
