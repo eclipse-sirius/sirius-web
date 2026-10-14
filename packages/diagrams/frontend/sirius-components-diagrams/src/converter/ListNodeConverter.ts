@@ -170,7 +170,11 @@ const toListNode = (
   return node;
 };
 
-const adaptChildrenBorderNodes = (nodes: Node<NodeData>[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
+const adaptChildrenBorderNodes = (
+  nodes: Node<NodeData>[],
+  parentNode: GQLNode<GQLRectangularNodeStyle>,
+  gqlChildrenNodes: GQLNode<GQLNodeStyle>[]
+): void => {
   const visibleChildrenNodes = nodes
     .filter(
       (child) =>
@@ -191,6 +195,8 @@ const adaptChildrenBorderNodes = (nodes: Node<NodeData>[], gqlChildrenNodes: GQL
       child.data.style = {
         ...child.data.style,
         borderBottomWidth: '0',
+        borderBottomLeftRadius: parentNode.style.borderRadius,
+        borderBottomRightRadius: parentNode.style.borderRadius,
       };
     }
   });
@@ -242,6 +248,6 @@ export class ListNodeConverter implements INodeConverter {
       diagramDescription,
       childNodeDescriptions
     );
-    adaptChildrenBorderNodes(nodes, gqlNode.childNodes ?? []);
+    adaptChildrenBorderNodes(nodes, gqlNode, gqlNode.childNodes ?? []);
   }
 }
