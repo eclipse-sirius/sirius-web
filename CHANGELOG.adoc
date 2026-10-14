@@ -179,6 +179,8 @@ If no palette is defined inside the `edgeTool`, then the `edgeTool` body will be
 - https://github.com/eclipse-sirius/sirius-web/issues/7085[#7085] [projects] Prevent a project style customization from being registered twice in the database.
 - https://github.com/eclipse-sirius/sirius-web/issues/5501[#5501] [diagram] Render border nodes after children nodes of the same parent so they appear above them at the same z-index.
 - https://github.com/eclipse-sirius/sirius-web/issues/7100[#7100] [diagram] Fix gaps between rounded node borders and their backgrounds while preserving rounded images.
+- https://github.com/eclipse-sirius/sirius-web/issues/7081[#7081] [diagram] Rectangular nodes that are the last visible child of a list node inherit their parent's bottom corner radii, including in nested lists.
+Other configured corner radii are preserved.
 
 
 === New Features
