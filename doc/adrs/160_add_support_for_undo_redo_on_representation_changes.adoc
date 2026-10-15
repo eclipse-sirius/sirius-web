@@ -1,0 +1,114 @@
+= [ADR-160] Add support for undo redo on representation changes
+
+== Context
+
+We want to be able to undo or redo an action performed on a representation.
+Whereas [ADR-159] focuses on undo redo semantic changes performed on a resource, here we want to undo or redo changes persisted in the database.
+
+
+=== Current behavior
+
+This follow the undo redo of mutations that creates a semantic change on an EMF ressource.
+
+
+== Decision
+
+=== Frontend
+
+Draft, do we need to handle several mutations as one action (ex : addPortal + layout)
+
+=== Backend
+
+In order to `track changes` and `undo` or `redo` a representation changes, we will add a new API.
+`IRepresentationChangeEventRecorder` will be used to get a `list of IRepresentationChangeEvent` from a `mutation input`.
+[source,java]
+----
+public interface IRepresentationChangeEventRecorder {
+    List<IRepresentationChangeEvent> getChanges(IEditingContext editingContext, IInput input);
+    boolean canHandle(IEditingContext editingContext, IInput input);
+}
+----
+
+These changes will be `stored` in the `editingContext`.
+
+[source,java]
+----
+private final Map<String, List<IRepresentationChangeEvent>> representationChangesDescription = new HashMap<>();
+
+public Map<String, List<IRepresentationChangeEvent>> getRepresentationChangesDescription() {
+    return representationChangesDescription;
+}
+----
+
+The recorder will be called in an `IInputPreProcessor` implementation.
+
+[source,java]
+----
+    @Override
+    public IInput preProcess(IEditingContext editingContext, IInput input, Sinks.Many<ChangeDescription> changeDescriptionSink) {
+        if (editingContext instanceof EditingContext siriusEditingContext) {
+            if (canHandle(input)) {
+                siriusEditingContext.getChangeRecorder().beginRecording(siriusEditingContext.getDomain().getResourceSet().getResources());
+            }
+            this.representationChangeEventRecorders.stream()
+                    .filter(recorder -> recorder.canHandle(editingContext, input))
+                    .forEach(recorder -> {
+                        var changes = recorder.getChanges(editingContext, input);
+                        siriusEditingContext.getRepresentationChangesDescription().put(input.id().toString(), changes);
+                    });
+        }
+        return input;
+    }
+----
+
+All implementation will return some `IRepresentationChangeEvent` for a given input.
+
+[source,java]
+----
+@Service
+public class PortalChangeEventRecorder implements IRepresentationChangeEventRecorder {
+
+    private final IRepresentationSearchService representationSearchService;
+
+    public PortalChangeEventRecorder(IRepresentationSearchService representationSearchService) {
+        this.representationSearchService = representationSearchService;
+    }
+
+    @Override
+    public boolean canHandle(IEditingContext editingContext, IInput input) {
+        return input instanceof IPortalInput;
+    }
+
+    public List<IRepresentationChangeEvent> getChanges(IEditingContext editingContext, IInput input) {
+        var listChanges = new ArrayList<IRepresentationChangeEvent>();
+        if (input instanceof IPortalInput portalInput) {
+            var currentPortal = this.representationSearchService.findById(editingContext, portalInput.representationId(), Portal.class);
+            if (currentPortal.isPresent()) {
+                if (portalInput instanceof LayoutPortalInput layoutPortalInput) {
+                    listChanges.addAll(handleLayoutPortalInput(currentPortal.get(), layoutPortalInput));
+                }
+                if (portalInput instanceof AddPortalViewInput addPortalViewInput) {
+                    listChanges.addAll(handleAddPortalViewInput(currentPortal.get(), addPortalViewInput));
+                }
+                if (portalInput instanceof RemovePortalViewInput removePortalViewInput) {
+                    listChanges.addAll(handleRemovePortalViewInput(currentPortal.get(), removePortalViewInput));
+                }
+            }
+        }
+        return listChanges;
+    }
+}
+----
+
+=== Things to improve
+
+DRAFT, Do we want a service for each representation used by UndoEventHandler
+
+== Status
+
+Work in progress
+
+
+== Consequences
+
+All representations that want to support undo / redo feature will need to implement an `IRepresentationChangeEventRecorder`
