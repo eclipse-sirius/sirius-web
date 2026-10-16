@@ -114,6 +114,7 @@ Programmatic descriptions must move their tool declarations to `NodeDescriptionB
 * Add missing palette for the views explorer representation
 * Fix an issue where the global selection was not correctly updated after opening the palette on the diagram.
 * The active representation tab is now closed automatically when it is deleted.
+* The border radius of the last compartment is aligned with its parent border radius.
 
 
 == New features
