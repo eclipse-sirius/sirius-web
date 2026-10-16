@@ -12,11 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.classdiagram.tools.classnode;
 
-import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
-import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.ClassNodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 
 /**
  * Used to create the "extends class" tool.
@@ -25,23 +23,16 @@ import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptio
  */
 public class ExtendsClassToolProvider {
 
-    public EdgeTool getTool(IViewDiagramElementFinder cache) {
-        var classNodeDescription = cache.getNodeDescription(ClassNodeDescriptionProvider.NAME).orElse(null);
-
-        return new DiagramBuilders().newEdgeTool()
+    public NodeTool getTool() {
+        return new DiagramBuilders().newNodeTool()
                 .name("Extends class")
-                .targetElementDescriptions(classNodeDescription)
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:semanticEdgeSource")
-                                .children(
-                                        new ViewBuilders().newSetValue()
-                                                .featureName("extends")
-                                                .valueExpression("aql:semanticEdgeTarget")
-                                                .build()
-                                )
-                                .build()
-                )
+                .body(new ViewBuilders().newChangeContext()
+                        .expression("aql:semanticEdgeSource")
+                        .children(new ViewBuilders().newSetValue()
+                                .featureName("extends")
+                                .valueExpression("aql:semanticEdgeTarget")
+                                .build())
+                        .build())
                 .description("This Tool allows to create a new extends relationship between two classes.")
                 .build();
     }

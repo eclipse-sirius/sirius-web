@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.classdiagram.tools.classnode;
 
-import java.util.List;
-
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.ClassNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.InterfaceNodeDescriptionProvider;
 
 /**
  * Used to create the palette of the class node.
@@ -43,11 +43,17 @@ public class ClassNodePaletteProvider {
                 .build();
     }
 
-    public List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
-        return List.of(
-                new ExtendsClassToolProvider().getTool(cache),
-                new ImplementsInterfaceToolProvider().getTool(cache)
-        );
+    public EdgeTool getConnectorTool(IViewDiagramElementFinder cache) {
+        var classNodeDescription = cache.getNodeDescription(ClassNodeDescriptionProvider.NAME).orElse(null);
+        var interfaceNodeDescription = cache.getNodeDescription(InterfaceNodeDescriptionProvider.NAME).orElse(null);
+
+        return new DiagramBuilders().newEdgeTool()
+                .name("Class relationships")
+                .targetElementDescriptions(classNodeDescription, interfaceNodeDescription)
+                .palette(new DiagramBuilders().newNodePalette()
+                        .nodeTools(new ExtendsClassToolProvider().getTool(), new ImplementsInterfaceToolProvider().getTool())
+                        .build())
+                .build();
     }
 
 }

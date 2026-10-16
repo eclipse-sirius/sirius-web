@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLTool, isTool } from '@eclipse-sirius/sirius-components-palette';
+import { GQLPalette, GQLTool, isTool, isToolSection } from '@eclipse-sirius/sirius-components-palette';
 import { memo, useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -22,13 +22,17 @@ import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext'
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { ConnectorPaletteProps } from './ConnectorPalette.types';
 import { useConnectorPalette } from './context/useConnectorPalette';
-import { GQLPalette } from './useConnector.types';
 import { useConnectorPaletteContents } from './useConnectorPaletteContents';
 import { UseConnectorPaletteContentValue } from './useConnectorPaletteContents.types';
 import { useTemporaryEdge } from './useTemporaryEdge';
 
-const getToolsCount = (connectorPalette: GQLPalette | null): number =>
-  connectorPalette?.paletteEntries.filter(isTool).length ?? 0;
+const getToolsCount = (connectorPalette: GQLPalette | null): number => {
+  var quickAccessToolsCount = connectorPalette?.quickAccessTools.length ?? 0;
+  var toolsInSectionCount =
+    connectorPalette?.paletteEntries.filter(isToolSection).map((toolSection) => toolSection.tools).length ?? 0;
+  var toolsCount = connectorPalette?.paletteEntries.filter(isTool).length ?? 0;
+  return quickAccessToolsCount + toolsInSectionCount + toolsCount;
+};
 
 export const ConnectorPalette = memo(({}: ConnectorPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);

@@ -175,12 +175,15 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
         var edgeSelectionDialog = this.createEdgeSelectionDialog();
         this.edgeTool = new EdgeToolBuilder()
                 .name("Create relation")
-                .body(
-                        new ChangeContextBuilder()
-                                .expression("aql:self")
-                                .build()
-                )
-                .dialogDescription(edgeSelectionDialog)
+                .palette(new DiagramBuilders().newNodePalette()
+                        .nodeTools(new DiagramBuilders().newNodeTool()
+                                .name("Create relation")
+                                .body(new ChangeContextBuilder()
+                                        .expression("aql:self")
+                                        .build())
+                                .dialogDescription(edgeSelectionDialog)
+                                .build())
+                        .build())
                 .build();
     }
 

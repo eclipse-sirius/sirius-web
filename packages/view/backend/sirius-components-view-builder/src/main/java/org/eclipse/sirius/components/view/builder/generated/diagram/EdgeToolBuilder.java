@@ -152,4 +152,14 @@ public class EdgeToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for Palette.
+     *
+     * @generated
+     */
+    public EdgeToolBuilder palette(org.eclipse.sirius.components.view.diagram.NodePalette value) {
+        this.getEdgeTool().setPalette(value);
+        return this;
+    }
+
 }

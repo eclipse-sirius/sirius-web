@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.papaya.representations.lifecyclediagram.tools;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.diagram.EdgePaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
@@ -36,10 +37,17 @@ public class PublicationEdgePaletteProvider {
         var channelNodeDescription = cache.getNodeDescription(ChannelNodeDescriptionProvider.NAME).orElse(null);
 
         var channelEdgeTool = new EdgeToolBuilder()
-                .body(new ChangeContextBuilder().expression("aql:semanticEdgeSource")
-                        .children(new SetValueBuilder()
-                                .featureName("channel")
-                                .valueExpression("aql:semanticEdgeTarget")
+                .name("Channel")
+                .palette(new DiagramBuilders().newNodePalette()
+                        .nodeTools(new DiagramBuilders().newNodeTool()
+                                .name("Channel")
+                                .body(new ChangeContextBuilder()
+                                        .expression("aql:semanticEdgeSource")
+                                        .children(new SetValueBuilder()
+                                                .featureName("channel")
+                                                .valueExpression("aql:semanticEdgeTarget")
+                                                .build())
+                                        .build())
                                 .build())
                         .build())
                 .targetElementDescriptions(channelNodeDescription)
