@@ -147,6 +147,8 @@ export {
   type UseRelatedElementsViewSubscriptionValue,
 } from './views/edit-project/workbench-views/related-elements/useRelatedElementsViewSubscription.types';
 export { SearchView } from './views/edit-project/workbench-views/search/SearchView';
+export { SynchronizationButton } from './views/edit-project/workbench-views/SynchronizationButton';
+export { type SynchronizationButtonProps } from './views/edit-project/workbench-views/SynchronizationButton.types';
 export { ErrorView } from './views/error/ErrorView';
 export { type ErrorMessageProvider } from './views/error/ErrorView.types';
 export { errorMessageProvidersExtensionPoint } from './views/error/ErrorViewExtensionPoints';
