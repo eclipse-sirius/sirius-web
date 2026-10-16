@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: packages/sirius-web/backend/sirius-web/Dockerfile
+      target: ${BUILD_TARGET:-source}
+      args:
+        - USERNAME
+      secrets:
+        - github_token
+      labels:
+        org.opencontainers.image.created: ${IMAGE_CREATED:-}
+        org.opencontainers.image.description: ${IMAGE_DESCRIPTION:-}
+        org.opencontainers.image.licenses: ${IMAGE_LICENSES:-}
+        org.opencontainers.image.revision: ${IMAGE_REVISION:-}
+        org.opencontainers.image.source: ${IMAGE_SOURCE:-https://github.com/eclipse-sirius/sirius-web}
+        org.opencontainers.image.title: ${IMAGE_TITLE:-Sirius Web}
+        org.opencontainers.image.url: ${IMAGE_URL:-https://github.com/eclipse-sirius/sirius-web}
+        org.opencontainers.image.version: ${VERSION:-latest}
+
+secrets:
+  github_token:
+    environment: PASSWORD
