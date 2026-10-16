@@ -93,9 +93,8 @@ public class DiagramDecoratorViewProvider implements IE2EViewProvider {
                         .name("Hide")
                         .body(new ViewBuilders().newChangeContext().expression("aql:diagramServices.hide(Sequence{selectedNode})").build())
                         .build())
-                .edgeTools(
-                        this.createEgeCreationTool("E1toE2A", nodeDescription2, edgeDescription1.getDomainType(), "toEdge1")
-                ).build());
+                .build());
+        nodeDescription1.getEdgeTools().add(this.createEgeCreationTool("E1toE2A", nodeDescription2, edgeDescription1.getDomainType(), "toEdge1"));
 
         var toolbar = new DiagramBuilders().newDiagramToolbar()
                 .expandedByDefault(true)

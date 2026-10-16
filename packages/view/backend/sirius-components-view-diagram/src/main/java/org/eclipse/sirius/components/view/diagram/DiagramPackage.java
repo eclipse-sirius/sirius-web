@@ -398,13 +398,22 @@ public interface DiagramPackage extends EPackage {
     int NODE_DESCRIPTION__PALETTE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__EDGE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The feature id for the '<em><b>Actions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__ACTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int NODE_DESCRIPTION__ACTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -413,7 +422,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -422,7 +431,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Children Descriptions</b></em>' containment reference list. <!-- begin-user-doc
@@ -431,7 +440,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Border Nodes Descriptions</b></em>' containment reference list. <!--
@@ -440,7 +449,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Reused Child Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
@@ -449,7 +458,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+    int NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Reused Border Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
@@ -458,7 +467,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+    int NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>User Resizable</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -466,7 +475,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+    int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Default Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -475,7 +484,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
+    int NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Default Height Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -484,7 +493,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
+    int NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>Keep Aspect Ratio</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -493,7 +502,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__KEEP_ASPECT_RATIO = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
+    int NODE_DESCRIPTION__KEEP_ASPECT_RATIO = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
 
     /**
      * The feature id for the '<em><b>Is Collapsed By Default Expression</b></em>' attribute. <!-- begin-user-doc -->
@@ -502,7 +511,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
+    int NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 14;
 
     /**
      * The feature id for the '<em><b>Inside Label</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -511,7 +520,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__INSIDE_LABEL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 14;
+    int NODE_DESCRIPTION__INSIDE_LABEL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 15;
 
     /**
      * The feature id for the '<em><b>Outside Labels</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -520,7 +529,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__OUTSIDE_LABELS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 15;
+    int NODE_DESCRIPTION__OUTSIDE_LABELS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 16;
 
     /**
      * The feature id for the '<em><b>Is Hidden By Default Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -529,7 +538,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 16;
+    int NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 17;
 
     /**
      * The feature id for the '<em><b>Is Faded By Default Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -538,7 +547,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 17;
+    int NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 18;
 
     /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
@@ -547,7 +556,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 18;
+    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 19;
 
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -664,13 +673,22 @@ public interface DiagramPackage extends EPackage {
     int EDGE_DESCRIPTION__PALETTE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__EDGE_TOOLS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
      * The feature id for the '<em><b>Source Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Target Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
@@ -679,7 +697,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__TARGET_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int EDGE_DESCRIPTION__TARGET_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Source Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -688,7 +706,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__SOURCE_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+    int EDGE_DESCRIPTION__SOURCE_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Target Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -697,7 +715,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__TARGET_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+    int EDGE_DESCRIPTION__TARGET_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -706,7 +724,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+    int EDGE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -715,7 +733,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
+    int EDGE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
 
     /**
      * The number of structural features of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!--
@@ -724,7 +742,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
+    int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2792,22 +2810,13 @@ public interface DiagramPackage extends EPackage {
     int NODE_PALETTE__QUICK_ACCESS_TOOLS = 4;
 
     /**
-     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_PALETTE__EDGE_TOOLS = 5;
-
-    /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_PALETTE__TOOL_SECTIONS = 6;
+    int NODE_PALETTE__TOOL_SECTIONS = 5;
 
     /**
      * The number of structural features of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2816,7 +2825,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_PALETTE_FEATURE_COUNT = 7;
+    int NODE_PALETTE_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2900,22 +2909,13 @@ public interface DiagramPackage extends EPackage {
     int EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = 6;
 
     /**
-     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_PALETTE__EDGE_TOOLS = 7;
-
-    /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_PALETTE__TOOL_SECTIONS = 8;
+    int EDGE_PALETTE__TOOL_SECTIONS = 7;
 
     /**
      * The number of structural features of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2924,7 +2924,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_PALETTE_FEATURE_COUNT = 9;
+    int EDGE_PALETTE_FEATURE_COUNT = 8;
 
     /**
      * The number of operations of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3970,22 +3970,13 @@ public interface DiagramPackage extends EPackage {
     int NODE_TOOL_SECTION__NODE_TOOLS = TOOL_SECTION_FEATURE_COUNT;
 
     /**
-     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_TOOL_SECTION__EDGE_TOOLS = TOOL_SECTION_FEATURE_COUNT + 1;
-
-    /**
      * The number of structural features of the '<em>Node Tool Section</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_TOOL_SECTION_FEATURE_COUNT = TOOL_SECTION_FEATURE_COUNT + 2;
+    int NODE_TOOL_SECTION_FEATURE_COUNT = TOOL_SECTION_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Node Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4868,6 +4859,18 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getEdgeTools <em>Edge Tools</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.NodeDescription#getEdgeTools()
+     * @see #getNodeDescription()
+     */
+    EReference getNodeDescription_EdgeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getActions <em>Actions</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -5129,6 +5132,18 @@ public interface DiagramPackage extends EPackage {
      * @see #getEdgeDescription()
      */
     EReference getEdgeDescription_Palette();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getEdgeTools <em>Edge Tools</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getEdgeTools()
+     * @see #getEdgeDescription()
+     */
+    EReference getEdgeDescription_EdgeTools();
 
     /**
      * Returns the meta object for the reference list
@@ -6241,19 +6256,6 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getEdgeTools <em>Edge Tools</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
-     * @generated
-     * @generated
-     * @see org.eclipse.sirius.components.view.diagram.NodePalette#getEdgeTools()
-     * @see #getNodePalette()
-     */
-    EReference getNodePalette_EdgeTools();
-
-    /**
-     * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getToolSections <em>Tool Sections</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6360,19 +6362,6 @@ public interface DiagramPackage extends EPackage {
      * @see #getEdgePalette()
      */
     EReference getEdgePalette_EdgeReconnectionTools();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getEdgeTools <em>Edge Tools</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
-     * @generated
-     * @generated
-     * @see org.eclipse.sirius.components.view.diagram.EdgePalette#getEdgeTools()
-     * @see #getEdgePalette()
-     */
-    EReference getEdgePalette_EdgeTools();
 
     /**
      * Returns the meta object for the containment reference list
@@ -7027,19 +7016,6 @@ public interface DiagramPackage extends EPackage {
      * @see #getNodeToolSection()
      */
     EReference getNodeToolSection_NodeTools();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeToolSection#getEdgeTools <em>Edge Tools</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
-     * @generated
-     * @generated
-     * @see org.eclipse.sirius.components.view.diagram.NodeToolSection#getEdgeTools()
-     * @see #getNodeToolSection()
-     */
-    EReference getNodeToolSection_EdgeTools();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgeToolSection <em>Edge
@@ -7718,6 +7694,14 @@ public interface DiagramPackage extends EPackage {
         EReference NODE_DESCRIPTION__PALETTE = eINSTANCE.getNodeDescription_Palette();
 
         /**
+         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_DESCRIPTION__EDGE_TOOLS = eINSTANCE.getNodeDescription_EdgeTools();
+
+        /**
          * The meta object literal for the '<em><b>Actions</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -7894,6 +7878,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference EDGE_DESCRIPTION__PALETTE = eINSTANCE.getEdgeDescription_Palette();
+
+        /**
+         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_DESCRIPTION__EDGE_TOOLS = eINSTANCE.getEdgeDescription_EdgeTools();
 
         /**
          * The meta object literal for the '<em><b>Source Descriptions</b></em>' reference list feature. <!--
@@ -8711,14 +8703,6 @@ public interface DiagramPackage extends EPackage {
         EReference NODE_PALETTE__QUICK_ACCESS_TOOLS = eINSTANCE.getNodePalette_QuickAccessTools();
 
         /**
-         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference NODE_PALETTE__EDGE_TOOLS = eINSTANCE.getNodePalette_EdgeTools();
-
-        /**
          * The meta object literal for the '<em><b>Tool Sections</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -8791,14 +8775,6 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = eINSTANCE.getEdgePalette_EdgeReconnectionTools();
-
-        /**
-         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference EDGE_PALETTE__EDGE_TOOLS = eINSTANCE.getEdgePalette_EdgeTools();
 
         /**
          * The meta object literal for the '<em><b>Tool Sections</b></em>' containment reference list feature. <!--
@@ -9286,14 +9262,6 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference NODE_TOOL_SECTION__NODE_TOOLS = eINSTANCE.getNodeToolSection_NodeTools();
-
-        /**
-         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference NODE_TOOL_SECTION__EDGE_TOOLS = eINSTANCE.getNodeToolSection_EdgeTools();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolSectionImpl

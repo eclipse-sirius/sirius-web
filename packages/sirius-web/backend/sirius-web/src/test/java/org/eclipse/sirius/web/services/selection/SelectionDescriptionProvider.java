@@ -126,9 +126,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
 
         this.createEdgeTool();
 
-        var nodePalette = new NodePaletteBuilder()
-                .edgeTools(this.edgeTool)
-                .build();
+        var nodePalette = new NodePaletteBuilder().build();
 
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
@@ -138,6 +136,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .style(nodeStyle)
                 .palette(nodePalette)
+                .edgeTools(this.edgeTool)
                 .build();
 
         this.createNodeTool();

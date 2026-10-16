@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.Action;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -43,6 +44,8 @@ import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeDescriptionImpl#isCollapsible
  * <em>Collapsible</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeDescriptionImpl#getPalette <em>Palette</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeDescriptionImpl#getEdgeTools <em>Edge
+ * Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeDescriptionImpl#getChildrenLayoutStrategy <em>Children
  * Layout Strategy</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeDescriptionImpl#getStyle <em>Style</em>}</li>
@@ -93,6 +96,16 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected NodePalette palette;
+
+    /**
+     * The cached value of the '{@link #getEdgeTools() <em>Edge Tools</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEdgeTools()
+     * @generated
+     * @ordered
+     */
+    protected EList<EdgeTool> edgeTools;
 
     /**
      * The cached value of the '{@link #getActions() <em>Actions</em>}' containment reference list. <!-- begin-user-doc
@@ -394,6 +407,19 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 msgs.dispatch();
         } else if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__PALETTE, newPalette, newPalette));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<EdgeTool> getEdgeTools() {
+        if (this.edgeTools == null) {
+            this.edgeTools = new EObjectContainmentEList<>(EdgeTool.class, this, DiagramPackage.NODE_DESCRIPTION__EDGE_TOOLS);
+        }
+        return this.edgeTools;
     }
 
     /**
@@ -775,6 +801,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 return this.basicSetPalette(null, msgs);
+            case DiagramPackage.NODE_DESCRIPTION__EDGE_TOOLS:
+                return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 return ((InternalEList<?>) this.getActions()).basicRemove(otherEnd, msgs);
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
@@ -805,6 +833,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.isCollapsible();
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 return this.getPalette();
+            case DiagramPackage.NODE_DESCRIPTION__EDGE_TOOLS:
+                return this.getEdgeTools();
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 return this.getActions();
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
@@ -855,6 +885,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 this.setPalette((NodePalette) newValue);
+                return;
+            case DiagramPackage.NODE_DESCRIPTION__EDGE_TOOLS:
+                this.getEdgeTools().clear();
+                this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 this.getActions().clear();
@@ -929,6 +963,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 this.setPalette((NodePalette) null);
                 return;
+            case DiagramPackage.NODE_DESCRIPTION__EDGE_TOOLS:
+                this.getEdgeTools().clear();
+                return;
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 this.getActions().clear();
                 return;
@@ -993,6 +1030,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.collapsible != COLLAPSIBLE_EDEFAULT;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 return this.palette != null;
+            case DiagramPackage.NODE_DESCRIPTION__EDGE_TOOLS:
+                return this.edgeTools != null && !this.edgeTools.isEmpty();
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 return this.actions != null && !this.actions.isEmpty();
             case DiagramPackage.NODE_DESCRIPTION__STYLE:

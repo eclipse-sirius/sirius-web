@@ -70,13 +70,13 @@ public class PowerOutputDescriptionProvider implements INodeDescriptionProvider 
                 systemNodeDescription.getBorderNodesDescriptions().add(nodeDescription);
             });
 
-            nodeDescription.setPalette(this.createNodePalette(cache));
+            nodeDescription.getEdgeTools().add(this.createEdgeToolPowerLink(cache));
+            nodeDescription.setPalette(this.createNodePalette());
         });
     }
 
-    private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
+    private NodePalette createNodePalette() {
         return this.diagramBuilderHelper.newNodePalette()
-                .edgeTools(this.createEdgeToolPowerLink(cache))
                 .toolSections(
                         this.flowViewBuilder.createHideRevealNodeToolSection()
                 )

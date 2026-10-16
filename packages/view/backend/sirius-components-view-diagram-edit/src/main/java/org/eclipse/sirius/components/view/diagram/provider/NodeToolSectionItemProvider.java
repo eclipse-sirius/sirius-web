@@ -68,7 +68,6 @@ public class NodeToolSectionItemProvider extends ToolSectionItemProvider {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_TOOL_SECTION__NODE_TOOLS);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_TOOL_SECTION__EDGE_TOOLS);
         }
         return this.childrenFeatures;
     }
@@ -130,7 +129,6 @@ public class NodeToolSectionItemProvider extends ToolSectionItemProvider {
 
         switch (notification.getFeatureID(NodeToolSection.class)) {
             case DiagramPackage.NODE_TOOL_SECTION__NODE_TOOLS:
-            case DiagramPackage.NODE_TOOL_SECTION__EDGE_TOOLS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -149,7 +147,6 @@ public class NodeToolSectionItemProvider extends ToolSectionItemProvider {
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_TOOL_SECTION__NODE_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_TOOL_SECTION__EDGE_TOOLS, DiagramFactory.eINSTANCE.createEdgeTool()));
     }
 
 }

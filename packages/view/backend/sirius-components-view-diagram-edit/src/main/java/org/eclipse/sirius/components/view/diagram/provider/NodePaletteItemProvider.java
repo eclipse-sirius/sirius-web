@@ -78,7 +78,6 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__DROP_NODE_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__QUICK_ACCESS_TOOLS);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS);
         }
         return this.childrenFeatures;
@@ -143,7 +142,6 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
             case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
             case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
             case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
             case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
@@ -166,7 +164,6 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__DROP_NODE_TOOL, DiagramFactory.eINSTANCE.createDropNodeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS, studioDefaultToolsFactory.createDefaultNodeCreationTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__QUICK_ACCESS_TOOLS, studioDefaultToolsFactory.createDefaultNodeCreationTool()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS, studioDefaultToolsFactory.createDefaultEdgeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createNodeToolSection()));
 
     }

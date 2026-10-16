@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeToolBuil
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ChannelNodeDescriptionProvider;
 
 /**
@@ -28,6 +29,10 @@ import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescri
 public class SubscriptionEdgePaletteProvider {
 
     public EdgePalette getEdgePalette(IViewDiagramElementFinder cache) {
+        return new EdgePaletteBuilder().build();
+    }
+
+    public EdgeTool getConnectorTool(IViewDiagramElementFinder cache) {
         var channelNodeDescription = cache.getNodeDescription(ChannelNodeDescriptionProvider.NAME).orElse(null);
 
         var channelEdgeTool = new EdgeToolBuilder()
@@ -40,9 +45,7 @@ public class SubscriptionEdgePaletteProvider {
                 .targetElementDescriptions(channelNodeDescription)
                 .build();
 
-        return new EdgePaletteBuilder()
-                .edgeTools(channelEdgeTool)
-                .build();
+        return channelEdgeTool;
     }
 
 }

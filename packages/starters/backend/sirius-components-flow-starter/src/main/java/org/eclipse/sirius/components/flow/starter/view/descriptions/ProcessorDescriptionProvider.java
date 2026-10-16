@@ -143,16 +143,18 @@ public class ProcessorDescriptionProvider implements INodeDescriptionProvider {
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(NAME).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
-            cache.getNodeDescription(ProcessorDescriptionProvider.NAME).ifPresent(processorNodeDescription -> nodeDescription.setPalette(this.createNodePalette(processorNodeDescription)));
+            cache.getNodeDescription(ProcessorDescriptionProvider.NAME).ifPresent(processorNodeDescription -> {
+                nodeDescription.getEdgeTools().add(this.flowViewBuilder.createEdgeToProcessorTool(processorNodeDescription));
+                nodeDescription.setPalette(this.createNodePalette());
+            });
         });
     }
 
-    private NodePalette createNodePalette(NodeDescription processorNodeDescription) {
+    private NodePalette createNodePalette() {
         var nodePaletteBuilder = this.diagramBuilderHelper.newNodePalette()
                 .toolSections(this.flowViewBuilder.createHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
-                .labelEditTool(this.flowViewBuilder.createLabelEditTool())
-                .edgeTools(this.flowViewBuilder.createEdgeToProcessorTool(processorNodeDescription));
+                .labelEditTool(this.flowViewBuilder.createLabelEditTool());
 
         if (this.synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED) {
             nodePaletteBuilder.quickAccessTools(this.flowViewBuilder.getDeleteFromDiagramTool());

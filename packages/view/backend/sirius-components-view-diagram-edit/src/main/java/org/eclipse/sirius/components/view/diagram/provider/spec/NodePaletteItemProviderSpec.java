@@ -43,7 +43,6 @@ public class NodePaletteItemProviderSpec extends NodePaletteItemProvider {
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__DROP_NODE_TOOL, DiagramFactory.eINSTANCE.createDropNodeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS, studioDefaultToolsFactory.createDefaultNodeCreationTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__QUICK_ACCESS_TOOLS, studioDefaultToolsFactory.createDefaultNodeCreationTool()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS, studioDefaultToolsFactory.createDefaultEdgeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createNodeToolSection()));
 
     }
