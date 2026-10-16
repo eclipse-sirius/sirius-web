@@ -47,6 +47,7 @@ public class NodeDescriptionItemProviderSpec extends NodeDescriptionItemProvider
         StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE, studioDefaultToolsFactory.createDefaultNodePalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__EDGE_TOOLS, studioDefaultToolsFactory.createDefaultEdgeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS, DiagramFactory.eINSTANCE.createAction()));
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();

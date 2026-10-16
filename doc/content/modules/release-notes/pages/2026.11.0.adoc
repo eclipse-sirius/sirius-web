@@ -86,6 +86,10 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.projects.domain.services.api.IProjectCreationService`
 * `org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent`
 - `org.eclipse.sirius.components.widget.reference.ReferenceWidget` now requires `targetObjectId`.
+- Connector tools in the diagram View DSL are now configured directly on node and edge descriptions using `edgeTools`.
+The `edgeTools` properties of node palettes, edge palettes, and node tool sections have been removed.
+Existing saved View descriptions are migrated automatically, preserving tool order; connector tools previously placed in sections become a flat list.
+Programmatic descriptions must move their tool declarations to `NodeDescriptionBuilder.edgeTools(...)` or `EdgeDescriptionBuilder.edgeTools(...)`.
 
 
 == Dependency updates

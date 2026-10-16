@@ -84,7 +84,9 @@ public class SubscriptionEdgeDescriptionProvider implements IEdgeDescriptionProv
         subscriptionEdgeDescription.getTargetDescriptions().addAll(List.of(commandNodeDescription, eventNodeDescription));
         diagramDescription.getEdgeDescriptions().add(subscriptionEdgeDescription);
 
-        var palette = new SubscriptionEdgePaletteProvider().getEdgePalette(cache);
+        var paletteProvider = new SubscriptionEdgePaletteProvider();
+        var palette = paletteProvider.getEdgePalette(cache);
         subscriptionEdgeDescription.setPalette(palette);
+        subscriptionEdgeDescription.getEdgeTools().add(paletteProvider.getConnectorTool(cache));
     }
 }

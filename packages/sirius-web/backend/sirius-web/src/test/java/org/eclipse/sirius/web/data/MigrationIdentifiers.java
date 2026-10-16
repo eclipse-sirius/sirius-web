@@ -82,9 +82,12 @@ public final class MigrationIdentifiers {
     public static final UUID MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_STUDIO = UUID.fromString("402f51c9-96df-46f2-b39b-35ebd506ff31");
 
     public static final String MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_STUDIO_DIAGRAM = "NodeDescription#layoutStrategy migration";
+
     public static final String MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_ALREADY_MIGRATE_STUDIO_DIAGRAM = "NodeDescription#layoutStrategy already migrate";
 
     public static final UUID MIGRATION_REFERENCE_WIDGET_DESCRIPTION_STUDIO = UUID.fromString("e275ebc2-a191-4ba6-af8f-3b5aef32478c");
+
+    public static final String MIGRATION_DIAGRAM_DESCRIPTION_CONNECTOR_TOOLS_STUDIO_DIAGRAM = "DiagramDescription#connectorTools migration";
 
     private MigrationIdentifiers() {
         // Prevent instantiation

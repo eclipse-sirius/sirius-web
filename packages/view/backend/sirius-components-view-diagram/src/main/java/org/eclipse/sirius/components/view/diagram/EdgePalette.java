@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,6 @@ import org.eclipse.emf.ecore.EObject;
  * Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getEdgeReconnectionTools <em>Edge Reconnection
  * Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getEdgeTools <em>Edge Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
  *
@@ -169,17 +168,6 @@ public interface EdgePalette extends EObject {
      * @generated
      */
     EList<EdgeReconnectionTool> getEdgeReconnectionTools();
-
-    /**
-     * Returns the value of the '<em><b>Edge Tools</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.diagram.EdgeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Edge Tools</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgePalette_EdgeTools()
-     * @model containment="true"
-     * @generated
-     */
-    EList<EdgeTool> getEdgeTools();
 
     /**
      * Returns the value of the '<em><b>Tool Sections</b></em>' containment reference list. The list contents are of

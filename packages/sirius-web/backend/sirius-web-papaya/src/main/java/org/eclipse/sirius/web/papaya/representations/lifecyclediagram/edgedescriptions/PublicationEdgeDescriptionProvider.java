@@ -84,7 +84,9 @@ public class PublicationEdgeDescriptionProvider implements IEdgeDescriptionProvi
         publicationEdgeDescription.getTargetDescriptions().addAll(List.of(commandNodeDescription, eventNodeDescription));
         diagramDescription.getEdgeDescriptions().add(publicationEdgeDescription);
 
-        var palette = new PublicationEdgePaletteProvider().getEdgePalette(cache);
+        var paletteProvider = new PublicationEdgePaletteProvider();
+        var palette = paletteProvider.getEdgePalette(cache);
         publicationEdgeDescription.setPalette(palette);
+        publicationEdgeDescription.getEdgeTools().add(paletteProvider.getConnectorTool(cache));
     }
 }

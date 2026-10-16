@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
-import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 
@@ -33,7 +32,6 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolSectionImpl#getNodeTools <em>Node Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolSectionImpl#getEdgeTools <em>Edge Tools</em>}</li>
  * </ul>
  *
  * @generated
@@ -49,16 +47,6 @@ public class NodeToolSectionImpl extends ToolSectionImpl implements NodeToolSect
      * @see #getNodeTools()
      */
     protected EList<NodeTool> nodeTools;
-
-    /**
-     * The cached value of the '{@link #getEdgeTools() <em>Edge Tools</em>}' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getEdgeTools()
-     */
-    protected EList<EdgeTool> edgeTools;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -98,25 +86,10 @@ public class NodeToolSectionImpl extends ToolSectionImpl implements NodeToolSect
      * @generated
      */
     @Override
-    public EList<EdgeTool> getEdgeTools() {
-        if (this.edgeTools == null) {
-            this.edgeTools = new EObjectContainmentEList<>(EdgeTool.class, this, DiagramPackage.NODE_TOOL_SECTION__EDGE_TOOLS);
-        }
-        return this.edgeTools;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.NODE_TOOL_SECTION__NODE_TOOLS:
                 return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
-            case DiagramPackage.NODE_TOOL_SECTION__EDGE_TOOLS:
-                return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -131,8 +104,6 @@ public class NodeToolSectionImpl extends ToolSectionImpl implements NodeToolSect
         switch (featureID) {
             case DiagramPackage.NODE_TOOL_SECTION__NODE_TOOLS:
                 return this.getNodeTools();
-            case DiagramPackage.NODE_TOOL_SECTION__EDGE_TOOLS:
-                return this.getEdgeTools();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -150,10 +121,6 @@ public class NodeToolSectionImpl extends ToolSectionImpl implements NodeToolSect
                 this.getNodeTools().clear();
                 this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
                 return;
-            case DiagramPackage.NODE_TOOL_SECTION__EDGE_TOOLS:
-                this.getEdgeTools().clear();
-                this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
-                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -169,9 +136,6 @@ public class NodeToolSectionImpl extends ToolSectionImpl implements NodeToolSect
             case DiagramPackage.NODE_TOOL_SECTION__NODE_TOOLS:
                 this.getNodeTools().clear();
                 return;
-            case DiagramPackage.NODE_TOOL_SECTION__EDGE_TOOLS:
-                this.getEdgeTools().clear();
-                return;
         }
         super.eUnset(featureID);
     }
@@ -186,8 +150,6 @@ public class NodeToolSectionImpl extends ToolSectionImpl implements NodeToolSect
         switch (featureID) {
             case DiagramPackage.NODE_TOOL_SECTION__NODE_TOOLS:
                 return this.nodeTools != null && !this.nodeTools.isEmpty();
-            case DiagramPackage.NODE_TOOL_SECTION__EDGE_TOOLS:
-                return this.edgeTools != null && !this.edgeTools.isEmpty();
         }
         return super.eIsSet(featureID);
     }

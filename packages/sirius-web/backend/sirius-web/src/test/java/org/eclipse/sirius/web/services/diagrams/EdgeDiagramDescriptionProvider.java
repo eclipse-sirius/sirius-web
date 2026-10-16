@@ -137,10 +137,10 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
 
         var nodePalette = new DiagramBuilders().newNodePalette()
                 .deleteTool(deleteNodeTool)
-                .edgeTools(this.edgeTool)
                 .build();
 
         nodeDescription.setPalette(nodePalette);
+        nodeDescription.getEdgeTools().add(this.edgeTool);
 
         var edgeStyle = new DiagramBuilders().newEdgeStyle()
                 .edgeWidth(1)

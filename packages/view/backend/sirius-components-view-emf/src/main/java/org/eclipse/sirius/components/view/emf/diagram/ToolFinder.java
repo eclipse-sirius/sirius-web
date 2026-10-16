@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.EObject;
@@ -138,13 +136,11 @@ public class ToolFinder {
     }
 
     public List<EdgeTool> findEdgeTools(DiagramElementDescription elementDescription) {
-        List<EdgeTool> edgeTools = new ArrayList<>();
-        if (elementDescription instanceof NodeDescription nodeDescription && nodeDescription.getPalette() != null) {
-            edgeTools.addAll(nodeDescription.getPalette().getEdgeTools());
-            edgeTools.addAll(nodeDescription.getPalette().getToolSections().stream()
-                    .flatMap(toolSection -> toolSection.getEdgeTools().stream()).toList());
-        } else if (elementDescription instanceof EdgeDescription edgeDescription && edgeDescription.getPalette() != null) {
-            edgeTools.addAll(edgeDescription.getPalette().getEdgeTools());
+        List<EdgeTool> edgeTools = List.of();
+        if (elementDescription instanceof NodeDescription nodeDescription) {
+            edgeTools = nodeDescription.getEdgeTools();
+        } else if (elementDescription instanceof EdgeDescription edgeDescription) {
+            edgeTools = edgeDescription.getEdgeTools();
         }
         return edgeTools;
     }
@@ -244,28 +240,15 @@ public class ToolFinder {
     }
 
     public Optional<EdgeTool> getEdgeToolByIdFromNodeDescription(NodeDescription viewNodeDescription, String toolId) {
-        if (viewNodeDescription.getPalette() != null) {
-            var optionalRootEdgeTool = viewNodeDescription.getPalette().getEdgeTools().stream()
-                    .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
-                    .findFirst();
-
-            Supplier<Optional<EdgeTool>> findEdgeToolInToolSection = () -> viewNodeDescription.getPalette().getToolSections().stream()
-                    .flatMap(toolSection -> toolSection.getEdgeTools().stream())
-                    .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
-                    .findFirst();
-
-            return optionalRootEdgeTool.or(findEdgeToolInToolSection);
-        }
-        return Optional.empty();
+        return viewNodeDescription.getEdgeTools().stream()
+                .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                .findFirst();
     }
 
     public Optional<EdgeTool> getEdgeToolByIdFromEdgeDescription(EdgeDescription viewEdgeDescription, String toolId) {
-        if (viewEdgeDescription.getPalette() != null) {
-            return viewEdgeDescription.getPalette().getEdgeTools().stream()
+        return viewEdgeDescription.getEdgeTools().stream()
                 .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
                 .findFirst();
-        }
-        return Optional.empty();
     }
 
     public Optional<NodeTool> getGroupNodeToolByIdFromDiagramDescription(org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription, String toolId) {

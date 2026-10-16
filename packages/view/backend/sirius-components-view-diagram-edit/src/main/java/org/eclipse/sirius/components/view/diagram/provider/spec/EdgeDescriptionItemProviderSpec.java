@@ -42,6 +42,7 @@ public class EdgeDescriptionItemProviderSpec extends EdgeDescriptionItemProvider
         StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__PALETTE, studioDefaultToolsFactory.createDefaultEdgePalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__EDGE_TOOLS, studioDefaultToolsFactory.createDefaultEdgeTool()));
 
         EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__STYLE, newEdgeStyle));
