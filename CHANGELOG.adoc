@@ -154,6 +154,7 @@ Existing View descriptions are migrated automatically.
 - https://github.com/eclipse-sirius/sirius-web/issues/6969[#6969] [diagram] Fix an issue where the global selection was not correctly updated after opening the palette on the diagram.
 - https://github.com/eclipse-sirius/sirius-web/issues/6738[#6738] [core] Automatically close the active representation tab when it is deleted.
 - https://github.com/eclipse-sirius/sirius-web/issues/7049[#7049] [sirius-web] Fix an issue where the migration participant of a view model created outside a template was not set correctly during the first persistence operation.
+- https://github.com/eclipse-sirius/sirius-web/issues/6035[#6035] [tree] Fix an issue where explorer subscription was initiated before retrieving explorer filters
 
 
 === New Features

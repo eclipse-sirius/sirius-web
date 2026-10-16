@@ -144,3 +144,54 @@ test.describe('explorer', () => {
     }
   });
 });
+
+test.describe('explorer studio', () => {
+  let projectId: string;
+
+  test.beforeEach(async ({ request }) => {
+    const project = await new PlaywrightProject(request).createProject('Playwright - studio', 'studio-template');
+    projectId = project.projectId;
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when opening a project with default filter, then the explorer is loaded after the filters', async ({
+    page,
+  }) => {
+    const explorerSubscriptions: string[] = [];
+    page.on('websocket', (socket) => {
+      if (new URL(socket.url()).pathname !== '/subscriptions') {
+        return;
+      }
+      socket.on('framesent', ({ payload }) => {
+        const message: {
+          type: string;
+          payload?: {
+            query: string;
+            variables: { input: { representationId: string } };
+          };
+        } = JSON.parse(payload.toString());
+        if (message.type === 'start' && message.payload?.query.includes('subscription explorerEvent')) {
+          explorerSubscriptions.push(message.payload.variables.input.representationId);
+        }
+      });
+    });
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const explorer = new PlaywrightExplorer(page);
+
+    const domainNewModel = await explorer.getTreeItemLabel('DomainNewModel');
+    await expect(domainNewModel).toBeVisible();
+
+    const viewNewModel = await explorer.getTreeItemLabel('ViewNewModel');
+    await expect(viewNewModel).toBeVisible();
+
+    const studioColorPalettes = await explorer.getTreeItemLabel('studioColorPalettes');
+    await expect(studioColorPalettes).not.toBeVisible();
+
+    await expect.poll(() => explorerSubscriptions.length).toBeGreaterThan(0);
+    expect(explorerSubscriptions[0]).toContain('&activeFilterIds=[hide-color-palettes]');
+  });
+});
