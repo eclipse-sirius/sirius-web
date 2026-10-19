@@ -19,7 +19,6 @@ import org.eclipse.sirius.web.projects.domain.Nature;
 import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.StyleCustomizationDescription;
 import org.eclipse.sirius.web.projects.stylecustomizations.application.services.api.IStyleCustomizationDescriptionProvider;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,18 +33,15 @@ public class FlowStyleCustomizationDescriptionProvider implements IStyleCustomiz
 
     public static final String FLOW_STYLE_CUSTOMIZATION_STATUS = "flow-style-customization-status";
 
-    private final boolean nodeCustomizationEnabled;
-
     private final IProjectSearchService projectSearchService;
 
-    public FlowStyleCustomizationDescriptionProvider(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IProjectSearchService projectSearchService) {
-        this.nodeCustomizationEnabled = nodeCustomizationEnabled;
+    public FlowStyleCustomizationDescriptionProvider(IProjectSearchService projectSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
     }
 
     @Override
     public List<StyleCustomizationDescription> getStyleCustomizationDescriptions(String projectId) {
-        if (this.nodeCustomizationEnabled && this.hasFlowNature(projectId)) {
+        if (this.hasFlowNature(projectId)) {
             return List.of(
                     new StyleCustomizationDescription(FLOW_STYLE_CUSTOMIZATION_POWER_STATUS, "Power Status",
                             "Change the style of flow elements depending on their power status"),

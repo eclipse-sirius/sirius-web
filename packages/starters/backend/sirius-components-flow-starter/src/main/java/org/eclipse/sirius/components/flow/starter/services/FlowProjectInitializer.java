@@ -16,7 +16,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationCreationService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,12 +30,9 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 public class FlowProjectInitializer {
 
-    private final boolean nodeCustomizationEnabled;
-
     private final IProjectStyleCustomizationCreationService projectStyleCustomizationCreationService;
 
-    public FlowProjectInitializer(@Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled, IProjectStyleCustomizationCreationService projectStyleCustomizationCreationService) {
-        this.nodeCustomizationEnabled = nodeCustomizationEnabled;
+    public FlowProjectInitializer(IProjectStyleCustomizationCreationService projectStyleCustomizationCreationService) {
         this.projectStyleCustomizationCreationService = Objects.requireNonNull(projectStyleCustomizationCreationService);
     }
 
@@ -44,7 +40,7 @@ public class FlowProjectInitializer {
     @TransactionalEventListener
     public void onProjectCreatedEvent(ProjectCreatedEvent projectCreatedEvent) {
         boolean isFlowProject = projectCreatedEvent.project().getNatures().stream().anyMatch(nature -> nature.name().equals(FlowProjectTemplatesProvider.FLOW_NATURE));
-        if (isFlowProject && this.nodeCustomizationEnabled) {
+        if (isFlowProject) {
             this.projectStyleCustomizationCreationService.createProjectStyleCustomization(projectCreatedEvent, AggregateReference.to(projectCreatedEvent.project().getId()), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_POWER_STATUS);
             this.projectStyleCustomizationCreationService.createProjectStyleCustomization(projectCreatedEvent, AggregateReference.to(projectCreatedEvent.project().getId()), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS);
         }

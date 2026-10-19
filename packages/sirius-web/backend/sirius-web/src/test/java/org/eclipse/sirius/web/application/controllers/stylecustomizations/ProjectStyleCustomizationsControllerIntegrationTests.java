@@ -38,7 +38,7 @@ import graphql.relay.Relay;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.style.customization.enabled=true" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProjectStyleCustomizationsControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
