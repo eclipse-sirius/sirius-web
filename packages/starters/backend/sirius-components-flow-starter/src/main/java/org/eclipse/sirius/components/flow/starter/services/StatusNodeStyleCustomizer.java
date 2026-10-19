@@ -29,7 +29,6 @@ import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StatusNodeStyleCustomizer implements INodeStyleCustomizer {
 
-    private final boolean nodeCustomizationEnabled;
-
     private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
 
     private final IProjectEditingContextService projectEditingContextService;
@@ -51,12 +48,10 @@ public class StatusNodeStyleCustomizer implements INodeStyleCustomizer {
     private final IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService;
 
     public StatusNodeStyleCustomizer(
-            @Value("${sirius.web.style.customization.enabled:false}") boolean nodeCustomizationEnabled,
             IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate,
             IProjectEditingContextService projectEditingContextService,
             IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService
     ) {
-        this.nodeCustomizationEnabled = nodeCustomizationEnabled;
         this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
         this.projectStyleCustomizationSearchService = Objects.requireNonNull(projectStyleCustomizationSearchService);
@@ -66,7 +61,7 @@ public class StatusNodeStyleCustomizer implements INodeStyleCustomizer {
     @Transactional(readOnly = true)
     public INodeStyle customize(VariableManager variableManager, DiagramDescription diagramDescription, NodeDescription nodeDescription, INodeStyle nodeStyle) {
         INodeStyle customizeStyle = nodeStyle;
-        if (this.nodeCustomizationEnabled && nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {
+        if (nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {
             var isFlowProject = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                     .map(IEditingContext::getId)
                     .map(this.flowCapableEditingContextPredicate::test)
