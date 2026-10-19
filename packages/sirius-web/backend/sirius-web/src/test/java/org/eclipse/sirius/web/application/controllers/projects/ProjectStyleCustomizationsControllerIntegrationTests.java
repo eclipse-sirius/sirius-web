@@ -127,4 +127,18 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
         assertThat(this.domainEventCollector.getDomainEvents()).filteredOn(ProjectStyleCustomizationDeletedEvent.class::isInstance).hasSize(1);
         assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS)).isFalse();
     }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given an enabled project style customization, when it is enabled again, then return a success but nothing really happened")
+    public void givenEnabledProjectStyleCustomizationWhenEnabledAgainThenReturnSuccessButNothingReallyHappened(CapturedOutput capturedOutput) {
+        String styleCustomizationDescriptionId = FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS;
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), styleCustomizationDescriptionId)).isTrue();
+
+        var input = new UpdateProjectStyleCustomizationStateInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID, styleCustomizationDescriptionId, true);
+        this.updateProjectStyleCustomizationStateExecutor.execute(input, capturedOutput).isSuccess();
+
+        assertThat(this.domainEventCollector.getDomainEvents()).filteredOn(ProjectStyleCustomizationCreatedEvent.class::isInstance).hasSize(0);
+        assertThat(this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(FlowIdentifier.PROJECT_ID), styleCustomizationDescriptionId)).isTrue();
+    }
 }

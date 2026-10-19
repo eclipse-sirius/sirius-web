@@ -24,4 +24,5 @@
     <include file="db/changelog/2025.10/2025.10.0.xml" />
     <include file="db/changelog/2026.1/2026.1.0.xml" />
     <include file="db/changelog/2026.11/2026.9.4.xml" />
+    <include file="db/changelog/2026.11/2026.9.5.xml" />
 </databaseChangeLog>

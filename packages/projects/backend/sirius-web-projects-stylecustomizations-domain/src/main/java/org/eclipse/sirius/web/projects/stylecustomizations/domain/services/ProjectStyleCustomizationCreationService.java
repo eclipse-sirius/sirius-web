@@ -40,11 +40,17 @@ public class ProjectStyleCustomizationCreationService implements IProjectStyleCu
 
     @Override
     public IResult<ProjectStyleCustomization> createProjectStyleCustomization(ICause cause, AggregateReference<Project, String> project, String styleCustomizationDescriptionId) {
-        var projectStyleCustomization = ProjectStyleCustomization.newProjectStyleCustomization()
-                .project(project)
-                .styleCustomizationDescriptionId(styleCustomizationDescriptionId)
-                .build(cause);
-        this.projectStyleCustomizationRepository.save(projectStyleCustomization);
+        ProjectStyleCustomization projectStyleCustomization = this.projectStyleCustomizationRepository
+                .findByProjectIdAndStyleCustomizationDescriptionId(
+                        project.getId(),
+                        styleCustomizationDescriptionId)
+                .orElseGet(() -> {
+                    var newProjectStyleCustomization = ProjectStyleCustomization.newProjectStyleCustomization()
+                            .project(project)
+                            .styleCustomizationDescriptionId(styleCustomizationDescriptionId)
+                            .build(cause);
+                    return this.projectStyleCustomizationRepository.save(newProjectStyleCustomization);
+                });
 
         return new Success<>(projectStyleCustomization);
     }
