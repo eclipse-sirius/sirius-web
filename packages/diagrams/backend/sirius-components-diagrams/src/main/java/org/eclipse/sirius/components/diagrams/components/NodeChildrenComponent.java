@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.NodeInfo;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -180,7 +181,14 @@ public class NodeChildrenComponent implements IComponent {
         this.props.getVariableManager().get(VariableManager.SELF, Object.class).ifPresent(ancestors::add);
         ancestors.addAll(oldAncestors);
 
+        NodeInfo parentNodeInfo = this.props.getParentNodeInfo();
+        var oldAncestorsInfos = this.props.getVariableManager().get(NodeDescription.GRAPHICAL_ANCESTORS_INFOS, List.class).orElse(List.of());
+        var graphicalAncestorsInfos = new ArrayList<>();
+        graphicalAncestorsInfos.add(parentNodeInfo);
+        graphicalAncestorsInfos.addAll(oldAncestorsInfos);
+
         childNodeVariableManager.put(NodeDescription.ANCESTORS, ancestors);
+        childNodeVariableManager.put(NodeDescription.GRAPHICAL_ANCESTORS_INFOS, graphicalAncestorsInfos);
         return childNodeVariableManager;
     }
 

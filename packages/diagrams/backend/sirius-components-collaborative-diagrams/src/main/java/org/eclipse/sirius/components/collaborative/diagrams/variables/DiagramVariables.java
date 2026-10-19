@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
+import org.eclipse.sirius.components.diagrams.IElementInfo;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -45,6 +46,7 @@ public class DiagramVariables {
     public static final Variable GRAPHICAL_EDGE_TARGET = new Variable("graphicalEdgeTarget", Element.class, false, "The virtual diagram element at the target of the edge");
     public static final Variable CACHE = new Variable("cache", DiagramRenderingCache.class, false, "An internal cache used to retrieve some internal data during the rendering");
     public static final Variable ANCESTORS = new Variable("ancestors", Object.class, true, "The semantic ancestors of the node");
+    public static final Variable GRAPHICAL_ANCESTORS_INFOS = new Variable("graphicalAncestorsInfos", IElementInfo.class, true, "The graphical ancestors infos of the node");
     public static final Variable DROPPED_ELEMENTS = new Variable("droppedElements", Object.class, true, "All the semantic objects being dropped");
     public static final Variable DROPPED_NODES = new Variable("droppedNodes", Node.class, true, "All the graphical elements being dropped");
     public static final Variable TARGET_ELEMENT = new Variable("targetElement", Object.class, false, "The semantic object in which the element is being dropped");

@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeDecorator;
 import org.eclipse.sirius.components.diagrams.NodeDecoratorPosition;
+import org.eclipse.sirius.components.diagrams.NodeInfo;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.IDecoratorDescription;
@@ -181,6 +182,7 @@ public class NodeComponent implements IComponent {
                 .state(state)
                 .previousParentNode(optionalPreviousNode.orElse(null))
                 .diagramEvents(diagramEvents)
+                .parentNodeInfo(new NodeInfo(nodeId, nodeDescription.getId(), appearance.style(), isPinned))
                 .build();
         Element nodeChildren = new Element(NodeChildrenComponent.class, nodeChildrenComponentProps);
 

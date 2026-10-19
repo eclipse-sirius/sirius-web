@@ -69,19 +69,19 @@ public class DiagramVariableProvider implements IVariableProvider {
     }
 
     private List<Variable> nodeSemanticCandidates() {
-        return List.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, DiagramVariables.SEMANTIC_ELEMENT_IDS, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+        return List.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, DiagramVariables.SEMANTIC_ELEMENT_IDS, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS, DiagramVariables.GRAPHICAL_ANCESTORS_INFOS);
     }
 
     private List<Variable> nodePrecondition() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS, DiagramVariables.GRAPHICAL_ANCESTORS_INFOS);
     }
 
     private List<Variable> nodeLabel() {
-        return List.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+        return List.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS, DiagramVariables.GRAPHICAL_ANCESTORS_INFOS);
     }
 
     private List<Variable> nodeWidthAndHeight() {
-        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS, DiagramVariables.GRAPHICAL_ANCESTORS_INFOS);
     }
 
     private List<Variable> edgeSemanticCandidates() {

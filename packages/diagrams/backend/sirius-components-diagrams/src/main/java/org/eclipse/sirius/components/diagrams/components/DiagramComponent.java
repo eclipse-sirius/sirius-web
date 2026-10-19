@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramInfo;
+import org.eclipse.sirius.components.diagrams.IElementInfo;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -66,6 +68,9 @@ public class DiagramComponent implements IComponent {
                     var ancestors = new ArrayList<>();
                     variableManager.get(VariableManager.SELF, Object.class).ifPresent(ancestors::add);
                     nodeVariableManager.put(NodeDescription.ANCESTORS, ancestors);
+
+                    List<IElementInfo> graphicalAncestorInfos = List.of(new DiagramInfo(diagramId, this.props.getDiagramDescription().getId(), style));
+                    nodeVariableManager.put(NodeDescription.GRAPHICAL_ANCESTORS_INFOS, graphicalAncestorInfos);
 
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
                             .orElse(List.of());
