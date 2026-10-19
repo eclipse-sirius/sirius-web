@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2026 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="02-add-project-style-customization-unique-constraint" author="gcoutable">
+
+        <sql>
+            <!-- Remove duplicates before applying the unique constraint -->
+            DELETE FROM project_style_customization AS duplicate
+                USING project_style_customization AS kept
+            WHERE duplicate.project_id = kept.project_id
+              AND duplicate.style_customization_description_id = kept.style_customization_description_id
+              AND (duplicate.created_on, duplicate.id) > (kept.created_on, kept.id);
+        </sql>
+
+        <addUniqueConstraint tableName="project_style_customization" columnNames="project_id, style_customization_description_id" />
+    </changeSet>
+</databaseChangeLog>
