@@ -145,10 +145,9 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable requestConnectorTools = () -> this.connectorPaletteExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), channelNodeId.get(), subscriptionEdgeId.get())
-                .hasPaletteEntriesId(id -> {
-                    assertThat(id).hasSize(2);
-                    connectorToolId.set(id.get(0));
-                });
+                .hasTypeName(typeName -> assertThat(typeName).isEqualTo("SingleClickOnTwoDiagramElementsTool"))
+                .hasToolLabel(label -> assertThat(label).isEqualTo("Channel"))
+                .hasToolId(connectorToolId::set);
 
         Runnable createEdge = () -> {
             var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(
@@ -208,10 +207,9 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable requestConnectorTools = () -> this.connectorPaletteExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), subscriptionEdgeId.get(), channelNodeId.get())
-                .hasPaletteEntriesId(id -> {
-                    assertThat(id).hasSize(2);
-                    connectorToolId.set(id.get(0));
-                });
+                .hasTypeName(typeName -> assertThat(typeName).isEqualTo("SingleClickOnTwoDiagramElementsTool"))
+                .hasToolLabel(label -> assertThat(label).isEqualTo("Channel"))
+                .hasToolId(connectorToolId::set);
 
         Runnable createEdge = () -> {
             var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(

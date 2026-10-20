@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPalette, GQLTool, isTool, isToolSection } from '@eclipse-sirius/sirius-components-palette';
+import { GQLPalette, GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import { memo, useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -22,17 +22,16 @@ import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext'
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { ConnectorPaletteProps } from './ConnectorPalette.types';
 import { useConnectorPalette } from './context/useConnectorPalette';
+import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
 import { useConnectorPaletteContents } from './useConnectorPaletteContents';
-import { UseConnectorPaletteContentValue } from './useConnectorPaletteContents.types';
+import { GQLConnectorPaletteResult, UseConnectorPaletteContentValue } from './useConnectorPaletteContents.types';
 import { useTemporaryEdge } from './useTemporaryEdge';
 
-const getToolsCount = (connectorPalette: GQLPalette | null): number => {
-  const quickAccessToolsCount = connectorPalette?.quickAccessTools.length ?? 0;
-  const toolsInSectionCount =
-    connectorPalette?.paletteEntries.filter(isToolSection).flatMap((toolSection) => toolSection.tools).length ?? 0;
-  const toolsCount = connectorPalette?.paletteEntries.filter(isTool).length ?? 0;
-  return quickAccessToolsCount + toolsInSectionCount + toolsCount;
-};
+export const isPalette = (entry: GQLConnectorPaletteResult): entry is GQLPalette => entry.__typename === 'Palette';
+
+export const isSingleClickOnTwoDiagramElementTool = (
+  entry: GQLConnectorPaletteResult
+): entry is GQLSingleClickOnTwoDiagramElementsTool => entry.__typename === 'SingleClickOnTwoDiagramElementsTool';
 
 export const ConnectorPalette = memo(({}: ConnectorPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -48,13 +47,12 @@ export const ConnectorPalette = memo(({}: ConnectorPaletteProps) => {
   const { invokeConnectorTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
   const { addTempConnectionLine, removeTempConnectionLine } = useTemporaryEdge();
 
-  const { connectorPalette }: UseConnectorPaletteContentValue = useConnectorPaletteContents(
+  const { connectorPalette, loading }: UseConnectorPaletteContentValue = useConnectorPaletteContents(
     sourceDiagramElementId || '',
     targetDiagramElementId || ''
   );
 
-  const toolsCount = getToolsCount(connectorPalette);
-
+  const palette = connectorPalette && isPalette(connectorPalette) ? connectorPalette : null;
   const onClose = () => {
     hideConnectorPalette();
     removeTempConnectionLine();
@@ -77,20 +75,18 @@ export const ConnectorPalette = memo(({}: ConnectorPaletteProps) => {
   };
 
   useEffect(() => {
-    if (connectorPalette && toolsCount === 1) {
-      connectorPalette.paletteEntries.filter(isTool).map(onToolClick);
-      connectorPalette?.quickAccessTools.filter(isTool).map(onToolClick);
-      connectorPalette?.paletteEntries
-        .filter(isToolSection)
-        .flatMap((toolSection) => toolSection.tools)
-        .map(onToolClick);
-    } else if (connectorPalette && sourceDiagramElementId && targetDiagramElementId && toolsCount > 1) {
+    if (!isOpened || readOnly || loading || !connectorPalette) {
+      return;
+    }
+    if (isSingleClickOnTwoDiagramElementTool(connectorPalette)) {
+      onToolClick(connectorPalette);
+    } else if (sourceDiagramElementId && targetDiagramElementId) {
       addTempConnectionLine(sourceDiagramElementId, targetDiagramElementId);
     }
-  }, [connectorPalette?.paletteEntries.length]);
+  }, [connectorPalette, loading, isOpened, readOnly, sourceDiagramElementId, targetDiagramElementId]);
 
   const shouldRender =
-    !readOnly && toolsCount > 1 && sourceDiagramElementId && connectorPalette && isOpened && paletteX && paletteY;
+    !readOnly && !loading && sourceDiagramElementId && palette && isOpened && paletteX !== null && paletteY !== null;
 
   return shouldRender ? (
     <PalettePortal>
@@ -99,7 +95,7 @@ export const ConnectorPalette = memo(({}: ConnectorPaletteProps) => {
           x={paletteX}
           y={paletteY}
           representationElementIds={[sourceDiagramElementId]}
-          palette={connectorPalette}
+          palette={palette}
           onToolClick={onToolClick}
           onClose={onClose}
           paletteToolListExtensions={[]}

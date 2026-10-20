@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.view.emf.diagram.tools.api;
 import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -29,7 +30,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * @author sbegaudeau
  */
 public interface IEdgeToolConverter {
-    ITool createEdgeTool(AQLInterpreter interpreter, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager);
+    SingleClickOnTwoDiagramElementsTool createEdgeTool(AQLInterpreter interpreter, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager);
 
     /**
      * Returns an edge tool from a node tool declared inside the palette of an edge tool.

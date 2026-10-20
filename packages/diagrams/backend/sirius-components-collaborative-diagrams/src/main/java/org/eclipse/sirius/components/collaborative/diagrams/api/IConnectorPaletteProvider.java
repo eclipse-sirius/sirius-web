@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.palette.dto.Palette;
 
 
 /**
@@ -27,5 +26,10 @@ public interface IConnectorPaletteProvider {
 
     boolean canHandle(DiagramDescription diagramDescription);
 
-    Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object sourceDiagramElement, Object targetDiagramElement, Object sourceElementDescription, Object targetElementDescription);
+    /**
+     * Returns a configured palette or the default connector tool when no palette is configured.
+     *
+     * @return the connector result, or null if the connection cannot be resolved
+     */
+    IConnectorToolsProviderResult getConnectorTools(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object sourceDiagramElement, Object targetDiagramElement, Object sourceElementDescription, Object targetElementDescription);
 }

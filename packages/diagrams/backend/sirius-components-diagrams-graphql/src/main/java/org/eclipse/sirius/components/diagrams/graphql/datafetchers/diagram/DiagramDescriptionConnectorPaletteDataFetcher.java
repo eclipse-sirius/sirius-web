@@ -20,11 +20,11 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorPaletteInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.components.palette.dto.GetPaletteSuccessPayload;
-import org.eclipse.sirius.components.palette.dto.Palette;
 
 import graphql.schema.DataFetchingEnvironment;
 import reactor.core.publisher.Mono;
@@ -35,7 +35,7 @@ import reactor.core.publisher.Mono;
  * @author mcharfadi
  */
 @QueryDataFetcher(type = "DiagramDescription", field = "connectorPalette")
-public class DiagramDescriptionConnectorPaletteDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Palette>> {
+public class DiagramDescriptionConnectorPaletteDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Object>> {
 
     private static final String SOURCE_DIAGRAM_ELEMENT_ID = "sourceDiagramElementId";
 
@@ -48,7 +48,7 @@ public class DiagramDescriptionConnectorPaletteDataFetcher implements IDataFetch
     }
 
     @Override
-    public CompletableFuture<Palette> get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<Object> get(DataFetchingEnvironment environment) throws Exception {
         Map<String, Object> localContext = environment.getLocalContext();
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);
         String representationId = Optional.ofNullable(localContext.get(LocalContextConstants.REPRESENTATION_ID)).map(Object::toString).orElse(null);
@@ -59,13 +59,15 @@ public class DiagramDescriptionConnectorPaletteDataFetcher implements IDataFetch
             GetConnectorPaletteInput input = new GetConnectorPaletteInput(UUID.randomUUID(), editingContextId, representationId, sourceDiagramElementId, targetDiagramElementId);
 
             return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
-                    .filter(GetPaletteSuccessPayload.class::isInstance)
-                    .map(GetPaletteSuccessPayload.class::cast)
-                    .map(GetPaletteSuccessPayload::palette)
+                    .flatMap(payload -> switch (payload) {
+                        case GetPaletteSuccessPayload success -> Mono.<Object>just(success.palette());
+                        case GetConnectorToolSuccessPayload success -> Mono.<Object>just(success.tool());
+                        default -> Mono.<Object>empty();
+                    })
                     .toFuture();
         }
 
-        return Mono.<Palette>empty().toFuture();
+        return Mono.<Object>empty().toFuture();
     }
 
 }

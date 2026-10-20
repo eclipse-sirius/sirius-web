@@ -15,10 +15,10 @@ import { gql, useQuery } from '@apollo/client';
 import { useContext, useEffect } from 'react';
 
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { GQLPalette } from '@eclipse-sirius/sirius-components-palette';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
+  GQLConnectorPaletteResult,
   GQLDiagramDescription,
   GQLGetConnectorPaletteData,
   GQLGetConnectorPaletteVariables,
@@ -52,18 +52,25 @@ export const getPaletteQuery = gql`
                 sourceDiagramElementId: $sourceDiagramElementId
                 targetDiagramElementId: $targetDiagramElementId
               ) {
-                id
-                quickAccessTools {
-                  ...ToolFields
-                }
-                paletteEntries {
-                  ...ToolFields
-                  ... on ToolSection {
-                    id
-                    label
-                    iconURL
-                    tools {
-                      ...ToolFields
+                __typename
+                ...ToolFields
+                ... on Palette {
+                  id
+                  quickAccessTools {
+                    ...ToolFields
+                  }
+                  paletteEntries {
+                    ...ToolFields
+                    ... on PaletteDivider {
+                      id
+                    }
+                    ... on ToolSection {
+                      id
+                      label
+                      iconURL
+                      tools {
+                        ...ToolFields
+                      }
                     }
                   }
                 }
@@ -90,6 +97,7 @@ export const useConnectorPaletteContents = (
   const { data, loading, error } = useQuery<GQLGetConnectorPaletteData, GQLGetConnectorPaletteVariables>(
     getPaletteQuery,
     {
+      skip: !sourceDiagramElementId || !targetDiagramElementId,
       variables: {
         editingContextId,
         representationId: diagramId,
@@ -101,7 +109,7 @@ export const useConnectorPaletteContents = (
 
   const description: GQLRepresentationDescription | undefined =
     data?.viewer.editingContext?.representation?.description;
-  const connectorPalette: GQLPalette | null =
+  const connectorPalette: GQLConnectorPaletteResult | null =
     description && isDiagramDescription(description) ? description.connectorPalette : null;
 
   useEffect(() => {

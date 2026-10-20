@@ -36,22 +36,26 @@ public class ConnectorPaletteQueryRunner implements IQueryRunner {
                     description {
                       ... on DiagramDescription {
                         connectorPalette(sourceDiagramElementId: $sourceDiagramElementId, targetDiagramElementId: $targetDiagramElementId) {
-                          id
-                          quickAccessTools {
-                            ...ToolFields
-                          }
-                          paletteEntries {
-                            ...ToolFields
-                            ... on PaletteDivider {
-                              __typename
-                              id
+                          __typename
+                          ...ToolFields
+                          ... on Palette {
+                            id
+                            quickAccessTools {
+                              ...ToolFields
                             }
-                            ... on ToolSection {
-                              id
-                              label
-                              iconURL
-                              tools {
-                                ...ToolFields
+                            paletteEntries {
+                              ...ToolFields
+                              ... on PaletteDivider {
+                                __typename
+                                id
+                              }
+                              ... on ToolSection {
+                                id
+                                label
+                                iconURL
+                                tools {
+                                  ...ToolFields
+                                }
                               }
                             }
                           }

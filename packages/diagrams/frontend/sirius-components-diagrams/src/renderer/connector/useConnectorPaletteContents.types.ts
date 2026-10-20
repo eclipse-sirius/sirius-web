@@ -12,14 +12,17 @@
  *******************************************************************************/
 
 import { GQLPalette } from '@eclipse-sirius/sirius-components-palette';
+import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
+
+export type GQLConnectorPaletteResult = GQLPalette | GQLSingleClickOnTwoDiagramElementsTool;
 
 export interface UseConnectorPaletteContentValue {
-  connectorPalette: GQLPalette | null;
+  connectorPalette: GQLConnectorPaletteResult | null;
   loading: boolean;
 }
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  connectorPalette: GQLPalette;
+  connectorPalette: GQLConnectorPaletteResult;
 }
 
 export interface GQLRepresentationDescription {
