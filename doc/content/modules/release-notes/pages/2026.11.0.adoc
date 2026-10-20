@@ -190,6 +190,7 @@ When its body is empty, the button retains the default creation behavior.
 - Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
 - Add the ability to customize the default result of the `ICapabilityEvaluator` instead of defaulting to `true` when no `ICapabilityVoter` takes part in the evaluation.
 - Align the refresh of the Gantt representation on the new APIs already used by deck and validation.
+- Introduce documentation for the reference widget.
 
 
 == Deprecation warnings
