@@ -15,10 +15,10 @@ import { gql, useQuery } from '@apollo/client';
 import { useEffect } from 'react';
 
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLPalette } from '@eclipse-sirius/sirius-components-palette';
 import {
   GQLGetPaletteData,
   GQLGetPaletteVariables,
-  GQLPalette,
   GQLRepresentationDescription,
   GQLTreeDescription,
   UsePaletteContentValue,

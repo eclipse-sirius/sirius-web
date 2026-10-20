@@ -93,6 +93,7 @@ export interface GQLPalette {
   id: string;
   quickAccessTools: GQLTool[];
   paletteEntries: GQLPaletteEntry[];
+  __typename: string;
 }
 
 export interface GQLPaletteEntry {

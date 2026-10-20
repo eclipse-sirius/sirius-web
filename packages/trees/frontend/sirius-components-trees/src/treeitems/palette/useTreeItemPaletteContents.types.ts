@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
+import { GQLKeyBinding } from '@eclipse-sirius/sirius-components-core';
+import { GQLPalette, GQLTool } from '@eclipse-sirius/sirius-components-palette';
 
 export interface UsePaletteContentValue {
   palette: GQLPalette | null;
@@ -54,34 +55,4 @@ export interface GQLSingleClickTreeItemTool extends GQLTool {
 
 export interface GQLFetchTreeItemTool extends GQLTool {
   keyBindings: GQLKeyBinding[];
-}
-
-export interface GQLKeyBinding {
-  isCtrl: boolean;
-  isMeta: boolean;
-  isAlt: boolean;
-  key: string;
-}
-
-export interface GQLPalette {
-  /**
-   * @deprecated The `id` field is deprecated and should not be used. It will be removed in a future release.
-   * See https://github.com/eclipse-sirius/sirius-web/issues/6470 for more details.
-   */
-  id: string;
-  quickAccessTools: GQLTool[];
-  paletteEntries: GQLPaletteEntry[];
-}
-
-export interface GQLPaletteEntry {
-  id: string;
-  __typename: string;
-}
-
-export interface GQLPaletteDivider extends GQLPaletteEntry {}
-
-export interface GQLToolSection extends GQLPaletteEntry {
-  label: string;
-  iconURL: string[];
-  tools: GQLTool[];
 }

@@ -20,12 +20,15 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.ConnectorPaletteResult;
+import org.eclipse.sirius.components.collaborative.diagrams.api.DefaultConnectorToolResult;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorPaletteProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorPaletteInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.palette.api.IDiagramConnectorPaletteCustomizer;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -133,20 +136,23 @@ public class GetConnectorPaletteEventHandler implements IDiagramEventHandler {
                     var sourceDiagramElementDescription = optionalSourceDiagramElementDescription.get();
                     var targetDiagramElementDescription = optionalTargetDiagramElementDescription.get();
 
-                    palette = paletteProvider.handle(editingContext, diagramContext, diagramDescription, sourceDiagramElement, targetDiagramElement, sourceDiagramElementDescription, targetDiagramElementDescription);
+                    var result = paletteProvider.getConnectorTools(editingContext, diagramContext, diagramDescription, sourceDiagramElement, targetDiagramElement, sourceDiagramElementDescription, targetDiagramElementDescription);
 
-                    var customizers = this.diagramConnectorPaletteCustomizers.stream()
-                            .filter(customizer -> customizer.canHandle(editingContext, diagram, sourceDiagramElement, targetDiagramElement))
-                            .toList();
+                    if (result instanceof ConnectorPaletteResult paletteResult) {
+                        palette = paletteResult.palette();
+                        var customizers = this.diagramConnectorPaletteCustomizers.stream()
+                                .filter(customizer -> customizer.canHandle(editingContext, diagram, sourceDiagramElement, targetDiagramElement))
+                                .toList();
 
-                    for (var customizer: customizers) {
-                        palette = customizer.customize(editingContext, diagram, sourceDiagramElement, targetDiagramElement, palette);
+                        for (var customizer : customizers) {
+                            palette = customizer.customize(editingContext, diagram, sourceDiagramElement, targetDiagramElement, palette);
+                        }
+                        payload = new GetPaletteSuccessPayload(diagramInput.id(), palette);
+                    } else if (result instanceof DefaultConnectorToolResult toolResult) {
+                        payload = new GetConnectorToolSuccessPayload(diagramInput.id(), toolResult.tool());
                     }
                 }
             }
-        }
-        if (palette != null) {
-            payload = new GetPaletteSuccessPayload(diagramInput.id(), palette);
         }
 
         payloadSink.tryEmitValue(payload);

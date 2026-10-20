@@ -146,6 +146,11 @@ Existing representations have been migrated but programmatic one must be migrate
 If there is no palette declared, then the body of the first candidate edge tool will be executed.
 Existing edge tool bodies are moved into a same-named node tool in each edge tool's palette during migration.
 Programmatic View DSLs can configure `EdgeToolBuilder.palette(...)` and the contained node tools, or use `EdgeToolBuilder.body(...)` for direct execution without displaying a palette.
+- https://github.com/eclipse-sirius/sirius-web/issues/7089[#7089] The query `connectorPalette(sourceDiagramElementId: ID!, targetDiagramElementId: ID!)` now returns `union ConnectorPaletteResult = Palette | SingleClickOnTwoDiagramElementsTool`.
+The `getConnectorTools` from the provider `IConnectorPaletteProvider` return a typed `IConnectorToolsProviderResult` that can either be `record DefaultConnectorToolResult(SingleClickOnTwoDiagramElementsTool tool) implements IConnectorToolsProviderResult` or `record ConnectorPaletteResult(Palette palette) implements IConnectorToolsProviderResult`
+This change makes it so that when a palette is defined under an `edgeTool` on a view dsl, then the palette is always rendered when making a connection.
+If no palette is defined inside the `edgeTool`, then the `edgeTool` body will be executed directly after making a connection.
+
 
 
 === Dependency update

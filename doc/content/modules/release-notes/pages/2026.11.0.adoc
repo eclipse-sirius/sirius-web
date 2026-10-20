@@ -104,6 +104,10 @@ Programmatic descriptions must move their tool declarations to `NodeDescriptionB
 - Each edge tool can now have its own palette, without a palette the body of the edge tool will be executed when making a connection.
 Existing edge tool actions are moved into a same-named tool in that palette automatically.
 Programmatic descriptions can configure the edge tool palette and its tools or rely on the edge tool body in order to offer a default behavior (without rendering a palette).
+- The query `connectorPalette(sourceDiagramElementId: ID!, targetDiagramElementId: ID!)` now returns `union ConnectorPaletteResult = Palette | SingleClickOnTwoDiagramElementsTool`.
+The `getConnectorTools` from the provider `IConnectorPaletteProvider` return a typed `IConnectorToolsProviderResult` that can either be `record DefaultConnectorToolResult(SingleClickOnTwoDiagramElementsTool tool) implements IConnectorToolsProviderResult` or `record ConnectorPaletteResult(Palette palette) implements IConnectorToolsProviderResult`
+This change makes it so that when a palette is defined under an `edgeTool` on a view dsl, then the palette is always rendered when making a connection.
+If no palette is defined inside the `edgeTool`, then the `edgeTool` body will be executed directly after making a connection.
 
 
 == Dependency updates

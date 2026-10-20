@@ -53,7 +53,7 @@ public class EdgeToolConverter implements IEdgeToolConverter {
     }
 
     @Override
-    public ITool createEdgeTool(AQLInterpreter interpreter, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager) {
+    public SingleClickOnTwoDiagramElementsTool createEdgeTool(AQLInterpreter interpreter, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager) {
         String toolId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(viewEdgeTool).toString().getBytes()).toString();
         List<String> iconURLs = this.getIconURLs(viewEdgeTool.getIconURLsExpression(), interpreter, variableManager);
         String dialogDescriptionId = "";

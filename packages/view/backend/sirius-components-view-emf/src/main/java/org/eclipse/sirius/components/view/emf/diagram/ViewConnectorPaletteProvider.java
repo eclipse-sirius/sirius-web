@@ -20,7 +20,10 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.ConnectorPaletteResult;
+import org.eclipse.sirius.components.collaborative.diagrams.api.DefaultConnectorToolResult;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorPaletteProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProviderResult;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -36,7 +39,6 @@ import org.eclipse.sirius.components.palette.dto.ToolSection;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
@@ -77,7 +79,7 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
-        this.edgeToolConverter = edgeToolConverter;
+        this.edgeToolConverter = Objects.requireNonNull(edgeToolConverter);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
         this.connectorPaletteVariableManagerProvider = Objects.requireNonNull(connectorPaletteVariableManagerProvider);
     }
@@ -88,8 +90,8 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
     }
 
     @Override
-    public Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object sourceDiagramElement, Object targetDiagramElement, Object sourceElementDescription, Object targetElementDescription) {
-        Palette palette = null;
+    public IConnectorToolsProviderResult getConnectorTools(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object sourceDiagramElement, Object targetDiagramElement, Object sourceElementDescription, Object targetElementDescription) {
+        IConnectorToolsProviderResult result = null;
         var optionalVariableManager = this.connectorPaletteVariableManagerProvider.getVariableManager(editingContext, diagramContext, sourceDiagramElement, targetDiagramElement);
         var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
 
@@ -98,17 +100,16 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
             org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
             var interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewDiagramDescription.eContainer());
             if (sourceElementDescription instanceof IDiagramElementDescription diagramElementDescription) {
-                palette = this.getPalette(editingContext, diagramDescription, diagramElementDescription, variableManager, interpreter);
-
+                result = this.getResult(editingContext, diagramDescription, diagramElementDescription, variableManager, interpreter);
             }
         }
 
-        return palette;
+        return result;
     }
 
-    private Palette getPalette(IEditingContext editingContext, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private IConnectorToolsProviderResult getResult(IEditingContext editingContext, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Optional<String> optionalSourceElementId = this.getSourceElementId(diagramElementDescription.getId());
-        Palette nodePalette = null;
+        IConnectorToolsProviderResult result = null;
 
         if (optionalSourceElementId.isPresent()) {
             Optional<EdgeTool> candidateEdgeTool = this.viewDiagramDescriptionSearchService.findViewNodeDescriptionById(editingContext, diagramElementDescription.getId())
@@ -120,39 +121,41 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
                                     .filter(edgeTool -> this.checkPrecondition(edgeTool, variableManager, interpreter))
                                     .findFirst()));
 
+            if (candidateEdgeTool.isPresent() && candidateEdgeTool.get().getPalette() == null) {
+                var tool = this.edgeToolConverter.createEdgeTool(interpreter, candidateEdgeTool.get(), diagramDescription, diagramElementDescription, variableManager);
+                return new DefaultConnectorToolResult(tool);
+            }
+
             List<IPaletteEntry> paletteEntries = new ArrayList<>();
             List<ITool> quickAccessTools = new ArrayList<>();
-            if (candidateEdgeTool.isPresent() && candidateEdgeTool.get().getPalette() != null) {
+            if (candidateEdgeTool.isPresent()) {
                 var firstEdgeTool = candidateEdgeTool.get();
-                NodePalette palette = firstEdgeTool.getPalette();
-                if (palette != null) {
-                    palette.getNodeTools().stream()
-                            .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                            .map(tool -> this.edgeToolConverter.createEdgeToolFromNodeTool(tool, firstEdgeTool, diagramDescription, diagramElementDescription, variableManager, interpreter))
-                            .forEach(paletteEntries::add);
+                var palette = firstEdgeTool.getPalette();
+                palette.getNodeTools().stream()
+                        .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                        .map(tool -> this.edgeToolConverter.createEdgeToolFromNodeTool(tool, firstEdgeTool, diagramDescription, diagramElementDescription, variableManager, interpreter))
+                        .forEach(paletteEntries::add);
 
-                    palette.getToolSections().stream()
-                            .map(nodeToolSection -> this.createToolSection(nodeToolSection, firstEdgeTool, diagramDescription, diagramElementDescription, variableManager, interpreter))
-                            .forEach(paletteEntries::add);
+                palette.getToolSections().stream()
+                        .map(nodeToolSection -> this.createToolSection(nodeToolSection, firstEdgeTool, diagramDescription, diagramElementDescription, variableManager, interpreter))
+                        .forEach(paletteEntries::add);
 
-                    palette.getQuickAccessTools().stream()
-                            .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                            .map(tool -> this.edgeToolConverter.createEdgeToolFromNodeTool(tool, firstEdgeTool, diagramDescription, diagramElementDescription, variableManager, interpreter))
-                            .forEach(quickAccessTools::add);
-                }
-            } else if (candidateEdgeTool.isPresent()) {
-                paletteEntries.add(this.edgeToolConverter.createEdgeTool(interpreter, candidateEdgeTool.get(), diagramDescription, diagramElementDescription, variableManager));
+                palette.getQuickAccessTools().stream()
+                        .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                        .map(tool -> this.edgeToolConverter.createEdgeToolFromNodeTool(tool, firstEdgeTool, diagramDescription, diagramElementDescription, variableManager, interpreter))
+                        .forEach(quickAccessTools::add);
             }
 
             paletteEntries.add(new PaletteDivider(UUID.randomUUID().toString()));
 
             String paletteId = "siriusComponents://connectorPalette?diagramElementId=" + optionalSourceElementId.get();
-            nodePalette = Palette.newPalette(paletteId)
+            var palette = Palette.newPalette(paletteId)
                     .quickAccessTools(quickAccessTools)
                     .paletteEntries(paletteEntries)
                     .build();
+            result = new ConnectorPaletteResult(palette);
         }
-        return nodePalette;
+        return result;
     }
 
     private ToolSection createToolSection(NodeToolSection toolSection, EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager, AQLInterpreter interpreter) {

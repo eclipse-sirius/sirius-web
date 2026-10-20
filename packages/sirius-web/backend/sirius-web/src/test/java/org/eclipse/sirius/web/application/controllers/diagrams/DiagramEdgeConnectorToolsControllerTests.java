@@ -117,7 +117,8 @@ public class DiagramEdgeConnectorToolsControllerTests extends AbstractIntegratio
 
         Runnable requestTools = () -> {
             var palette = this.connectorPaletteExecutor.execute(EdgeOnEdgeIdentifiers.EDITING_CONTEXT_ID, diagramId.get(), sourceId.get(), targetId.get());
-            palette.hasPaletteEntriesLabel(labels -> assertThat(labels).containsExactly("E1toE2A", "E1toE2B"))
+            palette.hasTypeName(typeName -> assertThat(typeName).isEqualTo("Palette"))
+                    .hasPaletteEntriesLabel(labels -> assertThat(labels).containsExactly("E1toE2A", "E1toE2B"))
                     .hasPaletteEntriesId(ids -> toolIds.set(ids.subList(0, 2)));
             assertThat(toolIds.get()).hasSize(2);
         };
@@ -203,8 +204,9 @@ public class DiagramEdgeConnectorToolsControllerTests extends AbstractIntegratio
 
         Runnable requestTools = () -> {
             var palette = this.connectorPaletteExecutor.execute(EdgeOnEdgeIdentifiers.EDITING_CONTEXT_ID, diagramId.get(), sourceId.get(), targetId.get());
-            palette.hasPaletteEntriesLabel(labels -> assertThat(labels).containsExactly("EdgeToE2"))
-                    .hasPaletteEntriesId(ids -> toolIds.set(ids.subList(0, 1)));
+            palette.hasTypeName(typeName -> assertThat(typeName).isEqualTo("SingleClickOnTwoDiagramElementsTool"))
+                    .hasToolLabel(label -> assertThat(label).isEqualTo("EdgeToE2"))
+                    .hasToolId(id -> toolIds.set(List.of(id)));
             assertThat(toolIds.get()).hasSize(1);
         };
 
@@ -268,7 +270,8 @@ public class DiagramEdgeConnectorToolsControllerTests extends AbstractIntegratio
 
         Runnable requestTools = () -> {
             var palette = this.connectorPaletteExecutor.execute(EdgeOnEdgeIdentifiers.EDITING_CONTEXT_ID, diagramId.get(), sourceId.get(), targetId.get());
-            palette.hasQuickAccessToolLabel(labels -> assertThat(labels).startsWith("E2ToEdge1A", "E2ToEdge1B"))
+            palette.hasTypeName(typeName -> assertThat(typeName).isEqualTo("Palette"))
+                    .hasQuickAccessToolLabel(labels -> assertThat(labels).startsWith("E2ToEdge1A", "E2ToEdge1B"))
                     .hasQuickAccessToolId(ids -> toolIds.set(ids.subList(0, 2)));
             assertThat(toolIds.get()).hasSize(2);
         };
