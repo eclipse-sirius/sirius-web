@@ -153,6 +153,16 @@ public class ReferenceWidgetDescriptionBuilder {
     }
 
     /**
+     * Setter for Remove.
+     *
+     * @generated
+     */
+    public ReferenceWidgetDescriptionBuilder remove(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove value) {
+        this.getReferenceWidgetDescription().setRemove(value);
+        return this;
+    }
+
+    /**
      * Setter for Style.
      *
      * @generated

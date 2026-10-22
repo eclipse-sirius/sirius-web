@@ -38,6 +38,8 @@ public final class ReferenceWidgetVariables {
     public static final Variable NEW_VALUE = new Variable("newValue", Object.class, false,
             "The chosen value to be assigned to the reference owner, deprecated in favor of `newValues` for `add` feature");
 
+    public static final Variable VALUE_TO_REMOVE = new Variable("valueToRemove", Object.class, false, "The chosen value to remove from the reference owner");
+
     private ReferenceWidgetVariables() {
         // Prevent instantiation
     }

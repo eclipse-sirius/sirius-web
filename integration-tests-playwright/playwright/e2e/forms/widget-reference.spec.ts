@@ -43,6 +43,7 @@ const createFormWithWidgetReference = async (
   await explorer.createNewObject('ReferenceWidgetDescription', 'createButton-ReferenceWidgetCreateButtonDescription');
   await explorer.createNewObject('ReferenceWidgetDescription', 'add-ReferenceWidgetAdd');
   await explorer.createNewObject('ReferenceWidgetDescription', 'set-ReferenceWidgetSet');
+  await explorer.createNewObject('ReferenceWidgetDescription', 'remove-ReferenceWidgetRemove');
   await explorer.expand(name);
 };
 
@@ -301,6 +302,7 @@ test.describe('forms - widget reference - containment', () => {
           deletionSource === 'chip'
             ? widget.locator('.MuiChip-deleteIcon')
             : widget.getByTestId(`${widgetLabel}-clear`);
+        await expect(deleteButton).toBeVisible();
         await deleteButton.click();
         await expect(page.getByTestId('confirmation-dialog')).toBeVisible();
         await page.getByTestId('confirmation-dialog-button-cancel').click();

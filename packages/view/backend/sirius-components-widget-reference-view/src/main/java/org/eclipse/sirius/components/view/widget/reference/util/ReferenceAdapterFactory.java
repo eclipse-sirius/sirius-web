@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearB
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet;
 
 /**
@@ -85,6 +86,11 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseReferenceWidgetSet(ReferenceWidgetSet object) {
             return ReferenceAdapterFactory.this.createReferenceWidgetSetAdapter();
+        }
+
+        @Override
+        public Adapter caseReferenceWidgetRemove(ReferenceWidgetRemove object) {
+            return ReferenceAdapterFactory.this.createReferenceWidgetRemoveAdapter();
         }
 
         @Override
@@ -259,6 +265,20 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createReferenceWidgetSetAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove <em>Widget Remove</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove
+     * @generated
+     */
+    public Adapter createReferenceWidgetRemoveAdapter() {
         return null;
     }
 

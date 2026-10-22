@@ -32,6 +32,8 @@ public final class MessageConstants {
     public static final String OBJECT_NOT_FOUND = "OBJECT_NOT_FOUND";
     public static final String UNABLE_TO_SET_REFERENCE_VALUE = "UNABLE_TO_SET_REFERENCE_VALUE";
 
+    public static final String UNABLE_TO_REMOVE_REFERENCE_VALUE = "UNABLE_TO_REMOVE_REFERENCE_VALUE";
+
     private MessageConstants() {
         // Prevent instantiation
     }

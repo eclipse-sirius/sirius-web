@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearB
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet;
 
 /**
@@ -81,6 +82,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
                 return this.createReferenceWidgetAdd();
             case ReferencePackage.REFERENCE_WIDGET_SET:
                 return this.createReferenceWidgetSet();
+            case ReferencePackage.REFERENCE_WIDGET_REMOVE:
+                return this.createReferenceWidgetRemove();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -139,6 +142,17 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
     public ReferenceWidgetCreateButtonDescription createReferenceWidgetCreateButtonDescription() {
         ReferenceWidgetCreateButtonDescriptionImpl referenceWidgetCreateButtonDescription = new ReferenceWidgetCreateButtonDescriptionImpl();
         return referenceWidgetCreateButtonDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ReferenceWidgetRemove createReferenceWidgetRemove() {
+        ReferenceWidgetRemoveImpl referenceWidgetRemove = new ReferenceWidgetRemoveImpl();
+        return referenceWidgetRemove;
     }
 
     /**

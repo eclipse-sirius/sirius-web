@@ -35,25 +35,26 @@ The following optional children configure the widget's actions:
 
 * `set: ReferenceWidgetSet` Assigns a value to a single-valued reference.
 * `add: ReferenceWidgetAdd` Adds values to a multivalued reference.
+* `remove: ReferenceWidgetRemove` Removes a value from a reference.
 * `clearButton: ReferenceWidgetClearButtonDescription` Clears all values of the reference.
 * `createButton: ReferenceWidgetCreateButtonDescription` Creates an object using the creation dialog.
 
 Each child has two properties:
 
-* [.interpreted-expression]#preconditionExpression: InterpretedExpression# Controls whether selection is available (`set` and `add`) or the button is displayed (`clearButton` and `createButton`).
+* [.interpreted-expression]#preconditionExpression: InterpretedExpression# Controls whether the action is displayed and can be executed through the UI.
 A blank expression is equivalent to `true`.
 * `body: List<Operation>` Operations that replace the default behavior when the list is not empty.
 
 An absent child disables the corresponding action.
-With an empty body, `set` assigns the selected object, `add` appends the selected objects, `clearButton` unsets the reference or clears its values, and `createButton` uses the default object creation behavior.
-Removing individual values and reordering multiple values use the default reference update behavior.
+With an empty body, `set` assigns the selected object, `add` appends the selected objects, `remove` unsets a single-valued reference or removes the selected value from a multivalued reference, `clearButton` unsets the reference or clears its values, and `createButton` uses the default object creation behavior.
+Reordering multiple values uses the default reference update behavior.
 
 When creation returns an object, the widget assigns it to the reference using `set` for a single-valued reference or `add` for a multivalued reference.
 Customizing `set` or `add` therefore also changes how newly created objects are assigned to the reference.
 
 === Operation Variables
 
-All four action bodies have the following variables:
+All five action bodies have the following variables:
 
 * `self: Object` The semantic target of the widget.
 * `editingContext: IEditingContext` The current editing context.
@@ -67,6 +68,8 @@ Additional variables depend on the action:
 * `add`
   - `newValues: List<Object>` The selected objects.
   - `newValue: List<Object>` Deprecated alias for `newValues`.
+* `remove`
+  - `valueToRemove: Object` The object to remove from the reference.
 * `createButton`
   - `creationContainer: Object` The selected parent `EObject`, or the selected `Resource` for root creation.
   - `creationReference: EReference` The containment reference used for child creation; `null` for root creation.

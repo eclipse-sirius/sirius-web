@@ -50,6 +50,8 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private boolean selectable;
 
+    private boolean removable;
+
     private ReferenceWidgetStyle style;
 
     private String ownerId;
@@ -104,6 +106,10 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public boolean isSelectable() {
         return this.selectable;
+    }
+
+    public boolean isRemovable() {
+        return this.removable;
     }
 
     public boolean isMany() {
@@ -171,6 +177,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private boolean many;
 
         private boolean selectable = true;
+
+        private boolean removable = true;
 
         private ReferenceWidgetStyle style;
 
@@ -253,6 +261,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder removable(boolean removable) {
+            this.removable = removable;
+            return this;
+        }
+
         public Builder many(boolean many) {
             this.many = many;
             return this;
@@ -304,6 +317,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.containment = this.containment;
             referenceWidget.many = this.many;
             referenceWidget.selectable = this.selectable;
+            referenceWidget.removable = this.removable;
             referenceWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidget.readOnly = this.readOnly;
             referenceWidget.style = this.style; // Optional on purpose

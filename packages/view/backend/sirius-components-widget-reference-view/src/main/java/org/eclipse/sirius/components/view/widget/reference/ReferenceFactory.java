@@ -71,6 +71,14 @@ public interface ReferenceFactory extends EFactory {
     ReferenceWidgetCreateButtonDescription createReferenceWidgetCreateButtonDescription();
 
     /**
+     * Returns a new object of class '<em>Widget Remove</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Widget Remove</em>'.
+     * @generated
+     */
+    ReferenceWidgetRemove createReferenceWidgetRemove();
+
+    /**
      * Returns a new object of class '<em>Widget Add</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Widget Add</em>'.

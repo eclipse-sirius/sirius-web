@@ -52,6 +52,7 @@ import org.eclipse.sirius.components.view.widget.reference.provider.spec.Referen
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetCreateButtonDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetDescriptionStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetRemoveItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.provider.spec.ReferenceWidgetSetItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.reference.util.ReferenceAdapterFactory;
 
@@ -232,6 +233,30 @@ public class ReferenceItemProviderAdapterFactory extends ReferenceAdapterFactory
     protected ReferenceWidgetAddItemProvider referenceWidgetAddItemProvider;
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ReferenceWidgetRemoveItemProvider referenceWidgetRemoveItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createReferenceWidgetRemoveAdapter() {
+        if (this.referenceWidgetRemoveItemProvider == null) {
+            this.referenceWidgetRemoveItemProvider = new ReferenceWidgetRemoveItemProviderSpec(this);
+        }
+
+        return this.referenceWidgetRemoveItemProvider;
+    }
+
+    /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetAdd}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -384,6 +409,8 @@ public class ReferenceItemProviderAdapterFactory extends ReferenceAdapterFactory
             this.referenceWidgetAddItemProvider.dispose();
         if (this.referenceWidgetSetItemProvider != null)
             this.referenceWidgetSetItemProvider.dispose();
+        if (this.referenceWidgetRemoveItemProvider != null)
+            this.referenceWidgetRemoveItemProvider.dispose();
     }
 
     /**

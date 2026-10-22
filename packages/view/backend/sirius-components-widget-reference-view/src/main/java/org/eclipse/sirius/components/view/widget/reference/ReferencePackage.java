@@ -155,13 +155,22 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__SET = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Remove</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_DESCRIPTION__REMOVE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+    int REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -170,7 +179,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
+    int REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Create Button</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -179,7 +188,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 8;
+    int REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
@@ -188,7 +197,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 9;
+    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -542,6 +551,52 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_SET_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetRemoveImpl <em>Widget
+     * Remove</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetRemoveImpl
+     * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetRemove()
+     * @generated
+     */
+    int REFERENCE_WIDGET_REMOVE = 7;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_REMOVE__BODY = 0;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_REMOVE__PRECONDITION_EXPRESSION = 1;
+
+    /**
+     * The number of structural features of the '<em>Widget Remove</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_REMOVE_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Widget Remove</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_REMOVE_OPERATION_COUNT = 0;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription <em>Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -617,6 +672,18 @@ public interface ReferencePackage extends EPackage {
      * @generated
      */
     EReference getReferenceWidgetDescription_Set();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getRemove
+     * <em>Remove</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Remove</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getRemove()
+     * @see #getReferenceWidgetDescription()
+     * @generated
+     */
+    EReference getReferenceWidgetDescription_Remove();
 
     /**
      * Returns the meta object for the containment reference '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc -->
@@ -734,6 +801,41 @@ public interface ReferencePackage extends EPackage {
      * @generated
      */
     EReference getReferenceWidgetCreateButtonDescription_Body();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove <em>Widget Remove</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Widget Remove</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove
+     * @generated
+     */
+    EClass getReferenceWidgetRemove();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove#getBody <em>Body</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove#getBody()
+     * @see #getReferenceWidgetRemove()
+     * @generated
+     */
+    EReference getReferenceWidgetRemove_Body();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove#getPreconditionExpression
+     * <em>Precondition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove#getPreconditionExpression()
+     * @see #getReferenceWidgetRemove()
+     * @generated
+     */
+    EAttribute getReferenceWidgetRemove_PreconditionExpression();
 
     /**
      * Returns the meta object for class
@@ -886,6 +988,14 @@ public interface ReferencePackage extends EPackage {
          * @generated
          */
         EReference REFERENCE_WIDGET_DESCRIPTION__SET = eINSTANCE.getReferenceWidgetDescription_Set();
+
+        /**
+         * The meta object literal for the '<em><b>Remove</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_DESCRIPTION__REMOVE = eINSTANCE.getReferenceWidgetDescription_Remove();
 
         /**
          * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
@@ -1048,6 +1158,33 @@ public interface ReferencePackage extends EPackage {
          * @generated
          */
         EAttribute REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getReferenceWidgetDescription_IsEnabledExpression();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetRemoveImpl <em>Widget
+         * Remove</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferenceWidgetRemoveImpl
+         * @see org.eclipse.sirius.components.view.widget.reference.impl.ReferencePackageImpl#getReferenceWidgetRemove()
+         * @generated
+         */
+        EClass REFERENCE_WIDGET_REMOVE = eINSTANCE.getReferenceWidgetRemove();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_REMOVE__BODY = eINSTANCE.getReferenceWidgetRemove_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute REFERENCE_WIDGET_REMOVE__PRECONDITION_EXPRESSION = eINSTANCE.getReferenceWidgetRemove_PreconditionExpression();
 
     }
 

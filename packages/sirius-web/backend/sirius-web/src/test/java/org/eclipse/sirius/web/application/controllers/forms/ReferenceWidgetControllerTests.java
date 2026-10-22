@@ -395,7 +395,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             formId.set(form.getId());
 
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-            var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+            var referenceWidget = groupNavigator.findWidget("Super types with default remove", ReferenceWidget.class);
+            assertThat(referenceWidget.isRemovable()).isTrue();
             assertThat(referenceWidget).hasValueWithLabel("NamedElement");
             referenceValueId.set(referenceWidget.getReferenceValues().get(0).getId());
             referenceWidgetId.set(referenceWidget.getId());
@@ -413,7 +414,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> afterRemoveReferenceContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-            var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+            var referenceWidget = groupNavigator.findWidget("Super types with default remove", ReferenceWidget.class);
             assertThat(referenceWidget).hasNoValue();
         });
 

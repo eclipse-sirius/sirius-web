@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * <li>{@link ReferenceWidgetDescription#getClearButton <em>Clear Button</em>}</li>
  * <li>{@link ReferenceWidgetDescription#getAdd <em>Add</em>}</li>
  * <li>{@link ReferenceWidgetDescription#getSet <em>Set</em>}</li>
+ * <li>{@link ReferenceWidgetDescription#getRemove <em>Remove</em>}</li>
  * </ul>
  *
  * @model
@@ -147,6 +148,30 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setSet(ReferenceWidgetSet value);
+
+    /**
+     * Returns the value of the '<em><b>Remove</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Remove</em>' containment reference.
+     * @see #setRemove(ReferenceWidgetRemove)
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferencePackage#getReferenceWidgetDescription_Remove()
+     * @model containment="true"
+     * @generated
+     */
+    ReferenceWidgetRemove getRemove();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getRemove
+     * <em>Remove</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Remove</em>' containment reference.
+     * @see #getRemove()
+     * @generated
+     */
+    void setRemove(ReferenceWidgetRemove value);
 
     /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc

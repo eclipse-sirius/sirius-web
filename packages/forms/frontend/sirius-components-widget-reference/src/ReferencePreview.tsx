@@ -120,7 +120,7 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
                   </div>
                 }
                 {...tagProps}
-                onDelete={onDelete ?? (() => {})}
+                onDelete={widget.removable ? onDelete ?? (() => {}) : undefined}
               />
             );
           })

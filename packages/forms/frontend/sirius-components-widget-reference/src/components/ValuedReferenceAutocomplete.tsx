@@ -178,7 +178,9 @@ export const ValuedReferenceAutocomplete = ({
 
   const handleAutocompleteChange = (_event, updatedValues: GQLReferenceValue[], reason: string) => {
     if (reason === 'removeOption') {
-      handleRemoveReferenceValue(updatedValues);
+      if (widget.removable) {
+        handleRemoveReferenceValue(updatedValues);
+      }
     } else if (widget.selectable) {
       const newValueIds = getOnlyNewValueIds(updatedValues);
       if (widget.reference.manyValued) {
@@ -269,7 +271,11 @@ export const ValuedReferenceAutocomplete = ({
               onClick={() => optionClickHandler(option)}
               {...tagProps}
               disabled={false}
-              onDelete={readOnly || widget.readOnly ? undefined : onDelete ?? (() => removeReferenceValue(option.id))}
+              onDelete={
+                readOnly || widget.readOnly || !widget.removable
+                  ? undefined
+                  : onDelete ?? (() => removeReferenceValue(option.id))
+              }
             />
           );
         })

@@ -97,6 +97,7 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
                 .isContainmentProvider(variableManager -> this.isContainment(interpreter, variableManager, viewReferenceWidgetDescription))
                 .isManyProvider(variableManager -> this.isMany(interpreter, variableManager, viewReferenceWidgetDescription))
                 .selectableProvider(this.getSelectableProvider(interpreter, viewReferenceWidgetDescription))
+                .removableProvider(this.getRemovableProvider(interpreter, viewReferenceWidgetDescription))
                 .ownerIdProvider(variableManager -> this.getOwnerId(interpreter, viewReferenceWidgetDescription, variableManager))
                 .styleProvider(this.getStyleProvider(viewReferenceWidgetDescription, interpreter))
                 .diagnosticsProvider(variableManager -> List.of())
@@ -127,6 +128,18 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
             }
             return referenceDescription.getSet() != null && setPrecondition.apply(variableManager);
         };
+    }
+
+    private Function<VariableManager, Boolean> getRemovableProvider(AQLInterpreter interpreter, ReferenceWidgetDescription referenceDescription) {
+        Function<VariableManager, Boolean> precondition = variableManager -> true;
+        if (referenceDescription.getRemove() != null) {
+            var preconditionExpression = referenceDescription.getRemove().getPreconditionExpression();
+            if (preconditionExpression != null && !preconditionExpression.isBlank()) {
+                precondition = new BooleanValueProvider(interpreter, preconditionExpression);
+            }
+        }
+        Function<VariableManager, Boolean> removePrecondition = precondition;
+        return variableManager -> referenceDescription.getRemove() != null && removePrecondition.apply(variableManager);
     }
 
     private Function<VariableManager, Boolean> getReadOnlyValueProvider(AQLInterpreter interpreter, String expression) {

@@ -44,6 +44,13 @@ public interface IReferenceMessageService {
     String unableToSetReferenceValue();
 
     /**
+     * Returns the message for a reference value removal failure.
+     *
+     * @since v2026.11.0
+     */
+    String unableToRemoveReferenceValue();
+
+    /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
      * @author Jerome Gout
@@ -107,6 +114,11 @@ public interface IReferenceMessageService {
 
         @Override
         public String unableToSetReferenceValue() {
+            return "";
+        }
+
+        @Override
+        public String unableToRemoveReferenceValue() {
             return "";
         }
     }
