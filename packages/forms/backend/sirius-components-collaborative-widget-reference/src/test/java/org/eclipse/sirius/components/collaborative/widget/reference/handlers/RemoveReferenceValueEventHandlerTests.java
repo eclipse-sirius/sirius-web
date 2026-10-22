@@ -21,21 +21,24 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRemoveHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.RemoveReferenceValueInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Page;
+import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.Success;
@@ -66,17 +69,22 @@ public class RemoveReferenceValueEventHandlerTests {
 
         var input = new RemoveReferenceValueInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID().toString(), REF_WIDGET_ID, referenceValueId);
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
-        Supplier<IStatus> removeHandler = () -> {
-            hasBeenExecuted.set(true);
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put(CHANGE_DESCRIPTION_PARAMETER_KEY, referenceValueId);
-            return new Success(changeKind, parameters);
+        IReferenceWidgetRemoveHandler removeHandler = new IReferenceWidgetRemoveHandler() {
+            @Override
+            public boolean canHandle(FormDescription formDescription) {
+                return true;
+            }
+
+            @Override
+            public IStatus remove(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget widget, String itemId) {
+                hasBeenExecuted.set(true);
+                return new Success(changeKind, Map.of(CHANGE_DESCRIPTION_PARAMETER_KEY, itemId));
+            }
         };
 
         ReferenceValue referenceValue = ReferenceValue.newReferenceValue(referenceValueId)
                 .label("")
                 .kind("")
-                .removeHandler(removeHandler)
                 .build();
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(REF_WIDGET_ID)
@@ -118,7 +126,9 @@ public class RemoveReferenceValueEventHandlerTests {
             }
         };
 
-        RemoveReferenceValueEventHandler handler = new RemoveReferenceValueEventHandler(formQueryService, new IReferenceMessageService.NoOp(), new SimpleMeterRegistry());
+        RemoveReferenceValueEventHandler handler = new RemoveReferenceValueEventHandler(formQueryService, List.of(removeHandler), this.descriptionSearchService(form.getDescriptionId()),
+                new IReferenceMessageService.NoOp(),
+                new SimpleMeterRegistry());
         assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -147,15 +157,22 @@ public class RemoveReferenceValueEventHandlerTests {
         var input = new RemoveReferenceValueInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID().toString(), REF_WIDGET_ID, referenceValueId);
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
-        Supplier<IStatus> removeHandler = () -> {
-            hasBeenExecuted.set(true);
-            return new Success(changeKind, parameters);
+        IReferenceWidgetRemoveHandler removeHandler = new IReferenceWidgetRemoveHandler() {
+            @Override
+            public boolean canHandle(FormDescription formDescription) {
+                return true;
+            }
+
+            @Override
+            public IStatus remove(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget widget, String itemId) {
+                hasBeenExecuted.set(true);
+                return new Success(changeKind, parameters);
+            }
         };
 
         ReferenceValue referenceValue = ReferenceValue.newReferenceValue(referenceValueId)
                 .label("")
                 .kind("")
-                .removeHandler(removeHandler)
                 .build();
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(REF_WIDGET_ID)
@@ -204,7 +221,9 @@ public class RemoveReferenceValueEventHandlerTests {
             }
         };
 
-        RemoveReferenceValueEventHandler handler = new RemoveReferenceValueEventHandler(formQueryService, messageService, new SimpleMeterRegistry());
+        var descriptionSearchService = this.descriptionSearchService(form.getDescriptionId());
+        RemoveReferenceValueEventHandler handler = new RemoveReferenceValueEventHandler(formQueryService, List.of(removeHandler), descriptionSearchService, messageService,
+                new SimpleMeterRegistry());
         assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -216,6 +235,29 @@ public class RemoveReferenceValueEventHandlerTests {
         assertThat(payload).isInstanceOf(ErrorPayload.class);
         assertThat(((ErrorPayload) payload).messages()).map(Message::body).contains("Read-only widget can not be edited");
         assertThat(hasBeenExecuted.get()).isFalse();
+    }
+
+    private IRepresentationDescriptionSearchService descriptionSearchService(String descriptionId) {
+        var description = FormDescription.newFormDescription(descriptionId)
+                .label("")
+                .idProvider(variableManager -> "")
+                .labelProvider(variableManager -> "")
+                .targetObjectIdProvider(variableManager -> "")
+                .canCreatePredicate(variableManager -> true)
+                .pageDescriptions(List.of())
+                .iconURLsProvider(variableManager -> List.of())
+                .build();
+        return new IRepresentationDescriptionSearchService() {
+            @Override
+            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
+                return Optional.of(description).filter(candidate -> candidate.getId().equals(representationDescriptionId)).map(IRepresentationDescription.class::cast);
+            }
+
+            @Override
+            public Map<String, IRepresentationDescription> findAll(IEditingContext editingContext) {
+                return Map.of(descriptionId, description);
+            }
+        };
     }
 
 }

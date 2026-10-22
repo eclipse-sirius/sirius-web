@@ -212,7 +212,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(feature))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
-                .itemRemoveHandlerProvider(variableManager -> this.handleRemoveValue(variableManager, feature))
                 .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(variableManager, feature))
                 .build();
     }
@@ -291,22 +290,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
         errorMessages.add(new Message(message, MessageLevel.ERROR));
         errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
         return new Failure(errorMessages);
-    }
-
-    private IStatus handleRemoveValue(VariableManager variableManager, Object feature) {
-        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
-        Optional<Object> item = this.getItem(variableManager);
-
-        if (referenceOwner != null && feature instanceof EReference reference) {
-            if (reference.isMany()) {
-                ((List<?>) referenceOwner.eGet(reference)).remove(item.get());
-            } else {
-                referenceOwner.eUnset(reference);
-            }
-        } else {
-            return this.createErrorStatus("Something went wrong while removing a reference value.");
-        }
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
     }
 
     private IStatus handleMoveReferenceValue(VariableManager variableManager, Object feature) {

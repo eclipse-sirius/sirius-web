@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
@@ -131,18 +130,11 @@ public class ReferenceWidgetComponent implements IComponent {
                     String itemLabel = referenceDescription.getItemLabelProvider().apply(childVariables);
                     List<String> itemImageURL = referenceDescription.getItemIconURLProvider().apply(childVariables);
                     String itemKind = referenceDescription.getItemKindProvider().apply(childVariables);
-                    Function<VariableManager, IStatus> removeHandlerProvider = referenceDescription.getItemRemoveHandlerProvider();
 
                     var referenceValueBuilder = ReferenceValue.newReferenceValue(itemId)
                             .label(itemLabel)
                             .iconURL(itemImageURL)
                             .kind(itemKind);
-                    if (removeHandlerProvider != null) {
-                        Supplier<IStatus> removeHandler = () -> {
-                            return removeHandlerProvider.apply(childVariables);
-                        };
-                        referenceValueBuilder.removeHandler(removeHandler);
-                    }
                     return referenceValueBuilder.build();
                 })
                 .toList();
