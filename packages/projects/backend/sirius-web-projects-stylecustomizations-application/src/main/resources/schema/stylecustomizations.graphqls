@@ -2,6 +2,10 @@ extend type Project {
   styleCustomizations(first: Int, after: String, last: Int, before: String): ProjectStyleCustomizationsConnection!
 }
 
+extend type ProjectCapabilities {
+  canUpdateStyleCustomizationsState: Boolean!
+}
+
 type ProjectStyleCustomizationsConnection {
   edges: [ProjectStyleCustomizationsEdge!]!
   pageInfo: PageInfo!

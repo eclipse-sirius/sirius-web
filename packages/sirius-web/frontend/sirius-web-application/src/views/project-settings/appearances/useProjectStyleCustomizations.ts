@@ -24,6 +24,9 @@ const getProjectStyleCustomizations = gql`
   query getProjectStyleCustomizations($projectId: ID!, $after: String, $before: String, $first: Int, $last: Int) {
     viewer {
       project(projectId: $projectId) {
+        capabilities {
+          canUpdateStyleCustomizationsState
+        }
         styleCustomizations(after: $after, before: $before, first: $first, last: $last) {
           ...ProjectStyleCustomizationsConnectionFragment
         }

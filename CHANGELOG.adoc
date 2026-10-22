@@ -170,6 +170,9 @@ Programmatic View DSLs can configure `EdgeToolBuilder.palette(...)` and the cont
 The `getConnectorTools` from the provider `IConnectorPaletteProvider` return a typed `IConnectorToolsProviderResult` that can either be `record DefaultConnectorToolResult(SingleClickOnTwoDiagramElementsTool tool) implements IConnectorToolsProviderResult` or `record ConnectorPaletteResult(Palette palette) implements IConnectorToolsProviderResult`
 This change makes it so that when a palette is defined under an `edgeTool` on a view dsl, then the palette is always rendered when making a connection.
 If no palette is defined inside the `edgeTool`, then the `edgeTool` body will be executed directly after making a connection.
+- https://github.com/eclipse-sirius/sirius-web/issues/7086[#7086] [sirius-web] Project appearance settings now respect the `update-style-customizations-state` capability.
+The frontend queries the new `ProjectCapabilities.canUpdateStyleCustomizationsState` GraphQL field.
+Custom GraphQL integrations must include its schema extension and data fetcher from `sirius-web-projects-stylecustomizations-application`.
 
 
 

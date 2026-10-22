@@ -171,6 +171,7 @@ Each customizer determines which nodes it applies to.
 All applicable customizers are applied, but their order is unspecified.
 If multiple customizers modify the same style property, the last one wins.
 * Project style customizations can now be enabled or disabled from the _Appearances_ tab in the project settings.
+When changing their activation is not allowed, the checkboxes remain visible but are disabled.
 Their effect depends on how they are used by the application.
 For example, node style customizers can use their activation state to decide whether to apply their rules.
 +

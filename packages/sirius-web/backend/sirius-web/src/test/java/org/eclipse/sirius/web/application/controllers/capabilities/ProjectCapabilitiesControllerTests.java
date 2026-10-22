@@ -54,12 +54,14 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
         boolean canDelete = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canDelete");
         boolean canDuplicate = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canDuplicate");
         boolean canEdit = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canEdit");
+        boolean canUpdateStyleCustomizationsState = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canUpdateStyleCustomizationsState");
         boolean canViewSettings = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.settings.canView");
         assertThat(canDownload).isFalse();
         assertThat(canRename).isFalse();
         assertThat(canDelete).isFalse();
         assertThat(canDuplicate).isFalse();
         assertThat(canEdit).isFalse();
+        assertThat(canUpdateStyleCustomizationsState).isFalse();
         assertThat(canViewSettings).isFalse();
     }
 
