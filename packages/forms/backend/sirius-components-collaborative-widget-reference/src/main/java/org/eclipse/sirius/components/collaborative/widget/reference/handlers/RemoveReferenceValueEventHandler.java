@@ -12,9 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.widget.reference.handlers;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -22,17 +21,19 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRemoveHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.RemoveReferenceValueInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
-import org.eclipse.sirius.components.widget.reference.ReferenceValue;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,16 +52,24 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class RemoveReferenceValueEventHandler implements IFormEventHandler {
 
+    private final IFormQueryService formQueryService;
+
+    private final List<IReferenceWidgetRemoveHandler> referenceWidgetRemoveHandler;
+
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
     private final IReferenceMessageService messageService;
 
     private final Counter counter;
 
-    private final IFormQueryService formQueryService;
-
     private final Logger logger = LoggerFactory.getLogger(RemoveReferenceValueEventHandler.class);
 
-    public RemoveReferenceValueEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, MeterRegistry meterRegistry) {
+    public RemoveReferenceValueEventHandler(IFormQueryService formQueryService, List<IReferenceWidgetRemoveHandler> referenceWidgetRemoveHandler,
+            IRepresentationDescriptionSearchService representationDescriptionSearchService, IReferenceMessageService messageService,
+            MeterRegistry meterRegistry) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
+        this.referenceWidgetRemoveHandler = Objects.requireNonNull(referenceWidgetRemoveHandler);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -86,20 +95,20 @@ public class RemoveReferenceValueEventHandler implements IFormEventHandler {
                     .filter(ReferenceWidget.class::isInstance)
                     .map(ReferenceWidget.class::cast);
 
+            var optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId());
+
             IStatus status;
             if (optionalReferenceWidget.map(ReferenceWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
                 status = new Failure(this.messageService.unableToEditReadOnlyWidget());
+            } else if (optionalFormDescription.isPresent() && optionalFormDescription.get() instanceof FormDescription formDescription) {
+                status = optionalReferenceWidget
+                        .filter(referenceWidget -> referenceWidget.getReferenceValues().stream().anyMatch(item -> item.getId().equals(input.referenceValueId())))
+                        .map(referenceWidget -> this.remove(editingContext, formDescription, referenceWidget, input.referenceValueId()))
+                        .orElseGet(() -> new Failure(this.messageService.invalidIds()));
             } else {
-                var optionalReferenceValue = optionalReferenceWidget
-                        .stream()
-                        .map(ReferenceWidget::getReferenceValues)
-                        .flatMap(Collection::stream)
-                        .filter(item -> item.getId().equals(input.referenceValueId()))
-                        .findFirst();
-                status = optionalReferenceValue.map(ReferenceValue::getRemoveHandler)
-                        .map(Supplier::get)
-                        .orElse(new Failure(""));
+                status = new Failure(this.messageService.invalidIds());
             }
+
             if (status instanceof Success success) {
                 this.logger.atInfo()
                         .setMessage("Value removed from the reference widget")
@@ -124,6 +133,14 @@ public class RemoveReferenceValueEventHandler implements IFormEventHandler {
 
         changeDescriptionSink.tryEmitNext(changeDescription);
         payloadSink.tryEmitValue(payload);
+    }
+
+    private IStatus remove(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, String referenceValueId) {
+        return this.referenceWidgetRemoveHandler.stream()
+                .filter(handler -> handler.canHandle(formDescription))
+                .findFirst()
+                .map(handler -> handler.remove(editingContext, formDescription, referenceWidget, referenceValueId))
+                .orElseGet(() -> new Failure(this.messageService.noHandlerFound()));
     }
 
 }

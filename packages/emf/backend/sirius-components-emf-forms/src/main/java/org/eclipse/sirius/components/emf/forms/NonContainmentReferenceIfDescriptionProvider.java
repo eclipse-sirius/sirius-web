@@ -132,7 +132,6 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
-                .itemRemoveHandlerProvider(this::handleRemoveValue)
                 .moveHandlerProvider(this::handleMoveReferenceValue)
                 .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .build();
@@ -248,24 +247,6 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
         errorMessages.add(new Message(message, MessageLevel.ERROR));
         errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
         return new Failure(errorMessages);
-    }
-
-    private IStatus handleRemoveValue(VariableManager variableManager) {
-        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
-        Optional<Object> item = this.getItem(variableManager);
-
-        if (referenceOwner != null && optionalEReference.isPresent()) {
-            EReference reference = optionalEReference.get();
-            if (reference.isMany()) {
-                ((List<?>) referenceOwner.eGet(reference)).remove(item.get());
-            } else {
-                referenceOwner.eUnset(reference);
-            }
-        } else {
-            return this.createErrorStatus("Something went wrong while removing a reference value.");
-        }
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
     }
 
     private IStatus handleMoveReferenceValue(VariableManager variableManager) {

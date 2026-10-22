@@ -154,6 +154,12 @@ For monovalued references, an absent `set` disables value selection.
 An empty `set` uses the default setting behavior; a populated `set` executes its operations.
 When `set` is present, its `preconditionExpression` controls whether values can be selected for monovalued references; an empty expression allows selection.
 Existing representations have been migrated but programmatic one must be migrated manually.
+- https://github.com/eclipse-sirius/sirius-web/issues/7059 [form] Remove the reference widget remove handler from the refresh mechanism.
+`itemRemoveHandlerProvider` has been removed from `ReferenceWidgetDescription`.
+`removeHandler` has been removed from `ReferenceValue`.
+A new API has been added to replace `itemRemoveHandlerProvider`: `IReferenceWidgetRemoveHandler`, a candidate to handle the remove event.
+Two implementations of `IReferenceWidgetRemoveHandler`, `ViewReferenceWidgetRemoveElementHandler` for View-based representation and `DetailsViewReferenceWidgetRemoveElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
+Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetRemoveHandler`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6721[#6721] Each `EdgeTool` can now own a `Palette`; its actions are defined by tools in that palette.
 If there is no palette declared, then the body of the first candidate edge tool will be executed.
 Existing edge tool bodies are moved into a same-named node tool in each edge tool's palette during migration.

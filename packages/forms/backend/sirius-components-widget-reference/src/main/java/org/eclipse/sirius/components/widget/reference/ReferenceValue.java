@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,10 +15,8 @@ package org.eclipse.sirius.components.widget.reference;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.representations.IStatus;
 
 /**
  * Represents a single value for a reference. Multi-valued references can have multiple of these.
@@ -35,8 +33,6 @@ public final class ReferenceValue {
     private String kind;
 
     private List<String> iconURL;
-
-    private Supplier<IStatus> removeHandler;
 
     private ReferenceValue() {
         // Prevent instantiation
@@ -62,10 +58,6 @@ public final class ReferenceValue {
         return this.iconURL;
     }
 
-    public Supplier<IStatus> getRemoveHandler() {
-        return this.removeHandler;
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}, iconURL: {4}'}'";
@@ -88,8 +80,6 @@ public final class ReferenceValue {
 
         private List<String> iconURL;
 
-        private Supplier<IStatus> removeHandler;
-
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -109,18 +99,12 @@ public final class ReferenceValue {
             return this;
         }
 
-        public Builder removeHandler(Supplier<IStatus> removeHandler) {
-            this.removeHandler = Objects.requireNonNull(removeHandler);
-            return this;
-        }
-
         public ReferenceValue build() {
             ReferenceValue referenceValue = new ReferenceValue();
             referenceValue.id = Objects.requireNonNull(this.id);
             referenceValue.label = Objects.requireNonNull(this.label);
             referenceValue.kind = Objects.requireNonNull(this.kind);
             referenceValue.iconURL = this.iconURL;
-            referenceValue.removeHandler = this.removeHandler; // Optional on purpose
             return referenceValue;
         }
     }

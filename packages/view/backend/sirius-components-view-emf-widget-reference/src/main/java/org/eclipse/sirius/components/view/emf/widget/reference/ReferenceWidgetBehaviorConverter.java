@@ -54,8 +54,7 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
 
     @Override
     public void convert(Builder referenceWidgetDescriptionBuilder, ReferenceWidgetDescription viewReferenceWidgetDescription, AQLInterpreter interpreter) {
-        referenceWidgetDescriptionBuilder.itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(interpreter, variableManager, viewReferenceWidgetDescription))
-                .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(interpreter, variableManager, viewReferenceWidgetDescription));
+        referenceWidgetDescriptionBuilder.moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(interpreter, variableManager, viewReferenceWidgetDescription));
 
         if (viewReferenceWidgetDescription.getHelpExpression() != null && !viewReferenceWidgetDescription.getHelpExpression().isBlank()) {
             referenceWidgetDescriptionBuilder.helpTextProvider(new StringValueProvider(interpreter, Optional.ofNullable(viewReferenceWidgetDescription.getHelpExpression()).orElse("")));
@@ -70,23 +69,6 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
             referenceOwner = result.asObject().filter(EObject.class::isInstance).map(EObject.class::cast).orElse(referenceOwner);
         }
         return referenceOwner;
-    }
-
-    private IStatus handleItemRemove(AQLInterpreter interpreter, VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
-        EObject owner = this.getReferenceOwner(interpreter, variableManager, referenceDescription.getReferenceOwnerExpression());
-        String referenceName = new StringValueProvider(interpreter, Optional.ofNullable(referenceDescription.getReferenceNameExpression()).orElse("")).apply(variableManager);
-        Optional<Object> item = variableManager.get(ReferenceWidgetComponent.ITEM_VARIABLE, Object.class);
-
-        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
-            if (reference.isMany()) {
-                ((List<?>) owner.eGet(reference)).remove(item.get());
-            } else {
-                owner.eUnset(reference);
-            }
-        } else {
-            return this.createErrorStatus("Something went wrong while removing a reference value.");
-        }
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
     }
 
     private IStatus handleMoveReferenceValue(AQLInterpreter interpreter, VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
