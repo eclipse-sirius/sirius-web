@@ -60,6 +60,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, Boolean> selectableProvider;
 
+    private Function<VariableManager, Boolean> removableProvider;
+
     private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
 
     private Function<VariableManager, String> ownerIdProvider;
@@ -134,6 +136,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.selectableProvider;
     }
 
+    public Function<VariableManager, Boolean> getRemovableProvider() {
+        return this.removableProvider;
+    }
+
     public Function<VariableManager, Boolean> getIsManyProvider() {
         return this.isManyProvider;
     }
@@ -205,6 +211,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<VariableManager, Boolean> isManyProvider;
 
         private Function<VariableManager, Boolean> selectableProvider = variableManager -> true;
+
+        private Function<VariableManager, Boolean> removableProvider = variableManager -> true;
 
         private Function<VariableManager, String> helpTextProvider;
 
@@ -308,6 +316,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder removableProvider(Function<VariableManager, Boolean> removableProvider) {
+            this.removableProvider = Objects.requireNonNull(removableProvider);
+            return this;
+        }
+
         public Builder isManyProvider(Function<VariableManager, Boolean> isManyProvider) {
             this.isManyProvider = Objects.requireNonNull(isManyProvider);
             return this;
@@ -378,6 +391,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.isContainmentProvider = Objects.requireNonNull(this.isContainmentProvider);
             referenceWidgetDescription.isManyProvider = Objects.requireNonNull(this.isManyProvider);
             referenceWidgetDescription.selectableProvider = Objects.requireNonNull(this.selectableProvider);
+            referenceWidgetDescription.removableProvider = Objects.requireNonNull(this.removableProvider);
             referenceWidgetDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidgetDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             referenceWidgetDescription.ownerIdProvider = Objects.requireNonNull(this.ownerIdProvider);

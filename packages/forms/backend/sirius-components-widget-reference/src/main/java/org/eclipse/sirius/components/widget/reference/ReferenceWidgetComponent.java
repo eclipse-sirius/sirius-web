@@ -94,6 +94,7 @@ public class ReferenceWidgetComponent implements IComponent {
                 .containment(isContainment)
                 .many(isMany)
                 .selectable(referenceDescription.getSelectableProvider().apply(variableManager))
+                .removable(referenceDescription.getRemovableProvider().apply(variableManager))
                 .ownerId(ownerId)
                 .children(children);
         if (referenceDescription.getHelpTextProvider() != null) {

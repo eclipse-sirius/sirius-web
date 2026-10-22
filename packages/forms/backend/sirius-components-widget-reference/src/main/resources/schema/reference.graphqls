@@ -16,6 +16,7 @@ type ReferenceWidget implements Widget {
   hasHelpText: Boolean!
   readOnly: Boolean!
   selectable: Boolean!
+  removable: Boolean!
   reference: Reference!
   referenceValues: [ReferenceValue!]!
   style: ReferenceWidgetStyle

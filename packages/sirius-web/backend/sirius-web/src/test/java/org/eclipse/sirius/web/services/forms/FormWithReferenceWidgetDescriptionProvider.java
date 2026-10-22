@@ -26,10 +26,11 @@ import org.eclipse.sirius.components.view.builder.generated.form.FormDescription
 import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.PageDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetCreateButtonDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetAddBuilder;
+import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetCreateButtonDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetDescriptionStyleBuilder;
+import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetRemoveBuilder;
 import org.eclipse.sirius.components.view.builder.generated.reference.ReferenceWidgetSetBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.CreateInstanceBuilder;
@@ -142,6 +143,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .children(this.createReferenceWidgetDescriptionsForSet())
                 .children(this.createReferenceWidgetDescriptionsWithoutAdd())
                 .children(this.createReferenceWidgetDescriptionWithDynamicAddPrecondition())
+                .children(this.createReferenceWidgetDescriptionsForRemove())
                 .build();
 
         var pageDescription = new PageDescriptionBuilder()
@@ -339,5 +341,35 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .referenceOwnerExpression("aql:self")
                 .add(new ReferenceWidgetAddBuilder().preconditionExpression("aql:self.name = 'Human'").build())
                 .build();
+    }
+
+    private ReferenceWidgetDescription[] createReferenceWidgetDescriptionsForRemove() {
+        var defaultRemoveReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Super types with default remove")
+                .labelExpression("Super types with default remove")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .build();
+        defaultRemoveReference.setRemove(new ReferenceWidgetRemoveBuilder().build());
+
+        var customRemoveReference = new ReferenceWidgetDescriptionBuilder()
+                .name("Super types with custom remove")
+                .labelExpression("Super types with custom remove")
+                .referenceNameExpression("superTypes")
+                .referenceOwnerExpression("aql:self")
+                .build();
+        customRemoveReference.setRemove(new ReferenceWidgetRemoveBuilder()
+                .preconditionExpression("aql:self.name = 'Human'")
+                .body(new SetValueBuilder()
+                                .featureName("name")
+                                .valueExpression("aql:'Removed ' + valueToRemove.name")
+                                .build(),
+                        new UnsetValueBuilder()
+                                .featureName("superTypes")
+                                .elementExpression("aql:valueToRemove")
+                                .build())
+                .build());
+
+        return new ReferenceWidgetDescription[] { defaultRemoveReference, customRemoveReference };
     }
 }

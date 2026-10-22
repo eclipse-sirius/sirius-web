@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearB
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet;
 
 /**
@@ -137,6 +138,16 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @ordered
      */
     protected ReferenceWidgetSet set;
+
+    /**
+     * The cached value of the '{@link #getRemove() <em>Remove</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getRemove()
+     * @generated
+     * @ordered
+     */
+    protected ReferenceWidgetRemove remove;
 
     /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
@@ -382,6 +393,54 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      *
      * @generated
      */
+    @Override
+    public ReferenceWidgetRemove getRemove() {
+        return this.remove;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetRemove(ReferenceWidgetRemove newRemove, NotificationChain msgs) {
+        ReferenceWidgetRemove oldRemove = this.remove;
+        this.remove = newRemove;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE, oldRemove, newRemove);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setRemove(ReferenceWidgetRemove newRemove) {
+        if (newRemove != this.remove) {
+            NotificationChain msgs = null;
+            if (this.remove != null)
+                msgs = ((InternalEObject) this.remove).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE, null, msgs);
+            if (newRemove != null)
+                msgs = ((InternalEObject) newRemove).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE, null, msgs);
+            msgs = this.basicSetRemove(newRemove, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE, newRemove, newRemove));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public NotificationChain basicSetClearButton(ReferenceWidgetClearButtonDescription newClearButton, NotificationChain msgs) {
         ReferenceWidgetClearButtonDescription oldClearButton = this.clearButton;
         this.clearButton = newClearButton;
@@ -524,6 +583,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.basicSetAdd(null, msgs);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__SET:
                 return this.basicSetSet(null, msgs);
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE:
+                return this.basicSetRemove(null, msgs);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.basicSetStyle(null, msgs);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -578,6 +639,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.getAdd();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__SET:
                 return this.getSet();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE:
+                return this.getRemove();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.getStyle();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -614,6 +677,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__SET:
                 this.setSet((ReferenceWidgetSet) newValue);
+                return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE:
+                this.setRemove((ReferenceWidgetRemove) newValue);
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ReferenceWidgetDescriptionStyle) newValue);
@@ -655,6 +721,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__SET:
                 this.setSet((ReferenceWidgetSet) null);
                 return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE:
+                this.setRemove((ReferenceWidgetRemove) null);
+                return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ReferenceWidgetDescriptionStyle) null);
                 return;
@@ -688,6 +757,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.add != null;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__SET:
                 return this.set != null;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE:
+                return this.remove != null;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.style != null;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:

@@ -70,6 +70,16 @@ public class ReferenceBuilders {
     }
 
     /**
+     * Instantiate a ReferenceWidgetRemoveBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ReferenceWidgetRemoveBuilder newReferenceWidgetRemove() {
+        return new ReferenceWidgetRemoveBuilder();
+    }
+
+    /**
      * Instantiate a ReferenceWidgetAddBuilder .
      *
      * @author BuilderGenerator

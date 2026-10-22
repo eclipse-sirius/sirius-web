@@ -177,6 +177,7 @@ For example, node style customizers can use their activation state to decide whe
 image::project-appearances-settings-tab.png[Display the project appearances settings tab with two project style customizations, one enabled, another one disabled, width=85%,height=85%]
 * In forms, specifiers can now configure whether reference widgets show a clear button in the View DSL.
 * In forms, specifiers can now configure reference-widget clear-button behavior through its View DSL operation body.
+* In forms, specifiers can now configure reference-widget remove item feature behavior through its View DSL operation body.
 * Studio makers can now show or hide the reference widget's create button by adding or removing its create button description.
 The form editor preview reflects this configuration.
 The create button description can contain operations to customize its behavior.

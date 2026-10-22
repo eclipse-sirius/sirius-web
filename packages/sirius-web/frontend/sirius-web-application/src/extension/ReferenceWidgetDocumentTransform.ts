@@ -191,6 +191,14 @@ const selectableField: SelectionNode = {
   },
 };
 
+const removableField: SelectionNode = {
+  kind: Kind.FIELD,
+  name: {
+    kind: Kind.NAME,
+    value: 'removable',
+  },
+};
+
 const styleField: SelectionNode = {
   kind: Kind.FIELD,
   name: {
@@ -246,6 +254,7 @@ export const referenceWidgetDocumentTransform = new DocumentTransform((document)
               referenceField,
               referenceValuesField,
               selectableField,
+              removableField,
               styleField,
               clearButtonField,
               createButtonField,

@@ -90,4 +90,9 @@ public class ReferenceMessageService implements IReferenceMessageService {
     public String unableToSetReferenceValue() {
         return this.messageSourceAccessor.getMessage(MessageConstants.UNABLE_TO_SET_REFERENCE_VALUE);
     }
+
+    @Override
+    public String unableToRemoveReferenceValue() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.UNABLE_TO_REMOVE_REFERENCE_VALUE);
+    }
 }

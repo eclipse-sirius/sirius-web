@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetClearB
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetCreateButtonDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetRemove;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetSet;
 
 /**
@@ -148,6 +149,13 @@ public class ReferenceSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case ReferencePackage.REFERENCE_WIDGET_REMOVE: {
+                ReferenceWidgetRemove referenceWidgetRemove = (ReferenceWidgetRemove) theEObject;
+                T result = this.caseReferenceWidgetRemove(referenceWidgetRemove);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -226,6 +234,20 @@ public class ReferenceSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseReferenceWidgetCreateButtonDescription(ReferenceWidgetCreateButtonDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Widget Remove</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Widget Remove</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseReferenceWidgetRemove(ReferenceWidgetRemove object) {
         return null;
     }
 

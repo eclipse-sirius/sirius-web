@@ -204,7 +204,9 @@ export const TransferModal = ({
   };
 
   const handleDispatchLeft = () => {
-    state.rightSelection.forEach((element) => removeElement(element.id));
+    if (widget.removable) {
+      state.rightSelection.forEach((element) => removeElement(element.id));
+    }
   };
 
   const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => {
@@ -274,7 +276,7 @@ export const TransferModal = ({
             </IconButton>
             <IconButton
               onClick={handleDispatchLeft}
-              disabled={state.rightSelection.length === 0}
+              disabled={!widget.removable || state.rightSelection.length === 0}
               aria-label="move selected left"
               data-testid="move-left">
               <ChevronLeftIcon />

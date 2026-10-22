@@ -160,6 +160,8 @@ Existing representations have been migrated but programmatic one must be migrate
 A new API has been added to replace `itemRemoveHandlerProvider`: `IReferenceWidgetRemoveHandler`, a candidate to handle the remove event.
 Two implementations of `IReferenceWidgetRemoveHandler`, `ViewReferenceWidgetRemoveElementHandler` for View-based representation and `DetailsViewReferenceWidgetRemoveElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
 Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetRemoveHandler`.
+`ViewReferenceWidgetRemoveElementHandler` now delegates execution of the custom remove body to `IViewReferenceWidgetRemoveOperationExecutor`.
+Its constructor accepts this executor instead of `IViewAQLInterpreterFactory` and `IOperationExecutor`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6721[#6721] Each `EdgeTool` can now own a `Palette`; its actions are defined by tools in that palette.
 If there is no palette declared, then the body of the first candidate edge tool will be executed.
 Existing edge tool bodies are moved into a same-named node tool in each edge tool's palette during migration.
@@ -221,8 +223,13 @@ Introduced the `PageInfoAssert` for testing the page info returned by query runn
 Introduce the `RenameProjectExecutor` to execute the rename project mutation, and perform assertion on the result with the `RenameProjectAssert` in integration tests.
 - https://github.com/eclipse-sirius/sirius-web/issues/5375[#5375] [form] Studio makers can show or hide the reference widget's create button by adding or removing its create button description.
 The form editor preview reflects this configuration.
-The create button's operation body can customize creation and referencing of the selected object, using `creationContainer`, `creationReference`, the edited `EReference` in `referenceName` and the selected `EClass` in `creationType`.
+The create button's operation body can customize creation and referencing of the selected object, using `creationContainer`, `creationReference`, the edited `EReference` in `reference` and the selected `EClass` in `creationType`.
 An empty body retains the default creation behavior.
+- https://github.com/eclipse-sirius/sirius-web/issues/7059[#7059] [form] Studio makers can show or hide the reference widget item's remove button by adding or removing its remove description.
+The form editor preview reflects this configuration.
+The remove definition's operation body can customize the remove behavior, using the value to remove `Object valueToRemove` and the edited `EReference reference` from the `Object owner`.
+An empty body retains the default removal behavior.
+Existing saved reference widget descriptions are migrated to preserve default removal.
 - https://github.com/eclipse-sirius/sirius-web/issues/7034[#7034] [projects] Persist project style customizations.
 Enable flow related project style customizations when a new flow project is created.
 - https://github.com/eclipse-sirius/sirius-web/issues/7036[#7036] [projects] Clean enabled project style customizations when a project is deleted

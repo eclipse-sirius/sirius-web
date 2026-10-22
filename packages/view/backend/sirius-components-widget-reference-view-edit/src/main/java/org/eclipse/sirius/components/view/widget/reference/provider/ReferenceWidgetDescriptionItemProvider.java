@@ -103,6 +103,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__SET);
+            this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__REMOVE);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON);
@@ -187,6 +188,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CLEAR_BUTTON:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__ADD:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__SET:
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REMOVE:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CREATE_BUTTON:
@@ -222,6 +224,8 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__ADD, ReferenceFactory.eINSTANCE.createReferenceWidgetAdd()));
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__SET, ReferenceFactory.eINSTANCE.createReferenceWidgetSet()));
+
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__REMOVE, ReferenceFactory.eINSTANCE.createReferenceWidgetRemove()));
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 
