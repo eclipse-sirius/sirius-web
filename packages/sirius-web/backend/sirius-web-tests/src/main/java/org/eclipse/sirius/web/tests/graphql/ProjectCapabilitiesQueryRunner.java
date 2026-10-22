@@ -38,6 +38,7 @@ public class ProjectCapabilitiesQueryRunner implements IQueryRunner {
                     canDelete
                     canDuplicate
                     canEdit
+                    canUpdateStyleCustomizationsState
                     settings {
                       canView
                       tabs(tabIds: $tabIds) {

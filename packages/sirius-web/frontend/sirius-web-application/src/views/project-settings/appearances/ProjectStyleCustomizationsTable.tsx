@@ -23,6 +23,7 @@ import { GQLProjectStyleCustomization } from './useProjectStyleCustomizations.ty
 
 export const ProjectStyleCustomizationsTable = ({
   loading,
+  capabilities,
   styleCustomizations,
   rowCount,
   hasPreviousPage,
@@ -47,7 +48,7 @@ export const ProjectStyleCustomizationsTable = ({
         Cell: ({ cell, row }) => (
           <ProjectStyleCustomizationsCheckbox
             styleCustomizationDescriptionId={row.original.id}
-            disabled={loading}
+            disabled={loading || !capabilities.canUpdateStyleCustomizationsState}
             checked={cell.getValue<boolean>()}
             onUpdated={onChange}
           />
@@ -66,7 +67,7 @@ export const ProjectStyleCustomizationsTable = ({
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
     ],
-    [t, loading, onChange]
+    [t, loading, capabilities, onChange]
   );
 
   const table = useMaterialReactTable<GQLProjectStyleCustomization>({

@@ -12,6 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.stylecustomizations;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.jayway.jsonpath.JsonPath;
+
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.sirius.components.flow.starter.services.FlowStyleCustomizationDescriptionProvider;
@@ -19,6 +24,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.ProjectCapabilitiesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectStyleCustomizationsAssert;
 import org.eclipse.sirius.web.tests.graphql.ProjectStyleCustomizationsQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -47,9 +53,22 @@ public class ProjectStyleCustomizationsControllerIntegrationTests extends Abstra
     @Autowired
     private ProjectStyleCustomizationsQueryRunner projectStyleCustomizationsQueryRunner;
 
+    @Autowired
+    private ProjectCapabilitiesQueryRunner projectCapabilitiesQueryRunner;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a flow project, when its capabilities are queried, then updating style customizations is allowed by default")
+    public void givenFlowProjectWhenItsCapabilitiesAreQueriedThenUpdatingStyleCustomizationsIsAllowedByDefault() {
+        var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", FlowIdentifier.PROJECT_ID, "tabIds", List.of()));
+
+        boolean canUpdateStyleCustomizationsState = JsonPath.read(result.data(), "$.data.viewer.project.capabilities.canUpdateStyleCustomizationsState");
+        assertThat(canUpdateStyleCustomizationsState).isTrue();
     }
 
     @Test
