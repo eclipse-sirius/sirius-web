@@ -72,6 +72,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - [releng] Update the `check-labels.js` script to check for the `queue:` and `review-window:` labels
 - [doc] Update the pull request template to include a checklist that will be easier to request.
 - https://github.com/eclipse-sirius/sirius-web/issues/7039[#7039] [projects] Add projects style customizations infrastructure module
+- https://github.com/eclipse-sirius/sirius-web/issues/6765[#6765] [tree]  The selected explorer description and expanded items are now saved in your browser local storage and restored when you refresh the page or reopen the project.
 
 
 
