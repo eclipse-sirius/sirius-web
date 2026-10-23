@@ -32,7 +32,6 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.emf.widget.reference.api.IReferenceWidgetBehaviorConverter;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
@@ -47,12 +46,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehaviorConverter {
 
-    private final IOperationExecutor operationExecutor;
-
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ReferenceWidgetBehaviorConverter(IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService) {
-        this.operationExecutor = Objects.requireNonNull(operationExecutor);
+    public ReferenceWidgetBehaviorConverter(IFeedbackMessageService feedbackMessageService) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 

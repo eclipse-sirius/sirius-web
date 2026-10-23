@@ -56,7 +56,8 @@ public class ReferenceWidgetDescriptionAddMigrationParticipantTests extends Abst
         assertThat(widget).isInstanceOf(ReferenceWidgetDescription.class);
         var referenceWidgetDescription = (ReferenceWidgetDescription) widget;
         assertThat(referenceWidgetDescription.getLabelExpression()).isEqualTo("Default Widget Reference");
-        assertThat(referenceWidgetDescription.getBody()).isEmpty();
+        assertThat(referenceWidgetDescription.getSet()).isNotNull();
+        assertThat(referenceWidgetDescription.getSet().getBody()).isEmpty();
         assertThat(referenceWidgetDescription.getAdd()).isNotNull();
         assertThat(referenceWidgetDescription.getAdd().getBody()).isEmpty();
     }
@@ -84,18 +85,19 @@ public class ReferenceWidgetDescriptionAddMigrationParticipantTests extends Abst
         assertThat(referenceWidgetDescription.getLabelExpression()).isEqualTo("Test Widget Reference");
         assertThat(referenceWidgetDescription.getAdd()).isNotNull();
 
-        // body should not be modified
-        assertThat(referenceWidgetDescription.getBody()).hasSize(1);
+        // The old body is moved to set, independently of the copy in add.
+        assertThat(referenceWidgetDescription.getSet()).isNotNull();
+        assertThat(referenceWidgetDescription.getSet().getBody()).hasSize(1);
 
         // Check content of the add
         assertThat(referenceWidgetDescription.getAdd().getBody()).hasSize(1);
         var operation = referenceWidgetDescription.getAdd().getBody().get(0);
-        assertThat(operation).isInstanceOf(ChangeContext.class).isNotSameAs(referenceWidgetDescription.getBody().get(0));
+        assertThat(operation).isInstanceOf(ChangeContext.class).isNotSameAs(referenceWidgetDescription.getSet().getBody().get(0));
         var changeContext = (ChangeContext) operation;
         assertThat(changeContext.getExpression()).isEqualTo("aql:self");
         assertThat(changeContext.getChildren()).hasSize(1);
         var child = changeContext.getChildren().get(0);
-        assertThat(child).isInstanceOf(SetValue.class).isNotSameAs(referenceWidgetDescription.getBody().get(0).getChildren().get(0));
+        assertThat(child).isInstanceOf(SetValue.class).isNotSameAs(referenceWidgetDescription.getSet().getBody().get(0).getChildren().get(0));
         var setValue = (SetValue) child;
         assertThat(setValue.getFeatureName()).isEqualTo("target");
         assertThat(setValue.getValueExpression()).isEqualTo("aql:newValue");
