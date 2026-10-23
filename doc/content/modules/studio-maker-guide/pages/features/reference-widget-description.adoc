@@ -49,8 +49,7 @@ An absent child disables the corresponding action.
 With an empty body, `set` assigns the selected object, `add` appends the selected objects, `remove` unsets a single-valued reference or removes the selected value from a multivalued reference, `clearButton` unsets the reference or clears its values, and `createButton` uses the default object creation behavior.
 Reordering multiple values uses the default reference update behavior.
 
-When creation returns an object, the widget assigns it to the reference using `set` for a single-valued reference or `add` for a multivalued reference.
-Customizing `set` or `add` therefore also changes how newly created objects are assigned to the reference.
+When the create button has a custom behavior, the specifier is responsible for explicitly updating the reference to include the newly created object, if needed.
 
 === Operation Variables
 

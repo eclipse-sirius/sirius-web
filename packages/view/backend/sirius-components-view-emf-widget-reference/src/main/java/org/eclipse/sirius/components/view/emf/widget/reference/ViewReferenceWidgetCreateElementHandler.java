@@ -103,9 +103,16 @@ public class ViewReferenceWidgetCreateElementHandler implements IReferenceWidget
             var description = optionalDescription.get();
             // Fallback to the default behavior
             if (description.getCreateButton().getBody().isEmpty()) {
-                return this.toStatus(this.editService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId));
-            }
-            if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+                var optionalOwner = this.objectSearchService.getObject(editingContext, referenceWidget.getOwnerId())
+                        .filter(EObject.class::isInstance)
+                        .map(EObject.class::cast);
+                if (optionalOwner.isPresent() && optionalOwner.get().eClass().getEStructuralFeature(referenceWidget.getReferenceName()) instanceof EReference reference) {
+                    var optionalCreatedObject = this.editService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
+                    if (optionalCreatedObject.isPresent()) {
+                        optionalStatus = Optional.of(this.assign(optionalCreatedObject.get(), optionalOwner.get(), reference));
+                    }
+                }
+            } else if (editingContext instanceof IEMFEditingContext emfEditingContext) {
                 var resourceSet = emfEditingContext.getDomain().getResourceSet();
                 var optionalResource = this.objectSearchService
                         .getObject(editingContext, documentId.toString())
@@ -133,9 +140,16 @@ public class ViewReferenceWidgetCreateElementHandler implements IReferenceWidget
             var description = optionalDescription.get();
             // Fallback to the default behavior
             if (description.getCreateButton().getBody().isEmpty()) {
-                return this.toStatus(this.editService.createChild(editingContext, object, childCreationDescriptionId));
-            }
-            if (editingContext instanceof IEMFEditingContext emfEditingContext && object instanceof EObject parent) {
+                var optionalOwner = this.objectSearchService.getObject(editingContext, referenceWidget.getOwnerId())
+                        .filter(EObject.class::isInstance)
+                        .map(EObject.class::cast);
+                if (optionalOwner.isPresent() && optionalOwner.get().eClass().getEStructuralFeature(referenceWidget.getReferenceName()) instanceof EReference reference) {
+                    var optionalCreatedObject = this.editService.createChild(editingContext, object, childCreationDescriptionId);
+                    if (optionalCreatedObject.isPresent()) {
+                        optionalStatus = Optional.of(this.assign(optionalCreatedObject.get(), optionalOwner.get(), reference));
+                    }
+                }
+            } else if (editingContext instanceof IEMFEditingContext emfEditingContext && object instanceof EObject parent) {
                 var optionalDescriptor = emfEditingContext.getDomain().getNewChildDescriptors(parent, null).stream()
                         .filter(CommandParameter.class::isInstance)
                         .map(CommandParameter.class::cast)
@@ -159,9 +173,16 @@ public class ViewReferenceWidgetCreateElementHandler implements IReferenceWidget
                 .map(ReferenceWidgetDescription.class::cast);
     }
 
-    private IStatus toStatus(Optional<Object> optionalObject) {
-        return optionalObject.<IStatus> map(object -> new Success(ChangeKind.SEMANTIC_CHANGE, Map.of("object", object), this.feedbackMessageService.getFeedbackMessages()))
-                .orElseGet(this::failure);
+    private IStatus assign(Object object, EObject owner, EReference reference) {
+        if (reference.isMany()) {
+            var values = (List<Object>) owner.eGet(reference);
+            if (!values.contains(object)) {
+                values.add(object);
+            }
+        } else {
+            owner.eSet(reference, object);
+        }
+        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of("object", object), this.feedbackMessageService.getFeedbackMessages());
     }
 
     private IStatus failure() {
