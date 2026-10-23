@@ -25,8 +25,8 @@ import { ExplorerToolbarRenderer } from './ExplorerToolbarRenderer';
 import { ExplorerTreeRenderer } from './ExplorerTreeRenderer';
 import { ExplorerViewConfiguration } from './ExplorerView.types';
 import { useExplorerDescriptions } from './useExplorerDescriptions';
+import { useLocalStorageTreeState } from './useLocalStorageTreeState';
 import { useTreeFiltering } from './useTreeFiltering';
-import { useTreeStateContainer } from './useTreeStateContainer';
 
 export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
   (
@@ -40,8 +40,19 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     const configuredTreeFilters = initialExplorerViewConfiguration?.activeTreeFilters ?? [];
 
     const { explorerDescriptions, loading: descriptionsLoading } = useExplorerDescriptions(editingContextId);
-    const { activeTreeDescriptionId, expanded, maxDepth, onExpandedElementChange, setActiveDescriptionId } =
-      useTreeStateContainer(configuredActiveTreeDescriptionId, explorerDescriptions);
+    const {
+      activeTreeDescriptionId,
+      expanded,
+      maxDepth,
+      onExpandedElementChange,
+      setActiveDescriptionId,
+      ready: treeStateReady,
+    } = useLocalStorageTreeState(
+      editingContextId,
+      configuredActiveTreeDescriptionId,
+      explorerDescriptions,
+      descriptionsLoading
+    );
 
     const {
       treeFilters,
@@ -52,7 +63,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     const activeTreeFilterIds = treeFilters?.filter((filter) => filter.state).map((filter) => filter.id) ?? [];
 
     const shouldStartSubscription =
-      !!treeFilters && !!activeTreeDescriptionId && !descriptionsLoading && !treeFiltersLoading;
+      !!treeFilters && !!activeTreeDescriptionId && treeStateReady && !descriptionsLoading && !treeFiltersLoading;
 
     return (
       <FilterBarContextProvider>

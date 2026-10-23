@@ -17,7 +17,7 @@
 
 == New features
 
-
+* Save the expanded state of the explorer in local storage.
 
 
 == Improvements
