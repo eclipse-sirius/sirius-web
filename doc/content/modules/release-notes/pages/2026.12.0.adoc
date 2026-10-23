@@ -27,6 +27,7 @@ Custom factories and subclasses must remove this argument from constructor calls
 
 - A "Collapse All" action has been added in the explorer.
 It allows reducing the selected tree item and all its children recursively.
+* The selected explorer description and expanded items are now saved in your browser and restored when you refresh the page or reopen the project.
 
 
 == Improvements
