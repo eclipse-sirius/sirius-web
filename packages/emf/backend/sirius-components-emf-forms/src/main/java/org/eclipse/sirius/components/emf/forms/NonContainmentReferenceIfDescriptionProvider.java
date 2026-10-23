@@ -133,7 +133,6 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .itemRemoveHandlerProvider(this::handleRemoveValue)
-                .setHandlerProvider(this::handleSetReference)
                 .moveHandlerProvider(this::handleMoveReferenceValue)
                 .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .build();
@@ -267,25 +266,6 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
             return this.createErrorStatus("Something went wrong while removing a reference value.");
         }
         return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-    }
-
-    private IStatus handleSetReference(VariableManager variableManager) {
-        IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
-        Optional<Object> item = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, Object.class);
-
-        if (referenceOwner != null && optionalEReference.isPresent()) {
-            EReference reference = optionalEReference.get();
-            if (reference.isMany()) {
-                result = this.createErrorStatus("Multiple-valued reference can only accept a list of values");
-            } else {
-                referenceOwner.eSet(reference, item.get());
-            }
-        } else {
-            result = this.createErrorStatus("Something went wrong while setting the reference value.");
-        }
-        return result;
     }
 
     private IStatus handleMoveReferenceValue(VariableManager variableManager) {

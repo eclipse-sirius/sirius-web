@@ -101,6 +101,11 @@ Programmatic descriptions must move their tool declarations to `NodeDescriptionB
   An empty `add` uses the default addition behavior; a populated `add` executes its operations.
   When `add` is present, its `preconditionExpression` controls whether values can be selected for multivalued references; an empty expression allows selection.
   Existing representations have been migrated but programmatic one must be migrated manually.
+- `setHandlerProvider` has been removed from `ReferenceWidgetDescription` and `setHandler` has been removed from `ReferenceWidget` and `ReferenceElementProps`.
+  A new API has been added to replace `setHandlerProvider`: `IReferenceWidgetSetElementHandler`, a candidate to handle the set event.
+  Two implementations of `IReferenceWidgetSetElementHandler`, `ViewReferenceWidgetSetElementHandler` for View-based representations and `DetailsViewReferenceWidgetSetElementHandler` for Sirius Web's Details View, are provided by default.
+  Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetSetElementHandler`.
+  The `set` reference widget feature cannot use rendering AQL variables such as the one provided by a `For` element.
 - Each edge tool can now have its own palette, without a palette the body of the edge tool will be executed when making a connection.
 Existing edge tool actions are moved into a same-named tool in that palette automatically.
 Programmatic descriptions can configure the edge tool palette and its tools or rely on the edge tool body in order to offer a default behavior (without rendering a palette).

@@ -100,14 +100,6 @@ public class ReferenceWidgetComponent implements IComponent {
         if (referenceDescription.getHelpTextProvider() != null) {
             builder.helpTextProvider(() -> referenceDescription.getHelpTextProvider().apply(variableManager));
         }
-        if (referenceDescription.getSetHandlerProvider() != null) {
-            Function<Object, IStatus> setHandler = object -> {
-                VariableManager childVariables = variableManager.createChild();
-                childVariables.put(NEW_VALUE, object);
-                return referenceDescription.getSetHandlerProvider().apply(childVariables);
-            };
-            builder.setHandler(setHandler);
-        }
         if (referenceDescription.getMoveHandlerProvider() != null) {
             Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler = input -> {
                 VariableManager childVariableManager = variableManager.createChild();
