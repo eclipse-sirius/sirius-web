@@ -1,0 +1,87 @@
+= Reference Widget Description
+
+`ReferenceWidgetDescription` displays and edits a reference in a xref:features/form-description.adoc[form].
+The reference determines whether the widget handles a single value or multiple values, and whether it is a containment reference.
+
+== Core Properties
+
+* `name: Identifier` The identifier of the widget description.
+* [.interpreted-expression]#labelExpression: InterpretedExpression# Computes the widget label.
+* [.interpreted-expression]#helpExpression: InterpretedExpression# Computes the optional help text.
+* [.interpreted-expression]#diagnosticsExpression: InterpretedExpression# Inherited from `WidgetDescription`, but currently unused by reference widgets.
+
+== Rendering
+
+* [.interpreted-expression]#isEnabledExpression: InterpretedExpression# Returns `false` to make the widget read-only.
+A blank expression leaves it enabled, unless its semantic target is read-only.
+* [.interpreted-expression]#referenceOwnerExpression: InterpretedExpression# Computes the `EObject` that owns the reference.
+Defaults to `self` when blank.
+* [.interpreted-expression]#referenceNameExpression: InterpretedExpression# Computes the name of the reference on its owner.
+This expression is required; for example, `children`.
+
+The current reference values and the available choices are obtained from the semantic model.
+
+Core and rendering expressions, action preconditions, and style conditions use the current form context:
+
+* `self: Object` The semantic target of the widget, which may differ from the reference owner.
+* `editingContext: IEditingContext` The current editing context.
+* `parentElementId: String` The identifier of the parent form element.
+
+Form variables and iterators introduced by enclosing `FormElementFor` elements are also available in this context.
+
+== Actions
+
+The following optional children configure the widget's actions:
+
+* `set: ReferenceWidgetSet` Assigns a value to a single-valued reference.
+* `add: ReferenceWidgetAdd` Adds values to a multivalued reference.
+* `clearButton: ReferenceWidgetClearButtonDescription` Clears all values of the reference.
+* `createButton: ReferenceWidgetCreateButtonDescription` Creates an object using the creation dialog.
+
+Each child has two properties:
+
+* [.interpreted-expression]#preconditionExpression: InterpretedExpression# Controls whether selection is available (`set` and `add`) or the button is displayed (`clearButton` and `createButton`).
+A blank expression is equivalent to `true`.
+* `body: List<Operation>` Operations that replace the default behavior when the list is not empty.
+
+An absent child disables the corresponding action.
+With an empty body, `set` assigns the selected object, `add` appends the selected objects, `clearButton` unsets the reference or clears its values, and `createButton` uses the default object creation behavior.
+Removing individual values and reordering multiple values use the default reference update behavior.
+
+When creation returns an object, the widget assigns it to the reference using `set` for a single-valued reference or `add` for a multivalued reference.
+Customizing `set` or `add` therefore also changes how newly created objects are assigned to the reference.
+
+=== Operation Variables
+
+All four action bodies have the following variables:
+
+* `self: Object` The semantic target of the widget.
+* `editingContext: IEditingContext` The current editing context.
+* `referenceOwner: EObject` The evaluated owner of the reference.
+* `reference: EReference` The reference being edited.
+
+Additional variables depend on the action:
+
+* `set`
+  - `newValue: Object` The selected object.
+* `add`
+  - `newValues: List<Object>` The selected objects.
+  - `newValue: List<Object>` Deprecated alias for `newValues`.
+* `createButton`
+  - `creationContainer: Object` The selected parent `EObject`, or the selected `Resource` for root creation.
+  - `creationReference: EReference` The containment reference used for child creation; `null` for root creation.
+  - `creationType: EClass` The selected type to create.
+
+Action bodies use a fresh context: form variables, enclosing iterators, and `parentElementId` are not carried over from rendering.
+
+== Styling
+
+* `style: ReferenceWidgetDescriptionStyle` The default style.
+* `conditionalStyles: List<ConditionalReferenceWidgetDescriptionStyle>` Ordered styles with a [.interpreted-expression]#condition: InterpretedExpression#.
+The first matching style is used; otherwise the default style applies.
+
+Both styles configure the widget label:
+
+* `color: UserColor` A reference to a `FixedColor`.
+* `fontSize: Length` The font size, defaulting to `14`.
+* `italic: boolean`, `bold: boolean`, `underline: boolean`, `strikeThrough: boolean` Font decorations, all defaulting to `false`.
