@@ -29,7 +29,7 @@ export interface CreateModalProps {
   editingContextId: string;
   widget: GQLReferenceWidget;
   formId: string;
-  onClose: (newElementId: string | null) => void;
+  onClose: () => void;
 }
 
 export interface GQLErrorPayload extends GQLCreateElementInReferencePayload {

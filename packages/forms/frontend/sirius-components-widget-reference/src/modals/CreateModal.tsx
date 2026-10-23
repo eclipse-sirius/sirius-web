@@ -277,12 +277,11 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           addMessages(messages);
         }
         if (isCreateElementSuccessPayload(createElementInReference)) {
-          const { object } = createElementInReference;
-          onClose(object.id);
+          onClose();
         }
         if (isSuccessPayload(createElementInReference)) {
           addMessages(createElementInReference.messages);
-          onClose(null);
+          onClose();
         }
       }
     }
@@ -370,12 +369,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   };
 
   return (
-    <Dialog
-      open={true}
-      onClose={() => onClose(null)}
-      aria-labelledby="dialog-title"
-      fullWidth
-      data-testid="create-modal">
+    <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth data-testid="create-modal">
       <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <Box

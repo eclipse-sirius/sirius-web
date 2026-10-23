@@ -40,6 +40,8 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -66,6 +68,8 @@ public class CreateElementEventHandler implements IFormEventHandler {
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final Counter counter;
+
+    private final Logger logger = LoggerFactory.getLogger(CreateElementEventHandler.class);
 
     public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService,
             List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, IRepresentationDescriptionSearchService representationDescriptionSearchService,
@@ -111,9 +115,23 @@ public class CreateElementEventHandler implements IFormEventHandler {
                     var status = this.createElement(editingContext, handler, input, optionalWidget.get());
 
                     if (status instanceof Success success) {
+                        this.logger.atInfo()
+                                .setMessage("Element created in the reference widget")
+                                .addKeyValue("editingContextId", editingContext.getId())
+                                .addKeyValue("representationId", input.representationId())
+                                .addKeyValue("widgetId", input.referenceWidgetId())
+                                .log();
+
                         payload = this.createSuccessPayload(formInput.id(), success);
                         changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
                     } else if (status instanceof Failure failure) {
+                        this.logger.atWarn()
+                                .setMessage("Creation of an element in the reference widget failed")
+                                .addKeyValue("editingContextId", editingContext.getId())
+                                .addKeyValue("representationId", input.representationId())
+                                .addKeyValue("widgetId", input.referenceWidgetId())
+                                .log();
+
                         payload = new ErrorPayload(input.id(), failure.getMessages());
                     }
                 } else {
