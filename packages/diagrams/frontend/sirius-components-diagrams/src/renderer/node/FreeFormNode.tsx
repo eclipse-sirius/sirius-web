@@ -54,18 +54,34 @@ const freeFormNodeStyle = (
   return freeFormNodeStyle;
 };
 
+const innerRadius = (radius: string | number | undefined, borderWidth: string | number | undefined): number => {
+  return Math.max(0, Number.parseFloat(String(radius ?? 0)) - Number.parseFloat(String(borderWidth ?? 0)));
+};
+
 const backgroundNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   rotation: string | undefined,
   imageURL: string | undefined
 ): React.CSSProperties => {
+  const topLeft = style.borderTopLeftRadius ?? style.borderRadius;
+  const topRight = style.borderTopRightRadius ?? style.borderRadius;
+  const bottomRight = style.borderBottomRightRadius ?? style.borderRadius;
+  const bottomLeft = style.borderBottomLeftRadius ?? style.borderRadius;
+  // The absolutely positioned background fills the padding box, inside the node's borders.
+  const topWidth = style.borderTopWidth ?? style.borderWidth;
+  const rightWidth = style.borderRightWidth ?? style.borderWidth;
+  const bottomWidth = style.borderBottomWidth ?? style.borderWidth;
+  const leftWidth = style.borderLeftWidth ?? style.borderWidth;
   const freeFormNodeStyle: React.CSSProperties = {
     width: '100%',
     height: '100%',
     transform: rotation,
     background: getCSSColor(String(style.background), theme),
-    borderRadius: style.borderRadius,
+    borderTopLeftRadius: `${innerRadius(topLeft, leftWidth)}px ${innerRadius(topLeft, topWidth)}px`,
+    borderTopRightRadius: `${innerRadius(topRight, rightWidth)}px ${innerRadius(topRight, topWidth)}px`,
+    borderBottomRightRadius: `${innerRadius(bottomRight, rightWidth)}px ${innerRadius(bottomRight, bottomWidth)}px`,
+    borderBottomLeftRadius: `${innerRadius(bottomLeft, leftWidth)}px ${innerRadius(bottomLeft, bottomWidth)}px`,
     position: 'absolute',
     top: 0,
     left: 0,

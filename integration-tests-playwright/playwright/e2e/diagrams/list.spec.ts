@@ -189,20 +189,16 @@ test.describe('diagram - list', () => {
       // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
       window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
     });
-    const project = await new PlaywrightProject(request).createProject('diagram-list', 'papaya-empty');
-    projectId = project.projectId;
-
-    await page.goto(`/projects/${projectId}/edit`);
+    await new PlaywrightProject(request).uploadProject(page, 'papayaBasicClassDiagram.zip');
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.uploadDocument('diagramPapayaClassNode.xml');
-    await playwrightExplorer.expand('diagramPapayaClassNode.xml');
+    await playwrightExplorer.expand('Papaya');
     await playwrightExplorer.expand('Project');
     await playwrightExplorer.expand('Component');
-
-    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
-      playwrightExplorer.createRepresentation('Component', 'Class Diagram', 'diagram')
-    );
-    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => playwrightExplorer.select('Component class diagram'));
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
   });
 
   test.afterEach(async ({ request }) => {
@@ -212,11 +208,7 @@ test.describe('diagram - list', () => {
   test('when a list node is resized, then the height can not be resized to a size smaller than that produced by the layout', async ({
     page,
   }) => {
-    const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.expand('Package');
-    await (await playwrightExplorer.getTreeItemLabel('NewClass')).dragTo(page.getByTestId('rf__wrapper'));
-
-    const node = new PlaywrightNode(page, 'NewClass', 'List');
+    const node = new PlaywrightNode(page, 'Class', 'List');
     await expect(node.nodeLocator).toBeAttached();
 
     const nodeSizeBefore = await node.getReactFlowSize();
@@ -229,23 +221,19 @@ test.describe('diagram - list', () => {
   test('when a list node is resized, then the width can be resized to a size smaller than that the default', async ({
     page,
   }) => {
-    const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.expand('Package');
-    await (await playwrightExplorer.getTreeItemLabel('NewClass')).dragTo(page.getByTestId('rf__wrapper'));
-
-    const node = new PlaywrightNode(page, 'NewClass', 'List');
+    const node = new PlaywrightNode(page, 'Class', 'List');
     await expect(node.nodeLocator).toBeAttached();
 
     const nodeSizeBefore = await node.getReactFlowSize();
     await node.click();
     await node.resize({ height: 0, width: -5 }, 'right.line');
     await expect
-      .poll(async () => (await node.getReactFlowSize('NewClass', false)).width)
+      .poll(async () => (await node.getReactFlowSize('Class', false)).width)
       .toBeLessThan(nodeSizeBefore.width);
 
     await node.openPalette();
     await page.getByTestId('Adjust size - Tool').click();
 
-    await expect.poll(async () => (await node.getReactFlowSize('NewClass', false)).width).toBe(nodeSizeBefore.width);
+    await expect.poll(async () => (await node.getReactFlowSize('Class', false)).width).toBe(nodeSizeBefore.width);
   });
 });
