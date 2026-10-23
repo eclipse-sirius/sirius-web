@@ -18,7 +18,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetCreateElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
@@ -26,6 +29,7 @@ import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -49,10 +53,14 @@ public class DetailsViewReferenceWidgetCreateElementHandler implements IReferenc
 
     private final IReferenceMessageService messageService;
 
-    public DetailsViewReferenceWidgetCreateElementHandler(IEditService editService, IFeedbackMessageService feedbackMessageService, IReferenceMessageService messageService) {
+    private final IObjectSearchService objectSearchService;
+
+    public DetailsViewReferenceWidgetCreateElementHandler(IEditService editService, IFeedbackMessageService feedbackMessageService, IReferenceMessageService messageService,
+            IObjectSearchService objectSearchService) {
         this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
     @Override
@@ -72,20 +80,43 @@ public class DetailsViewReferenceWidgetCreateElementHandler implements IReferenc
 
     @Override
     public IStatus createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId, ReferenceWidget referenceWidget) {
-        return this.toStatus(this.editService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId));
+        return this.createAndAssign(editingContext, referenceWidget,
+                () -> this.editService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId));
     }
 
     @Override
     public IStatus createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId, ReferenceWidget referenceWidget) {
-        return this.toStatus(this.editService.createChild(editingContext, object, childCreationDescriptionId));
+        return this.createAndAssign(editingContext, referenceWidget,
+                () -> this.editService.createChild(editingContext, object, childCreationDescriptionId));
     }
 
-    private IStatus toStatus(Optional<Object> optionalObject) {
-        return optionalObject.<IStatus>map(object -> new Success(ChangeKind.SEMANTIC_CHANGE, Map.of("object", object), this.feedbackMessageService.getFeedbackMessages()))
-                .orElseGet(() -> {
-                    List<Message> messages = new ArrayList<>(this.feedbackMessageService.getFeedbackMessages());
-                    messages.add(new Message(this.messageService.failedToExecuteCreateReferenceAction(), MessageLevel.ERROR));
-                    return new Failure(messages);
-                });
+    private IStatus createAndAssign(IEditingContext editingContext, ReferenceWidget referenceWidget, Supplier<Optional<Object>> objectCreator) {
+        var optionalOwner = this.objectSearchService.getObject(editingContext, referenceWidget.getOwnerId())
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast);
+        if (optionalOwner.isPresent()
+                && optionalOwner.get().eClass().getEStructuralFeature(referenceWidget.getReferenceName()) instanceof EReference reference) {
+            var owner = optionalOwner.get();
+            var optionalObject = objectCreator.get();
+            if (optionalObject.isPresent()) {
+                var object = optionalObject.get();
+                if (reference.isMany()) {
+                    var values = (List<Object>) owner.eGet(reference);
+                    if (!values.contains(object)) {
+                        values.add(object);
+                    }
+                } else {
+                    owner.eSet(reference, object);
+                }
+                return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of("object", object), this.feedbackMessageService.getFeedbackMessages());
+            }
+        }
+        return this.failure();
+    }
+
+    private IStatus failure() {
+        List<Message> messages = new ArrayList<>(this.feedbackMessageService.getFeedbackMessages());
+        messages.add(new Message(this.messageService.failedToExecuteCreateReferenceAction(), MessageLevel.ERROR));
+        return new Failure(messages);
     }
 }

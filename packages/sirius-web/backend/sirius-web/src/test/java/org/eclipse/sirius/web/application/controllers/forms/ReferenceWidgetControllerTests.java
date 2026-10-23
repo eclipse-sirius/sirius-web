@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.collaborative.widget.reference.dto.ClearRef
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.RemoveReferenceValueInput;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainPackage;
@@ -120,6 +121,9 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private IIdentityService identityService;
 
     @BeforeEach
     public void beforeEach() {
@@ -456,6 +460,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         var entity = this.getCreatedEntity(createdObjectId.get());
         assertThat(entity.eContainer()).isNull();
+        assertThat(this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()).getSuperTypes())
+                .extracting(this.identityService::getId).contains(createdObjectId.get());
     }
 
     @Test
@@ -490,6 +496,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         var entity = this.getCreatedEntity(createdObjectId.get());
         assertThat(entity.eContainer()).isInstanceOf(Domain.class);
         assertThat(((Domain) entity.eContainer()).getTypes()).contains(entity);
+        assertThat(this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()).getSuperTypes())
+                .extracting(this.identityService::getId).contains(createdObjectId.get());
     }
 
     @Test
@@ -523,6 +531,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         var entity = this.getCreatedEntity(createdObjectId.get());
         assertThat(entity.eContainer()).isNull();
+        assertThat(this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()).getSuperTypes())
+                .extracting(this.identityService::getId).contains(createdObjectId.get());
     }
 
     @Test
@@ -557,12 +567,14 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         var entity = this.getCreatedEntity(createdObjectId.get());
         assertThat(entity.eContainer()).isInstanceOf(Domain.class);
         assertThat(((Domain) entity.eContainer()).getTypes()).contains(entity);
+        assertThat(this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()).getSuperTypes())
+                .extracting(this.identityService::getId).contains(createdObjectId.get());
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a View reference creation body using CreateInstance, when creating an element, then the created object is returned")
-    public void givenViewReferenceCreationBodyUsingCreateInstanceWhenCreatingElementThenTheCreatedObjectIsReturned() {
+    @DisplayName("Given a View reference creation body using CreateInstance, when creating an element, then the created object is returned without assigning the reference")
+    public void givenViewReferenceCreationBodyUsingCreateInstanceWhenCreatingElementThenTheCreatedObjectIsReturnedWithoutAssigningReference() {
         var formId = new AtomicReference<String>();
         var referenceWidget = new AtomicReference<ReferenceWidget>();
         var createdObjectId = new AtomicReference<String>();
@@ -592,6 +604,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         assertThat(entity.eContainer()).isInstanceOf(Domain.class);
         assertThat(((Domain) entity.eContainer()).getTypes()).contains(entity);
         assertThat(this.getDomainTypeCount()).isEqualTo(initialTypeCount + 1);
+        assertThat(this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()).getSuperTypes())
+                .extracting(this.identityService::getId).doesNotContain(createdObjectId.get());
     }
 
     @Test

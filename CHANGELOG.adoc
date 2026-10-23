@@ -116,8 +116,6 @@ The View DSL adds the `ReferenceWidgetCreateButtonDescription` EClass and the `R
 Contributed handlers must update these signatures and obtain the description ID from the widget when needed.
 These methods now return `IStatus`; a successful standard creation supplies the object in the `Success` parameters under `object`.
 The `CreateElementInReferencePayload` GraphQL union also accepts `SuccessPayload` for custom operations without an object result.
-When behavioral operations create several instances, only the first one is added to the reference at the end.
-This behavior is temporary and will change in a near future.
 - https://github.com/eclipse-sirius/sirius-web/issues/7016[#7016] [diagram] The `getPalette` query no longer return edge tool, use `getConnectorPalette` instead if needed.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] Classes from the projects domain such as `Project`, `IProjectSearchService`, `IProjectCreationService` or `ProjectCreatedEvent` have been moved to the new module `sirius-web-projects-domain`.
 Imports of these classes must be updated to:
@@ -154,6 +152,8 @@ For monovalued references, an absent `set` disables value selection.
 An empty `set` uses the default addition behavior; a populated `set` executes its operations.
 When `set` is present, its `preconditionExpression` controls whether values can be selected for monovalued references; an empty expression allows selection.
 Existing representations have been migrated but programmatic one must be migrated manually.
+- https://github.com/eclipse-sirius/sirius-web/issues/7061[#7061] [form] Reference widget creation no longer invokes the widget's `add` or `set` action.
+Default creation assigns the created object directly to the reference; custom creation bodies and contributed handlers must perform their own reference updates.
 - https://github.com/eclipse-sirius/sirius-web/issues/6721[#6721] Each `EdgeTool` can now own a `Palette`; its actions are defined by tools in that palette.
 If there is no palette declared, then the body of the first candidate edge tool will be executed.
 Existing edge tool bodies are moved into a same-named node tool in each edge tool's palette during migration.

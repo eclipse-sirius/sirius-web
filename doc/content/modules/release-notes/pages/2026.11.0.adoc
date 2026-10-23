@@ -76,8 +76,6 @@ The `precondition` of an edge tool is no longer evaluated when computing if an e
   Programmatic descriptions must explicitly configure `createButtonDescription` to keep the creation action.
   Custom creation handlers must replace the last description ID argument of `createRootObject` and `createChild` with the `ReferenceWidget`.
   These methods now return `IStatus`, and custom operations can succeed without returning an object.
-  When behavioral operations create several instances, only the first one is added to the reference at the end.
-  This behavior is temporary and will change in a near future.
 - The `getPalette` query no longer return edge tool, use `getConnectorPalette` instead if needed.
   - Classes from the projects domain such as `Project`, `IProjectSearchService`, `IProjectCreationService` or `ProjectCreatedEvent` have been moved to the new module `sirius-web-projects-domain`.
 Imports of these classes must be updated to:
@@ -112,6 +110,8 @@ Programmatic descriptions must move their tool declarations to `NodeDescriptionB
   An empty `set` uses the default setting behavior; a populated `set` executes its operations.
   When `set` is present, its `preconditionExpression` controls whether values can be selected for monovalued references; an empty expression allows selection.
   Existing representations have been migrated but programmatic one must be migrated manually.
+- Reference widget creation no longer invokes the widget's `add` or `set` action.
+  Default creation assigns the created object directly to the reference; custom creation bodies and contributed handlers must perform their own reference updates.
 - Each edge tool can now have its own palette, without a palette the body of the edge tool will be executed when making a connection.
 Existing edge tool actions are moved into a same-named tool in that palette automatically.
 Programmatic descriptions can configure the edge tool palette and its tools or rely on the edge tool body in order to offer a default behavior (without rendering a palette).
