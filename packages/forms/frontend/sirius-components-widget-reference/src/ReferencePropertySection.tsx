@@ -432,15 +432,8 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
     }
   };
 
-  const addNewElement = (selectedElementId: string | null): void => {
+  const onClose = (): void => {
     setModalDisplayed(null);
-    if (selectedElementId) {
-      if (widget.reference.manyValued) {
-        callAddReferenceValues([selectedElementId]);
-      } else {
-        callSetReferenceValue(selectedElementId);
-      }
-    }
   };
 
   let modal: React.JSX.Element | null = null;
@@ -459,7 +452,7 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
       <BrowseModal editingContextId={editingContextId} onClose={setSelectedElement} widget={widget} />
     );
   } else if (modalDisplayed === 'create') {
-    modal = <CreateModal editingContextId={editingContextId} onClose={addNewElement} widget={widget} formId={formId} />;
+    modal = <CreateModal editingContextId={editingContextId} onClose={onClose} widget={widget} formId={formId} />;
   }
 
   return (

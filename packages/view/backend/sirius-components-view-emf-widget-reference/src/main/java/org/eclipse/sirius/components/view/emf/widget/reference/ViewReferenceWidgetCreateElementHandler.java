@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -103,7 +104,8 @@ public class ViewReferenceWidgetCreateElementHandler implements IReferenceWidget
             var description = optionalDescription.get();
             // Fallback to the default behavior
             if (description.getCreateButton().getBody().isEmpty()) {
-                return this.toStatus(this.editService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId));
+                return this.createAndAssign(editingContext, referenceWidget,
+                        () -> this.editService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId));
             }
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {
                 var resourceSet = emfEditingContext.getDomain().getResourceSet();
@@ -133,7 +135,8 @@ public class ViewReferenceWidgetCreateElementHandler implements IReferenceWidget
             var description = optionalDescription.get();
             // Fallback to the default behavior
             if (description.getCreateButton().getBody().isEmpty()) {
-                return this.toStatus(this.editService.createChild(editingContext, object, childCreationDescriptionId));
+                return this.createAndAssign(editingContext, referenceWidget,
+                        () -> this.editService.createChild(editingContext, object, childCreationDescriptionId));
             }
             if (editingContext instanceof IEMFEditingContext emfEditingContext && object instanceof EObject parent) {
                 var optionalDescriptor = emfEditingContext.getDomain().getNewChildDescriptors(parent, null).stream()
@@ -159,9 +162,28 @@ public class ViewReferenceWidgetCreateElementHandler implements IReferenceWidget
                 .map(ReferenceWidgetDescription.class::cast);
     }
 
-    private IStatus toStatus(Optional<Object> optionalObject) {
-        return optionalObject.<IStatus> map(object -> new Success(ChangeKind.SEMANTIC_CHANGE, Map.of("object", object), this.feedbackMessageService.getFeedbackMessages()))
-                .orElseGet(this::failure);
+    private IStatus createAndAssign(IEditingContext editingContext, ReferenceWidget referenceWidget, Supplier<Optional<Object>> objectCreator) {
+        var optionalOwner = this.objectSearchService.getObject(editingContext, referenceWidget.getOwnerId())
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast);
+        if (optionalOwner.isPresent()
+                && optionalOwner.get().eClass().getEStructuralFeature(referenceWidget.getReferenceName()) instanceof EReference reference) {
+            var owner = optionalOwner.get();
+            var optionalObject = objectCreator.get();
+            if (optionalObject.isPresent()) {
+                var object = optionalObject.get();
+                if (reference.isMany()) {
+                    var values = (List<Object>) owner.eGet(reference);
+                    if (!values.contains(object)) {
+                        values.add(object);
+                    }
+                } else {
+                    owner.eSet(reference, object);
+                }
+                return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of("object", object), this.feedbackMessageService.getFeedbackMessages());
+            }
+        }
+        return this.failure();
     }
 
     private IStatus failure() {
