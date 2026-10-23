@@ -12,7 +12,7 @@
 
 == Bug fixes
 
-
+* Fix an issue where elements filtered by an explorer filter could be rendered for a brief moment during loading.
 
 
 == New features

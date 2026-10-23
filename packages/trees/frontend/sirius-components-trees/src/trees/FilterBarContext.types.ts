@@ -11,14 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { MutableRefObject } from 'react';
-
 export interface FilterBarContextValue {
   isOpen: boolean;
   filterBarText: string | null;
   filterBarTreeFiltering: boolean;
   setFilterBarText: (filterBarText: string) => void;
   setFilterBarTreeFiltering: (enabled: boolean) => void;
+  onKeyDown: (event: React.KeyboardEvent<Element>) => void;
   toggleFilter: () => void;
   onClose: () => void;
 }
@@ -30,6 +29,5 @@ export interface FilterBarContextStates {
 }
 
 export interface FilterBarContextProps {
-  containerRef: MutableRefObject<HTMLDivElement>;
   children: React.ReactNode;
 }
