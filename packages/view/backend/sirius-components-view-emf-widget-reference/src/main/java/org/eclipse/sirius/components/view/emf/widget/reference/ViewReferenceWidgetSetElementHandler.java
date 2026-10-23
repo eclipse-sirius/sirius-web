@@ -92,17 +92,18 @@ public class ViewReferenceWidgetSetElementHandler implements IReferenceWidgetSet
     @Override
     public IStatus set(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, String newValueId) {
         var optionalWidgetDescription = this.findReferenceWidgetDescription(editingContext, referenceWidget.getDescriptionId());
+        if (optionalWidgetDescription.isPresent() && optionalWidgetDescription.get().getSet() == null) {
+            return new Success();
+        }
         var optionalOwner = this.objectSearchService.getObject(editingContext, referenceWidget.getOwnerId());
         Optional<Object> optionalSelf = this.objectSearchService.getObject(editingContext, referenceWidget.getTargetObjectId());
         var optionalNewValue = this.objectSearchService.getObject(editingContext, newValueId);
-        if (optionalNewValue.isEmpty()) {
-            return new Failure(this.referenceMessageService.invalidIds());
-        }
         IStatus result = new Failure(this.referenceMessageService.unableToExecuteSetAction());
-
-        if (optionalWidgetDescription.isPresent() && optionalOwner.isPresent() && optionalSelf.isPresent() && optionalOwner.get() instanceof EObject owner) {
+        if (optionalNewValue.isEmpty()) {
+            result = new Failure(this.referenceMessageService.invalidIds());
+        } else if (optionalWidgetDescription.isPresent() && optionalOwner.isPresent() && optionalSelf.isPresent() && optionalOwner.get() instanceof EObject owner) {
             var widgetDescription = optionalWidgetDescription.get();
-            var body = widgetDescription.getBody();
+            var body = widgetDescription.getSet().getBody();
             var feature = owner.eClass().getEStructuralFeature(referenceWidget.getReferenceName());
             var self = optionalSelf.get();
 

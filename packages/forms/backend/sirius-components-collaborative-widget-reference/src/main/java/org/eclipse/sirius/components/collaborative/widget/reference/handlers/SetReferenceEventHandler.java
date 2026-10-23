@@ -130,6 +130,9 @@ public class SetReferenceEventHandler implements IFormEventHandler {
     }
 
     private IStatus set(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, String newValueId) {
+        if (!referenceWidget.isSelectable()) {
+            return new Success();
+        }
         return this.referenceWidgetSetElementHandlers.stream()
                 .filter(handler -> handler.canHandle(formDescription))
                 .findFirst()

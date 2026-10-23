@@ -8,11 +8,11 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="referenceNameExpression"
         lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="clearButton" eType="#//ReferenceWidgetClearButtonDescription"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="add" eType="#//ReferenceWidgetAdd"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="set" eType="#//ReferenceWidgetSet"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//ReferenceWidgetDescriptionStyle"
         containment="true"/>
@@ -33,6 +33,12 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ReferenceWidgetAdd">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReferenceWidgetSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"

@@ -117,6 +117,74 @@ public class ReferenceWidgetSetControllerTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
+    @DisplayName("Given a reference widget without a set, when setting a reference value, then the reference is unchanged")
+    public void givenReferenceWidgetWithoutSetWhenSettingReferenceValueThenReferenceIsUnchanged() {
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var widget = new FormNavigator(form).page("Page").group("Group").findWidget("Target type without set", ReferenceWidget.class);
+            assertThat(widget.isReadOnly()).isFalse();
+            assertThat(widget.isMany()).isFalse();
+            assertThat(widget.isSelectable()).isFalse();
+            assertThat(widget.getReferenceValues()).extracting(ReferenceValue::getId).containsExactly(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString());
+            referenceWidgetId.set(widget.getId());
+        });
+
+        Runnable setReferenceValue = () -> this.referenceSetValueExecutor.execute(new SetReferenceValueInput(UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get(),
+                StudioIdentifiers.ROOT_ENTITY_OBJECT.toString())).isSuccess();
+
+        StepVerifier.create(this.givenViewReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(setReferenceValue)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        assertThat(this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()).getName()).isEqualTo("Human");
+        assertThat(this.identityService.getId(this.getCreatedEntity(StudioIdentifiers.ROOT_ENTITY_OBJECT.toString()).getRelations().get(0).getTargetType()))
+                .isEqualTo(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString());
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget with a dynamic set precondition, when semantic data changes, then selection follows the evaluated precondition")
+    public void givenReferenceWidgetWithDynamicSetPreconditionWhenSemanticDataChangesThenSelectionFollowsTheEvaluatedPrecondition() {
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var group = new FormNavigator(form).page("Page").group("Group");
+            var customSetWidget = group.findWidget("Target type with custom set", ReferenceWidget.class);
+            assertThat(customSetWidget.isSelectable()).isTrue();
+            referenceWidgetId.set(customSetWidget.getId());
+            assertThat(group.findWidget("Target type with dynamic set precondition", ReferenceWidget.class).isSelectable()).isTrue();
+        });
+
+        Runnable setReferenceValue = () -> this.referenceSetValueExecutor.execute(new SetReferenceValueInput(UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get(),
+                StudioIdentifiers.ROOT_ENTITY_OBJECT.toString())).isSuccess();
+
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var group = new FormNavigator(form).page("Page").group("Group");
+            assertThat(group.findWidget("Target type with dynamic set precondition", ReferenceWidget.class).isSelectable()).isFalse();
+            assertThat(group.findWidget("Target type", ReferenceWidget.class).isSelectable()).isTrue();
+        });
+
+        StepVerifier.create(this.givenViewReferenceFormSubscription())
+                .consumeNextWith(initialFormContentConsumer)
+                .then(setReferenceValue)
+                .consumeNextWith(updatedFormContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        assertThat(this.getCreatedEntity(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()).getName()).isEqualTo("Set by custom action");
+    }
+
+    @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a reference widget in Details, when setting a reference value, then the existing value is replaced and the form is refreshed")
     public void givenReferenceWidgetInDetailsWhenSettingReferenceValueThenExistingValueIsReplacedAndFormIsRefreshed() {
         this.assertReferenceValueSet(this.givenDetailsReferenceFormSubscription(), "humans", "Core Properties", "Target Type", "Human");
