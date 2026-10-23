@@ -84,8 +84,7 @@ test.describe('diagram', () => {
 
     await page.goto(`/projects/${projectId}/edit`);
     const explorer = await new PlaywrightExplorer(page);
-    await explorer.expand('Flow');
-    await explorer.expand('NewSystem');
+
     await new PlaywrightDiagram(page).waitForInitialLayout(() =>
       explorer.createRepresentation('NewSystem', 'Topography unsynchronized', 'Topography2')
     );

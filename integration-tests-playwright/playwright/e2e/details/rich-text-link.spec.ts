@@ -119,8 +119,7 @@ test.describe('details - rich text links', () => {
     try {
       await secondPage.goto(`/projects/${projectId}/edit`);
       const secondPageExplorer = new PlaywrightExplorer(secondPage);
-      await secondPageExplorer.expand('detailsOpenTab.xml');
-      await secondPageExplorer.expand('Project1');
+
       await secondPageExplorer.select('Component');
 
       const secondPageDetails = new PlaywrightDetails(secondPage);

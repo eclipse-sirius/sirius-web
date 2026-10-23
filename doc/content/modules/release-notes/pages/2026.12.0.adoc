@@ -32,6 +32,7 @@ On the frontend, the new id should be treated as an opaque string just like the 
 
 - A "Collapse All" action has been added in the explorer.
 It allows reducing the selected tree item and all its children recursively.
+* The selected explorer description and expanded items are now saved in your browser and restored when you refresh the page or reopen the project.
 
 
 == Improvements
