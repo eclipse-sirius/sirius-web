@@ -1346,7 +1346,7 @@ Note that when some of the documents in the uploaded archive contain invalid ref
 - https://github.com/eclipse-sirius/sirius-web/issues/2884[#2884] [diagram] Tools for drag'n'dropping nodes on diagrams now support dropping multiple nodes at once.
 - https://github.com/eclipse-sirius/sirius-web/issues/5795[#5795] [diagram] Make edge and outside labels resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/5215[#5215] [diagram] Add the ability to programmatically change the layout of a diagram on the backend
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4590[#4590] [diagram] It is now possible to repeat the last tool invoked in a particular context on a diagram with a single _Alt-left click_.
 
 === Improvements
 
@@ -2348,8 +2348,6 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
-
-
 
 == v2025.2.0
 
