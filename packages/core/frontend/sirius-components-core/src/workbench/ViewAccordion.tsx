@@ -39,6 +39,11 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
     : null;
   const content = childrenArray.find((child) => isValidElement(child) && child.type === ViewAccordionContent);
 
+  // Without a PanelCollapseContext provider, the default header height is '0'.
+  if (viewHeaderHeight === '0') {
+    return <>{content}</>;
+  }
+
   const headerId = `${id}-header`;
   const contentId = `${id}-content`;
 

@@ -197,6 +197,7 @@ If no palette is defined inside the `edgeTool`, then the `edgeTool` body will be
 - https://github.com/eclipse-sirius/sirius-web/issues/7085[#7085] [projects] Prevent a project style customization from being registered twice in the database.
 - https://github.com/eclipse-sirius/sirius-web/issues/5501[#5501] [diagram] Render border nodes after children nodes of the same parent so they appear above them at the same z-index.
 - https://github.com/eclipse-sirius/sirius-web/issues/7100[#7100] [diagram] Fix gaps between rounded node borders and their backgrounds while preserving rounded images.
+- https://github.com/eclipse-sirius/sirius-web/issues/7096[#7096] [workbench] Hide view headers and toolbars outside workbench side panels, preventing the Details header from overlapping the form in the VS Code extension.
 
 
 === New Features
