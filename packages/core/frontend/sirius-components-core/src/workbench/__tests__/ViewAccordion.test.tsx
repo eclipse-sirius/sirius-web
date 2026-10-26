@@ -16,7 +16,7 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { theme } from '../../theme';
 import { PanelCollapseContextProvider } from '../PanelCollapseContext';
-import { ViewAccordion, ViewAccordionContent } from '../ViewAccordion';
+import { ViewAccordion, ViewAccordionContent, ViewAccordionToolbar } from '../ViewAccordion';
 
 afterEach(() => {
   cleanup();
@@ -36,6 +36,25 @@ const renderViewAccordion = (onCollapseChange: (id: string, collapsed: boolean) 
       </PanelCollapseContextProvider>
     </ThemeProvider>
   );
+
+test('given a view accordion outside a side panel, then only its content is rendered', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <ViewAccordion id="view-id" title="Test View">
+        <ViewAccordionToolbar>
+          <button>Toolbar action</button>
+        </ViewAccordionToolbar>
+        <ViewAccordionContent>
+          <div data-testid="content">Content</div>
+        </ViewAccordionContent>
+      </ViewAccordion>
+    </ThemeProvider>
+  );
+
+  expect(screen.getByTestId('content')).toBeTruthy();
+  expect(screen.queryByTestId('view-Test View-toggle')).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Toolbar action' })).toBeNull();
+});
 
 test('given an expanded view accordion, then its content is bounded by the height of the view', () => {
   renderViewAccordion();
