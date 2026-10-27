@@ -68,6 +68,7 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
         }
         if (treeItem.isHasChildren()) {
             result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, this.messageService.treeToolExpandAll(), List.of(), false, List.of()));
+            result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL, this.messageService.treeToolCollapseAll(), List.of(), false, List.of()));
         }
         return result;
     }
