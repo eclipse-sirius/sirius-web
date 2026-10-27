@@ -33,10 +33,10 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
-import org.eclipse.sirius.web.library.domain.Library;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +49,8 @@ import org.springframework.stereotype.Service;
 public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContextMenuEntryProvider {
 
     public static final String EXPAND_ALL = "expand-all";
+
+    public static final String COLLAPSE_ALL = "collapse-all";
 
     public static final String NEW_ROOT_OBJECT = "new-root-object";
 
@@ -101,6 +103,7 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
         }
         if (treeItem.isHasChildren()) {
             result.add(new SingleClickTreeItemContextMenuEntry(EXPAND_ALL, this.messageService.treeToolExpandAll(), List.of(), false, List.of()));
+            result.add(new SingleClickTreeItemContextMenuEntry(COLLAPSE_ALL, this.messageService.treeToolCollapseAll(), List.of(), false, List.of()));
         }
         return result;
     }
