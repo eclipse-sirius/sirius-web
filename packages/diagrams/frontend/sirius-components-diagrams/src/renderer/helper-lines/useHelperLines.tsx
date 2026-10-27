@@ -82,6 +82,7 @@ const getHelperLinesForMove = (
   const movingNodesWidth: number = movingNodesBounds.x2 - movingNodesBounds.x1;
   const movingNodesHeight: number = movingNodesBounds.y2 - movingNodesBounds.y1;
   return nodes
+    .filter((node) => !node.hidden)
     .filter((node) => node.type != 'edgeAnchorNode')
     .filter((node) => node.type != 'handleNode')
     .filter((node) => !movingNodes.some((n) => n.id === node.id))
@@ -190,6 +191,7 @@ const getHelperLinesForResize = (
       y2: resizingNode.internals.positionAbsolute.y + (change.dimensions.height ?? 0),
     };
     return nodes
+      .filter((node) => !node.hidden)
       .filter((node) => node.type != 'edgeAnchorNode')
       .filter((node) => node.type != 'handleNode')
       .filter((node) => node.id != resizingNode.id)
@@ -264,6 +266,7 @@ const getHelperLinesForResizeAndMove = (
         (resizingChange.dimensions.height ?? 0),
     };
     return nodes
+      .filter((node) => !node.hidden)
       .filter((node) => node.type != 'edgeAnchorNode')
       .filter((node) => node.type != 'handleNode')
       .filter((node) => node.id != resizingNode.id)
