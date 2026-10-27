@@ -10,6 +10,7 @@
 *** xref:studio-maker-guide:features/node-description.adoc[]
 *** xref:studio-maker-guide:features/edge-description.adoc[]
 ** xref:studio-maker-guide:features/form-description.adoc[]
+*** xref:studio-maker-guide:features/reference-widget-description.adoc[]
 ** xref:studio-maker-guide:features/gantt-description.adoc[]
 ** xref:studio-maker-guide:features/table-description.adoc[]
 ** xref:studio-maker-guide:features/tree-description.adoc[]
