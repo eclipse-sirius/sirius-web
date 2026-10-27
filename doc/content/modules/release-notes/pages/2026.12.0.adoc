@@ -21,7 +21,8 @@ Custom implementations must reuse the provided context during connector tool exe
 
 == New features
 
-
+* A "Collapse All" action has been added in the explorer.
+It allows reducing the selected tree item and all its children recursively.
 
 
 == Improvements
