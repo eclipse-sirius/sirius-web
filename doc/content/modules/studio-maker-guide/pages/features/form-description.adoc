@@ -123,15 +123,7 @@ This allows you to compute the available values dynamically.
 == Reference widgets
 
 `ReferenceWidgetDescription` displays the reference identified by `referenceNameExpression` on the object evaluated by `referenceOwnerExpression`.
-Its `set` child (`ReferenceWidgetSet`) describes assignment to a single-valued reference, while its `add` child (`ReferenceWidgetAdd`) describes addition to a multivalued reference.
-Each child has a `body` containing operations and a `preconditionExpression` controlling value selection.
-An absent child disables its action; an empty body uses the default reference update, and a populated body executes its operations.
-A null or blank precondition allows selection.
-The widget's `isEnabledExpression` controls whether the widget is read-only.
-
-During these operations, `self` is the widget's semantic target, `referenceOwner` is the evaluated owner, `reference` is the resolved EMF reference, and `editingContext` is the current editing context.
-`newValue` contains the selected object for `set`; `newValues` contains the selected objects for `add`.
-The former shared `ReferenceWidgetDescription.body` is migrated into the dedicated actions when existing descriptions are loaded.
+See xref:features/reference-widget-description.adoc[Reference Widget Description] for its properties, actions, styles, and expression variables.
 
 == Custom widgets
 
