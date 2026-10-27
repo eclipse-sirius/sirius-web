@@ -235,6 +235,7 @@ Enable flow related project style customizations when a new flow project is crea
 - https://github.com/eclipse-sirius/sirius-web/issues/7036[#7036] [projects] Clean enabled project style customizations when a project is deleted
 - https://github.com/eclipse-sirius/sirius-web/issues/6966[#6966] [projects] Allow users to enable or disable project style customizations from the _Appearances_ tab in the project settings.
 Implementations of `INodeStyleCustomizer` can use the activation state of a project style customization to decide whether to apply their rules.
+- https://github.com/eclipse-sirius/sirius-web/issues/7116[#7116] [diagram] Allow providing variables for the diagram refresh.
 
 
 === Improvements

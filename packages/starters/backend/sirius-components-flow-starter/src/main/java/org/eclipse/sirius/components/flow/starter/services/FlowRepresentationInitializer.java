@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.flow.starter.view.FlowTopographyViewDiagramDescriptionProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
  */
 @Service
 public class FlowRepresentationInitializer {
-
-    private static final String TOPOGRAPHY_VIEW_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38";
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
@@ -63,7 +62,7 @@ public class FlowRepresentationInitializer {
             var optionalResource = editingContext.getDomain().getResourceSet().getResources().stream().findFirst();
 
             if (flowTemplateInitialization.templateId().equals(FlowProjectTemplatesProvider.FLOW_TEMPLATE_ID)) {
-                var optionalTopographyDiagram = this.representationDescriptionSearchService.findById(editingContext, TOPOGRAPHY_VIEW_DESCRIPTION_ID)
+                var optionalTopographyDiagram = this.representationDescriptionSearchService.findById(editingContext, FlowTopographyViewDiagramDescriptionProvider.TOPOGRAPHY_VIEW_DESCRIPTION_ID)
                         .filter(DiagramDescription.class::isInstance)
                         .map(DiagramDescription.class::cast);
 
