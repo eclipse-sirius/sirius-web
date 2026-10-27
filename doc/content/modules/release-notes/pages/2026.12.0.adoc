@@ -17,10 +17,11 @@ Custom implementations must reuse the provided context during connector tool exe
 - Graphical operations such as revealing hidden elements are now applied when executing connector tools.
 - Bending points, segment controls and paths share the same geometry while editing rectilinear edges.
 - Wrapped labels now fit inside their nodes immediately after using Adjust size.
+- Helper lines now appear when resizing a node containing children from the left or top.
 
 == New features
 
-* A "Collapse All" action has been added in the explorer.
+- A "Collapse All" action has been added in the explorer.
 It allows reducing the selected tree item and all its children recursively.
 
 

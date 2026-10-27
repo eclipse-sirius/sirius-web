@@ -39,6 +39,7 @@ The `legacyId` field is deprecated and shouldn't be used: it is a temporary iden
 - https://github.com/eclipse-sirius/sirius-web/issues/6035[#6035] [tree] Fix an issue where explorer subscription was initiated before retrieving explorer filters
 - https://github.com/eclipse-sirius/sirius-web/issues/7120[#7120] [diagram] Fix graphical operations such as revealing hidden elements being ignored when executing connector tools.
 - https://github.com/eclipse-sirius/sirius-web/issues/6671[#6671] [diagram] Preserve wrapped inside labels within their nodes after using Adjust size.
+- https://github.com/eclipse-sirius/sirius-web/issues/7115[#7115] [diagram] Display helper lines when resizing nodes with children from the left or top.
 
 
 === New Features
