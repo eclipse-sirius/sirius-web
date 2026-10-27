@@ -202,9 +202,12 @@ const constrainFreeFormChildMoveChanges = (
           position: change.position!,
         }));
       const movedNodesBox = computeNodesBox(nodes, movedNodes);
+      const parentResizeChange = changes.find(
+        (change): change is NodeDimensionChange => isResize(change) && change.id === parentNodeId
+      );
       const delta = computeFreeFormContentContainmentDelta(parentNode, movedNodesBox, {
-        width: parentNode.width ?? 0,
-        height: parentNode.height ?? 0,
+        width: parentResizeChange?.dimensions?.width ?? parentNode.width ?? 0,
+        height: parentResizeChange?.dimensions?.height ?? parentNode.height ?? 0,
       });
 
       moveChanges.forEach(({ change }) => {

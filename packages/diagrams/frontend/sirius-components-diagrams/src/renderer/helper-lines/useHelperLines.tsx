@@ -362,27 +362,32 @@ export const useHelperLines = (): UseHelperLinesValue => {
             }
           });
         }
-      } else if (isHelperLineEnabled && changes.length === 1 && changes[0]) {
-        const change = changes[0];
-        if (isResizing(change)) {
-          const resizingNode = nodeLookup.get(change.id);
-          if (resizingNode) {
-            const helperLines: HelperLines = getHelperLinesForResize(change, resizingNode, getNodes(), nodeLookup);
+      } else if (isHelperLineEnabled) {
+        const resizingChanges = changes.filter(isResizing);
+        const [resizingChange] = resizingChanges;
+        if (resizingChanges.length === 1 && resizingChange) {
+          const movingChange = changes.find(
+            (change): change is NodePositionChange => isMove(change, false) && change.id === resizingChange.id
+          );
+          const resizingNode = nodeLookup.get(resizingChange.id);
+          if (resizingNode && !movingChange) {
+            const helperLines: HelperLines = getHelperLinesForResize(
+              resizingChange,
+              resizingNode,
+              getNodes(),
+              nodeLookup
+            );
             setState({ vertical: helperLines.vertical, horizontal: helperLines.horizontal });
-            if (helperLines.snapX && change.dimensions && resizingNode.internals.positionAbsolute) {
-              change.dimensions.width = Math.abs(resizingNode.internals.positionAbsolute.x - helperLines.snapX);
+            if (helperLines.snapX && resizingChange.dimensions && resizingNode.internals.positionAbsolute) {
+              resizingChange.dimensions.width = Math.abs(resizingNode.internals.positionAbsolute.x - helperLines.snapX);
             }
-            if (helperLines.snapY && change.dimensions && resizingNode.internals.positionAbsolute) {
-              change.dimensions.height = Math.abs(resizingNode.internals.positionAbsolute.y - helperLines.snapY);
+            if (helperLines.snapY && resizingChange.dimensions && resizingNode.internals.positionAbsolute) {
+              resizingChange.dimensions.height = Math.abs(
+                resizingNode.internals.positionAbsolute.y - helperLines.snapY
+              );
             }
-          }
-        }
-      } else if (isHelperLineEnabled && changes.length === 2 && changes[0] && changes[1]) {
-        const movingChange = changes[0];
-        const resizingChange = changes[1];
-        if (isMove(movingChange, false) && isResizing(resizingChange)) {
-          const resizingNode = nodeLookup.get(movingChange.id);
-          if (resizingNode) {
+          } else if (resizingNode && movingChange) {
+            const positionBeforeSnap = movingChange.position ? { ...movingChange.position } : null;
             const helperLines: HelperLines = getHelperLinesForResizeAndMove(
               resizingChange,
               movingChange,
@@ -420,6 +425,26 @@ export const useHelperLines = (): UseHelperLinesValue => {
               movingChange.position.y = helperLines.snapY + snapOffsetY;
               resizingChange.dimensions.height =
                 resizingNode.height + resizingNode.internals.positionAbsolute.y - helperLines.snapY;
+            }
+            if (positionBeforeSnap && movingChange.position) {
+              const deltaX = movingChange.position.x - positionBeforeSnap.x;
+              const deltaY = movingChange.position.y - positionBeforeSnap.y;
+              return changes.map((change) => {
+                if (
+                  isMove(change, false) &&
+                  change.position &&
+                  nodeLookup.get(change.id)?.parentId === resizingNode.id
+                ) {
+                  return {
+                    ...change,
+                    position: {
+                      x: change.position.x - deltaX,
+                      y: change.position.y - deltaY,
+                    },
+                  };
+                }
+                return change;
+              });
             }
           }
         }

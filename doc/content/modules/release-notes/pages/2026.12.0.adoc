@@ -13,6 +13,7 @@
 == Bug fixes
 
 * Fix an issue where elements filtered by an explorer filter could be rendered for a brief moment during loading.
+* Helper lines now appear when resizing a node containing children from the left or top.
 
 
 == New features
