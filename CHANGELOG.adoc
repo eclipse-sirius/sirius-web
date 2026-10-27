@@ -35,6 +35,7 @@
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/7084[#7084] [explorer] Add "Collapse All" action.
 
 
 
@@ -186,6 +187,24 @@ For multivalued references, an absent `add` disables value selection and additio
 An empty `add` uses the default addition behavior; a populated `add` executes its operations.
 When `add` is present, its `preconditionExpression` controls whether values can be selected for multivalued references; an empty expression allows selection.
 Existing representations have been migrated but programmatic one must be migrated manually.
+- https://github.com/eclipse-sirius/sirius-web/issues/7057[#7057] [form] Remove the reference widget set handler from the refresh mechanism.
+`setHandlerProvider` has been removed from `ReferenceWidgetDescription` and `setHandler` has been removed from `ReferenceWidget` and `ReferenceElementProps`.
+A new API has been added to replace `setHandlerProvider`: `IReferenceWidgetSetElementHandler`, a candidate to handle the set event.
+Two implementations of `IReferenceWidgetSetElementHandler`, `ViewReferenceWidgetSetElementHandler` for View-based representations and `DetailsViewReferenceWidgetSetElementHandler` for Sirius Web's Details View, are provided by default.
+Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetSetElementHandler`.
+The `set` reference widget feature cannot use rendering AQL variables such as the one provided by a `For` element.
+- https://github.com/eclipse-sirius/sirius-web/issues/7058[#7058] [form] `body` reference of `ReferenceWidget` in View DSL cannot be used to describe the behavior of the `set` element feature anymore and has been removed.
+Instead, use `set`.
+For monovalued references, an absent `set` disables value selection.
+An empty `set` uses the default setting behavior; a populated `set` executes its operations.
+When `set` is present, its `preconditionExpression` controls whether values can be selected for monovalued references; an empty expression allows selection.
+Existing representations have been migrated but programmatic one must be migrated manually.
+- https://github.com/eclipse-sirius/sirius-web/issues/7059 [form] Remove the reference widget remove handler from the refresh mechanism.
+`itemRemoveHandlerProvider` has been removed from `ReferenceWidgetDescription`.
+`removeHandler` has been removed from `ReferenceValue`.
+A new API has been added to replace `itemRemoveHandlerProvider`: `IReferenceWidgetRemoveHandler`, a candidate to handle the remove event.
+Two implementations of `IReferenceWidgetRemoveHandler`, `ViewReferenceWidgetRemoveElementHandler` for View-based representation and `DetailsViewReferenceWidgetRemoveElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
+Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetRemoveHandler`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6721[#6721] Each `EdgeTool` can now own a `Palette`; its actions are defined by tools in that palette.
 If there is no palette declared, then the body of the first candidate edge tool will be executed.
 Existing edge tool bodies are moved into a same-named node tool in each edge tool's palette during migration.
@@ -222,6 +241,9 @@ If no palette is defined inside the `edgeTool`, then the `edgeTool` body will be
 - https://github.com/eclipse-sirius/sirius-web/issues/7049[#7049] [sirius-web] Fix an issue where the migration participant of a view model created outside a template was not set correctly during the first persistence operation.
 - https://github.com/eclipse-sirius/sirius-web/issues/7085[#7085] [projects] Prevent a project style customization from being registered twice in the database.
 - https://github.com/eclipse-sirius/sirius-web/issues/5501[#5501] [diagram] Render border nodes after children nodes of the same parent so they appear above them at the same z-index.
+- https://github.com/eclipse-sirius/sirius-web/issues/7100[#7100] [diagram] Fix gaps between rounded node borders and their backgrounds while preserving rounded images.
+- https://github.com/eclipse-sirius/sirius-web/issues/7096[#7096] [workbench] Hide view headers and toolbars outside workbench side panels, preventing the Details header from overlapping the form in the VS Code extension.
+- https://github.com/eclipse-sirius/sirius-web/issues/5874[#5874] [diagram] Ignore hidden nodes when calculating helper lines.
 
 
 === New Features
@@ -286,6 +308,7 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [gantt] Perform the refresh of the Gantt representation outside of its event processor by leveraging new APIs.
 - https://github.com/eclipse-sirius/sirius-web/issues/6761[#6761] [sirius-web] Extract the explorer subscription in a dedicated component in order to reduce the number of rerender.
 - https://github.com/eclipse-sirius/sirius-web/issues/7056[#7056] [form] Reference widget in View DSL now have a dedicated body for add: `Add`.
+- https://github.com/eclipse-sirius/sirius-web/issues/7075[#7075] [form] Introduce documentation for the reference widget.
 
 
 

@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { expect, test } from '@playwright/test';
+import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -61,5 +62,26 @@ test.describe('domain explorer - tree item palette', () => {
     const newPage = await newPagePromise;
 
     await expect(newPage).toHaveURL(helpUrl);
+  });
+
+  test('when collapse all tool is clicked, then the tree items are all collapsed', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+
+    await page.getByTestId('tree-descriptions-menu-icon').click();
+    await page.getByTestId('tree-descriptions-menu-item-Domain explorer by DSL').click();
+
+    await playwrightExplorer.expand('DomainNewModel');
+    await playwrightExplorer.explorerLocator.locator('[data-depth="2"]').first().click();
+    await new PlaywrightDetails(page).setText('Name', 'mendeleev');
+
+    await playwrightExplorer.expandAll('DomainNewModel');
+    await expect(page.getByTestId('mendeleev')).toBeVisible();
+    await playwrightExplorer.collapseAll('DomainNewModel');
+
+    await expect(page.getByTestId('mendeleev')).not.toBeVisible();
+
+    await playwrightExplorer.expand('DomainNewModel');
+    await expect(page.getByTestId('mendeleev')).toBeVisible();
+    await expect(page.getByTestId('[Entity] Root {}')).not.toBeVisible();
   });
 });

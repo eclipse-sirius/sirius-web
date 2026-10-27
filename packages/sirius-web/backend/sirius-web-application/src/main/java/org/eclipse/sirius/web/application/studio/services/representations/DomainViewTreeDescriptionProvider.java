@@ -335,6 +335,12 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".isHasChildren()")
                 .build();
 
-        return List.of(expandAllMenuEntry, this.helpMenuEntry, this.toggleAbstractMenuEntry);
+        var collapseAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
+                .labelExpression("aql:'" + this.messageService.treeToolCollapseAll() + "'")
+                .contributionId(ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL)
+                .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".isHasChildren()")
+                .build();
+
+        return List.of(expandAllMenuEntry, collapseAllMenuEntry, this.helpMenuEntry, this.toggleAbstractMenuEntry);
     }
 }

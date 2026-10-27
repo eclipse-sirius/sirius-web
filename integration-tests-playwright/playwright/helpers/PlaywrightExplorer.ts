@@ -88,6 +88,12 @@ export class PlaywrightExplorer {
     await this.page.getByTestId('expand-all').click();
   }
 
+  async collapseAll(treeItemLabel: string) {
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.page.getByTestId('collapse-all').isVisible();
+    await this.page.getByTestId('collapse-all').click();
+  }
+
   async openPalette(treeItemLabel: string) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
   }
