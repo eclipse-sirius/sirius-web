@@ -27,9 +27,6 @@ import org.eclipse.sirius.components.diagrams.renderer.api.INodeStyleCustomizer;
 import org.eclipse.sirius.components.flow.starter.services.api.IFlowCapableEditingContextPredicate;
 import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
-import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationSearchService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,19 +39,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class StatusNodeStyleCustomizer implements INodeStyleCustomizer {
 
     private final IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate;
-
-    private final IProjectEditingContextService projectEditingContextService;
-
-    private final IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService;
-
-    public StatusNodeStyleCustomizer(
-            IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate,
-            IProjectEditingContextService projectEditingContextService,
-            IProjectStyleCustomizationSearchService projectStyleCustomizationSearchService
-    ) {
+    public StatusNodeStyleCustomizer(IFlowCapableEditingContextPredicate flowCapableEditingContextPredicate) {
         this.flowCapableEditingContextPredicate = Objects.requireNonNull(flowCapableEditingContextPredicate);
-        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
-        this.projectStyleCustomizationSearchService = Objects.requireNonNull(projectStyleCustomizationSearchService);
     }
 
     @Override
@@ -66,10 +52,7 @@ public class StatusNodeStyleCustomizer implements INodeStyleCustomizer {
                     .map(IEditingContext::getId)
                     .map(this.flowCapableEditingContextPredicate::test)
                     .orElse(Boolean.FALSE);
-            var isEnabled = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
-                    .map(IEditingContext::getId)
-                    .flatMap(this.projectEditingContextService::getProjectId)
-                    .map(projectId -> this.projectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(AggregateReference.to(projectId), FlowStyleCustomizationDescriptionProvider.FLOW_STYLE_CUSTOMIZATION_STATUS))
+            var isEnabled = variableManager.get(FlowRendererVariableCustomizer.IS_FLOW_STYLE_CUSTOMIZATION_STATUS_ENABLED.name(), Boolean.class)
                     .orElse(Boolean.FALSE);
             if (isFlowProject && isEnabled) {
                 var optionalCompositeProcessor = variableManager.get(RepresentationVariables.SELF.name(), CompositeProcessor.class);

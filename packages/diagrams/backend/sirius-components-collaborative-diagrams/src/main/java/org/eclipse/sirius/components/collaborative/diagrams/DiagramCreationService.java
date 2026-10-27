@@ -52,6 +52,7 @@ import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.components.diagrams.renderer.IDiagramAppearanceHandler;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IOperationValidator;
+import org.eclipse.sirius.components.representations.IRepresentationRenderVariableCustomizer;
 import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
@@ -79,18 +80,21 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final List<IDiagramPostProcessor> diagramPostProcessors;
 
+    private final List<IRepresentationRenderVariableCustomizer> renderVariableCustomizers;
+
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService,
             IOperationValidator operationValidator, IDiagramAppearanceHandler diagramAppearanceHandler,
-            List<IDiagramPostProcessor> diagramPostProcessors, MeterRegistry meterRegistry) {
+            List<IDiagramPostProcessor> diagramPostProcessors, List<IRepresentationRenderVariableCustomizer> renderVariableCustomizers, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationValidator = Objects.requireNonNull(operationValidator);
         this.diagramAppearanceHandler = Objects.requireNonNull(diagramAppearanceHandler);
         this.diagramPostProcessors = Objects.requireNonNull(diagramPostProcessors);
+        this.renderVariableCustomizers = Objects.requireNonNull(renderVariableCustomizers);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram")
                 .register(meterRegistry);
@@ -148,6 +152,10 @@ public class DiagramCreationService implements IDiagramCreationService {
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
         variableManager.put(DiagramContext.DIAGRAM_CONTEXT, optionalDiagramContext.orElse(null));
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(optionalDiagramContext.orElse(null)));
+
+        for (var renderVariableCustomizer : this.renderVariableCustomizers) {
+            variableManager = renderVariableCustomizer.customize(diagramDescription, variableManager);
+        }
 
         List<IDiagramEvent> diagramEvents = optionalDiagramContext.map(DiagramContext::diagramEvents).orElse(List.of());
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(DiagramContext::diagram);

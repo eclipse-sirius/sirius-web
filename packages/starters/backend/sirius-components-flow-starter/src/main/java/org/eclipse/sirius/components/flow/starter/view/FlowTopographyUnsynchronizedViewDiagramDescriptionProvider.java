@@ -45,6 +45,8 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class FlowTopographyUnsynchronizedViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
+    public static final String TOPOGRAPHY_UNSYNCHRONIZED_VIEW_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=fac1c3c2-cc89-30fc-ada3-2c51f24d5275";
+
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();

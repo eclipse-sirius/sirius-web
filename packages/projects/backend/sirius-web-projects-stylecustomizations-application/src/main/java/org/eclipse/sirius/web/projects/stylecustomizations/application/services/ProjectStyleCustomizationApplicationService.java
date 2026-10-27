@@ -71,7 +71,7 @@ public class ProjectStyleCustomizationApplicationService implements IProjectStyl
 
                 yield new ErrorPayload(input.id(), message);
             }
-            case Success<?>(var data) -> {
+            case Success<?> success -> {
                 this.logger.atInfo()
                         .setMessage("Project style customization {} updated")
                         .addArgument(input.styleCustomizationDescriptionId())

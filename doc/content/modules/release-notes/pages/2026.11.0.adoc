@@ -182,6 +182,11 @@ image::project-appearances-settings-tab.png[Display the project appearances sett
 The form editor preview reflects this configuration.
 The create button description can contain operations to customize its behavior.
 When its body is empty, the button retains the default creation behavior.
+* Downstream projects can provide an `IRepresentationRenderVariableCustomizer` to add variables to the variable manager during the rendering/refresh phase.
+Use `IRepresentationRenderVariableCustomizer` with caution: these customizers operate at the representation level and may be invoked during the rendering/refresh phase for any representation type.
+Currently, these customizers are used for tree and diagram representations.
+Downstream projects contributing an `IRepresentationRenderVariableCustomizer` are responsible for ensuring that it does not pollute the context of other representations.
+A good practice is to use the representation's description to determine whether to contribute a variable.
 
 
 == Improvements
