@@ -125,7 +125,11 @@ export const useHandles = (): UseHandlesValue => {
     const handleNodes: Node<HandleNodeData>[] = Object.values(Position).map((position) =>
       createHandleNode(nodeId, null, position, nodeXYPosition, nodeWidth, nodeHeight)
     );
-    setNodes((previousNodes) => previousNodes.concat(handleNodes));
+    setNodes((previousNodes) => {
+      const previousNodeIds = new Set(previousNodes.map((previousNode) => previousNode.id));
+      const newHandleNodes = handleNodes.filter((handleNode) => !previousNodeIds.has(handleNode.id));
+      return newHandleNodes.length > 0 ? previousNodes.concat(newHandleNodes) : previousNodes;
+    });
   };
 
   const mountEdgeHandles = (edgeId: string, edgePath: string) => {
@@ -138,26 +142,40 @@ export const useHandles = (): UseHandlesValue => {
       createHandleNode(null, edgeId, position, edgeCenterPosition, 0, 0)
     );
 
-    setNodes((previousNodes) => previousNodes.concat(handleNodes));
+    setNodes((previousNodes) => {
+      const previousNodeIds = new Set(previousNodes.map((previousNode) => previousNode.id));
+      const newHandleNodes = handleNodes.filter((handleNode) => !previousNodeIds.has(handleNode.id));
+      return newHandleNodes.length > 0 ? previousNodes.concat(newHandleNodes) : previousNodes;
+    });
   };
 
   const updateNodeHandles = (nodeId: string, nodeXYPosition: XYPosition, nodeWidth: number, nodeHeight: number) => {
-    setNodes((previousNodes) =>
-      previousNodes.map((previousNode) => {
+    setNodes((previousNodes) => {
+      let hasChanged = false;
+      const updatedNodes = previousNodes.map((previousNode) => {
         if (isHandleNode(previousNode) && previousNode.data.nodeId === nodeId) {
+          const position = getHandlePosition(previousNode.data.position, nodeXYPosition, nodeWidth, nodeHeight);
+          if (position.x === previousNode.position.x && position.y === previousNode.position.y) {
+            return previousNode;
+          }
+
+          hasChanged = true;
           return {
             ...previousNode,
-            position: getHandlePosition(previousNode.data.position, nodeXYPosition, nodeWidth, nodeHeight),
+            position,
           };
         }
-
         return previousNode;
-      })
-    );
+      });
+      return hasChanged ? updatedNodes : previousNodes;
+    });
   };
 
   const unMountHandles = () => {
-    setNodes((previousNodes) => previousNodes.filter((previousNode) => !previousNode.id.startsWith('handleNode_')));
+    setNodes((previousNodes) => {
+      const updatedNodes = previousNodes.filter((previousNode) => !previousNode.id.startsWith('handleNode_'));
+      return updatedNodes.length < previousNodes.length ? updatedNodes : previousNodes;
+    });
   };
 
   return {
