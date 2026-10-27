@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.palette.dto.IPaletteEntry;
+import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -69,6 +69,7 @@ public class DomainTreeItemPaletteProvider implements ITreeItemPaletteProvider {
         }
         if (treeItem.isHasChildren()) {
             paletteEntries.add(new SingleClickTreeItemTool(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, this.messageService.treeToolExpandAll(), List.of(), false, List.of()));
+            paletteEntries.add(new SingleClickTreeItemTool(ExplorerTreeItemContextMenuEntryProvider.COLLAPSE_ALL, this.messageService.treeToolCollapseAll(), List.of(), false, List.of()));
         }
         return new Palette("", List.of(), paletteEntries);
     }

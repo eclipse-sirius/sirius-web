@@ -41,6 +41,7 @@ The `legacyId` field is deprecated and shouldn't be used: it is a temporary iden
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/7084[#7084] [explorer] Add "Collapse All" action.
 
 
 
