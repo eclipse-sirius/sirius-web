@@ -121,6 +121,8 @@ import { DuplicateObjectTreeItemContextMenuContribution } from '../views/edit-pr
 import { DuplicateRepresentationToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-representation/DuplicateRepresentationToolContribution';
 import { DuplicateRepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-representation/DuplicateRepresentationTreeItemContextMenuContribution';
 import { DirectEditToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/edit/DirectEditToolContribution';
+import { CollapseAllToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/expand-all/CollapseAllToolContribution';
+import { CollapseAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/expand-all/CollapseAllTreeItemContextMenuContribution';
 import { ExpandAllToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/expand-all/ExpandAllToolContribution';
 import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/expand-all/ExpandAllTreeItemContextMenuContribution';
 import { NewObjectToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-object/NewObjectToolContribution';
@@ -378,6 +380,12 @@ const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContr
     },
     component: ExpandAllTreeItemContextMenuContribution,
   },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('collapse-all');
+    },
+    component: CollapseAllTreeItemContextMenuContribution,
+  },
 ];
 
 defaultExtensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(
@@ -435,6 +443,11 @@ const treePaletteOverriddenContributions: PaletteToolOverriddenContributionProps
     canHandle: (representationDescriptionId: string, tool: GQLTool) =>
       representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'expand-all',
     component: ExpandAllToolContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) =>
+      representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'collapse-all',
+    component: CollapseAllToolContribution,
   },
 ];
 

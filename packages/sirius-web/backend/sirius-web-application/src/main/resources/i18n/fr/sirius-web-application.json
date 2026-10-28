@@ -362,6 +362,9 @@
   "expandAllTreeItemContextMenuContribution": {
     "expandAll": "Tout développer"
   },
+  "collapseAllTreeItemContextMenuContribution": {
+    "collapseAll": "Tout replier"
+  },
   "showInSection": {
     "showInTarget": "Afficher dans {{target}}",
     "showIn": "Afficher dans",

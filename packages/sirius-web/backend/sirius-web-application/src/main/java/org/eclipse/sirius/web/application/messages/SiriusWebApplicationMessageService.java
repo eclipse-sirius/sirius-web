@@ -39,6 +39,11 @@ public class SiriusWebApplicationMessageService implements ISiriusWebApplication
     }
 
     @Override
+    public String treeToolCollapseAll() {
+        return this.messageSourceAccessor.getMessage("TREE_TOOL_COLLAPSE_ALL");
+    }
+
+    @Override
     public String treeToolDownload() {
         return this.messageSourceAccessor.getMessage("TREE_TOOL_DOWNLOAD");
     }

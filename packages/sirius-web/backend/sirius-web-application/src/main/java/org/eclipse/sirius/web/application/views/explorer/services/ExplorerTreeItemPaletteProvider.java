@@ -26,18 +26,18 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.palette.dto.IPaletteEntry;
+import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
-import org.eclipse.sirius.web.library.domain.Library;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +50,8 @@ import org.springframework.stereotype.Service;
 public class ExplorerTreeItemPaletteProvider implements ITreeItemPaletteProvider {
 
     public static final String EXPAND_ALL = "expand-all";
+
+    public static final String COLLAPSE_ALL = "collapse-all";
 
     public static final String NEW_ROOT_OBJECT = "new-root-object";
 
@@ -102,6 +104,7 @@ public class ExplorerTreeItemPaletteProvider implements ITreeItemPaletteProvider
         }
         if (treeItem.isHasChildren()) {
             paletteEntries.add(new SingleClickTreeItemTool(EXPAND_ALL, this.messageService.treeToolExpandAll(), List.of(), false, List.of()));
+            paletteEntries.add(new SingleClickTreeItemTool(COLLAPSE_ALL, this.messageService.treeToolCollapseAll(), List.of(), false, List.of()));
         }
         return new Palette("", List.of(), paletteEntries);
     }
