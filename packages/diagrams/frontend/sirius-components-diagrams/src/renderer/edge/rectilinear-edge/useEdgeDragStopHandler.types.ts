@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { XYPosition, InternalNode, Node, Position } from '@xyflow/react';
 import { NodeData } from '../../DiagramRenderer.types';
-import { BendPointData } from './useBendingPoints.types';
+import { BendPointData } from './BendingPointsCalculation.types';
 
 export interface UseEdgeDragStopHandlerValue {
   handleDragStop: (

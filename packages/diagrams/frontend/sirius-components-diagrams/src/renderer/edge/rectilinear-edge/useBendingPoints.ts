@@ -22,7 +22,7 @@ import {
   generateNewHandlePoint,
   isOutOfLines,
 } from './RectilinearEdgeCalculation';
-import { BendingPointsState, BendPointData, UseBendingPointsValue } from './useBendingPoints.types';
+import { BendingPointsState, BendPointData, UseBendingPointsValue } from './BendingPointsCalculation.types';
 import { useEdgeDragStopHandler } from './useEdgeDragStopHandler';
 
 export const useBendingPoints = (

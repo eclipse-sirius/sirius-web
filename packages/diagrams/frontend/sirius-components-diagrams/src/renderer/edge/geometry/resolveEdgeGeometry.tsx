@@ -22,14 +22,14 @@ import {
 } from '@xyflow/react';
 import { memo, useContext } from 'react';
 import parse from 'svg-path-parser';
-import { NodeTypeContext } from '../../contexts/NodeContext';
-import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
-import { NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
-import { getHandleCoordinatesByPosition } from './EdgeLayout';
-import { MultiLabelEdgeData } from './MultiLabelEdge.types';
-import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
-import { ConnectionHandle } from '../handles/ConnectionHandles.types';
+import { NodeTypeContext } from '../../../contexts/NodeContext';
+import { NodeTypeContextValue } from '../../../contexts/NodeContext.types';
+import { NodeData } from '../../DiagramRenderer.types';
+import { DiagramNodeType } from '../../node/NodeTypes.types';
+import { getHandleCoordinatesByPosition } from '../EdgeLayout';
+import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
+import { MultiLabelRectilinearEditableEdge } from '../rectilinear-edge/MultiLabelRectilinearEditableEdge';
+import { ConnectionHandle } from '../../handles/ConnectionHandles.types';
 
 function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;

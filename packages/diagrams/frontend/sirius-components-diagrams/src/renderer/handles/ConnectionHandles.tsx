@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Handle, Position, XYPosition } from '@xyflow/react';
 import React, { memo } from 'react';
-import { ConnectionHandlesProps } from './ConnectionHandles.types';
+import { ConnectionHandle, ConnectionHandlesProps } from './ConnectionHandles.types';
 
 const borderHandlesStyle = (position: Position): React.CSSProperties => {
   const style: React.CSSProperties = {
@@ -62,8 +62,8 @@ const handleStyle = (
       position: 'absolute',
       transform: transform ?? 'none',
       pointerEvents: 'none',
-      backgroundColor: 'white',
-      border: '1px solid black',
+      backgroundColor: 'transparent',
+      border: '1px solid transparent',
     };
     switch (position) {
       case Position.Left:
@@ -91,8 +91,8 @@ const handleStyle = (
       position: 'relative',
       transform: transform ?? 'none',
       pointerEvents: 'none',
-      backgroundColor: 'black',
-      border: 'black',
+      backgroundColor: 'transparent',
+      border: 'none',
     };
     switch (position) {
       case Position.Left:
@@ -113,6 +113,20 @@ const handleStyle = (
     }
     return style;
   }
+};
+
+/** Visual alignment must not change the element React Flow measures. */
+const markerStyle = ({ XYPosition, alignmentOffset }: ConnectionHandle): React.CSSProperties => {
+  return {
+    position: 'absolute',
+    inset: XYPosition ? -1 : 0,
+    boxSizing: 'border-box',
+    borderRadius: 'inherit',
+    backgroundColor: XYPosition ? 'white' : 'black',
+    border: XYPosition ? '1px solid black' : 'none',
+    pointerEvents: 'none',
+    transform: alignmentOffset ? `translate(${alignmentOffset.x}px, ${alignmentOffset.y}px)` : 'none',
+  };
 };
 
 export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesProps) => {
@@ -138,13 +152,17 @@ export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesP
                   type={connectionHandle.type}
                   position={connectionHandle.position}
                   key={connectionHandle.id}
-                  isConnectable={true}
-                  data-testid={
-                    !connectionHandle.isVirtualHandle && !connectionHandle.isHidden
-                      ? `connectionHandle-${connectionHandle.edgeId}-${connectionHandle.type}`
-                      : ''
-                  }
-                />
+                  isConnectable={true}>
+                  <span
+                    aria-hidden={true}
+                    style={markerStyle(connectionHandle)}
+                    data-testid={
+                      !connectionHandle.isVirtualHandle && !connectionHandle.isHidden
+                        ? `connectionHandle-${connectionHandle.edgeId}-${connectionHandle.type}`
+                        : ''
+                    }
+                  />
+                </Handle>
               );
             })}
           </div>

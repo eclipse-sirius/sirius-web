@@ -99,7 +99,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
   const nodes = getNodes();
   const edges = getEdges();
-  useEdgeCrossingFades();
+  useEdgeCrossingFades(edges);
   useDynamicEdgeSelectionArea();
 
   const { onDirectEdit } = useDiagramDirectEdit();
@@ -300,7 +300,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
         newNodes = applyResizeByUserState(transformedNodeChanges, newNodes);
 
-        layoutOnBoundsChange(transformedNodeChanges, newNodes);
+        layoutOnBoundsChange(transformedNodeChanges, { nodes: newNodes, edges: getEdges() });
 
         setNodes((previousNodes) => {
           return newNodes.map((newNode) => {
