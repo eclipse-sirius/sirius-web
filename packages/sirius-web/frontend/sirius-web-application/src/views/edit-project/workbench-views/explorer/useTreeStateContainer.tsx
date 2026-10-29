@@ -20,7 +20,7 @@ export const useTreeStateContainer = (
   explorerDescriptions: TreeDescriptionMetadata[]
 ): UseTreeStateContainerValue => {
   const [state, setState] = useState<UseTreeStateContainerState>({
-    activeTreeDescriptionId: configuredActiveTreeDescriptionId,
+    activeTreeDescriptionId: null,
     expanded: {},
     maxDepth: {},
   });
@@ -66,7 +66,7 @@ export const useTreeStateContainer = (
 
       setState((prevState) => ({
         ...prevState,
-        activeTreeDescriptionId: prevState.activeTreeDescriptionId ?? explorerDescriptions[0].id,
+        activeTreeDescriptionId: configuredActiveTreeDescriptionId ?? explorerDescriptions[0].id,
         expanded: expandedInitiated,
         maxDepth: maxDepthInitiated,
       }));
