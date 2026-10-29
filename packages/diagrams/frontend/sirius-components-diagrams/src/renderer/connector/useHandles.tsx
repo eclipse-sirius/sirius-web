@@ -14,7 +14,7 @@
 import { Edge, Node, Position, useReactFlow, XYPosition } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getMiddleOfEdgePath, getSegmentDirection } from '../edge/EdgeLayout';
-import { HandleNodeData, isHandleNode } from '../node/HandleNode.types';
+import { HandleNodeData } from '../node/HandleNode.types';
 import { UseHandlesValue } from './useHandles.types';
 
 const HANDLE_OFFSET = 20;
@@ -141,28 +141,12 @@ export const useHandles = (): UseHandlesValue => {
     setNodes((previousNodes) => previousNodes.concat(handleNodes));
   };
 
-  const updateNodeHandles = (nodeId: string, nodeXYPosition: XYPosition, nodeWidth: number, nodeHeight: number) => {
-    setNodes((previousNodes) =>
-      previousNodes.map((previousNode) => {
-        if (isHandleNode(previousNode) && previousNode.data.nodeId === nodeId) {
-          return {
-            ...previousNode,
-            position: getHandlePosition(previousNode.data.position, nodeXYPosition, nodeWidth, nodeHeight),
-          };
-        }
-
-        return previousNode;
-      })
-    );
-  };
-
   const unMountHandles = () => {
     setNodes((previousNodes) => previousNodes.filter((previousNode) => !previousNode.id.startsWith('handleNode_')));
   };
 
   return {
     mountNodeHandles,
-    updateNodeHandles,
     mountEdgeHandles,
     unMountHandles,
   };
