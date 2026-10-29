@@ -1,0 +1,151 @@
+:author: Gwendal DANIEL
+:date: 2026-10-29
+:status: proposed
+:consulted: Stéphane Bégaudeau
+:informed: Florian Rouëné
+:deciders: Stéphane Bégaudeau
+:pitch: None
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6743
+
+= ADR-241 - Remove randomly generated library ids
+
+== Context and Problem Statement
+
+Sirius Web currently has two different ways to uniquely identify a library: its UUID and the combination of its namespace, name, and version.
+Since UUIDs are randomly generated on creation, creating the same library on two instances of the application produce libraries with different UUIDs (e.g. a system library created when the application starts for the first time).
+
+As a result, some parts of the application rely on namespace/name/version to identify a library (e.g. to specify a required library in a project template or an integration test), and some parts rely on the UUID (e.g. the frontend sends the UUIDs of a library to update instead of its namespace/name/version).
+
+This creates frictions when the two ways need to work together (e.g. when initializing libraries of a newly created project), and obfuscates our APIs, which allow to find by ID but also by namespace/name/version.
+
+We want to uniformize how Sirius Web libraries are identified.
+
+== Decision Drivers
+
+- Compatibility: existing library-related features (import, update, delete, default libraries) should continue to work as they used to
+- API soundness: the APIs should provide a single way to retrieve an uniquely identified library
+
+== Considered Options
+
+=== Replace the UUID with a composite ID
+
+We will create a new record to hold the composite library identifier:
+
+[source, java]
+====
+public record LibraryId(String namespace, String name, String version) {}
+
+@Table("library")
+public class Library {
+
+  @Id
+  private LibraryId id;
+
+}
+
+public record LibraryDTO(@NotNull LibraryId id, ...) {}
+====
+
+
+The `ILibraryRepository` will allow to find libraries using a `LibraryId`, and `ILibrarySearchService#findByNamespaceAndNameAndVersion` will be replaced with `ILibrarySearchService#findById(LibraryId)`.
+
+We will introduce a new scalar at the GraphQL level to represent library identifiers and use it where necessary:
+
+[source, graphql]
+====
+"LibraryId type serialized as namespace:name@version and used to identify libraries"
+scalar LibraryId;
+
+type Library {
+  id: LibraryId!
+}
+
+input ImportLibrariesInput {
+  id: ID!
+  editingContextId: ID!
+  type: String!
+  libraryIds: [LibraryId!]!
+}
+
+input UpdateLibraryInput {
+  id: ID!
+  editingContextId: ID!
+  libraryId: LibraryId!
+}
+====
+
+This scalar will ease the manipulation of libraries by the frontend: anytime the frontend needs to do something with a mutation on a library, it will be able to reuse the `library.id` received from the backend without any modification, and without having to build an identifier.
+
+
+The frontend will be updated to match this new schema and use the new `LibraryId` scalar as identifier of the libraries.
+
+Pros:
+
+- We will be able to entirely remove the UUID from the application, and provide a single way to identify libraries based on their namespace/name/version
+
+Cons:
+
+- For now we don't have any entity referencing libraries, but if we need to support it in the future, we may have some issues related to composite ID support in Spring Data JDBC.
+
+=== Derive the ID field from the namespace/name/version
+
+This solution is similar to `RepresentationContent#id`, which is the concatenation of two other fields.
+We do this for historical reasons (Spring Boot 3 doesn't support composite IDs), but also because the new version of Spring Boot still has issues when referencing composite IDs.
+
+In the case of libraries, this limitation isn't blocking, since there isn't any reference to library IDs at the database level.
+
+Pros
+
+- The structure of the database doesn't change: a library still has an `id` column
+
+Cons
+
+- This solution doesn't improve much the APIs, which will still have two ways to retrieve an uniquely identified library
+
+
+== Decision Outcome
+
+In the context of the identification of libraries, facing the need to clarify our APIs, we decided to replace the randomly generated UUID field with a composite id to unify our APIs with a single way to identify libraries based on their namespace, name, and version.
+We accept that this change may create challenges in the future if we need to have other entities referencing libraries.
+
+
+== Consequences
+
+=== Advantages
+
+- The combination of the namespace/name/version will be the sole way to identify a library, and the APIs will reflect that
+
+=== Drawbacks
+
+- We may have issues related to composite ID support in Spring Data JDBC if, in the future, we need to have entities referencing libraries.
+
+
+== More Information
+
+=== Implementation
+
+The implementation will be carried out in multiple steps:
+
+0. Initial refactoring.
+We will update the GraphQL schema and `LibraryDTO` to rename `LibraryDTO#id` to `LibraryDTO#legacyId`, and mark this field as deprecated.
+This change is limited to the frontend and the upper level of the backend, we won't update the `Library` aggregate at this point, the domain part will perform the translation from `legacyId` to `ILibraryRepository#findById`.
+1. Add `LibraryId` as a scalar in the GraphQL API.
+The scalar will be used in `Library#id: LibraryId`, and a record in the backend will be created to store the information in `LibraryDTO`.
+The new scalar will be used in a first mutation: `CreateProjectInput`.
+2. Update `ImportLibrariesInput#libraryIds` to use `[LibraryId!]!`
+3. Update `UpdateLibraryInput#libraryId` to use `LibraryId`
+4. Remove `Library#legacyId` from the GraphQL schema, `LibraryDTO`, and application services
+At this point the application services should use `ILibraryRepository#findByNamespaceAndNameAndVersion` to retrieve a library.
+5. Switch the entity attribute `Library#id` to `LibraryId` and migrate the remaining domain/application services
+Finally, migrate the database to remove the id column and update the primary key.
+
+Note that changing the way libraries are referenced in the project export manifest is out of the scope of this ADR, since the current implementation reference the semantic data of the library and not the library itself.
+
+
+=== Decision Details
+
+
+=== References
+
+- https://github.com/eclipse-sirius/sirius-web/issues/6743[6743 - Library's identifier should be derived from its namespace, name, and version] 
+- https://github.com/eclipse-sirius/sirius-web/issues/6453[6453 - Use library name and version in exported project's manifest]

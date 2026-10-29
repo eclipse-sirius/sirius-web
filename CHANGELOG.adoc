@@ -10,7 +10,7 @@
 
 === Architectural decision records
 
-
+- [ADR-241] Remove randomly generated library ids
 
 
 === Deprecation warning
