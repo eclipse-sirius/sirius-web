@@ -40,7 +40,7 @@
 
 === Improvements
 
-
+- [diagram] Update creation-handle positions while resizing parent within node changes.
 
 
 
