@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DraggableData } from 'react-draggable';
+import { XYPosition } from '@xyflow/react';
 
 export interface BendingPointsState {
   isSourceSegment: boolean;
@@ -35,3 +36,11 @@ export type BendPointData = {
   y: number;
   pathOrder: number;
 };
+
+export interface BendingPointsCalculationValue {
+  source: XYPosition;
+  target: XYPosition;
+  localBendingPoints: BendPointData[];
+  isSourceSegment: boolean;
+  isTargetSegment: boolean;
+}

@@ -41,6 +41,7 @@
 === Improvements
 
 - [diagram] Share edge endpoint clearance and prepare handle alignment for diagram geometry.
+- [diagram] Extract reusable bending-point and segment calculations.
 
 
 
