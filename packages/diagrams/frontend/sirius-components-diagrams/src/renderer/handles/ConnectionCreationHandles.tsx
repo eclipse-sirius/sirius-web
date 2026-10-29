@@ -21,7 +21,7 @@ import { useConnectionCandidatesQuery } from './useConnectionCandidatesQuery';
 export const ConnectionCreationHandles = memo(
   ({ nodeId, nodePosition, nodeWidth, nodeHeight, isDraggedNode }: ConnectionCreationHandlesProps) => {
     const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
-    const { mountNodeHandles, updateNodeHandles, unMountHandles } = useHandles();
+    const { mountNodeHandles, unMountHandles } = useHandles();
     const { setCandidateDescriptionIds } = useConnectorPalette();
 
     const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, nodeId);
@@ -45,11 +45,6 @@ export const ConnectionCreationHandles = memo(
         mountNodeHandles(nodeId, nodePosition, nodeWidth, nodeHeight);
       }
     }, [isDraggedNode]);
-
-    // Update handle position if needed (for resize)
-    useEffect(() => {
-      updateNodeHandles(nodeId, nodePosition, nodeWidth, nodeHeight);
-    }, [nodePosition, nodeWidth, nodeHeight]);
 
     // Set candidates in the context
     useEffect(() => {
