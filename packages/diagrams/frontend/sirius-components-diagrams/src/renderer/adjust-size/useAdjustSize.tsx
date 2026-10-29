@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useCreationHandleChange } from '../handles/useCreationHandleChange';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
@@ -23,6 +24,7 @@ const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'li
 export const useAdjustSize = (): UseAdjustSizeValue => {
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
+  const { updateCreationHandlePositions } = useCreationHandleChange();
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const adjustSize = (nodeIds: string[]): void => {
@@ -52,12 +54,13 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
       };
 
       layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-        const updatedNodesAfterLayout = updatedNodes.map((node) => {
+        const laidOutNodes = updatedNodes.map((node) => {
           if (nodeIds.find((nodeId) => nodeId === node.id)) {
             return laidOutDiagram.nodes.find((laidOutNode) => laidOutNode.id === node.id) ?? node;
           }
           return node;
         });
+        const updatedNodesAfterLayout = updateCreationHandlePositions(nodeIds, laidOutNodes);
 
         setNodes(updatedNodesAfterLayout);
         setEdges(laidOutDiagram.edges);
