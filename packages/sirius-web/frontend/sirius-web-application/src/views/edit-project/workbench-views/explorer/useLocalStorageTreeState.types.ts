@@ -11,16 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface UseTreeStateContainerValue {
+export interface UseTreeStateLocalStorageValue {
   activeTreeDescriptionId: string | null;
   expanded: string[];
   maxDepth: number;
+  ready: boolean;
   setActiveDescriptionId: (activeDescriptionId: string) => void;
   onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void;
 }
 
-export interface UseTreeStateContainerState {
-  activeTreeDescriptionId: string | null;
+export interface UseTreeStateLocalStorageState {
+  activeTreeDescriptionId: string;
   expanded: { [key: string]: string[] };
   maxDepth: { [key: string]: number };
+  loadedStateKey: string;
 }

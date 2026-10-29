@@ -84,8 +84,9 @@ export class PlaywrightExplorer {
 
   async expandAll(treeItemLabel: string) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
-    await this.page.getByTestId('expand-all').isVisible();
-    await this.page.getByTestId('expand-all').click();
+    const expandAllMenuItem = this.page.getByTestId('expand-all').first();
+    await expect(expandAllMenuItem).toBeVisible();
+    await expandAllMenuItem.click();
   }
 
   async openPalette(treeItemLabel: string) {
