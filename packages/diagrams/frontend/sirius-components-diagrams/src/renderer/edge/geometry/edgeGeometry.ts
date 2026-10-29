@@ -13,8 +13,9 @@
 
 import { Position, XYPosition } from '@xyflow/react';
 import { determineSegmentAxis, getMiddlePoint, isMultipleOfTwo } from '../rectilinear-edge/RectilinearEdgeCalculation';
+import { calculateBendingPoints } from '../rectilinear-edge/BendingPointsCalculation';
 import { BendPointData } from '../rectilinear-edge/BendingPointsCalculation.types';
-import { computeMiddlePoints } from '../rectilinear-edge/TemporaryLinesCalculation';
+import { calculateTemporaryLines, computeMiddlePoints } from '../rectilinear-edge/TemporaryLinesCalculation';
 import { MiddlePoint } from '../rectilinear-edge/TemporaryLinesCalculation.types';
 import { EdgeDragControl, EdgeDragData, EdgeGeometry, EdgeGeometryInput } from './edgeGeometry.types';
 
@@ -132,5 +133,38 @@ export const initializeEdgeDrag = (input: EdgeGeometryInput, control: EdgeDragCo
     middleBendingPoints: geometry.middlePoints.map((point) => {
       return { ...point };
     }),
+  };
+};
+
+export const moveBendingPoint = (edgeDragData: EdgeDragData, eventData: XYPosition): EdgeDragData => {
+  const { source, target, localBendingPoints, isSourceSegment, isTargetSegment } = calculateBendingPoints(
+    edgeDragData,
+    eventData
+  );
+  return {
+    ...edgeDragData,
+    isSourceSegment,
+    isTargetSegment,
+    geometry: createGeometry(source, target, localBendingPoints, edgeDragData.originalGeometry.customEdge, null, true),
+  };
+};
+
+export const moveTemporaryLine = (edgeDragData: EdgeDragData, eventData: XYPosition): EdgeDragData => {
+  const { source, target, localBendingPoints, isSourceSegment, isTargetSegment } = calculateTemporaryLines(
+    edgeDragData,
+    eventData
+  );
+  return {
+    ...edgeDragData,
+    isSourceSegment,
+    isTargetSegment,
+    geometry: createGeometry(
+      source,
+      target,
+      localBendingPoints,
+      edgeDragData.originalGeometry.customEdge,
+      edgeDragData.middleBendingPoints,
+      true
+    ),
   };
 };

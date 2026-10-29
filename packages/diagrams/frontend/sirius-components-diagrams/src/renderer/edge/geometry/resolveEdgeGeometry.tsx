@@ -11,59 +11,101 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  Edge,
   EdgeProps,
+  useInternalNode,
+  Edge,
   getSmoothStepPath,
   InternalNode,
   Node,
   Position,
-  useInternalNode,
   XYPosition,
 } from '@xyflow/react';
-import { memo, useContext } from 'react';
+import { NodeLookup } from '@xyflow/system';
 import parse from 'svg-path-parser';
+import { memo, useContext } from 'react';
 import { NodeTypeContext } from '../../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../../contexts/NodeContext.types';
-import { NodeData } from '../../DiagramRenderer.types';
-import { DiagramNodeType } from '../../node/NodeTypes.types';
-import { getHandleCoordinatesByPosition } from '../EdgeLayout';
 import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from '../rectilinear-edge/MultiLabelRectilinearEditableEdge';
-import { ConnectionHandle } from '../../handles/ConnectionHandles.types';
+import { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { INodeLayoutHandler } from '../../layout/LayoutEngine.types';
+import { evaluateAbsolutePosition } from '../../node/NodeUtils';
+import { DiagramNodeType } from '../../node/NodeTypes.types';
+import { getEdgeEndpointCoordinates } from '../EdgeLayout';
+import { EdgeDragData, EdgeGeometryInput, RenderedDiagram } from './edgeGeometry.types';
+import { computeEdgeGeometry, getBendingPoints } from './edgeGeometry';
 
-function isMultipleOfTwo(num: number): boolean {
+/** Retains DOM handle measurements while resolving current canonical node positions. */
+export const createGeometryNodeLookup = (
+  nodes: Node<NodeData>[],
+  measuredNodes: NodeLookup<InternalNode<Node<NodeData>>>
+): NodeLookup<InternalNode<Node<NodeData>>> => {
+  const lookup = new Map(measuredNodes);
+  nodes.forEach((node) => {
+    const measured = lookup.get(node.id);
+    if (measured) {
+      lookup.set(node.id, { ...measured, ...node });
+    }
+  });
+  nodes.forEach((node) => {
+    const internal = lookup.get(node.id);
+    if (internal) {
+      lookup.set(node.id, {
+        ...internal,
+        internals: { ...internal.internals, positionAbsolute: evaluateAbsolutePosition(node, lookup) },
+      });
+    }
+  });
+  return lookup;
+};
+
+const isMultipleOfTwo = (num: number): boolean => {
   return num % 2 === 0;
-}
+};
 
-function roundToDecimal(num: number): number {
+const roundToDecimal = (num: number): number => {
   return Math.round(num * 10) / 10;
-}
+};
 
-const isVerticalPosition = (position: Position) => position === Position.Top || position === Position.Bottom;
+const isVerticalPosition = (position: Position): boolean => {
+  return position === Position.Top || position === Position.Bottom;
+};
 
-const isHorizontalPosition = (position: Position) => position === Position.Left || position === Position.Right;
+const isHorizontalPosition = (position: Position): boolean => {
+  return position === Position.Left || position === Position.Right;
+};
 
-export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
-  const {
-    source,
-    target,
-    markerEnd,
-    markerStart,
-    sourcePosition,
-    targetPosition,
-    sourceHandleId,
-    targetHandleId,
-    data,
-  } = props;
-  const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
-
-  const sourceNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(source);
-  const targetNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(target);
-
+/** Derived alignment and routing never change canonical handles or bend points. */
+export const resolveEdgeGeometryInput = (
+  edge: Edge<EdgeData>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
+  nodeLayoutHandlers: INodeLayoutHandler<NodeData>[]
+): EdgeGeometryInput | null => {
+  const sourceNode = nodeLookup.get(edge.source);
+  const targetNode = nodeLookup.get(edge.target);
   if (!sourceNode || !targetNode) {
     return null;
   }
-
+  const sourceHandleId = edge.sourceHandle ?? '';
+  const targetHandleId = edge.targetHandle ?? '';
+  const sourceHandle = [
+    ...(sourceNode.internals.handleBounds?.source ?? []),
+    ...(sourceNode.internals.handleBounds?.target ?? []),
+  ].find((handle) => {
+    return handle.id === sourceHandleId;
+  });
+  const targetHandle = [
+    ...(targetNode.internals.handleBounds?.source ?? []),
+    ...(targetNode.internals.handleBounds?.target ?? []),
+  ].find((handle) => {
+    return handle.id === targetHandleId;
+  });
+  if (!sourceHandle || !targetHandle) {
+    return null;
+  }
+  const sourcePosition = sourceHandle.position;
+  const targetPosition = targetHandle.position;
+  const data = edge.data;
   const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
     nodeLayoutHandler.canHandle(sourceNode as Node<NodeData, DiagramNodeType>)
   );
@@ -71,53 +113,25 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     nodeLayoutHandler.canHandle(targetNode as Node<NodeData, DiagramNodeType>)
   );
 
-  let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(
+  let { x: sourceX, y: sourceY } = getEdgeEndpointCoordinates(
     sourceNode,
     sourcePosition,
     sourceHandleId ?? '',
+    edge.markerStart,
     sourceLayoutHandler?.calculateCustomNodeEdgeHandlePosition
   );
-  let { x: targetX, y: targetY } = getHandleCoordinatesByPosition(
+  let { x: targetX, y: targetY } = getEdgeEndpointCoordinates(
     targetNode,
     targetPosition,
     targetHandleId ?? '',
+    edge.markerEnd,
     targetLayoutHandler?.calculateCustomNodeEdgeHandlePosition
   );
 
-  // trick to have the source of the edge positioned at the very border of a node
-  // if the edge has a marker, then only the marker need to touch the node
-  const handleSourceRadius = markerStart == undefined || markerStart.includes('None') ? 2 : 3;
-  switch (sourcePosition) {
-    case Position.Right:
-      sourceX = sourceX + handleSourceRadius;
-      break;
-    case Position.Left:
-      sourceX = sourceX - handleSourceRadius;
-      break;
-    case Position.Top:
-      sourceY = sourceY - handleSourceRadius;
-      break;
-    case Position.Bottom:
-      sourceY = sourceY + handleSourceRadius;
-      break;
-  }
-  // trick to have the target of the edge positioned at the very border of a node
-  // if the edge has a marker, then only the marker need to touch the node
-  const handleTargetRadius = markerEnd == undefined || markerEnd.includes('None') ? 2 : 3;
-  switch (targetPosition) {
-    case Position.Right:
-      targetX = targetX + handleTargetRadius;
-      break;
-    case Position.Left:
-      targetX = targetX - handleTargetRadius;
-      break;
-    case Position.Top:
-      targetY = targetY - handleTargetRadius;
-      break;
-    case Position.Bottom:
-      targetY = targetY + handleTargetRadius;
-      break;
-  }
+  const rawSource = { x: sourceX, y: sourceY };
+  const rawTarget = { x: targetX, y: targetY };
+  let alignedX = false;
+  let alignedY = false;
 
   const threshold = 10;
   if (
@@ -125,59 +139,33 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     isVerticalPosition(sourcePosition) &&
     isVerticalPosition(targetPosition)
   ) {
-    const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
-      (handle) => handle.id === sourceHandleId
-    );
-    const targetHandle: ConnectionHandle | undefined = (targetNode.data.connectionHandles ?? []).find(
-      (handle) => handle.id === targetHandleId
-    );
     const middleX = (sourceX + targetX) / 2;
-    if (sourceHandle) {
-      sourceHandle.handleStyleTransform = `translateX(${middleX - sourceX}px)`;
-    }
-    if (targetHandle) {
-      targetHandle.handleStyleTransform = `translateX(${middleX - targetX}px)`;
-    }
     sourceX = middleX;
     targetX = middleX;
-    if (data) {
-      data.bendingPoints = [];
-    }
+    alignedX = true;
   }
   if (
     Math.abs(sourceY - targetY) < threshold &&
     isHorizontalPosition(sourcePosition) &&
     isHorizontalPosition(targetPosition)
   ) {
-    const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
-      (handle) => handle.id === sourceHandleId
-    );
-    const targetHandle: ConnectionHandle | undefined = (targetNode.data.connectionHandles ?? []).find(
-      (handle) => handle.id === targetHandleId
-    );
     const middleY = (sourceY + targetY) / 2;
-    if (sourceHandle) {
-      sourceHandle.handleStyleTransform = `translateY(${middleY - sourceY}px)`;
-    }
-    if (targetHandle) {
-      targetHandle.handleStyleTransform = `translateY(${middleY - targetY}px)`;
-    }
     sourceY = middleY;
     targetY = middleY;
-    if (data) {
-      data.bendingPoints = [];
-    }
+    alignedY = true;
   }
 
   let bendingPoints: XYPosition[] = [];
-  if (data && data.bendingPoints && data.bendingPoints.length > 0) {
-    if (data.relativePositionBendingPoints && sourceNode.data.moving && targetNode.data.moving) {
-      data.bendingPoints = data.relativePositionBendingPoints.map((relativePositionBendingPoint) => ({
+  const customEdge = !alignedX && !alignedY && !!data?.bendingPoints?.length;
+  if (customEdge && data?.bendingPoints) {
+    if (data.relativePositionBendingPoints?.length && sourceNode.data.moving && targetNode.data.moving) {
+      bendingPoints = data.relativePositionBendingPoints.map((relativePositionBendingPoint) => ({
         x: relativePositionBendingPoint.x + sourceX,
         y: relativePositionBendingPoint.y + sourceY,
       }));
+    } else {
+      bendingPoints = data.bendingPoints.map((bendingPoint) => ({ ...bendingPoint }));
     }
-    bendingPoints = data.bendingPoints;
   } else {
     const [smoothEdgePath] = getSmoothStepPath({
       sourceX: roundToDecimal(sourceX),
@@ -232,15 +220,162 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     }
   }
 
+  return {
+    edgeId: edge.id,
+    source: { x: sourceX, y: sourceY },
+    target: { x: targetX, y: targetY },
+    sourcePosition,
+    targetPosition,
+    sourceNode,
+    targetNode,
+    bendingPoints,
+    customEdge,
+    sourceAlignmentOffset: { x: sourceX - rawSource.x, y: sourceY - rawSource.y },
+    targetAlignmentOffset: { x: targetX - rawTarget.x, y: targetY - rawTarget.y },
+  };
+};
+
+/** Resolves the manual bend data saved at accepted move/resize completion. */
+export const getEdgesUpdatedWithGeometry = (
+  nodes: Node<NodeData>[],
+  edges: Edge<EdgeData>[],
+  measuredNodes: NodeLookup<InternalNode<Node<NodeData>>>,
+  nodeLayoutHandlers: INodeLayoutHandler<NodeData>[]
+): Edge<EdgeData>[] => {
+  const lookup = createGeometryNodeLookup(nodes, measuredNodes);
+  let changed = false;
+  const prepared = edges.map((edge) => {
+    if (edge.type !== 'manhattan' || !edge.data) {
+      return edge;
+    }
+    const input = resolveEdgeGeometryInput(edge, lookup, nodeLayoutHandlers);
+    if (!input) {
+      return edge;
+    }
+    const points = edge.data.bendingPoints?.length
+      ? input.customEdge
+        ? getBendingPoints(input).map((point) => {
+            return { x: point.x, y: point.y };
+          })
+        : []
+      : edge.data.bendingPoints;
+    const relative =
+      points?.map((point) => {
+        return { x: point.x - input.source.x, y: point.y - input.source.y };
+      }) ?? null;
+    if (
+      JSON.stringify(points) === JSON.stringify(edge.data.bendingPoints) &&
+      JSON.stringify(relative) === JSON.stringify(edge.data.relativePositionBendingPoints)
+    ) {
+      return edge;
+    }
+    changed = true;
+    return { ...edge, data: { ...edge.data, bendingPoints: points, relativePositionBendingPoints: relative } };
+  });
+  return changed ? prepared : edges;
+};
+
+/** Supplies drawing geometry without publishing changes to the canonical graph. */
+export const getRenderedDiagram = (
+  nodes: Node<NodeData>[],
+  edges: Edge<EdgeData>[],
+  measuredNodes: NodeLookup<InternalNode<Node<NodeData>>>,
+  nodeLayoutHandlers: INodeLayoutHandler<NodeData>[],
+  dragData: EdgeDragData | null
+): RenderedDiagram => {
+  const lookup = createGeometryNodeLookup(nodes, measuredNodes);
+  const offsets = new Map<string, Map<string, XYPosition>>();
+  const addOffset = (nodeId: string, handleId: string | null | undefined, offset: XYPosition | undefined): void => {
+    if (!handleId || !offset) {
+      return;
+    }
+    const handles = offsets.get(nodeId) ?? new Map<string, XYPosition>();
+    handles.set(handleId, offset);
+    offsets.set(nodeId, handles);
+  };
+  const renderedEdges = edges.map((edge) => {
+    if (edge.type !== 'manhattan' || !edge.data) {
+      return edge;
+    }
+    const input = resolveEdgeGeometryInput(edge, lookup, nodeLayoutHandlers);
+    if (!input) {
+      return edge;
+    }
+    addOffset(edge.source, edge.sourceHandle, input.sourceAlignmentOffset);
+    addOffset(edge.target, edge.targetHandle, input.targetAlignmentOffset);
+    const geometry = dragData?.edgeId === edge.id ? dragData.geometry : computeEdgeGeometry(input);
+    return { ...edge, data: { ...edge.data, edgePath: geometry.path, rectilinearGeometry: geometry } };
+  });
+  const renderedNodes = nodes.map((node) => {
+    const handles = offsets.get(node.id);
+    let changed = false;
+    const connectionHandles = node.data.connectionHandles.map((handle) => {
+      const offset = handle.id ? handles?.get(handle.id) : undefined;
+      if (!offset || (!offset.x && !offset.y)) {
+        // React Flow replacement updates can carry displayed node data back
+        // into the graph. Never retain an alignment from an earlier frame.
+        if (handle.alignmentOffset !== undefined) {
+          const { alignmentOffset: _alignmentOffset, ...baseHandle } = handle;
+          changed = true;
+          return baseHandle;
+        }
+        return handle;
+      }
+      if (handle.alignmentOffset?.x === offset.x && handle.alignmentOffset.y === offset.y) {
+        return handle;
+      }
+      changed = true;
+      return { ...handle, alignmentOffset: offset };
+    });
+    return changed ? { ...node, data: { ...node.data, connectionHandles } } : node;
+  });
+  return { nodes: renderedNodes, edges: renderedEdges };
+};
+
+// Keep the existing edge component until the shared context is connected.
+export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
+  const { source, target, sourceHandleId, targetHandleId, data } = props;
+  const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
+  const sourceNode = useInternalNode<Node<NodeData>>(source);
+  const targetNode = useInternalNode<Node<NodeData>>(target);
+  if (!sourceNode || !targetNode) return null;
+  const input = resolveEdgeGeometryInput(
+    { ...props, sourceHandle: sourceHandleId, targetHandle: targetHandleId },
+    new Map([
+      [source, sourceNode],
+      [target, targetNode],
+    ]),
+    nodeLayoutHandlers
+  );
+  if (!input) return null;
+  if (data && (input.customEdge || data.bendingPoints?.length)) {
+    data.bendingPoints = input.customEdge ? input.bendingPoints : [];
+  }
+  const sourceHandle = sourceNode.data.connectionHandles.find((handle) => handle.id === sourceHandleId);
+  const targetHandle = targetNode.data.connectionHandles.find((handle) => handle.id === targetHandleId);
+  if (
+    (input.sourcePosition === Position.Top || input.sourcePosition === Position.Bottom) &&
+    input.source.x === input.target.x
+  ) {
+    if (sourceHandle) sourceHandle.handleStyleTransform = `translateX(${input.sourceAlignmentOffset?.x ?? 0}px)`;
+    if (targetHandle) targetHandle.handleStyleTransform = `translateX(${input.targetAlignmentOffset?.x ?? 0}px)`;
+  }
+  if (
+    (input.sourcePosition === Position.Left || input.sourcePosition === Position.Right) &&
+    input.source.y === input.target.y
+  ) {
+    if (sourceHandle) sourceHandle.handleStyleTransform = `translateY(${input.sourceAlignmentOffset?.y ?? 0}px)`;
+    if (targetHandle) targetHandle.handleStyleTransform = `translateY(${input.targetAlignmentOffset?.y ?? 0}px)`;
+  }
   return (
     <MultiLabelRectilinearEditableEdge
       {...props}
-      sourceX={sourceX}
-      sourceY={sourceY}
-      targetX={targetX}
-      targetY={targetY}
-      bendingPoints={bendingPoints}
-      customEdge={!!(data && data.bendingPoints && data.bendingPoints.length > 0)}
+      sourceX={input.source.x}
+      sourceY={input.source.y}
+      targetX={input.target.x}
+      targetY={input.target.y}
+      bendingPoints={input.customEdge && data?.bendingPoints ? data.bendingPoints : input.bendingPoints}
+      customEdge={input.customEdge}
       sourceNode={sourceNode}
       targetNode={targetNode}
     />
