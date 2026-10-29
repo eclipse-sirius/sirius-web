@@ -43,6 +43,7 @@
 - [diagram] Share edge endpoint clearance and prepare handle alignment for diagram geometry.
 - [diagram] Extract reusable bending-point and segment calculations.
 - [diagram] Share rectilinear routing and drawing calculations.
+- [diagram] Introduce the shared context and hook for edge geometry interactions, initializing edge dragging from React Flow's node geometry snapshot.
 
 
 
