@@ -25,7 +25,7 @@
 
 === Dependency update
 
-
+[releng] Remove `@types/react-router-dom` from dependencies
 
 
 === Bug fixes
