@@ -44,6 +44,8 @@ public class TreeRenderer {
 
     public static final String ACTIVE_FILTER_IDS = "activeFilterIds";
 
+    public static final String SEARCHED_VALUE = "searchedValue";
+
     private final Logger logger = LoggerFactory.getLogger(TreeRenderer.class);
 
     private final VariableManager variableManager;
