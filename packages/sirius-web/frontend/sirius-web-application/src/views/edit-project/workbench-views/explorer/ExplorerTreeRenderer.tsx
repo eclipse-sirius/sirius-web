@@ -18,6 +18,8 @@ import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from './context-menu-contributions/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerContext } from './ExplorerContext';
 import { ExplorerContextValue } from './ExplorerContext.types';
+import { ExplorerInteractionContext } from './ExplorerInteractionContext';
+import { ExplorerInteractionContextValue } from './ExplorerInteractionContext.types';
 import { ExplorerSelectionContext } from './ExplorerSelectionContext';
 import { ExplorerSelectionContextValue } from './ExplorerSelectionContext.types';
 import { ExplorerRendererProps } from './ExplorerTreeRenderer.types';
@@ -31,16 +33,11 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }));
 
-export const ExplorerTreeRenderer = ({
-  editingContextId,
-  readOnly,
-  target,
-  expanded,
-  maxDepth,
-  onExpandedElementChange,
-}: ExplorerRendererProps) => {
+export const ExplorerTreeRenderer = ({ editingContextId, readOnly, target }: ExplorerRendererProps) => {
   const { classes: styles } = useStyles();
-  const { isOpen, filterBarText, setFilterBarText, setFilterBarTreeFiltering, onClose } =
+  const { expanded, maxDepth, onExpandedElementChange, collapsed } =
+    useContext<ExplorerInteractionContextValue>(ExplorerInteractionContext);
+  const { isOpen, filterBarText, filterBarTreeFiltering, setFilterBarText, setFilterBarTreeFiltering, onClose } =
     useContext<FilterBarContextValue>(FilterBarContext);
   const { selectedTreeItemIds, singleTreeItemSelected, onTreeItemClick, setSelectedTreeItemIds } =
     useContext<ExplorerSelectionContextValue>(ExplorerSelectionContext);
@@ -85,7 +82,7 @@ export const ExplorerTreeRenderer = ({
           textToHighlight={filterBarText}
           textToFilter={null}
           onExpandedElementChange={onExpandedElementChange}
-          expanded={expanded}
+          expanded={filterBarTreeFiltering ? collapsed : expanded}
           maxDepth={maxDepth}
           onTreeItemClick={onTreeItemClick}
           selectTreeItems={setSelectedTreeItemIds}

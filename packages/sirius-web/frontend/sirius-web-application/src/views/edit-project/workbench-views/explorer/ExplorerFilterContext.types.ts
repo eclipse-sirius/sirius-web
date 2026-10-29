@@ -12,12 +12,18 @@
  *******************************************************************************/
 import { TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 
-export interface UseTreeFilteringValue {
+export interface ExplorerFilterContextValue {
   loading: boolean;
   treeFilters: TreeFilter[];
   setTreeFilters: (treeFilters: TreeFilter[]) => void;
 }
 
-export interface UseTreeFilteringState {
+export interface ExplorerFilterContextState {
   treeFilters: TreeFilter[];
+}
+
+export interface ExplorerFilterContextProviderProps {
+  editingContextId: string;
+  initialTreeFilters: TreeFilter[];
+  children: React.ReactNode;
 }
