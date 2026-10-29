@@ -15,7 +15,7 @@ import { Edge, EdgeProps } from '@xyflow/react';
 import { FC } from 'react';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { SmartStepEdgeWrapper } from './SmartStepEdgeWrapper';
-import { SmoothStepEdgeWrapper } from './geometry/resolveEdgeGeometry';
+import { SmoothStepEdgeWrapper } from './SmoothStepEdgeWrapper';
 import { ObliqueEdgeWrapper } from './ObliqueEdgeWrapper';
 
 export const edgeTypes: EdgeComponentsMap = {

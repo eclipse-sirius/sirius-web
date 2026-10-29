@@ -12,6 +12,7 @@
 
 == Bug fixes
 
+* Bending points, segment controls and paths share the same geometry while editing rectilinear edges.
 
 
 

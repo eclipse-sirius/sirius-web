@@ -90,6 +90,10 @@ import { useRectangleSelection } from './selection/useRectangleSelection';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
 import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 import { DiagramToolbar } from './toolbar/DiagramToolbar';
+import { EdgeGeometryContext } from '../contexts/EdgeGeometryContext';
+import { EdgeGeometryContextValue } from '../contexts/EdgeGeometryContext.types';
+import { useEdgeGeometryChange } from './edge/geometry/useEdgeGeometryChange';
+import { useRenderedEdgeGeometry } from './edge/geometry/useRenderedEdgeGeometry';
 
 const GRID_STEP: number = 10;
 
@@ -99,7 +103,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
   const nodes = getNodes();
   const edges = getEdges();
-  useEdgeCrossingFades(edges);
+  const { cancelDrag } = useContext<EdgeGeometryContextValue>(EdgeGeometryContext);
+  const { nodes: renderedNodes, edges: renderedEdges } = useRenderedEdgeGeometry(nodes, edges);
+  useEdgeCrossingFades(renderedEdges);
   useDynamicEdgeSelectionArea();
 
   const { onDirectEdit } = useDiagramDirectEdit();
@@ -128,6 +134,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   useEffect(() => {
+    cancelDrag();
     const { diagram, cause, referencePosition } = diagramRefreshedEventPayload;
 
     const convertedDiagram: Diagram = convertDiagram(
@@ -262,6 +269,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { transformMultiSelectResizeNodeChanges } = useMultiSelectResizeChange();
   const { applyHandleChange } = useHandleChange();
   const { applyResizeHandleChange } = useHandleResizedChange();
+  const { applyEdgeGeometryChange } = useEdgeGeometryChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange();
   const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
   const { horizontalHelperLine, verticalHelperLine, applyHelperLines, resetHelperLines } = useHelperLines();
@@ -300,7 +308,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
         newNodes = applyResizeByUserState(transformedNodeChanges, newNodes);
 
-        layoutOnBoundsChange(transformedNodeChanges, { nodes: newNodes, edges: getEdges() });
+        const previousEdges = getEdges();
+        const newEdges = applyEdgeGeometryChange(transformedNodeChanges, newNodes, previousEdges);
+        if (newEdges !== previousEdges) {
+          setEdges(newEdges);
+        }
 
         setNodes((previousNodes) => {
           return newNodes.map((newNode) => {
@@ -314,9 +326,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
             return newNode;
           });
         });
+        layoutOnBoundsChange(transformedNodeChanges, { nodes: newNodes, edges: newEdges });
       }
     },
-    [layoutOnBoundsChange, getNodes, getEdges, selectedElementsIds]
+    [layoutOnBoundsChange, getNodes, getEdges, selectedElementsIds, nodes, applyEdgeGeometryChange, setEdges]
   );
 
   const { onEdgeSelectedChange } = useSelectEdgeChange();
@@ -354,10 +367,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     useOnClickElement(selectedElementsIds);
 
   let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
-    nodes: nodes,
+    nodes: renderedNodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
-    edges: edges,
+    edges: renderedEdges,
     edgeTypes: edgeTypes,
     edgesReconnectable: !readOnly,
     onKeyDown: onKeyDown,

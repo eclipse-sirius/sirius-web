@@ -10,21 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DraggableData } from 'react-draggable';
-
-export interface UseTemporaryLinesValue {
-  middleBendingPoints: MiddlePoint[];
-  onDragStart: () => void;
-  onTemporaryLineDragStop: (eventData: DraggableData, index: number) => void;
-  onTemporaryLineDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
-  isSegmentDragged: boolean;
-}
-
-export interface TemporaryLinesState {
-  isSourceSegment: boolean;
-  isTargetSegment: boolean;
-  dragInProgress: boolean;
-}
 
 export type MiddlePoint = {
   x: number;

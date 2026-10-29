@@ -30,6 +30,8 @@
 
 === Bug fixes
 
+- [diagram] Move rectilinear bend and segment editing into the shared diagram geometry lifecycle.
+
 
 
 

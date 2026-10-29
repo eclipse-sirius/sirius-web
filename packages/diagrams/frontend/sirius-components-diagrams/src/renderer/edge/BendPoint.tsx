@@ -19,7 +19,7 @@ import { BendPointProps, TemporaryMovingLineProps } from './BendPoint.types';
 
 const zoomSelector = (state: ReactFlowState) => state.panZoom?.getViewport().zoom || 1;
 
-export const BendPoint = ({ x, y, index, direction, onDrag, onDragStop, temporary }: BendPointProps) => {
+export const BendPoint = ({ x, y, index, direction, onDragStart, onDrag, onDragStop, temporary }: BendPointProps) => {
   const zoom = useStore(zoomSelector);
   const nodeRef = useRef<SVGCircleElement>(null);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -35,6 +35,7 @@ export const BendPoint = ({ x, y, index, direction, onDrag, onDragStop, temporar
     <Draggable
       position={{ x: x, y: y }}
       scale={zoom}
+      onStart={(_e, eventData: DraggableData) => onDragStart?.(eventData, index, direction)}
       onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index, direction)}
       onStop={(_e, eventData: DraggableData) => onDragStop(eventData, index)}
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>
@@ -90,7 +91,7 @@ export const TemporaryMovingLine = ({
       positionOffset={{ x: offsetX, y: offsetY }}
       scale={zoom}
       axis={direction === 'x' ? 'y' : 'x'}
-      onStart={onDragStart}
+      onStart={(_e, eventData: DraggableData) => onDragStart(eventData, index, direction)}
       onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index, direction)}
       onStop={(_e, eventData: DraggableData) => onDragStop(eventData, index)}
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>

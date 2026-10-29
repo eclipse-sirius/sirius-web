@@ -10,23 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  EdgeProps,
-  useInternalNode,
-  Edge,
-  getSmoothStepPath,
-  InternalNode,
-  Node,
-  Position,
-  XYPosition,
-} from '@xyflow/react';
+import { Edge, getSmoothStepPath, InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeLookup } from '@xyflow/system';
 import parse from 'svg-path-parser';
-import { memo, useContext } from 'react';
-import { NodeTypeContext } from '../../../contexts/NodeContext';
-import { NodeTypeContextValue } from '../../../contexts/NodeContext.types';
-import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
-import { MultiLabelRectilinearEditableEdge } from '../rectilinear-edge/MultiLabelRectilinearEditableEdge';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { INodeLayoutHandler } from '../../layout/LayoutEngine.types';
 import { evaluateAbsolutePosition } from '../../node/NodeUtils';
@@ -331,53 +317,3 @@ export const getRenderedDiagram = (
   });
   return { nodes: renderedNodes, edges: renderedEdges };
 };
-
-// Keep the existing edge component until the shared context is connected.
-export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
-  const { source, target, sourceHandleId, targetHandleId, data } = props;
-  const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
-  const sourceNode = useInternalNode<Node<NodeData>>(source);
-  const targetNode = useInternalNode<Node<NodeData>>(target);
-  if (!sourceNode || !targetNode) return null;
-  const input = resolveEdgeGeometryInput(
-    { ...props, sourceHandle: sourceHandleId, targetHandle: targetHandleId },
-    new Map([
-      [source, sourceNode],
-      [target, targetNode],
-    ]),
-    nodeLayoutHandlers
-  );
-  if (!input) return null;
-  if (data && (input.customEdge || data.bendingPoints?.length)) {
-    data.bendingPoints = input.customEdge ? input.bendingPoints : [];
-  }
-  const sourceHandle = sourceNode.data.connectionHandles.find((handle) => handle.id === sourceHandleId);
-  const targetHandle = targetNode.data.connectionHandles.find((handle) => handle.id === targetHandleId);
-  if (
-    (input.sourcePosition === Position.Top || input.sourcePosition === Position.Bottom) &&
-    input.source.x === input.target.x
-  ) {
-    if (sourceHandle) sourceHandle.handleStyleTransform = `translateX(${input.sourceAlignmentOffset?.x ?? 0}px)`;
-    if (targetHandle) targetHandle.handleStyleTransform = `translateX(${input.targetAlignmentOffset?.x ?? 0}px)`;
-  }
-  if (
-    (input.sourcePosition === Position.Left || input.sourcePosition === Position.Right) &&
-    input.source.y === input.target.y
-  ) {
-    if (sourceHandle) sourceHandle.handleStyleTransform = `translateY(${input.sourceAlignmentOffset?.y ?? 0}px)`;
-    if (targetHandle) targetHandle.handleStyleTransform = `translateY(${input.targetAlignmentOffset?.y ?? 0}px)`;
-  }
-  return (
-    <MultiLabelRectilinearEditableEdge
-      {...props}
-      sourceX={input.source.x}
-      sourceY={input.source.y}
-      targetX={input.target.x}
-      targetY={input.target.y}
-      bendingPoints={input.customEdge && data?.bendingPoints ? data.bendingPoints : input.bendingPoints}
-      customEdge={input.customEdge}
-      sourceNode={sourceNode}
-      targetNode={targetNode}
-    />
-  );
-});
