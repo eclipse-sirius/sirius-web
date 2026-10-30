@@ -30,7 +30,7 @@
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/7115[#7115] [diagram] Display helper lines when resizing nodes with children from the left or top.
 
 
 === New Features
