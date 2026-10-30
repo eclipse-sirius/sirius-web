@@ -29,7 +29,6 @@ import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParamet
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
-import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDescriptionService;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
@@ -42,6 +41,7 @@ import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.web.application.views.details.services.api.IDetailsViewFormDescriptionAggregator;
+import org.eclipse.sirius.web.application.views.details.services.api.IDetailsViewPageDescriptionAggregateProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -53,8 +53,6 @@ import org.springframework.stereotype.Service;
 public class PropertiesEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
     public static final String DETAILS_VIEW_ID = UUID.nameUUIDFromBytes("details-view".getBytes()).toString();
-
-    private final IPropertiesDescriptionService propertiesDescriptionService;
 
     private final IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider;
 
@@ -82,10 +80,12 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
+    private final IDetailsViewPageDescriptionAggregateProvider detailsViewPageDescriptionAggregateProvider;
+
+    public PropertiesEventProcessorFactory(IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
             IDetailsViewFormDescriptionAggregator detailsViewFormDescriptionAggregator, List<IWidgetDescriptor> widgetDescriptors,
-            RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
-        this.propertiesDescriptionService = Objects.requireNonNull(propertiesDescriptionService);
+            RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser,
+            IDetailsViewPageDescriptionAggregateProvider detailsViewPageDescriptionAggregateProvider) {
         this.propertiesDefaultDescriptionProvider = Objects.requireNonNull(propertiesDefaultDescriptionProvider);
         this.detailsViewFormDescriptionAggregator = Objects.requireNonNull(detailsViewFormDescriptionAggregator);
         this.objectSearchService = Objects.requireNonNull(formConfiguration.getObjectSearchService());
@@ -99,6 +99,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
         this.formCapabilitiesService = Objects.requireNonNull(formConfiguration.getFormCapabilitiesService());
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.detailsViewPageDescriptionAggregateProvider = Objects.requireNonNull(detailsViewPageDescriptionAggregateProvider);
     }
 
     @Override
@@ -108,7 +109,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
-        List<PageDescription> pageDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
+        List<PageDescription> pageDescriptions = this.detailsViewPageDescriptionAggregateProvider.getPageDescriptions(editingContext);
 
         Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
         String objectIdsParam = parameters.get("objectIds").get(0);
