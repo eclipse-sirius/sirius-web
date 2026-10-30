@@ -134,7 +134,7 @@ public class SetReferenceEventHandler implements IFormEventHandler {
             return new Success();
         }
         return this.referenceWidgetSetElementHandlers.stream()
-                .filter(handler -> handler.canHandle(formDescription))
+                .filter(handler -> handler.canHandle(formDescription, referenceWidget))
                 .findFirst()
                 .map(setHandler -> setHandler.set(editingContext, formDescription, referenceWidget, newValueId))
                 .orElseGet(() -> new Failure(this.messageService.noHandlerFound()));

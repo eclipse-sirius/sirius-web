@@ -131,7 +131,7 @@ public class AddReferenceValuesEventHandler implements IFormEventHandler {
 
     private IStatus add(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, List<String> newValueIds) {
         return this.referenceWidgetAddElementHandlers.stream()
-                .filter(handler -> handler.canHandle(formDescription))
+                .filter(handler -> handler.canHandle(formDescription, referenceWidget))
                 .findFirst()
                 .map(clearHandler -> clearHandler.add(editingContext, formDescription, referenceWidget, newValueIds))
                 .orElseGet(() -> new Failure(this.messageService.noHandlerFound()));

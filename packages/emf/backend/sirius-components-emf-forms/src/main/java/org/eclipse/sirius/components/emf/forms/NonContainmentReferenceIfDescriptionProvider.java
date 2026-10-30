@@ -57,7 +57,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     public static final String IF_DESCRIPTION_ID = "NonContainment Reference";
 
-    private static final String REFERENCE_WIDGET_DESCRIPTION_ID = "NonContainmentReferenceIfDescriptionProvider.ReferenceWidget";
+    public static final String REFERENCE_WIDGET_DESCRIPTION_ID = "NonContainmentReferenceIfDescriptionProvider.ReferenceWidget";
 
     private final IIdentityService identityService;
 

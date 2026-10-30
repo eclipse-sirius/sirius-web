@@ -86,7 +86,7 @@ public class ViewReferenceWidgetAddElementHandler implements IReferenceWidgetAdd
     }
 
     @Override
-    public boolean canHandle(FormDescription formDescription) {
+    public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
         return this.viewRepresentationDescriptionPredicate.test(formDescription);
     }
 
