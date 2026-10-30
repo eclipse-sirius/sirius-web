@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
+
+    public static final String DEPENDENCIES_DESCRIPTION_ID = "abstractTask.dependencies";
+
+    public static final String TAGS_DESCRIPTION_ID = "abstractTask.tags";
+
+    public static final String PERSONS_DESCRIPTION_ID = "abstractTask.persons";
+
+    public static final String TEAMS_DESCRIPTION_ID = "abstractTask.teams";
 
     private final IIdentityService identityService;
 
@@ -130,19 +138,19 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         IfDescription ifComputeDynamically = this.createComputeDynamicallyWidget();
         controls.add(ifComputeDynamically);
 
-        var dependencies = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.dependencies", "Dependencies",
+        var dependencies = this.propertiesWidgetCreationService.createReferenceWidget(DEPENDENCIES_DESCRIPTION_ID, "Dependencies",
                 TaskPackage.Literals.ABSTRACT_TASK__DEPENDENCIES, this.getDependenciesProvider());
         controls.add(dependencies);
 
-        var tags = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.tags", "Tags",
+        var tags = this.propertiesWidgetCreationService.createReferenceWidget(TAGS_DESCRIPTION_ID, "Tags",
                 TaskPackage.Literals.ABSTRACT_TASK__TAGS, this.getTagsProvider());
         controls.add(tags);
 
-        var persons = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.persons", "Assigned People",
+        var persons = this.propertiesWidgetCreationService.createReferenceWidget(PERSONS_DESCRIPTION_ID, "Assigned People",
                 TaskPackage.Literals.ABSTRACT_TASK__ASSIGNED_PERSONS, this.getPersonsProvider());
         controls.add(persons);
 
-        var teams = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.teams", "Assigned Teams",
+        var teams = this.propertiesWidgetCreationService.createReferenceWidget(TEAMS_DESCRIPTION_ID, "Assigned Teams",
                 TaskPackage.Literals.ABSTRACT_TASK__ASSIGNED_TEAMS, this.getTeamsProvider());
         controls.add(teams);
 

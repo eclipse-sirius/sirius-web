@@ -68,6 +68,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
+    public static final String COLOR_DESCRIPTION_ID = "edgestyle.Color";
+
+    public static final String BACKGROUND_DESCRIPTION_ID = "edgestyle.Background";
+
+    public static final String BORDER_COLOR_DESCRIPTION_ID = "edgestyle.BorderColor";
+
     private static final String EMPTY = "";
     private static final String INT_PATTERN = "\\d+";
     private final ICustomImageMetadataSearchService customImageSearchService;
@@ -170,13 +176,13 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private void addEdgeLabelStyleControls(List<AbstractControlDescription> controls) {
         Function<VariableManager, List<?>> colorOptionsProvider = variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList();
-        var userColor = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Color", "Color", DiagramPackage.Literals.STYLE__COLOR, colorOptionsProvider);
+        var userColor = this.propertiesWidgetCreationService.createReferenceWidget(COLOR_DESCRIPTION_ID, "Color", DiagramPackage.Literals.STYLE__COLOR, colorOptionsProvider);
         controls.add(userColor);
 
-        var background = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Background", "Background", DiagramPackage.Literals.EDGE_STYLE__BACKGROUND, colorOptionsProvider);
+        var background = this.propertiesWidgetCreationService.createReferenceWidget(BACKGROUND_DESCRIPTION_ID, "Background", DiagramPackage.Literals.EDGE_STYLE__BACKGROUND, colorOptionsProvider);
         controls.add(background);
 
-        var borderColor = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.BorderColor", "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, colorOptionsProvider);
+        var borderColor = this.propertiesWidgetCreationService.createReferenceWidget(BORDER_COLOR_DESCRIPTION_ID, "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, colorOptionsProvider);
         controls.add(borderColor);
 
         var borderSize = this.propertiesWidgetCreationService.createTextField("edgestyle.BorderSize", "Border Size",

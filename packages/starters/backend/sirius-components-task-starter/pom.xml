@@ -46,6 +46,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
+			<version>2026.9.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-application</artifactId>
 			<version>2026.9.4</version>
 		</dependency>

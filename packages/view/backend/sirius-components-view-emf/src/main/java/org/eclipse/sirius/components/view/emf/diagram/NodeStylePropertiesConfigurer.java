@@ -76,6 +76,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
+    public static final String GROWABLE_NODES_DESCRIPTION_ID = "listLayoutStrategy.growableNodes";
+
+    public static final String WEST_BORDER_NODES_DESCRIPTION_ID = "listLayoutStrategy.onWestBorderNodes";
+
+    public static final String EAST_BORDER_NODES_DESCRIPTION_ID = "listLayoutStrategy.onEastBorderNodes";
+
+    public static final String SOUTH_BORDER_NODES_DESCRIPTION_ID = "listLayoutStrategy.onSouthBorderNodes";
+
+    public static final String NORTH_BORDER_NODES_DESCRIPTION_ID = "listLayoutStrategy.onNorthBorderNodes";
+
+    public static final String RECTANGULAR_BACKGROUND_DESCRIPTION_ID = "rectangular.nodestyle.background";
+
+    public static final String ICON_BACKGROUND_DESCRIPTION_ID = "icon.nodestyle.background";
+
+    public static final String BORDER_COLOR_DESCRIPTION_ID = "nodestyle.borderColor";
+
     private final ICustomImageMetadataSearchService customImageSearchService;
 
     private final IPropertiesConfigurerService propertiesConfigurerService;
@@ -123,28 +139,28 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION);
         controls.add(bottomGapExpression);
 
-        var growableNodes = this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.growableNodes",
+        var growableNodes = this.propertiesWidgetCreationService.createReferenceWidget(GROWABLE_NODES_DESCRIPTION_ID,
                 "Growable Nodes",
                 DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES,
                 this::getSubNodes);
         controls.add(growableNodes);
 
-        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onWestBorderNodes",
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget(WEST_BORDER_NODES_DESCRIPTION_ID,
                 "On West At Creation Border Nodes",
                 DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES,
                 this.getBorderNodeOptionsProvider()));
 
-        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onEastBorderNodes",
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget(EAST_BORDER_NODES_DESCRIPTION_ID,
                 "On East At Creation Border Nodes",
                 DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES,
                 this.getBorderNodeOptionsProvider()));
 
-        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onSouthBorderNodes",
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget(SOUTH_BORDER_NODES_DESCRIPTION_ID,
                 "On South At Creation Border Nodes",
                 DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES,
                 this.getBorderNodeOptionsProvider()));
 
-        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onNorthBorderNodes",
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget(NORTH_BORDER_NODES_DESCRIPTION_ID,
                 "On North At Creation Border Nodes",
                 DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES,
                 this.getBorderNodeOptionsProvider()));
@@ -231,15 +247,15 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         Function<VariableManager, List<?>> colorOptionsProvider = variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList();
 
         if (Objects.equals(nodeType, NodeType.NODE_RECTANGLE)) {
-            var color = this.propertiesWidgetCreationService.createReferenceWidget("rectangular.nodestyle.background", "Background", DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND, colorOptionsProvider);
+            var color = this.propertiesWidgetCreationService.createReferenceWidget(RECTANGULAR_BACKGROUND_DESCRIPTION_ID, "Background", DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND, colorOptionsProvider);
             controls.add(color);
         }
         if (Objects.equals(nodeType, NodeType.NODE_ICON_LABEL)) {
-            var color = this.propertiesWidgetCreationService.createReferenceWidget("icon.nodestyle.background", "Background", DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND,
+            var color = this.propertiesWidgetCreationService.createReferenceWidget(ICON_BACKGROUND_DESCRIPTION_ID, "Background", DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND,
                     colorOptionsProvider);
             controls.add(color);
         }
-        var borderColor = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.borderColor", "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, colorOptionsProvider);
+        var borderColor = this.propertiesWidgetCreationService.createReferenceWidget(BORDER_COLOR_DESCRIPTION_ID, "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, colorOptionsProvider);
         controls.add(borderColor);
 
         var borderRadius = this.propertiesWidgetCreationService.createTextField("nodestyle.borderRadius", "Border Radius",
