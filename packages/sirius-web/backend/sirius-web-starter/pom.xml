@@ -53,11 +53,11 @@
 			<artifactId>sirius-web-projects-semanticdata-infrastructure</artifactId>
 			<version>2026.11.0</version>
 		</dependency>
-    <dependency>
+        <dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-projects-stylecustomizations-application</artifactId>
+			<artifactId>sirius-web-projects-stylecustomizations-infrastructure</artifactId>
 			<version>2026.11.0</version>
-    </dependency>
+        </dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-browser-graphql</artifactId>
