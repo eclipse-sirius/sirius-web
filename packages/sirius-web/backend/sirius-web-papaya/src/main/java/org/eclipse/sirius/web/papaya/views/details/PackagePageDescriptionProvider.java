@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.views.details;
 
-import static org.eclipse.sirius.web.papaya.views.details.PapayaDetailsViewPageDescriptionProvider.WHITE_COLOR;
+import static org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider.WHITE_COLOR;
 
 import java.util.Objects;
 

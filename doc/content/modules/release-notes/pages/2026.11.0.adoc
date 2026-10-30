@@ -150,6 +150,7 @@ If no palette is defined inside the `edgeTool`, then the `edgeTool` body will be
 * The active representation tab is now closed automatically when it is deleted.
 * Prevent a project style customization from being registered twice for the same project.
 * The Details form in the VS Code extension no longer displays an overlapping workbench header.
+* Reference widgets in Papaya Details views now execute their configured operations, including custom behavior defined through the View DSL.
 
 
 == New features
@@ -204,6 +205,13 @@ A good practice is to use the representation's description to determine whether 
 - Add the ability to customize the default result of the `ICapabilityEvaluator` instead of defaulting to `true` when no `ICapabilityVoter` takes part in the evaluation.
 - Align the refresh of the Gantt representation on the new APIs already used by deck and validation.
 - Introduce documentation for the reference widget.
+- Downstream projects which need to customize the behavior of the details view by contributing new page descriptions could do so by using `IPropertiesDescriptionRegistryConfigurer`.
+This created issues if the downstream project used the View DSL because the representation description could not be found in the editing context.
+It also requires the downstream project to convert the view based representation description "manually".
+A new API has been introduced to support this use case more properly, for that downstream projects can now contribute an `IDetailsViewPageDescriptionProviderDelegate` which can use the editing context to find the page descriptions from the representation descriptions of the editing context.
+As such, the view based representation description can be registered as usual and converted by Sirius Web.
+You just have to find it in the editing context and return it from the delegate.
+It will also allow to share a form description between the details view and a regular form representation.
 
 
 == Deprecation warnings
