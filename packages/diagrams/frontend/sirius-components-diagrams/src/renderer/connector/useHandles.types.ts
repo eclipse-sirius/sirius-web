@@ -15,7 +15,6 @@ import { XYPosition } from '@xyflow/react';
 
 export interface UseHandlesValue {
   mountNodeHandles: (nodeId: string, nodeXYPosition: XYPosition, nodeWidth: number, nodeHeight: number) => void;
-  updateNodeHandles: (nodeId: string, nodeXYPosition: XYPosition, nodeWidth: number, nodeHeight: number) => void;
   mountEdgeHandles: (edgeId: string, edgePath: string) => void;
   unMountHandles: () => void;
 }

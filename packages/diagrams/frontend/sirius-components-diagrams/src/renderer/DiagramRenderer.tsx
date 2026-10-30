@@ -60,6 +60,7 @@ import { useEdgeCrossingFades } from './edge/crossings/useEdgeCrossingFades';
 import { useDynamicEdgeSelectionArea } from './edge/useDynamicEdgeSelectionArea';
 import { useSelectEdgeChange } from './edgeChange/useSelectEdgeChange';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
+import { useCreationHandleChange } from './handles/useCreationHandleChange';
 import { useHandleChange } from './handles/useHandleChange';
 import { useHandleResizedChange } from './handles/useHandleResizedChange';
 import { HelperLines } from './helper-lines/HelperLines';
@@ -262,6 +263,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { transformMultiSelectResizeNodeChanges } = useMultiSelectResizeChange();
   const { applyHandleChange } = useHandleChange();
   const { applyResizeHandleChange } = useHandleResizedChange();
+  const { applyCreationHandleChange } = useCreationHandleChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange();
   const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
   const { horizontalHelperLine, verticalHelperLine, applyHelperLines, resetHelperLines } = useHelperLines();
@@ -299,6 +301,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         newNodes = applyHandleChange(transformedNodeChanges, newNodes);
         newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
         newNodes = applyResizeByUserState(transformedNodeChanges, newNodes);
+        newNodes = applyCreationHandleChange(transformedNodeChanges, newNodes);
 
         layoutOnBoundsChange(transformedNodeChanges, newNodes);
 
