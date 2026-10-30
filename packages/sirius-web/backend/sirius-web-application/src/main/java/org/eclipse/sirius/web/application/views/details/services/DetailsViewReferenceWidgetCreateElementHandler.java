@@ -12,28 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.details.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetCreateElementHandler;
-import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetReflectiveCreateService;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.emf.forms.NonContainmentReferenceIfDescriptionProvider;
 import org.eclipse.sirius.components.forms.description.FormDescription;
-import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.Message;
-import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.springframework.stereotype.Service;
 
@@ -45,82 +34,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class DetailsViewReferenceWidgetCreateElementHandler implements IReferenceWidgetCreateElementHandler {
 
-    private final IEditService editService;
+    private final IReferenceWidgetReflectiveCreateService reflectiveCreateService;
 
-    private final IFeedbackMessageService feedbackMessageService;
-
-    private final IReferenceMessageService messageService;
-
-    private final IObjectSearchService objectSearchService;
-
-    public DetailsViewReferenceWidgetCreateElementHandler(IEditService editService, IFeedbackMessageService feedbackMessageService, IReferenceMessageService messageService,
-            IObjectSearchService objectSearchService) {
-        this.editService = Objects.requireNonNull(editService);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.messageService = Objects.requireNonNull(messageService);
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+    public DetailsViewReferenceWidgetCreateElementHandler(IReferenceWidgetReflectiveCreateService reflectiveCreateService) {
+        this.reflectiveCreateService = Objects.requireNonNull(reflectiveCreateService);
     }
 
     @Override
-    public boolean canHandle(FormDescription formDescription) {
-        return formDescription.getId().equals(PropertiesEventProcessorFactory.DETAILS_VIEW_ID);
+    public boolean canHandle(FormDescription formDescription, String referenceWidgetDescriptionId) {
+        return referenceWidgetDescriptionId.equals(NonContainmentReferenceIfDescriptionProvider.REFERENCE_WIDGET_DESCRIPTION_ID);
     }
 
     @Override
     public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, String referenceKind, String descriptionId) {
-        return this.editService.getRootCreationDescriptions(editingContext, domainId, false, referenceKind);
+        return this.reflectiveCreateService.getRootCreationDescriptions(editingContext, domainId, referenceKind);
     }
 
     @Override
     public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind, String descriptionId) {
-        return this.editService.getChildCreationDescriptions(editingContext, kind, referenceKind);
+        return this.reflectiveCreateService.getChildCreationDescriptions(editingContext, kind, referenceKind);
     }
 
     @Override
     public IStatus createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId, ReferenceWidget referenceWidget) {
-        var optionalOwner = this.objectSearchService.getObject(editingContext, referenceWidget.getOwnerId())
-                .filter(EObject.class::isInstance)
-                .map(EObject.class::cast);
-
-        if (optionalOwner.isPresent() && optionalOwner.get().eClass().getEStructuralFeature(referenceWidget.getReferenceName()) instanceof EReference reference) {
-            var optionalCreatedObject = this.editService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
-            if (optionalCreatedObject.isPresent()) {
-                return this.assign(optionalCreatedObject.get(), optionalOwner.get(), reference);
-            }
-        }
-
-        List<Message> messages = new ArrayList<>(this.feedbackMessageService.getFeedbackMessages());
-        messages.add(new Message(this.messageService.failedToExecuteCreateReferenceAction(), MessageLevel.ERROR));
-        return new Failure(messages);
+        return this.reflectiveCreateService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId, referenceWidget);
     }
 
     @Override
     public IStatus createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId, ReferenceWidget referenceWidget) {
-        var optionalOwner = this.objectSearchService.getObject(editingContext, referenceWidget.getOwnerId())
-                .filter(EObject.class::isInstance)
-                .map(EObject.class::cast);
-
-        if (optionalOwner.isPresent() && optionalOwner.get().eClass().getEStructuralFeature(referenceWidget.getReferenceName()) instanceof EReference reference) {
-            var optionalCreatedObject = this.editService.createChild(editingContext, object, childCreationDescriptionId);
-            if (optionalCreatedObject.isPresent()) {
-                return this.assign(optionalCreatedObject.get(), optionalOwner.get(), reference);
-            }
-        }
-
-        List<Message> messages = new ArrayList<>(this.feedbackMessageService.getFeedbackMessages());
-        messages.add(new Message(this.messageService.failedToExecuteCreateReferenceAction(), MessageLevel.ERROR));
-        return new Failure(messages);
-    }
-
-    private IStatus assign(Object object, EObject owner, EReference reference) {
-        if (reference.isMany()) {
-            var values = (List<Object>) owner.eGet(reference);
-            if (!values.contains(object)) {
-                values.add(object);
-            }
-        } else {
-            owner.eSet(reference, object);
-        }
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of("object", object), this.feedbackMessageService.getFeedbackMessages());
+        return this.reflectiveCreateService.createChild(editingContext, object, childCreationDescriptionId, referenceWidget);
     }
 }

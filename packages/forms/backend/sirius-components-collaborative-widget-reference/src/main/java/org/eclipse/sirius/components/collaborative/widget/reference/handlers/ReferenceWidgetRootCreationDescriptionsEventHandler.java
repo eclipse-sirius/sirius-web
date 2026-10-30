@@ -70,7 +70,7 @@ public class ReferenceWidgetRootCreationDescriptionsEventHandler implements IFor
             var optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId());
             if (optionalFormDescription.isPresent() && optionalFormDescription.get() instanceof FormDescription formDescription) {
                 childCreationDescriptions = this.referenceWidgetCreateElementHandlers.stream()
-                        .filter(provider -> provider.canHandle(formDescription))
+                        .filter(provider -> provider.canHandle(formDescription, castInput.descriptionId()))
                         .findFirst()
                         .map(handler -> handler.getRootCreationDescriptions(editingContext, castInput.domainId(), castInput.referenceKind(), castInput.descriptionId()))
                         .orElse(List.of());
