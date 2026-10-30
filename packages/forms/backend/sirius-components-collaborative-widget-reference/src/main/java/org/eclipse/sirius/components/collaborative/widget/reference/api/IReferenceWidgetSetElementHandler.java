@@ -22,11 +22,11 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
  * Handles set operations on reference widgets.
  *
  * @author tgiraudet
- * @since 2026.11.0
+ * @since v2026.11.0
  */
 public interface IReferenceWidgetSetElementHandler {
 
-    boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget);
+    boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget);
 
     IStatus set(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, String newValueId);
 
@@ -38,7 +38,7 @@ public interface IReferenceWidgetSetElementHandler {
     class NoOp implements IReferenceWidgetSetElementHandler {
 
         @Override
-        public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
+        public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
             return false;
         }
 

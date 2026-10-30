@@ -38,7 +38,7 @@ public class DetailsViewReferenceWidgetClearHandler implements IReferenceWidgetC
     }
 
     @Override
-    public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
+    public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
         return referenceWidget.getDescriptionId().equals(NonContainmentReferenceIfDescriptionProvider.REFERENCE_WIDGET_DESCRIPTION_ID);
     }
 

@@ -22,11 +22,11 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
  * Handles clear operations on reference widgets.
  *
  * @author tgiraudet
- * @since 2026.11.0
+ * @since v2026.11.0
  */
 public interface IReferenceWidgetClearHandler {
 
-    boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget);
+    boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget);
 
     IStatus clear(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget);
 
@@ -38,7 +38,7 @@ public interface IReferenceWidgetClearHandler {
     class NoOp implements IReferenceWidgetClearHandler {
 
         @Override
-        public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
+        public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
             return false;
         }
 

@@ -71,7 +71,7 @@ public class RemoveReferenceValueEventHandlerTests {
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         IReferenceWidgetRemoveHandler removeHandler = new IReferenceWidgetRemoveHandler() {
             @Override
-            public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
+            public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
                 return true;
             }
 
@@ -159,7 +159,7 @@ public class RemoveReferenceValueEventHandlerTests {
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         IReferenceWidgetRemoveHandler removeHandler = new IReferenceWidgetRemoveHandler() {
             @Override
-            public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
+            public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
                 return true;
             }
 

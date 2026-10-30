@@ -106,7 +106,7 @@ public class CreateElementEventHandler implements IFormEventHandler {
                 payload = new ErrorPayload(input.id(), this.messageService.unableToEditReadOnlyWidget());
             } else if (optionalWidget.isPresent() && optionalFormDescription.isPresent() && optionalFormDescription.get() instanceof FormDescription formDescription) {
                 Optional<IReferenceWidgetCreateElementHandler> optionalHandler = this.referenceWidgetCreateElementHandlers.stream()
-                        .filter(provider -> provider.canHandle(formDescription, optionalWidget.get().getDescriptionId()))
+                        .filter(provider -> provider.canHandle(editingContext, formDescription, optionalWidget.get().getDescriptionId()))
                         .findFirst();
 
                 if (optionalHandler.isPresent()) {

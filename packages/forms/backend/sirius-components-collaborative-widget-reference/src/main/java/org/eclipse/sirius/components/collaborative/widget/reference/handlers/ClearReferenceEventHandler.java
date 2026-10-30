@@ -130,7 +130,7 @@ public class ClearReferenceEventHandler implements IFormEventHandler {
 
     private IStatus clear(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
         return this.referenceWidgetClearHandlers.stream()
-                .filter(handler -> handler.canHandle(formDescription, referenceWidget))
+                .filter(handler -> handler.canHandle(editingContext, formDescription, referenceWidget))
                 .findFirst()
                 .map(clearHandler -> clearHandler.clear(editingContext, formDescription, referenceWidget))
                 .orElseGet(() -> new Failure(this.messageService.noHandlerFound()));

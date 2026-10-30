@@ -42,7 +42,7 @@ public class TaskReferenceWidgetClearHandler implements IReferenceWidgetClearHan
     }
 
     @Override
-    public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
+    public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
         return this.taskReferenceWidgetDescriptionPredicate.test(referenceWidget.getDescriptionId());
     }
 

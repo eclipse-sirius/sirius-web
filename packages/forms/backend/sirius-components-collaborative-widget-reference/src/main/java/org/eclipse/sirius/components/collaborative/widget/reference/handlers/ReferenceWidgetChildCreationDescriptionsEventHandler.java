@@ -69,7 +69,7 @@ public class ReferenceWidgetChildCreationDescriptionsEventHandler implements IFo
             var optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId());
             if (optionalFormDescription.isPresent() && optionalFormDescription.get() instanceof FormDescription formDescription) {
                 childCreationDescriptions = this.referenceWidgetCreateElementHandlers.stream()
-                        .filter(provider -> provider.canHandle(formDescription, castInput.descriptionId()))
+                        .filter(provider -> provider.canHandle(editingContext, formDescription, castInput.descriptionId()))
                         .findFirst()
                         .map(handler -> handler.getChildCreationDescriptions(editingContext, castInput.containerId(), castInput.referenceKind(), castInput.descriptionId()))
                         .orElse(List.of());
