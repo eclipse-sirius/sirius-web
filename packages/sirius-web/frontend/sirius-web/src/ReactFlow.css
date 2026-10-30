@@ -66,3 +66,7 @@
 .react-flow__edge-interaction {
   stroke-width: var(--edge-selection-width);
 }
+
+.react-flow.cursor-crosshair .react-flow__pane {
+  cursor: crosshair;
+}
