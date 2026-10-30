@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.tests.graphql;
 
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
@@ -56,7 +57,17 @@ public class ImportLibrariesMutationRunner implements IMutationRunner<ImportLibr
 
     @Override
     public GraphQLResult run(ImportLibrariesInput input) {
-        return this.graphQLRequestor.execute(IMPORT_LIBRARIES, input);
+        Map<String, Object> inputMap = Map.of(
+                "id", input.id(),
+                "editingContextId", input.editingContextId(),
+                "type", input.type(),
+                // Serialize library IDs into namespace:name@version, which matches how they are sent to/by the frontend
+                "libraryIds", input.libraryIds().stream()
+                        .map(libraryId -> libraryId.namespace() + ":" + libraryId.name() + "@" + libraryId.version())
+                        .toList()
+        );
+        Map<String, Object> variables = Map.of("input", inputMap);
+        return this.graphQLRequestor.execute(IMPORT_LIBRARIES, variables);
     }
 
 }
