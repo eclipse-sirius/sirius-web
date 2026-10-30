@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
  */
 public interface IReferenceWidgetRemoveHandler {
 
-    boolean canHandle(FormDescription formDescription);
+    boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget);
 
     IStatus remove(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, String itemId);
 

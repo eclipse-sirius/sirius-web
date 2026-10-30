@@ -82,7 +82,7 @@ public class ViewReferenceWidgetClearHandler implements IReferenceWidgetClearHan
     }
 
     @Override
-    public boolean canHandle(FormDescription formDescription) {
+    public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
         return this.viewRepresentationDescriptionPredicate.test(formDescription);
     }
 

@@ -137,7 +137,7 @@ public class RemoveReferenceValueEventHandler implements IFormEventHandler {
 
     private IStatus remove(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, String referenceValueId) {
         return this.referenceWidgetRemoveHandler.stream()
-                .filter(handler -> handler.canHandle(formDescription))
+                .filter(handler -> handler.canHandle(formDescription, referenceWidget))
                 .findFirst()
                 .map(handler -> handler.remove(editingContext, formDescription, referenceWidget, referenceValueId))
                 .orElseGet(() -> new Failure(this.messageService.noHandlerFound()));

@@ -76,7 +76,7 @@ public class ViewReferenceWidgetRemoveElementHandler implements IReferenceWidget
     }
 
     @Override
-    public boolean canHandle(FormDescription formDescription) {
+    public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
         return this.viewRepresentationDescriptionPredicate.test(formDescription);
     }
 
