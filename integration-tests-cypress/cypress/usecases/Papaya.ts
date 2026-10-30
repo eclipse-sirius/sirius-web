@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,7 +45,7 @@ export class Papaya {
   public createPapayaLibraryExampleProject(): Cypress.Chainable<CreatedProjectData> {
     return cy.getLibraryId('papaya', 'java', '0.0.3').then((res) => {
       return cy
-        .createProject('PapayaLibrary', 'papaya-library-template', [res.body.data.viewer.library.id])
+        .createProject('PapayaLibrary', 'papaya-library-template', [res.body.data.viewer.library.legacyId])
         .then((res) => {
           const payload = res.body.data.createProject;
           if (isCreateProjectSuccessPayload(payload)) {
