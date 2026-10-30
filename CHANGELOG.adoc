@@ -20,7 +20,8 @@
 
 === Breaking changes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Rename `LibraryDTO#id` and the GraphQL `Library#id` field to `legacyId` as the initial refactoring of ADR 241.
+The `legacyId` field is deprecated and shouldn't be used: it is a temporary identifier that will be removed soon.
 
 
 === Dependency update
