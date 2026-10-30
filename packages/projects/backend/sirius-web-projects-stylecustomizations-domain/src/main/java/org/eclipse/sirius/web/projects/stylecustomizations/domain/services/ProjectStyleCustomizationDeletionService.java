@@ -19,6 +19,7 @@ import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.projects.domain.Project;
+import org.eclipse.sirius.web.projects.stylecustomizations.domain.messages.api.IProjectsStyleCustomizationsDomainMessageService;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.repositories.IProjectStyleCustomizationRepository;
 import org.eclipse.sirius.web.projects.stylecustomizations.domain.services.api.IProjectStyleCustomizationDeletionService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -34,8 +35,12 @@ public class ProjectStyleCustomizationDeletionService implements IProjectStyleCu
 
     private final IProjectStyleCustomizationRepository projectStyleCustomizationRepository;
 
-    public ProjectStyleCustomizationDeletionService(IProjectStyleCustomizationRepository projectStyleCustomizationRepository) {
+    private final IProjectsStyleCustomizationsDomainMessageService messageService;
+
+    public ProjectStyleCustomizationDeletionService(IProjectStyleCustomizationRepository projectStyleCustomizationRepository,
+            IProjectsStyleCustomizationsDomainMessageService messageService) {
         this.projectStyleCustomizationRepository = Objects.requireNonNull(projectStyleCustomizationRepository);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -48,13 +53,16 @@ public class ProjectStyleCustomizationDeletionService implements IProjectStyleCu
 
     @Override
     public IResult<Void> deleteByProjectIdAndStyleDescriptionId(ICause cause, AggregateReference<Project, String> project, String styleCustomizationId) {
+        IResult<Void> result = new Failure<>(this.messageService.notFound());
+
         var optionalProjectStyleCustomization = this.projectStyleCustomizationRepository.findByProjectIdAndStyleCustomizationDescriptionId(project.getId(), styleCustomizationId);
         if (optionalProjectStyleCustomization.isPresent()) {
             var projectStyleCustomization = optionalProjectStyleCustomization.get();
             projectStyleCustomization.dispose(cause);
             this.projectStyleCustomizationRepository.delete(projectStyleCustomization);
-            return new Success<>(null);
+            result = new Success<>(null);
         }
-        return new Failure<>("");
+
+        return result;
     }
 }
