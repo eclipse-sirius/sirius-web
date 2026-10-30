@@ -28,7 +28,7 @@ export const getAllProjectTemplatesQuery = gql`
         label
         imageURL
         requiredLibraries {
-          legacyId
+          id
         }
       }
     }

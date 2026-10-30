@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -97,9 +96,11 @@ public class ReferenceLibraryImportHandler implements IEditingContextEventHandle
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         if (input instanceof ImportLibrariesInput importLibrariesInput && Objects.equals(importLibrariesInput.type(), "import")) {
             if (editingContext instanceof EditingContext siriusWebEditingContext) {
-                List<Library> libraries = this.librarySearchService.findAllById(importLibrariesInput.libraryIds().stream()
-                        .map(UUID::fromString)
-                        .toList());
+                List<Library> libraries = importLibrariesInput.libraryIds().stream()
+                        .distinct()
+                        .map(libraryId -> this.librarySearchService.findByNamespaceAndNameAndVersion(libraryId.namespace(), libraryId.name(), libraryId.version()))
+                        .flatMap(Optional::stream)
+                        .toList();
                 Optional<SemanticData> optionalSemanticData = new UUIDParser().parse(siriusWebEditingContext.getId())
                         .flatMap(this.semanticDataSearchService::findById);
 

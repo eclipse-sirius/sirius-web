@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.application.library.dto.ImportLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ImportLibrariesMutationRunner;
@@ -76,9 +77,12 @@ public class LibraryImportByCopyControllerIntegrationTests extends AbstractInteg
     @GivenSiriusWebServer
     @DisplayName("Given a project, when a library with dependencies is imported as a copy, then the editing context contains the copy of the libraries")
     public void givenProjectWhenLibraryWithDependenciesIsImportedAsCopyThenEditingContextContainsTheCopyOfLibraries() {
-        Optional<Library> library = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "reactivestreams", "1.0.0");
-        assertThat(library).isPresent();
-        var importLibrariesInput = new ImportLibrariesInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), "copy", List.of(library.get().getId().toString()));
+        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "reactivestreams", "1.0.0");
+        assertThat(optionalLibrary).isPresent();
+        Library library = optionalLibrary.get();
+
+        var importLibrariesInput = new ImportLibrariesInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), "copy", List.of(new LibraryId(library.getNamespace(),
+                library.getName(), library.getVersion())));
         this.importLibrariesMutationRunner.run(importLibrariesInput);
 
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
