@@ -54,7 +54,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 - `clearHandlerProvider` has been removed from `ReferenceWidgetDescription`.
   `referenceNameProvider` has been added to `ReferenceWidgetDescription` and is mandatory.
   A new API has been added to replace `clearHandlerProvider`: `IReferenceWidgetClearHandler`, a candidate to handle the clear event.
-  Two implementations of `IReferenceWidgetClearHandler`, `ViewReferenceWidgetClearHandler` for View-based representation and `DetailsViewReferenceWidgetClearHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
+  Sirius Web provides `ViewReferenceWidgetClearHandler` for View-based representations, `DetailsViewReferenceWidgetClearHandler` for the default EMF properties, `NodeStyleReferenceWidgetClearHandler` for custom node style properties, `EdgeStyleReferenceWidgetClearHandler` for custom edge style properties, and `TaskReferenceWidgetClearHandler` for Task properties.
   Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetClearHandler`.
 - Reference widget EMF edit classes have been moved from `org.eclipse.sirius.components.widgets` to `org.eclipse.sirius.components.view.widget` to match their domain classes.
 - The clear button of the widget reference is now driven by a dedicated EClass in the View DSL.
@@ -64,7 +64,7 @@ Downstream consumers must declare this dependency and replace the package prefix
  Programmatic form descriptions should manually add it through `ReferenceWidgetDescription.Builder#clearButtonDescription`.
 - Reference widget creation handlers are now form handlers instead of editing context handlers.
   `IReferenceWidgetCreateElementHandler#canHandle` now accepts a `FormDescription` instead of a widget description ID.
-  `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms and `DetailsViewReferenceWidgetCreateElementHandler` for the whole Details View, including contributed pages.
+  `ReferenceWidgetDefaultCreateElementHandler` has been replaced by `ViewReferenceWidgetCreateElementHandler` for View-based forms, `DetailsViewReferenceWidgetCreateElementHandler` for the default EMF properties, `NodeStyleReferenceWidgetCreateElementHandler` for custom node style properties, `EdgeStyleReferenceWidgetCreateElementHandler` for custom edge style properties, and `TaskReferenceWidgetCreateElementHandler` for Task properties.
   Other programmatic forms must contribute their own creation handler.
   The `referenceWidgetRootCreationDescriptions` and `referenceWidgetChildCreationDescriptions` GraphQL queries now require the host form's `representationId`.
 - The `getPalette` query is no longer used to compute if a node has an edge creation tool (and thus if a diagram element should render edge creation handles).
@@ -90,7 +90,7 @@ Existing saved View descriptions are migrated automatically, preserving tool ord
 Programmatic descriptions must move their tool declarations to `NodeDescriptionBuilder.edgeTools(...)` or `EdgeDescriptionBuilder.edgeTools(...)`.
 - `addHandlerProvider` has been removed from `ReferenceWidgetDescription`.
   A new API has been added to replace `addHandlerProvider`: `IReferenceWidgetAddElementHandler`, a candidate to handle the add event.
-  Two implementations of `IReferenceWidgetAddElementHandler`, `ViewReferenceWidgetAddElementHandler` for View-based representation and `DetailsViewReferenceWidgetAddElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
+  Sirius Web provides `ViewReferenceWidgetAddElementHandler` for View-based representations, `DetailsViewReferenceWidgetAddElementHandler` for the default EMF properties, `NodeStyleReferenceWidgetAddElementHandler` for custom node style properties, `EdgeStyleReferenceWidgetAddElementHandler` for custom edge style properties, and `TaskReferenceWidgetAddElementHandler` for Task properties.
   Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetAddElementHandler`.
   The `add` reference widget feature cannot use rendering AQL variables such as the one provided by a `For` element.
 - `body` reference of `ReferenceWidget` in View DSL cannot be used to describe the behavior of the add element feature anymore.
@@ -101,7 +101,7 @@ Programmatic descriptions must move their tool declarations to `NodeDescriptionB
   Existing representations have been migrated but programmatic one must be migrated manually.
 - `setHandlerProvider` has been removed from `ReferenceWidgetDescription` and `setHandler` has been removed from `ReferenceWidget` and `ReferenceElementProps`.
   A new API has been added to replace `setHandlerProvider`: `IReferenceWidgetSetElementHandler`, a candidate to handle the set event.
-  Two implementations of `IReferenceWidgetSetElementHandler`, `ViewReferenceWidgetSetElementHandler` for View-based representations and `DetailsViewReferenceWidgetSetElementHandler` for Sirius Web's Details View, are provided by default.
+  Sirius Web provides `ViewReferenceWidgetSetElementHandler` for View-based representations, `DetailsViewReferenceWidgetSetElementHandler` for the default EMF properties, `NodeStyleReferenceWidgetSetElementHandler` for custom node style properties, `EdgeStyleReferenceWidgetSetElementHandler` for custom edge style properties, and `TaskReferenceWidgetSetElementHandler` for Task properties.
   Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetSetElementHandler`.
   The `set` reference widget feature cannot use rendering AQL variables such as the one provided by a `For` element.
 - `body` reference of `ReferenceWidget` in View DSL cannot be used to describe the behavior of the `set` element feature anymore and has been removed.
@@ -113,7 +113,7 @@ Programmatic descriptions must move their tool declarations to `NodeDescriptionB
 - `itemRemoveHandlerProvider` has been removed from `ReferenceWidgetDescription`.
   `removeHandler` has been removed from `ReferenceValue`.
   A new API has been added to replace `itemRemoveHandlerProvider`: `IReferenceWidgetRemoveHandler`, a candidate to handle the remove event.
-  Two implementations of `IReferenceWidgetRemoveHandler`, `ViewReferenceWidgetRemoveElementHandler` for View-based representation and `DetailsViewReferenceWidgetRemoveElementHandler` for the Sirius Web's Details View, are by default provided by Sirius Web.
+  Sirius Web provides `ViewReferenceWidgetRemoveElementHandler` for View-based representations, `DetailsViewReferenceWidgetRemoveElementHandler` for the default EMF properties, `NodeStyleReferenceWidgetRemoveElementHandler` for custom node style properties, `EdgeStyleReferenceWidgetRemoveElementHandler` for custom edge style properties, and `TaskReferenceWidgetRemoveElementHandler` for Task properties.
   Contributed programmatic views not relying on View DSL should have their own implementation of `IReferenceWidgetRemoveHandler`.
 - Reference widget creation no longer invokes the widget's `add` or `set` action.
   Default creation assigns the created object directly to the reference; custom creation bodies and contributed handlers must perform their own reference updates.

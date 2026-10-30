@@ -25,8 +25,8 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
-import org.eclipse.sirius.web.data.EdgeOnEdgeIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.data.TaskIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
@@ -141,10 +141,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(count).isEqualTo(2);
 
         List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
-        assertThat(projectIds).hasSize(2).contains(EdgeOnEdgeIdentifiers.PROJECT_ID);
+        assertThat(projectIds).hasSize(2).contains(TaskIdentifiers.PROJECT_ID);
 
         List<String> natures = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.natures[*].name");
-        assertThat(natures).containsExactly("siriusComponents://nature?kind=studio");
+        assertThat(natures).containsExactly("siriusWeb://nature?kind=task", "siriusComponents://nature?kind=studio");
     }
 
     @Test
@@ -170,10 +170,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(count).isEqualTo(2);
 
         List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
-        assertThat(projectIds).hasSize(2).contains(EdgeOnEdgeIdentifiers.PROJECT_ID);
+        assertThat(projectIds).hasSize(2).contains(TaskIdentifiers.PROJECT_ID);
 
         List<String> natures = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.natures[*].name");
-        assertThat(natures).containsExactly("siriusComponents://nature?kind=studio");
+        assertThat(natures).containsExactly("siriusWeb://nature?kind=task", "siriusComponents://nature?kind=studio");
     }
 
     @Test
@@ -261,7 +261,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         var result = this.projectsQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasPreviousPage");
-        assertThat(hasPreviousPage).isFalse();
+        assertThat(hasPreviousPage).isTrue();
 
         boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasNextPage");
         assertThat(hasNextPage).isTrue();
