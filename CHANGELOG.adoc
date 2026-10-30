@@ -201,6 +201,7 @@ If no palette is defined inside the `edgeTool`, then the `edgeTool` body will be
 - https://github.com/eclipse-sirius/sirius-web/issues/7100[#7100] [diagram] Fix gaps between rounded node borders and their backgrounds while preserving rounded images.
 - https://github.com/eclipse-sirius/sirius-web/issues/7096[#7096] [workbench] Hide view headers and toolbars outside workbench side panels, preventing the Details header from overlapping the form in the VS Code extension.
 - https://github.com/eclipse-sirius/sirius-web/issues/5874[#5874] [diagram] Ignore hidden nodes when calculating helper lines.
+- https://github.com/eclipse-sirius/sirius-web/issues/7132[#7132] [form] Fix reference widget operation handling in Papaya Details views and support custom operations defined through the View DSL.
 
 
 === New Features

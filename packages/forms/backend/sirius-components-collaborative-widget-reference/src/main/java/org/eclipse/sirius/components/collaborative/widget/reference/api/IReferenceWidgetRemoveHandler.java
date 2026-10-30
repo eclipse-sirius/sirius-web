@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.widget.reference.api;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 
@@ -26,8 +27,26 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
  */
 public interface IReferenceWidgetRemoveHandler {
 
-    boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget);
+    boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget);
 
     IStatus remove(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, String itemId);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author tgiraudet
+     */
+    class NoOp implements IReferenceWidgetRemoveHandler {
+
+        @Override
+        public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
+            return false;
+        }
+
+        @Override
+        public IStatus remove(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, String itemId) {
+            return new Failure("");
+        }
+    }
 
 }

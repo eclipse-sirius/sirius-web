@@ -42,7 +42,7 @@ public class EdgeStyleReferenceWidgetSetElementHandler implements IReferenceWidg
     }
 
     @Override
-    public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
+    public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget) {
         return this.edgeStyleReferenceWidgetDescriptionPredicate.test(referenceWidget.getDescriptionId());
     }
 

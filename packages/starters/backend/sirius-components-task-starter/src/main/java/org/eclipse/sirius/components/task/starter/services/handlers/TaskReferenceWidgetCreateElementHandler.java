@@ -45,7 +45,7 @@ public class TaskReferenceWidgetCreateElementHandler implements IReferenceWidget
     }
 
     @Override
-    public boolean canHandle(FormDescription formDescription, String referenceWidgetDescriptionId) {
+    public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, String referenceWidgetDescriptionId) {
         return this.taskReferenceWidgetDescriptionPredicate.test(referenceWidgetDescriptionId);
     }
 
