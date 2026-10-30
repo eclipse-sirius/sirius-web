@@ -1,0 +1,106 @@
+= Rectilinear edge geometry
+
+`EdgeGeometryContext.tsx` declares both the context and its provider, following
+the existing context convention. `DiagramRepresentation` composes the plain
+`StoreContextProvider` and `EdgeGeometryContextProvider` under `DiagramContext`
+and `ReactFlowProvider`, alongside the other diagram providers. The store is
+keyed by representation ID so graph and drag state reset together when it changes.
+`EdgeGeometryContextValue` contains only the original drag callbacks and
+`cancelDrag`; it contains no nodes, edges or drawing data. There is no draft
+context or second copy of drag state in the provider. The active edge carries
+transient `data.edgeDragData`, updated by event callbacks through the existing
+diagram store. `DiagramRenderer` derives its drawing graph with
+`useRenderedEdgeGeometry`, which reads that transient data, tracks measurements
+and calls the pure graph calculation. Edge components
+consume the drag callbacks. The former controller hook remains removed.
+
+The implementation separates three kinds of data:
+
+- Canonical graph data contains saved bends and connection handles.
+- Transient `edge.data.edgeDragData` contains the current edge drag, its original
+  geometry, calculated geometry, control index and endpoint-segment flags.
+- Pure geometry supplies the path, endpoints, label center and control descriptors
+  used by the edge renderer.
+
+Every edge renderer resolves its base endpoint through
+`getEdgeEndpointCoordinates`, which applies the same handle lookup and marker
+clearance. Manhattan routing applies near-alignment once in
+`resolveEdgeGeometryInput`; that result supplies both the edge path and the
+display-only handle offset. Smart-step keeps its additional grid rounding after
+the shared endpoint calculation.
+
+The React Flow `Handle` root retains its base position and measured box. A
+decorative child marker receives the alignment offset, so the visible handle
+and edge path align without changing the routing input. Root backgrounds and
+borders are transparent while keeping their existing dimensions; the child
+paints the same circle. These handles already have pointer events disabled;
+connection creation uses the separate creation/target handles. No DOM offset
+attributes, measurement corrections or measurement epoch cache are required.
+
+`SmoothStepEdgeWrapper` and `MultiLabelRectilinearEditableEdge` render the supplied
+geometry. They do not mirror endpoints, synchronize bend or midpoint state, mutate
+the graph during rendering, or publish paths from effects. SVG controls retain
+their existing DOM refs and forward drag-start, drag and drag-stop events. No additional refs own
+geometry or gesture state.
+
+Drag handling follows the other diagram interaction hooks: event callbacks apply
+functional edge updates, and the drag-stop callback calls
+`useEdgeDragStopHandler` directly. The draft is removed before the accepted graph
+is synchronized. The GraphQL layout serializer selects only its existing saved
+fields; transient interaction data is not sent to the backend. The callback names remain
+`onDragStart`, `onBendingPointDrag`, `onBendingPointDragStop`,
+`onTemporaryLineDrag` and `onTemporaryLineDragStop`.
+
+`initializeEdgeDrag` captures `originalGeometry` and `middleBendingPoints` at the
+start. `moveBendingPoint` and `moveTemporaryLine` calculate the displayed geometry
+from that original geometry and the current pointer. The original bend and segment
+arithmetic lives in `BendingPointsCalculation.ts` and `TemporaryLinesCalculation.ts`,
+with their `BendPointData` and `MiddlePoint` types beside them. These pure functions
+retain the previous calculation branches, variable names and midpoint calculation;
+the provider implements the callbacks that update transient and accepted edge data. Segment controls keep their
+starting anchor while the edge changes. Manual endpoint bends are projected once
+from the source and target handle sides.
+
+The stop callback calculates the final geometry from its pointer sample and calls
+`handleDragStop`. That hook cleans bends, updates the affected node handles and
+relative coordinates, sets nodes and edges, refreshes React Flow node internals,
+and synchronizes layout data. Backend calls stay outside state updater functions.
+Cancellation clears the drag data and restores original handle visibility.
+The diagram refresh handler resets an active drag. All drag lifecycle effects
+live in `useRenderedEdgeGeometry`: unmount clears the draft, draft completion or
+disappearance restores captured handle visibility, and deselection/read-only
+changes cancel an active edit. The callback provider has no effects and no
+serialized edge-geometry guards, revision tracking or global keyboard/pointer listeners.
+`getRenderedDiagram` supplies the derived drawing graph. Accepted node changes
+use `useEdgeGeometryChange.applyEdgeGeometryChange`, alongside the existing
+`apply…Change` transformations in `handleNodesChange`. The provider only owns
+edge dragging; it no longer exposes a persistence-preparation callback.
+
+Controlled React Flow edges receive the derived `edgePath` and
+`rectilinearGeometry`. These fields are geometry outputs, not routing inputs.
+Crossing detection receives the same rendered paths, and edge anchors and
+connection previews read them from React Flow. Ordinary node movement and resize
+completion apply effective bends through `applyEdgeGeometryChange`. This uses
+the same `isBoundsChangeFinished` predicate as layout, retaining the existing
+move/drop and resize completion rules. The handler publishes changed edges and
+passes the updated nodes and edges together to `layoutOnBoundsChange`.
+The layout hook consumes that graph without preparing or reconciling edge data.
+
+Rendering and accepted node changes share `getBendingPoints`; the canonical edge
+update does not construct the SVG path, label center or midpoint controls.
+Bend and segment release still save through `useEdgeDragStopHandler`.
+
+A React Flow `useStore` selector observes only endpoint dimensions, positions and
+handle bounds. Its primitive snapshot ignores unrelated store notifications. A broad
+effect that reads and rewrites the graph would recreate the former feedback path.
+When handle positions are committed, the drag-stop handler calls React Flow's
+`useUpdateNodeInternals` API so its measurements follow the rendered handles.
+Moving only the decorative marker does not require a new handle measurement.
+`cancelDrag` removes transient edge drag data and has a stable identity.
+Visibility cleanup and renderer-unmount cleanup live in `useRenderedEdgeGeometry`.
+The plain StoreContextProvider implementation remains unchanged.
+Concurrent bend edits during a drag are no longer checked through serialized
+geometry signatures; that additional conflict-handling policy is outside this provider.
+
+The existing edge regression suite checks this integration. Passing those scenarios
+does not establish that every possible maximum-update-depth reproduction is resolved.

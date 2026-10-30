@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
+import { EdgeMarkerType, InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { Handle, NodeLookup } from '@xyflow/system';
 import parse from 'svg-path-parser';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
@@ -537,6 +537,30 @@ export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
     x: (node.internals.positionAbsolute.x ?? 0) + handleXYPosition.x,
     y: (node.internals.positionAbsolute.y ?? 0) + handleXYPosition.y,
   };
+};
+
+/** Resolves the endpoint used by an edge path, including marker clearance. */
+export const getEdgeEndpointCoordinates = (
+  node: InternalNode<Node<NodeData>>,
+  handlePosition: Position,
+  handleId: string,
+  marker: EdgeMarkerType | undefined,
+  calculateCustomNodeEdgeHandlePosition: Parameters<GetHandleCoordinatesByPosition>[3]
+): XYPosition => {
+  const point = getHandleCoordinatesByPosition(node, handlePosition, handleId, calculateCustomNodeEdgeHandlePosition);
+  const clearance = marker === undefined || (typeof marker === 'string' && marker.includes('None')) ? 2 : 3;
+  switch (handlePosition) {
+    case Position.Right:
+      return { ...point, x: point.x + clearance };
+    case Position.Left:
+      return { ...point, x: point.x - clearance };
+    case Position.Top:
+      return { ...point, y: point.y - clearance };
+    case Position.Bottom:
+      return { ...point, y: point.y + clearance };
+    default:
+      return point;
+  }
 };
 
 export const isCursorNearCenterOfTheNode = (node: InternalNode<Node<NodeData>>, position: XYPosition): boolean => {

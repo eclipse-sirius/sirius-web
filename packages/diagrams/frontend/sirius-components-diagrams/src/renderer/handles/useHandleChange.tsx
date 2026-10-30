@@ -54,7 +54,7 @@ export const getEdgeAnchorNodePosition = (
 };
 
 export const useHandleChange = (): UseHandleChangeValue => {
-  const { getEdges, getEdge } = useStore();
+  const { getEdges } = useStore();
   const { diagramDescription } = useDiagramDescription();
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = storeApi.getState();
@@ -127,10 +127,10 @@ export const useHandleChange = (): UseHandleChangeValue => {
               );
 
               if (isEdgeAnchorNode(sourceNode)) {
-                const baseEdge = getEdge(sourceNode.data.sourceTargetEdgeId);
+                const baseEdge = storeApi.getState().edgeLookup.get(sourceNode.data.sourceTargetEdgeId);
                 sourcePosition = getEdgeAnchorNodePosition(sourcePosition, sourceNode, baseEdge, movingNode);
               } else if (isEdgeAnchorNode(targetNode)) {
-                const baseEdge = getEdge(targetNode.data.sourceTargetEdgeId);
+                const baseEdge = storeApi.getState().edgeLookup.get(targetNode.data.sourceTargetEdgeId);
                 targetPosition = getEdgeAnchorNodePosition(targetPosition, targetNode, baseEdge, movingNode);
               }
 

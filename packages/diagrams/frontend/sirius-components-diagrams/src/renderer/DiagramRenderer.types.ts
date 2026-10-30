@@ -18,6 +18,7 @@ import { GQLEdgeStyle } from '../graphql/subscription/edgeFragment.types';
 import { GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
 import { GQLNodeDecorator, GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
+import type { EdgeDragData, EdgeGeometry } from './edge/geometry/edgeGeometry.types';
 import { ConnectionHandle } from './handles/ConnectionHandles.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
 
@@ -103,6 +104,9 @@ export interface EdgeData extends Record<string, unknown> {
   bendingPoints: XYPosition[] | null;
   relativePositionBendingPoints: XYPosition[] | null;
   edgePath?: string;
+  rectilinearGeometry?: EdgeGeometry;
+  /** Transient interaction data; removed before accepted edge layout is synchronized. */
+  edgeDragData?: EdgeDragData;
   isHovered: boolean;
   edgeAppearanceData: EdgeAppearanceData;
 }

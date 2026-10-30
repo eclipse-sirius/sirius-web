@@ -26,7 +26,7 @@ import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { getHandleCoordinatesByPosition } from './EdgeLayout';
+import { getEdgeEndpointCoordinates } from './EdgeLayout';
 import { MultiLabelEdge } from './MultiLabelEdge';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { getSmartEdge } from './smart-edge/getSmartEdge';
@@ -109,58 +109,49 @@ export const SmartStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeDa
     nodeLayoutHandler.canHandle(targetNode as Node<NodeData, DiagramNodeType>)
   );
 
-  let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(
+  const sourceEndpoint = getEdgeEndpointCoordinates(
     sourceNode,
     sourcePosition,
     sourceHandleId ?? '',
+    markerStart,
     sourceLayoutHandler?.calculateCustomNodeEdgeHandlePosition
   );
-  let { x: targetX, y: targetY } = getHandleCoordinatesByPosition(
+  const targetEndpoint = getEdgeEndpointCoordinates(
     targetNode,
     targetPosition,
     targetHandleId ?? '',
+    markerEnd,
     targetLayoutHandler?.calculateCustomNodeEdgeHandlePosition
   );
-
-  // trick to have the source of the edge positioned at the very border of a node
-  // if the edge has a marker, then only the marker need to touch the node
-  const handleSourceRadius = markerStart == undefined || markerStart.includes('None') ? 2 : 3;
+  let sourceX = sourceEndpoint.x;
+  let sourceY = sourceEndpoint.y;
   switch (sourcePosition) {
     case Position.Right:
-      sourceX = sourceX + handleSourceRadius;
       sourceY = roundToNearestTen(sourceY);
       break;
     case Position.Left:
-      sourceX = sourceX - handleSourceRadius;
       sourceY = roundToNearestTen(sourceY);
       break;
     case Position.Top:
-      sourceY = sourceY - handleSourceRadius;
       sourceX = roundToNearestTen(sourceX);
       break;
     case Position.Bottom:
-      sourceY = sourceY + handleSourceRadius;
       sourceX = roundToNearestTen(sourceX);
       break;
   }
-  // trick to have the target of the edge positioned at the very border of a node
-  // if the edge has a marker, then only the marker need to touch the node
-  const handleTargetRadius = markerEnd == undefined || markerEnd.includes('None') ? 2 : 3;
+  let targetX = targetEndpoint.x;
+  let targetY = targetEndpoint.y;
   switch (targetPosition) {
     case Position.Right:
-      targetX = targetX + handleTargetRadius;
       targetY = roundToNearestTen(targetY);
       break;
     case Position.Left:
-      targetX = targetX - handleTargetRadius;
       targetY = roundToNearestTen(targetY);
       break;
     case Position.Top:
-      targetY = targetY - handleTargetRadius;
       targetX = roundToNearestTen(targetX);
       break;
     case Position.Bottom:
-      targetY = targetY + handleTargetRadius;
       targetX = roundToNearestTen(targetX);
       break;
   }

@@ -13,7 +13,7 @@
 import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeData } from '../../DiagramRenderer.types';
 import { edgeBendPointOffset } from '../../layout/layoutParams';
-import { BendPointData } from './useBendingPoints.types';
+import { BendPointData } from './BendingPointsCalculation.types';
 
 export const isMultipleOfTwo = (num: number): boolean => {
   return num % 2 === 0;
