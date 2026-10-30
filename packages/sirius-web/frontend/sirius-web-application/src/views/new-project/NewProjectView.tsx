@@ -219,7 +219,7 @@ export const NewProjectView = () => {
   const requiredLibraryIds =
     state.availableTemplates
       ?.find((template) => template.id === state.selectedTemplateId)
-      ?.requiredLibraries.map((library) => library.id) ?? [];
+      ?.requiredLibraries.map((library) => library.legacyId) ?? [];
   let description = t('description');
   let projectDetailsDescription = t('projectDetailsDescription');
   if (!showTemplateSelection && !showLibrariesSelection) {

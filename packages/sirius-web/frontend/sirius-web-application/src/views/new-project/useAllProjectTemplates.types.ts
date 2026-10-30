@@ -34,5 +34,5 @@ export interface GQLProjectTemplate {
 }
 
 export interface GQLLibrary {
-  id: string;
+  legacyId: string;
 }
