@@ -22,7 +22,8 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/7120[#7120] [diagram] `ISingleClickOnTwoDiagramElementHandler.execute` now takes a `DiagramContext` instead of a `Diagram`.
 Implementations must reuse this context during connector tool execution so that graphical events are applied when the diagram is refreshed.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Rename `LibraryDTO#id` and the GraphQL `Library#id` field to `legacyId` as the initial refactoring of ADR 241.
+The `legacyId` field is deprecated and shouldn't be used: it is a temporary identifier that will be removed soon.
 
 
 === Dependency update
