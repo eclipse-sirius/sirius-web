@@ -63,6 +63,12 @@ public class PapayaColorPaletteProvider {
 
     public static final String EMPTY_DIAGRAM_BACKGROUND = "empty-diagram-background";
 
+    public static final String NAME_COLOR = "Name - blue100";
+
+    public static final String QUALIFIED_NAME_COLOR = "Qualified Name - blue900";
+
+    public static final String WHITE_COLOR = "White";
+
     public ColorPalette getColorPalette() {
 
         var emptyDiagramBackground = new ViewBuilders().newFixedColor()
@@ -91,6 +97,9 @@ public class PapayaColorPaletteProvider {
                         this.fixedColor(QUERY_DARK, "#4CAF50"),
                         this.fixedColor(EVENT_LIGHT, "#FFF3E0"),
                         this.fixedColor(EVENT_DARK, "#FF9800"),
+                        this.fixedColor(WHITE_COLOR, "#FFFFFF"),
+                        this.fixedColor(NAME_COLOR, "#BBDEFB"),
+                        this.fixedColor(QUALIFIED_NAME_COLOR, "#0D47A1"),
                         emptyDiagramBackground
                 )
                 .build();

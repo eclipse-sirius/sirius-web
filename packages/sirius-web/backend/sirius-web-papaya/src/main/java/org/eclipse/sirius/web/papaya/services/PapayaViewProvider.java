@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.services;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -28,6 +30,8 @@ import org.eclipse.sirius.web.papaya.representations.componentdiagram.ComponentD
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.LifecycleDiagramDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.table.ViewTablePapayaRepresentationDescriptionProvider;
 import org.eclipse.sirius.web.papaya.services.api.IPapayaViewProvider;
+import org.eclipse.sirius.web.papaya.views.details.PapayaDetailsViewDescriptionProvider;
+import org.eclipse.sirius.web.papaya.views.details.api.IPageDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,6 +41,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PapayaViewProvider implements IPapayaViewProvider {
+
+    private final List<IPageDescriptionProvider> pageDescriptionProviders;
+
+    public PapayaViewProvider(List<IPageDescriptionProvider> pageDescriptionProviders) {
+        this.pageDescriptionProviders = Objects.requireNonNull(pageDescriptionProviders);
+    }
 
     @Override
     public View create() {
@@ -52,11 +62,13 @@ public class PapayaViewProvider implements IPapayaViewProvider {
         var componentDiagramDescription = new ComponentDiagramDescriptionProvider().create(colorProvider);
         var classDiagramDescription = new ClassDiagramDescriptionProvider().create(colorProvider);
         var tableDescription = new ViewTablePapayaRepresentationDescriptionProvider().create(colorProvider);
+        var detailsDescription = new PapayaDetailsViewDescriptionProvider(this.pageDescriptionProviders).create(colorProvider);
 
         view.getDescriptions().add(lifecycleDiagramDescription);
         view.getDescriptions().add(componentDiagramDescription);
         view.getDescriptions().add(classDiagramDescription);
         view.getDescriptions().add(tableDescription);
+        view.getDescriptions().add(detailsDescription);
 
         view.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));

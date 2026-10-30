@@ -30,11 +30,13 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
+import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.widget.reference.ReferenceValue;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceAddValuesExecutor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithReferenceWidgetDescriptionProvider;
 import org.eclipse.sirius.web.services.forms.FormWithUnhandledReferenceWidgetDescriptionProvider;
@@ -193,6 +195,49 @@ public class ReferenceWidgetAddControllerTests extends AbstractIntegrationTests 
     @DisplayName("Given a reference widget in Details, when adding a reference value, then the existing value is preserved and the form is refreshed")
     public void givenReferenceWidgetInDetailsWhenAddingReferenceValueThenExistingValueIsPreservedAndFormIsRefreshed() {
         this.assertReferenceValueAdded(this.givenDetailsReferenceFormSubscription(), "Human", "Core Properties", "Super Types", "Human");
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a Papaya component with a dependency, when adding itself and another component, then only the other component is added")
+    public void givenPapayaComponentWithDependencyWhenAddingItselfAndAnotherComponentThenOnlyOtherComponentIsAdded() {
+        var editingContextId = PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString();
+        var componentId = "13e0b82e-3d24-403a-bfc1-4bda81846e55";
+        var newDependencyId = "5c313fbf-d254-4a37-962b-7817cfa18526";
+        var existingDependencyId = PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString();
+        var representationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(componentId));
+        var input = new DetailsEventInput(UUID.randomUUID(), editingContextId, representationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input).flux().filter(FormRefreshedEventPayload.class::isInstance);
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var widget = new FormNavigator(form).page("sirius-web-application").group("Core Properties").findWidget("Dependencies", ReferenceWidget.class);
+            assertThat(widget.isReadOnly()).isFalse();
+            assertThat(widget.isSelectable()).isTrue();
+            assertThat(widget.getReferenceValues()).extracting(ReferenceValue::getId).containsExactly(existingDependencyId);
+            referenceWidgetId.set(widget.getId());
+        });
+
+        Runnable addDependencies = () -> this.referenceAddValuesExecutor.execute(new AddReferenceValuesInput(UUID.randomUUID(),
+                editingContextId, formId.get(), referenceWidgetId.get(), List.of(componentId, newDependencyId))).isSuccess();
+
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var widget = new FormNavigator(form).page("sirius-web-application").group("Core Properties").findWidget("Dependencies", ReferenceWidget.class);
+            assertThat(widget.getReferenceValues()).extracting(ReferenceValue::getId).containsExactly(existingDependencyId, newDependencyId);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(addDependencies)
+                .consumeNextWith(updatedFormContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var editingContext = this.editingContextSearchService.findById(editingContextId).orElseThrow();
+        var component = this.objectSearchService.getObject(editingContext, componentId).filter(Component.class::isInstance).map(Component.class::cast).orElseThrow();
+        assertThat(component.getDependencies()).extracting(this.identityService::getId).containsExactly(existingDependencyId, newDependencyId);
     }
 
     private void assertReferenceValueAdded(Flux<Object> flux, String pageLabel, String groupLabel, String widgetLabel, String expectedName) {
