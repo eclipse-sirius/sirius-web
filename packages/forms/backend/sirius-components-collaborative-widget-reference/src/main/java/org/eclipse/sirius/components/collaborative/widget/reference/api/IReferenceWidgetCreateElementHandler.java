@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
  */
 public interface IReferenceWidgetCreateElementHandler {
 
-    boolean canHandle(FormDescription formDescription);
+    boolean canHandle(FormDescription formDescription, String referenceWidgetDescriptionId);
 
     List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, String referenceKind, String descriptionId);
 
@@ -47,7 +47,7 @@ public interface IReferenceWidgetCreateElementHandler {
     class NoOp implements IReferenceWidgetCreateElementHandler {
 
         @Override
-        public boolean canHandle(FormDescription formDescription) {
+        public boolean canHandle(FormDescription formDescription, String referenceWidgetDescriptionId) {
             return true;
         }
 
