@@ -34,7 +34,7 @@ export const ViewerLibrariesFragment = gql`
 
 export const LibraryFragment = gql`
   fragment Library on Library {
-    legacyId
+    id
     namespace
     name
     version

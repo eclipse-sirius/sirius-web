@@ -115,7 +115,7 @@ export const LibrariesImportTable = ({ onSelectedLibrariesChange, requiredLibrar
 
     // Configure selection
     enableRowSelection: (row) => !requiredLibraryIds.includes(row.id),
-    getRowId: (originalRow) => originalRow.legacyId,
+    getRowId: (originalRow) => originalRow.id,
     onRowSelectionChange: setRowSelection,
 
     // Configure pagination

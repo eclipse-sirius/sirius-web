@@ -1,3 +1,6 @@
+"Library identifier serialized as namespace:name@version."
+scalar LibraryId
+
 extend type Viewer {
   libraries(page: Int!, limit: Int!): ViewerLibrariesConnection!
   library(namespace: String!, name: String!, version: String!): Library
@@ -13,6 +16,7 @@ type ViewerLibrariesEdge {
 }
 
 type Library {
+  id: LibraryId!
   legacyId: ID!
   namespace: String!
   name: String!
@@ -61,7 +65,7 @@ input ImportLibrariesInput {
   id: ID!
   editingContextId: ID!
   type: String!
-  libraryIds: [ID!]!
+  libraryIds: [LibraryId!]!
 }
 
 union ImportLibrariesPayload = ErrorPayload | SuccessPayload
