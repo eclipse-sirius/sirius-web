@@ -22,6 +22,8 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Rename `LibraryDTO#id` and the GraphQL `Library#id` field to `legacyId` as the initial refactoring of ADR 241.
 The `legacyId` field is deprecated and shouldn't be used: it is a temporary identifier that will be removed soon.
+- https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Add the `LibraryId` scalar, serialized as `namespace:name@version`.
+`CreateProjectInput#libraryIds` and `ImportLibrariesInput#libraryIds` now accept `[LibraryId!]!`, and the Java `CreateProjectInput`, `ICreateProjectInput`, and `ImportLibrariesInput` use `List<LibraryId>`.
 
 
 === Dependency update
@@ -41,7 +43,7 @@ The `legacyId` field is deprecated and shouldn't be used: it is a temporary iden
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Add the `LibraryId` scalar, serialized as `namespace:name@version`.
 
 
 

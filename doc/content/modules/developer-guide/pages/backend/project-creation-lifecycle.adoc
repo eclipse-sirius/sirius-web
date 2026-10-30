@@ -15,7 +15,7 @@ It provides the following information to the application service:
 * `id`: the correlation identifier supplied by `IInput`
 * `name`: the name of the project to create
 * `templateId`: used to select an available `ProjectTemplate` to configure the newly created project
-* `libraryIds`: used to specify the semantic data dependencies.
+* `libraryIds`: a list of `LibraryId` records used to specify the libraries dependencies, serialized as `namespace:name@version` in GraphQL.
 
 The application service `ProjectCreationApplicationService` opens the initial transaction, resolves the template, and delegates the creation of the project itself to the domain service `IProjectCreationService`.
 The service `ProjectCreationService` creates and saves the `Project` aggregate root.
@@ -49,7 +49,7 @@ The following `@TransactionalEventListener` services can receive events from thi
 * `SemanticDataCreator` listens unconditionally to `ProjectCreatedEvent` and starts the semantic-data branch.
 * `ProjectSemanticDataCreator` listens to the resulting `SemanticDataCreatedEvent` when it was caused by `ProjectCreatedEvent`.
 * `ProjectSemanticDataInitializer` listens to the resulting `ProjectSemanticDataCreatedEvent` when its complete cause chain ends in `ICreateProjectInput`; it selects the template-specific `ISemanticDataInitializer`.
-* `ProjectLibrariesImporter` listens to the same `SemanticDataCreatedEvent`; for an `ICreateProjectInput`, it resolves `libraryIds` and updates the `SemanticData` aggregate only when there are new dependencies.
+* `ProjectLibrariesImporter` listens to the same `SemanticDataCreatedEvent`; for an `ICreateProjectInput`, it resolves `libraryIds` by namespace, name, and version and updates the `SemanticData` aggregate only when there are new dependencies.
 * `StudioRepresentationInitializer` listens to `SemanticDataUpdatedEvent` caused by `StudioTemplateInitialization`; that cause is produced only by the studio template initializer.
 
 Other listeners with compatible event parameter types intentionally do not participate in this application service path because their cause guards require a different initiating input.

@@ -130,6 +130,7 @@ public class GraphQLConfiguration {
                     .wiringFactory(graphQLWiringFactory)
                     .scalar(UploadScalarType.INSTANCE)
                     .scalar(InstantScalarType.INSTANCE)
+                    .scalar(LibraryIdScalarType.INSTANCE)
                     .build();
 
             return new SchemaGenerator().makeExecutableSchema(typeRegistry, runtimeWiring);

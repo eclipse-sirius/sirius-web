@@ -15,8 +15,8 @@ package org.eclipse.sirius.web.application.studio.services.library;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -34,10 +34,10 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.application.library.dto.ImportLibrariesInput;
-import org.eclipse.sirius.web.library.domain.Library;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -92,7 +92,10 @@ public class CopyLibraryImportHandler implements IEditingContextEventHandler {
 
         if (input instanceof ImportLibrariesInput importLibrariesInput && Objects.equals(importLibrariesInput.type(), "copy")) {
             if (editingContext instanceof EditingContext siriusWebEditingContext) {
-                List<Library> libraries = this.librarySearchService.findAllById(importLibrariesInput.libraryIds().stream().map(UUID::fromString).toList());
+                List<Library> libraries = importLibrariesInput.libraryIds().stream()
+                        .map(libraryId -> this.librarySearchService.findByNamespaceAndNameAndVersion(libraryId.namespace(), libraryId.name(), libraryId.version()))
+                        .flatMap(Optional::stream)
+                        .toList();
 
                 Set<SemanticData> semanticDataToCopy = new LinkedHashSet<>();
                 for (Library library : libraries) {
