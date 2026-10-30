@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
  */
 public interface IReferenceWidgetSetElementHandler {
 
-    boolean canHandle(FormDescription formDescription);
+    boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget);
 
     IStatus set(IEditingContext editingContext, FormDescription formDescription, ReferenceWidget referenceWidget, String newValueId);
 
@@ -38,7 +38,7 @@ public interface IReferenceWidgetSetElementHandler {
     class NoOp implements IReferenceWidgetSetElementHandler {
 
         @Override
-        public boolean canHandle(FormDescription formDescription) {
+        public boolean canHandle(FormDescription formDescription, ReferenceWidget referenceWidget) {
             return false;
         }
 
