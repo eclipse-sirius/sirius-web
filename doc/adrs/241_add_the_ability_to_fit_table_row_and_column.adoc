@@ -1,0 +1,111 @@
+:author: lfasani
+:date: 2026-10-28
+:status: proposed
+:consulted: 
+:informed: frouene
+:deciders: 
+:pitch: 
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/7088
+
+= ADR-241 - Add the ability to fit table row height and column width 
+
+== Context and Problem Statement
+
+Currently, it is possible to resize manually the row height and the column width in a table.
+This is painful for a user.
+
+The aim of the enhancement is to
+* have an action button in the toolbar that will automatically adapt the row height so that the full content of the cell can be displayed
+    The action applies only on displayed rows but not on rows belonging to other pages.
+* have an action button on a column that will adapt its width, so that any cells of the column can display the full content
+
+For multi-line cells, we will keep the line breaks and measure the width of the longest line.
+
+Concretely, the button in `TableContent.tsx` will calculate the height of each displayed row at *the current column width*.
+The action in `ColumnHeader.tsx` will retain the largest required width among the cells of that column on the displayed page.
+
+The sizes will then be sent via the existing `resizeTableRow` and `resizeTableColumn` mutations, preserving their sharing across users.
+
+
+== Decision Drivers
+
+The computation is done on front end and no performance issue is expected.
+
+So the main driver is result quality and code simplicity.
+
+
+== Considered Options
+
+=== First Option : native DOM measurement
+
+DOM measurement is well suited here because `Cell.tsx` renders several types of controls, including extension-provided components.
+Hidden content dimensions are accessible via `scrollHeight` and `scrollWidth`.
+An off-screen measurement will be necessary for elements whose styles already impose `height: 100%` or limit overflow (https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/Determining_the_dimensions_of_elements[MDN]).
+
+
+=== Second Option : MUI and Material React
+
+[cols="1,2,2", options="header"]
+|===
+| Solution | Principle | Limitation table
+
+| *MUI `TextareaAutosize`*
+| Let multiline fields grow based on their text.
+| Useful for `TextareaCell`, but calculates neither the maximum height of an entire row nor the width of an entire column.
+
+| *Canvas `measureText`*
+| Calculate string width using their font, then add necessary margins.
+| Efficient for plain text, less reliable for selectors, icons, and custom cells.
+|===
+
+While MUI provides automatic adjustment for multiline text areas, it does not offer a function to calculate the height of an entire row or the width of an entire column.
+Material React Table provides sizing state, but not content measurement (https://mui.com/material-ui/react-text-field/[MUI Text Field], https://www.material-react-table.com/docs/guides/column-resizing[Material React Table]).
+
+
+=== Third Option : JS Library Research
+
+[cols="1,2,2", options="header"]
+|===
+| Tool | What it provides | Why I am not choosing it here
+
+| https://mui.com/x/react-data-grid/column-dimensions/[MUI X Data Grid]
+| `autosizeColumns()` and https://mui.com/x/react-data-grid/row-height/[automatic row height].
+| These functions belong to Data Grid; they cannot be used as an independent utility in Material React Table.
+
+| https://www.ag-grid.com/react-data-grid/column-sizing/[AG Grid]
+| Content-based column sizing and https://www.ag-grid.com/react-data-grid/row-height/[auto row height].
+| We would need to replace the current table component.
+
+| https://github.com/pmndrs/react-use-measure[react-use-measure] / https://github.com/zeecoder/use-resize-observer[use-resize-observer]
+| Measure and observe the dimensions of a rendered element.
+| They report the constrained box size; they do not independently determine the space required by hidden content.
+
+| https://github.com/Andarist/react-textarea-autosize[react-textarea-autosize]
+| Adjusts a `<textarea>` to its text.
+| Does not handle an entire row or column; https://mui.com/material-ui/react-text-field/[MUI already provides this capability] for `TextField multiline`.
+|===
+
+The specific work remains identifying the content to be measured and integrating with persisted sizes, none of these libraries eliminates this.
+
+
+== Decision Outcome
+
+`First Option : native DOM measurement` is retained.
+
+It is the only option that fits the needs.
+
+For this code, *I recommend measuring the content in the browser without adding any library*. 
+
+== Consequences
+
+=== Advantages
+
+* Achieve the needs
+* No JS libray dependency.
+* Adapted for any type of Cell
+
+
+=== Drawbacks
+
+The JS computation code may be a little complex.
+

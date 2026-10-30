@@ -13,6 +13,7 @@
 - [ADR-238] Add support for application-wide representation style customization
 - [ADR-239] Make reference widget more configurable
 - [ADR-240] Improve create object tool UI/UX on tree representation
+- [ADR-241] Add the ability to fit table row height and column width
 
 
 === Deprecation warning
