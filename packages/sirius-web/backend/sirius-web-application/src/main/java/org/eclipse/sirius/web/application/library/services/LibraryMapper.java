@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.library.services;
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryMapper;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,6 +29,7 @@ public class LibraryMapper implements ILibraryMapper {
     @Override
     public LibraryDTO toDTO(Library library) {
         return new LibraryDTO(
+                new LibraryId(library.getNamespace(), library.getName(), library.getVersion()),
                 library.getId(),
                 library.getNamespace(),
                 library.getName(),

@@ -21,7 +21,7 @@ Cypress.Commands.add('getLibraryId', (namespace: string, name: string, version: 
     query getLibraryId($namespace: String!, $name: String!, $version: String!) {
       viewer {
         library(namespace: $namespace, name: $name, version: $version) {
-          legacyId
+          id
         }
       }
     }
