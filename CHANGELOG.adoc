@@ -71,6 +71,8 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Add the `LibraryId` scalar, serialized as `namespace:name@version`.
 - [releng] Update the `check-labels.js` script to check for the `queue:` and `review-window:` labels
 - [doc] Update the pull request template to include a checklist that will be easier to request.
+- https://github.com/eclipse-sirius/sirius-web/issues/7039[#7039] [projects] Add projects style customizations infrastructure module
+
 
 
 == 2026.11.0

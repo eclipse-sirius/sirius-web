@@ -37,7 +37,7 @@ It allows reducing the selected tree item and all its children recursively.
 == Improvements
 
 - Support Select cells in View-based tables
-- Add the `LibraryId` scalar in the GraphQL schema, serialized as `namespace:name@version`.
+- Improve the internationalization of the style customization support with a dedicated infrastructure module
 
 
 == Technical details
