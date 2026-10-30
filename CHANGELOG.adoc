@@ -204,6 +204,14 @@ Custom GraphQL integrations must include its schema extension and data fetcher f
 - https://github.com/eclipse-sirius/sirius-web/issues/7100[#7100] [diagram] Fix gaps between rounded node borders and their backgrounds while preserving rounded images.
 - https://github.com/eclipse-sirius/sirius-web/issues/7096[#7096] [workbench] Hide view headers and toolbars outside workbench side panels, preventing the Details header from overlapping the form in the VS Code extension.
 - https://github.com/eclipse-sirius/sirius-web/issues/5874[#5874] [diagram] Ignore hidden nodes when calculating helper lines.
+- https://github.com/eclipse-sirius/sirius-web/issues/7132[#7132] [form] Fix reference widget operation handling in Papaya Details views and support custom operations defined through the View DSL.
+Downstream projects which need to customize the behavior of the details view by contributing new page descriptions could do so by using `IPropertiesDescriptionRegistryConfigurer`.
+This created issues if the downstream project used the View DSL because the representation description could not be found in the editing context.
+It also requires the downstream project to convert the view based representation description "manually".
+A new API has been introduced to support this use case more properly, for that downstream projects can now contribute an `IDetailsViewPageDescriptionProviderDelegate` which can use the editing context to find the page descriptions from the representation descriptions of the editing context.
+As such, the view based representation description can be registered as usual and converted by Sirius Web.
+You just have to find it in the editing context and return it from the delegate.
+It will also allow to share a form description between the details view and a regular form representation.
 
 
 === New Features

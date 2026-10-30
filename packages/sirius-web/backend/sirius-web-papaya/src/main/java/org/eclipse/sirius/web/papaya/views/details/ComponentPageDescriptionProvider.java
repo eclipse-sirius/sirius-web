@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.views.details;
 
-import static org.eclipse.sirius.web.papaya.views.details.PapayaDetailsViewPageDescriptionProvider.WHITE_COLOR;
+import static org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider.WHITE_COLOR;
 
 import java.util.Objects;
 
@@ -150,11 +150,11 @@ public class ComponentPageDescriptionProvider implements IPageDescriptionProvide
                 .add(
                         new ReferenceBuilders().newReferenceWidgetAdd().body(
                                         new ViewBuilders().newChangeContext()
-                                                .expression("aql:self")
+                                                .expression("aql:referenceOwner")
                                                 .children(
                                                         new ViewBuilders().newSetValue()
                                                                 .featureName("dependencies")
-                                                                .valueExpression("aql:newValue")
+                                                                .valueExpression("aql:newValues->excluding(referenceOwner)")
                                                                 .build()
                                                 )
                                                 .build()

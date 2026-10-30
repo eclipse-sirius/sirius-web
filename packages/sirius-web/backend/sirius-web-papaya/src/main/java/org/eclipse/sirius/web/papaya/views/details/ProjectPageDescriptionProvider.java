@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.views.details;
 
-import static org.eclipse.sirius.web.papaya.views.details.PapayaDetailsViewPageDescriptionProvider.WHITE_COLOR;
+import static org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider.WHITE_COLOR;
 
 import java.util.Objects;
 
@@ -45,7 +45,6 @@ public class ProjectPageDescriptionProvider implements IPageDescriptionProvider 
         this.namedElementWidgetsProvider = Objects.requireNonNull(namedElementWidgetsProvider);
         this.messageService = Objects.requireNonNull(messageService);
     }
-
 
     @Override
     public PageDescription getPageDescription(IColorProvider colorProvider) {

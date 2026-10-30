@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.views.details;
 
-import static org.eclipse.sirius.web.papaya.views.details.PapayaDetailsViewPageDescriptionProvider.QUALIFIED_NAME_COLOR;
+import static org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider.QUALIFIED_NAME_COLOR;
 
 import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
