@@ -41,7 +41,7 @@ public class DetailsViewReferenceWidgetCreateElementHandler implements IReferenc
     }
 
     @Override
-    public boolean canHandle(FormDescription formDescription, String referenceWidgetDescriptionId) {
+    public boolean canHandle(IEditingContext editingContext, FormDescription formDescription, String referenceWidgetDescriptionId) {
         return referenceWidgetDescriptionId.equals(NonContainmentReferenceIfDescriptionProvider.REFERENCE_WIDGET_DESCRIPTION_ID);
     }
 

@@ -17,9 +17,9 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextRootObjectCreationDescriptionsPayload;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
-import org.eclipse.sirius.components.collaborative.dto.EditingContextRootObjectCreationDescriptionsPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetCreateElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ReferenceWidgetRootCreationDescriptionsInput;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
@@ -70,7 +70,7 @@ public class ReferenceWidgetRootCreationDescriptionsEventHandler implements IFor
             var optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId());
             if (optionalFormDescription.isPresent() && optionalFormDescription.get() instanceof FormDescription formDescription) {
                 childCreationDescriptions = this.referenceWidgetCreateElementHandlers.stream()
-                        .filter(provider -> provider.canHandle(formDescription, castInput.descriptionId()))
+                        .filter(provider -> provider.canHandle(editingContext, formDescription, castInput.descriptionId()))
                         .findFirst()
                         .map(handler -> handler.getRootCreationDescriptions(editingContext, castInput.domainId(), castInput.referenceKind(), castInput.descriptionId()))
                         .orElse(List.of());
