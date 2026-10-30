@@ -28,7 +28,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 @Configuration
 public class ProjectsSemanticDataDomainMessageServiceConfiguration {
 
-    private static final String PATH = "messages/sirius-web-projects-semanticdata-infrastructure";
+    private static final String PATH = "messages/sirius-web-projects-semanticdata";
 
     @Bean
     public MessageSourceAccessor projectsSemanticDataDomainMessageSourceAccessor(@Value("${spring.mvc.locale:en_EN}") Locale locale) {
