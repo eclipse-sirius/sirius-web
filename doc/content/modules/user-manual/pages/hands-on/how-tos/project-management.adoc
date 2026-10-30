@@ -189,6 +189,10 @@ This simplicity in sharing allows for seamless collaboration and communication o
 == Manage project settings
 
 The purpose of this page is to present the various settings manageable by the administrator of a project.
-Currently, capabilities are limited to functions such as uploading images, but additional features for project management will be introduced in future updates.
-This page will be revisited in future updates, bringing new features and enhanced capabilities for project management.
-Stay tuned for the next version to explore more functionalities and improvements.
+The available settings depend on the application and your permissions.
+
+=== Appearances
+
+The _Appearances_ tab lists the project's style customizations and their activation state.
+Use the checkboxes to enable or disable a customization.
+When you can view the customizations but cannot change their activation, the checkboxes are disabled and still show their current state.

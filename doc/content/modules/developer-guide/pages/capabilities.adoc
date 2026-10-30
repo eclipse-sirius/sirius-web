@@ -36,6 +36,12 @@ Return `CapabilityResult.granted()` to enable the feature, or `CapabilityResult.
 ** `canEdit` — toggles read-only mode.
 ** `canView`
 
+=== Project style customizations
+
+* `type`: `Project`
+* `identifier`: project id
+* `capability`: `canUpdateStyleCustomizationsState` — whether project style customization can be enabled or disabled.
+
 === Libraries collection
 
 * `type`: `Library`

@@ -22,7 +22,7 @@ import {
 } from './ProjectAppearancesSettingsView.types';
 import { ProjectStyleCustomizationsTable } from './ProjectStyleCustomizationsTable';
 import { useProjectStyleCustomizations } from './useProjectStyleCustomizations';
-import { GQLProjectStyleCustomization } from './useProjectStyleCustomizations.types';
+import { GQLProjectCapabilities, GQLProjectStyleCustomization } from './useProjectStyleCustomizations.types';
 
 export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
   const { t } = useTranslation('sirius-web-projects-stylecustomizations-application', {
@@ -70,6 +70,7 @@ export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
   const hasPreviousPage = data?.viewer.project?.styleCustomizations.pageInfo.hasPreviousPage ?? false;
   const hasNextPage = data?.viewer.project?.styleCustomizations.pageInfo.hasNextPage ?? false;
   const count = data?.viewer.project?.styleCustomizations.pageInfo.count ?? 0;
+  const projectCapabilities: GQLProjectCapabilities | null = data?.viewer.project?.capabilities;
   const styleCustomizations: GQLProjectStyleCustomization[] =
     data?.viewer.project?.styleCustomizations.edges.map((edge) => edge.node) ?? [];
 
@@ -81,18 +82,21 @@ export const ProjectAppearancesSettingsView = ({}: ProjectSettingTabProps) => {
           {t('description')}
         </Typography>
       </Box>
-      <ProjectStyleCustomizationsTable
-        styleCustomizations={styleCustomizations}
-        loading={loading}
-        rowCount={count}
-        hasPreviousPage={hasPreviousPage}
-        hasNextPage={hasNextPage}
-        onPreviousPage={onPreviousPage}
-        onNextPage={onNextPage}
-        pageSize={state.pageSize}
-        onPageSizeChange={onPageSizeChange}
-        onChange={refreshStyleCustomization}
-      />
+      {projectCapabilities ? (
+        <ProjectStyleCustomizationsTable
+          styleCustomizations={styleCustomizations}
+          loading={loading}
+          capabilities={projectCapabilities}
+          rowCount={count}
+          hasPreviousPage={hasPreviousPage}
+          hasNextPage={hasNextPage}
+          onPreviousPage={onPreviousPage}
+          onNextPage={onNextPage}
+          pageSize={state.pageSize}
+          onPageSizeChange={onPageSizeChange}
+          onChange={refreshStyleCustomization}
+        />
+      ) : null}
     </Box>
   );
 };

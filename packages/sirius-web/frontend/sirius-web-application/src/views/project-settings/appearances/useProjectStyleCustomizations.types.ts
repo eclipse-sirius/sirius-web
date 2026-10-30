@@ -34,7 +34,12 @@ export interface GQLViewer {
 }
 
 export interface GQLProject {
+  capabilities: GQLProjectCapabilities;
   styleCustomizations: GQLStyleCustomizationsConnection;
+}
+
+export interface GQLProjectCapabilities {
+  canUpdateStyleCustomizationsState: boolean;
 }
 
 export interface GQLStyleCustomizationsConnection {
