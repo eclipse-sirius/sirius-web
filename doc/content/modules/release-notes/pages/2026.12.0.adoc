@@ -11,12 +11,10 @@
 Custom implementations must reuse the provided context during connector tool execution.
 
 
-
 == Bug fixes
 
 - Fix an issue where elements filtered by an explorer filter could be rendered for a brief moment during loading.
 - Graphical operations such as revealing hidden elements are now applied when executing connector tools.
-
 
 
 == New features
@@ -28,6 +26,7 @@ It allows reducing the selected tree item and all its children recursively.
 == Improvements
 
 - Support Select cells in View-based tables
+- Add the `LibraryId` scalar in the GraphQL schema, serialized as `namespace:name@version`.
 
 
 == Technical details

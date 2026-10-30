@@ -22,16 +22,15 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
-import org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.library.domain.Library;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -80,10 +79,10 @@ public class ProjectLibrariesImporter {
                     .forEach(libraries::add));
 
             // Then add the libraries provided in the input that haven't been added yet.
-            libraries.addAll(this.librarySearchService.findAllById(createProjectInput.libraryIds().stream()
-                    .map(new UUIDParser()::parse)
+            createProjectInput.libraryIds().stream()
+                    .map(libraryId -> this.librarySearchService.findByNamespaceAndNameAndVersion(libraryId.namespace(), libraryId.name(), libraryId.version()))
                     .flatMap(Optional::stream)
-                    .toList()));
+                    .forEach(libraries::add);
             List<AggregateReference<SemanticData, UUID>> newLibraries = new ArrayList<>();
             for (Library library : libraries) {
                 var isAlreadyUsed = projectSemanticData.getDependencies().stream()
