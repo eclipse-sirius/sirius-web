@@ -28,7 +28,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 @Configuration
 public class ProjectsImagesDomainMessageServiceConfiguration {
 
-    private static final String PATH = "messages/sirius-web-projects-images-infrastructure";
+    private static final String PATH = "messages/sirius-web-projects-images";
 
     @Bean
     public MessageSourceAccessor projectsImagesDomainMessageSourceAccessor(@Value("${spring.mvc.locale:en_EN}") Locale locale) {

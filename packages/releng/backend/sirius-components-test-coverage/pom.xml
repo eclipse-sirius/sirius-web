@@ -486,6 +486,21 @@
 			<artifactId>sirius-web-projects-semanticdata-infrastructure</artifactId>
 			<version>2026.9.4</version>
 		</dependency>
+        <dependency>
+            <groupId>org.eclipse.sirius</groupId>
+            <artifactId>sirius-web-projects-stylecustomizations-application</artifactId>
+            <version>2026.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.sirius</groupId>
+            <artifactId>sirius-web-projects-stylecustomizations-domain</artifactId>
+            <version>2026.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.sirius</groupId>
+            <artifactId>sirius-web-projects-stylecustomizations-infrastructure</artifactId>
+            <version>2026.9.4</version>
+        </dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-application</artifactId>
