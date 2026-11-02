@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { DraggableData } from 'react-draggable';
+import { NodeData } from '../../DiagramRenderer.types';
 
 export interface BendingPointsState {
   isSourceSegment: boolean;
@@ -35,3 +37,27 @@ export type BendPointData = {
   y: number;
   pathOrder: number;
 };
+
+export interface BendingPointsCalculationInput {
+  originalGeometry: {
+    source: XYPosition;
+    target: XYPosition;
+    bendingPoints: XYPosition[];
+    sourceNode: InternalNode<Node<NodeData>>;
+    targetNode: InternalNode<Node<NodeData>>;
+    sourcePosition: Position;
+    targetPosition: Position;
+  };
+  index: number;
+  direction: 'x' | 'y';
+  isSourceSegment: boolean;
+  isTargetSegment: boolean;
+}
+
+export interface BendingPointsCalculationValue {
+  source: XYPosition;
+  target: XYPosition;
+  localBendingPoints: BendPointData[];
+  isSourceSegment: boolean;
+  isTargetSegment: boolean;
+}
