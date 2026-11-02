@@ -15,6 +15,7 @@ import { memo, useContext } from 'react';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { NodeData } from '../DiagramRenderer.types';
+import { computeEdgeGeometry } from './geometry/edgeGeometry';
 import { resolveEdgeGeometryInput } from './geometry/resolveEdgeGeometry';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
@@ -76,14 +77,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   return (
     <MultiLabelRectilinearEditableEdge
       {...props}
-      sourceX={input.source.x}
-      sourceY={input.source.y}
-      targetX={input.target.x}
-      targetY={input.target.y}
-      bendingPoints={input.customEdge && data?.bendingPoints ? data.bendingPoints : input.bendingPoints}
-      customEdge={input.customEdge}
-      sourceNode={sourceNode}
-      targetNode={targetNode}
+      geometry={data?.edgeDragData?.geometry ?? computeEdgeGeometry(input)}
     />
   );
 });
