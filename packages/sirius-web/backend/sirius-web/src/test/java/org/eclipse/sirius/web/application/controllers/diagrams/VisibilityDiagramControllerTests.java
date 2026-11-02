@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.NODE;
+
+import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
@@ -24,10 +27,13 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -66,6 +72,9 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private VisibilityDiagramDescriptionProvider visibilityDiagramDescriptionProvider;
+
+    @Autowired
+    private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeConnectorToolMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -141,6 +150,77 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         StepVerifier.create(flux)
             .consumeNextWith(initialDiagramContentConsumer)
             .then(revealNodes)
+            .consumeNextWith(updatedDiagramContentConsumer)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+    }
+
+    /**
+     * Verifies that a connector between visible nodes applies a semantic change and reveals its target's node.
+     */
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given visible nodes, when a connector renames its source and reveals its target's node, then both changes are applied")
+    public void givenVisibleNodesWhenConnectorToolIsInvokedThenSemanticChangeAndNodeRevealAreApplied() {
+        var flux = this.givenSubscriptionToVisibilityDiagram();
+        var diagramId = new AtomicReference<String>();
+        var sourceNodeId = new AtomicReference<String>();
+        var targetNodeId = new AtomicReference<String>();
+        var targetChildNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var navigator = new DiagramNavigator(diagram);
+            var source = navigator.nodeWithLabel("sirius-web-infrastructure");
+            var target = navigator.nodeWithLabel("sirius-web-starter");
+            assertThat(source.getNode()).hasModifiers(Set.of());
+            assertThat(target.getNode()).hasModifiers(Set.of());
+            assertThat(source.childNodeWithLabel("Details").getNode()).hasModifiers(Set.of(ViewModifier.Hidden));
+
+            var targetChildNode = target.childNodeWithLabel("Details").getNode();
+            assertThat(targetChildNode).hasModifiers(Set.of(ViewModifier.Hidden));
+            sourceNodeId.set(source.getNode().getId());
+            targetNodeId.set(target.getNode().getId());
+            targetChildNodeId.set(targetChildNode.getId());
+        });
+
+        Runnable invokeConnectorTool = () -> {
+            var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    sourceNodeId.get(),
+                    targetNodeId.get(),
+                    0,
+                    0,
+                    0,
+                    0,
+                    this.visibilityDiagramDescriptionProvider.getRevealWithConnectorToolId(),
+                    List.of()
+            );
+            var result = this.invokeConnectorToolMutationRunner.run(input);
+            String payloadTypeName = JsonPath.read(result.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            assertThat(payloadTypeName).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var navigator = new DiagramNavigator(diagram);
+            var source = navigator.nodeWithLabel("Connected component");
+            var target = navigator.nodeWithLabel("sirius-web-starter");
+            assertThat(source.getNode().getId()).isEqualTo(sourceNodeId.get());
+            assertThat(target.getNode().getId()).isEqualTo(targetNodeId.get());
+            assertThat(source.getNode()).hasModifiers(Set.of());
+            assertThat(target.getNode()).hasModifiers(Set.of());
+
+            var targetChildNode = target.childNodeWithLabel("Details").getNode();
+            assertThat(targetChildNode.getId()).isEqualTo(targetChildNodeId.get());
+            assertThat(targetChildNode).hasModifiers(Set.of());
+            assertThat(source.childNodeWithLabel("Details").getNode()).hasModifiers(Set.of(ViewModifier.Hidden));
+        });
+
+        StepVerifier.create(flux)
+            .consumeNextWith(initialDiagramContentConsumer)
+            .then(invokeConnectorTool)
             .consumeNextWith(updatedDiagramContentConsumer)
             .thenCancel()
             .verify(Duration.ofSeconds(10));
