@@ -35,7 +35,7 @@
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6991[#6991] [tree] The Explorer text filter now searches inside the whole tree when the filter button inside the filter is activated.
 
 
 === Improvements

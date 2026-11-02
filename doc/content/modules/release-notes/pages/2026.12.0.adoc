@@ -17,6 +17,7 @@
 
 == New features
 
+* The Explorer text filter now searches inside the whole tree when the filter button inside the filter is activated.
 
 
 
