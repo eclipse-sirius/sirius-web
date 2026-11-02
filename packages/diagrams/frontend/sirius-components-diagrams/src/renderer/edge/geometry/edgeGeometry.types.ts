@@ -11,9 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { XYPosition } from '@xyflow/react';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
+import { NodeData } from '../../DiagramRenderer.types';
 import { BendPointData } from '../rectilinear-edge/BendingPointsCalculation.types';
 import { MiddlePoint } from '../rectilinear-edge/TemporaryLinesCalculation.types';
+
+export interface EdgeGeometryInput {
+  edgeId: string;
+  source: XYPosition;
+  target: XYPosition;
+  sourcePosition: Position;
+  targetPosition: Position;
+  sourceNode: InternalNode<Node<NodeData>>;
+  targetNode: InternalNode<Node<NodeData>>;
+  bendingPoints: XYPosition[];
+  customEdge: boolean;
+  sourceAlignmentOffset?: XYPosition;
+  targetAlignmentOffset?: XYPosition;
+}
 
 export interface EdgeGeometry {
   isDragging: boolean;
