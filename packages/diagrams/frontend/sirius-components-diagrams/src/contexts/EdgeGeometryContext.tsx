@@ -52,10 +52,6 @@ export const EdgeGeometryContextProvider = ({ children }: EdgeGeometryContextPro
       return edge.id === dragData?.edgeId && edge.selected !== false;
     });
   const cancelDrag = useCallback((): void => {
-    const activeDrag = getEdges().find((edge) => !!edge.data?.edgeDragData)?.data?.edgeDragData;
-    if (activeDrag?.isSegmentDragged) {
-      setNodes((nodes) => setConnectionHandlesHidden(nodes, activeDrag.originalGeometry, false));
-    }
     setEdges((previousEdges) => {
       let changed = false;
       const updatedEdges = previousEdges.map((edge) => {
@@ -68,7 +64,7 @@ export const EdgeGeometryContextProvider = ({ children }: EdgeGeometryContextPro
       });
       return changed ? updatedEdges : previousEdges;
     });
-  }, [getEdges, setEdges, setNodes]);
+  }, [setEdges]);
 
   const value: EdgeGeometryContextValue = {
     onDragStart: (edgeId, index, direction, isSegmentDragged): void => {

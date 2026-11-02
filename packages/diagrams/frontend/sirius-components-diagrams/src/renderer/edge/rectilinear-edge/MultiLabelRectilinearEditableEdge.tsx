@@ -13,10 +13,9 @@
 
 import { useTheme } from '@mui/material/styles';
 import { BaseEdge, Edge } from '@xyflow/react';
-import { memo, useContext, useEffect, useMemo } from 'react';
+import { memo, useContext, useMemo } from 'react';
 import { EdgeGeometryContext } from '../../../contexts/EdgeGeometryContext';
 import { EdgeGeometryContextValue } from '../../../contexts/EdgeGeometryContext.types';
-import { useStore } from '../../../representation/useStore';
 import { useConnectorEdgeStyle } from '../../connector/useConnectorEdgeStyle';
 import { BendPoint, TemporaryMovingLine } from '../BendPoint';
 import { buildCrossingDashArray } from '../crossings/buildCrossingDashArray';
@@ -42,7 +41,6 @@ export const MultiLabelRectilinearEditableEdge = memo(
     const faded = !!data?.faded;
     const { onDragStart, onBendingPointDrag, onBendingPointDragStop, onTemporaryLineDrag, onTemporaryLineDragStop } =
       useContext<EdgeGeometryContextValue>(EdgeGeometryContext);
-    const { setEdges } = useStore();
     const theme = useTheme();
     const { source, target, bendingPoints, middlePoints, path: edgePath, center: edgeCenter } = geometry;
 
@@ -77,16 +75,6 @@ export const MultiLabelRectilinearEditableEdge = memo(
         strokeLinecap: 'round',
       };
     }, [connectionFeedbackStyle, crossingDashArray, edgeStyle]);
-
-    useEffect(() => {
-      if (edgePath !== data?.edgePath) {
-        setEdges((edges) =>
-          edges.map((edge) => {
-            return edge.id === id && edge.data ? { ...edge, data: { ...edge.data, edgePath } } : edge;
-          })
-        );
-      }
-    }, [edgePath, data?.edgePath, id, setEdges]);
 
     return (
       <>

@@ -14,7 +14,5 @@
 import { EdgeDragData } from './edgeGeometry.types';
 
 export interface UseEdgeDragStopHandlerValue {
-  handleDragStop: (
-    dragData: Pick<EdgeDragData, 'edgeId' | 'originalGeometry' | 'geometry' | 'isSourceSegment' | 'isTargetSegment'>
-  ) => void;
+  handleDragStop: (dragData: EdgeDragData) => void;
 }
