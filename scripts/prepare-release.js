@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ if (!version) {
 
 const workspace = process.cwd();
 
-console.log(`Updating Sirius Components to ${version}`);
+console.log(`Updating Sirius Web to ${version}`);
 
 const scriptPath = path.join(workspace, "scripts", "bump-version");
 const bumpVersionCommand = `sh ${scriptPath} ${version}`;
