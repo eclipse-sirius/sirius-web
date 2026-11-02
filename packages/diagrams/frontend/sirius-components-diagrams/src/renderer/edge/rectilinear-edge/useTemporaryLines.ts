@@ -14,9 +14,10 @@ import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
 import { useStore } from '../../../representation/useStore';
+import { initializeEdgeDrag, moveTemporaryLine } from '../geometry/edgeGeometry';
 import { NodeData } from '../../DiagramRenderer.types';
 import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
-import { calculateTemporaryLines, computeMiddlePoints } from './TemporaryLinesCalculation';
+import { computeMiddlePoints } from './TemporaryLinesCalculation';
 import { BendPointData, LocalBendingPointsSetter } from './BendingPointsCalculation.types';
 import { useEdgeDragStopHandler } from './useEdgeDragStopHandler';
 import { MiddlePoint, TemporaryLinesState, UseTemporaryLinesValue } from './TemporaryLinesCalculation.types';
@@ -94,28 +95,26 @@ export const useTemporaryLines = (
   };
 
   const onTemporaryLineDrag = (eventData: DraggableData, index: number, direction: 'x' | 'y') => {
+    const edgeDragData = initializeEdgeDrag(
+      {
+        edgeId,
+        source,
+        target,
+        bendingPoints: originalBendingPoints,
+        sourceNode,
+        targetNode,
+        sourcePosition,
+        targetPosition,
+        customEdge: false,
+      },
+      { index, direction, isSegmentDragged: true }
+    );
     const {
-      source: newSource,
-      target: newTarget,
-      localBendingPoints: newPoints,
+      geometry: { source: newSource, target: newTarget, bendingPoints: newPoints },
       isSourceSegment,
       isTargetSegment,
-    } = calculateTemporaryLines(
-      {
-        originalGeometry: {
-          source,
-          target,
-          bendingPoints: originalBendingPoints,
-          sourceNode,
-          targetNode,
-          sourcePosition,
-          targetPosition,
-        },
-        index,
-        direction,
-        isSourceSegment: state.isSourceSegment,
-        isTargetSegment: state.isTargetSegment,
-      },
+    } = moveTemporaryLine(
+      { ...edgeDragData, isSourceSegment: state.isSourceSegment, isTargetSegment: state.isTargetSegment },
       eventData
     );
     if (index === 0) {
