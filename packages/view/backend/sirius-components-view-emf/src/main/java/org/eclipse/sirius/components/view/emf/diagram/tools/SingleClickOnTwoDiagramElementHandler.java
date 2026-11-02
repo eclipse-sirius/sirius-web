@@ -68,7 +68,9 @@ public class SingleClickOnTwoDiagramElementHandler implements ISingleClickOnTwoD
     }
 
     @Override
-    public boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, String sourceDiagramElementId, String targetDiagramElementId) {
+    public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, String toolId, String sourceDiagramElementId, String targetDiagramElementId) {
+        var diagram = diagramContext.diagram();
+
         Optional<String> optionalDiagramElementDescriptionId = Optional.of(sourceDiagramElementId)
                 .filter(elementId -> sourceDiagramElementId.equals(diagram.getId()))
                 .map(elementId -> diagram.getDescriptionId())
@@ -83,9 +85,9 @@ public class SingleClickOnTwoDiagramElementHandler implements ISingleClickOnTwoD
     }
 
     @Override
-    public IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, String sourceDiagramElementId, String targetDiagramElementId, List<ToolVariable> variables) {
+    public IStatus execute(IEditingContext editingContext, DiagramContext diagramContext, String toolId, String sourceDiagramElementId, String targetDiagramElementId, List<ToolVariable> variables) {
         IStatus result = new Failure("");
-        DiagramContext diagramContext = new DiagramContext(diagram);
+        Diagram diagram = diagramContext.diagram();
 
         Optional<String> optionalDiagramElementDescriptionId = Optional.of(sourceDiagramElementId)
                 .filter(elementId -> sourceDiagramElementId.equals(diagram.getId()))
