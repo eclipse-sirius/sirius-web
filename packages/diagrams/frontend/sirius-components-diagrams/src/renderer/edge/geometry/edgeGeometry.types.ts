@@ -45,3 +45,17 @@ export interface EdgeGeometryCenter {
   position: XYPosition;
   segmentDirection: 'x' | 'y' | null;
 }
+export interface EdgeDragControl {
+  isSegmentDragged: boolean;
+  index: number;
+  direction: 'x' | 'y';
+}
+
+export interface EdgeDragData extends EdgeDragControl {
+  edgeId: string;
+  originalGeometry: EdgeGeometryInput;
+  geometry: EdgeGeometry;
+  isSourceSegment: boolean;
+  isTargetSegment: boolean;
+  middleBendingPoints: MiddlePoint[];
+}

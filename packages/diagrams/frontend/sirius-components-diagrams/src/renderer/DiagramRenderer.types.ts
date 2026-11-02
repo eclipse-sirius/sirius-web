@@ -17,6 +17,7 @@ import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagram
 import { GQLEdgeStyle } from '../graphql/subscription/edgeFragment.types';
 import { GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
 import { GQLNodeDecorator, GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
+import { EdgeDragData } from './edge/geometry/edgeGeometry.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { ConnectionHandle } from './handles/ConnectionHandles.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
@@ -92,6 +93,7 @@ export enum BorderNodePosition {
 }
 
 export interface EdgeData extends Record<string, unknown> {
+  edgeDragData?: EdgeDragData;
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
