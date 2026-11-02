@@ -30,11 +30,13 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteB
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -67,6 +69,8 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
     private NodeTool unfadeNodeTool;
 
     private NodeTool resetNodeTool;
+
+    private NodeTool revealWithConnectorTool;
 
     public VisibilityDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
@@ -104,6 +108,15 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.resetNodeTool).toString().getBytes()).toString();
     }
 
+    /**
+     * Returns the identifier of the connector tool which renames its source and reveals its target's child node.
+     *
+     * @return the connector tool identifier
+     */
+    public String getRevealWithConnectorToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.revealWithConnectorTool).toString().getBytes()).toString();
+    }
+
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
         View visibilityView = viewBuilder.build();
@@ -120,6 +133,11 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
         return visibilityView;
     }
 
+    /**
+     * Creates a diagram description with hidden nodes and tools for visibility operations.
+     *
+     * @return the visibility diagram description
+     */
     private DiagramDescription createDiagramDescription() {
         var nodeStyle = new RectangularNodeStyleDescriptionBuilder()
                 .build();
@@ -189,7 +207,17 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .isHiddenByDefaultExpression("aql:self.name.endsWith('-domain')")
                 .isFadedByDefaultExpression("aql:self.name.endsWith('-application')")
                 .palette(nodePalette)
+                .childrenDescriptions(this.createDetailsCompartment())
                 .build();
+
+        this.revealWithConnectorTool = this.createRevealWithConnectorTool();
+        nodeDescription.getEdgeTools().add(new DiagramBuilders().newEdgeTool()
+                .name("Connect and reveal")
+                .targetElementDescriptions(nodeDescription)
+                .palette(new DiagramBuilders().newNodePalette()
+                        .nodeTools(this.revealWithConnectorTool)
+                        .build())
+                .build());
 
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
@@ -203,5 +231,44 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
 
         return this.diagramDescription;
 
+    }
+
+    /**
+     * Creates a connector tool which renames its source and reveals its target's child node.
+     *
+     * @return the connector tool
+     */
+    private NodeTool createRevealWithConnectorTool() {
+        return new NodeToolBuilder()
+                .name("Rename source and reveal target child node")
+                .body(new SetValueBuilder()
+                                .featureName("name")
+                                .valueExpression("aql:'Connected component'")
+                                .build(),
+                        new ChangeContextBuilder()
+                                .expression("aql:diagramServices.reveal(edgeTarget.getChildNodes())")
+                                .build())
+                .build();
+    }
+
+    /**
+     * Creates a node description for nodes hidden by default using its parent component as the semantic element.
+     *
+     * @return the Details node description
+     */
+    private NodeDescription createDetailsCompartment() {
+        return new NodeDescriptionBuilder()
+                .name("Details")
+                .domainType("papaya:Component")
+                .semanticCandidatesExpression("aql:self")
+                .insideLabel(new InsideLabelDescriptionBuilder()
+                        .labelExpression("Details")
+                        .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
+                        .build())
+                .style(new RectangularNodeStyleDescriptionBuilder()
+                        .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
+                        .build())
+                .isHiddenByDefaultExpression("aql:true")
+                .build();
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -98,9 +98,9 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
             if (diagramDescription.isPresent() && sourceDiagramElement.isPresent() && targetDiagramElement.isPresent()) {
                 IStatus status = this.singleClickOnTwoDiagramElementHandlers.stream()
-                        .filter(handler -> handler.canHandle(editingContext, diagram, input.toolId(), input.diagramSourceElementId(), input.diagramTargetElementId()))
+                        .filter(handler -> handler.canHandle(editingContext, diagramContext, input.toolId(), input.diagramSourceElementId(), input.diagramTargetElementId()))
                         .findFirst()
-                        .map(handler -> handler.execute(editingContext, diagramContext.diagram(), input.toolId(), input.diagramSourceElementId(), input.diagramTargetElementId(), input.variables()))
+                        .map(handler -> handler.execute(editingContext, diagramContext, input.toolId(), input.diagramSourceElementId(), input.diagramTargetElementId(), input.variables()))
                         .orElse(new Failure(this.messageService.handlerNotFound()));
 
                 if (status instanceof Success success && success.getParameters().get(Success.NEW_SELECTION) instanceof WorkbenchSelection newSelection) {
