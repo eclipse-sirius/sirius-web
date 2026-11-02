@@ -94,6 +94,7 @@ public class ViewsExplorerEventProcessorFactory implements IRepresentationEventP
                     .treeDescription(treeDescription)
                     .activeFilterIds(List.of())
                     .expanded(expanded)
+                    .collapsedIds(List.of())
                     .searchedValue(searchedValue)
                     .targetObject(editingContext)
                     .editingContext(editingContext)

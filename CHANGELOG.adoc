@@ -40,7 +40,7 @@
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6995[#6995] [tree] Added `collapsedIds` to the `representationId` of the explorer subscription in order to collapse element when a search is active.
 
 
 

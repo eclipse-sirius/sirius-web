@@ -84,6 +84,7 @@ public class SelectionDialogTreeEventProcessorFactory implements IRepresentation
                     .treeDescription(treeDescription)
                     .activeFilterIds(List.of())
                     .expanded(expanded)
+                    .collapsedIds(List.of())
                     .searchedValue("")
                     .editingContext(editingContext)
                     .build();

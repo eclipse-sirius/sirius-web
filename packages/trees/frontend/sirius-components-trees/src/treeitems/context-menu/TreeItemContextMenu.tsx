@@ -25,6 +25,8 @@ import Popper from '@mui/material/Popper';
 import { Instance } from '@popperjs/core';
 import { useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FilterBarContext } from '../../trees/FilterBarContext';
+import { FilterBarContextValue } from '../../trees/FilterBarContext.types';
 import { TreeContext } from '../../trees/TreeContext';
 import { TreeContextValue } from '../../trees/TreeContext.types';
 import { TreeItemPalette } from '../palette/TreeItemPalette';
@@ -64,10 +66,18 @@ export const TreeItemContextMenu = ({
   const { data: treeItemContextMenuOverrideContributions } = useData<TreeItemContextMenuOverrideContribution[]>(
     treeItemContextMenuEntryOverrideExtensionPoint
   );
+  const { filterBarTreeFiltering } = useContext<FilterBarContextValue>(FilterBarContext);
 
   const expandItem = () => {
     if (!item.expanded && item.hasChildren) {
-      onExpandedElementChange([...expanded, item.id], Math.max(depth, maxDepth));
+      if (filterBarTreeFiltering) {
+        // During search, the expanded prop carries the collapsed item IDs.
+        const newCollapsed = expanded.filter((collapsedId) => collapsedId !== item.id);
+        onExpandedElementChange(newCollapsed, Math.max(depth, maxDepth));
+      } else {
+        const newExpanded = [...expanded, item.id];
+        onExpandedElementChange(newExpanded, Math.max(depth, maxDepth));
+      }
     }
   };
 

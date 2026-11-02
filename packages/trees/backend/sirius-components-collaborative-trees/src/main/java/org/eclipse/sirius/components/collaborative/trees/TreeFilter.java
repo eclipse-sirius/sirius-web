@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeFilter;
 import org.eclipse.sirius.components.trees.Tree;
@@ -29,14 +31,15 @@ import org.springframework.stereotype.Service;
 public class TreeFilter implements ITreeFilter {
 
     @Override
-    public Tree filter(Tree tree, String searchedValue) {
+    public Tree filter(Tree tree, String searchedValue, List<String> collapsedIds) {
         if (searchedValue.isEmpty()) {
             return tree;
         }
 
         String normalizedSearchedValue = searchedValue.toLowerCase(Locale.ROOT);
+        Set<String> collapsedIdSet = Set.copyOf(collapsedIds);
         var children = tree.getChildren().stream()
-                .map(treeItem -> this.filter(treeItem, normalizedSearchedValue))
+                .map(treeItem -> this.filter(treeItem, normalizedSearchedValue, collapsedIdSet))
                 .flatMap(Optional::stream)
                 .toList();
 
@@ -47,14 +50,18 @@ public class TreeFilter implements ITreeFilter {
                 .build();
     }
 
-    private Optional<TreeItem> filter(TreeItem treeItem, String normalizedSearchedValue) {
+    private Optional<TreeItem> filter(TreeItem treeItem, String normalizedSearchedValue, Set<String> collapsedIds) {
         boolean matches = treeItem.getLabel().toString().toLowerCase(Locale.ROOT).contains(normalizedSearchedValue);
         var children = treeItem.getChildren().stream()
-                .map(child -> this.filter(child, normalizedSearchedValue))
+                .map(child -> this.filter(child, normalizedSearchedValue, collapsedIds))
                 .flatMap(Optional::stream)
                 .toList();
 
         if (matches || !children.isEmpty()) {
+            var visibleChildren = children;
+            if (collapsedIds.contains(treeItem.getId())) {
+                visibleChildren = List.of();
+            }
             return Optional.of(TreeItem.newTreeItem(treeItem.getId())
                     .kind(treeItem.getKind())
                     .label(treeItem.getLabel())
@@ -62,9 +69,9 @@ public class TreeFilter implements ITreeFilter {
                     .deletable(treeItem.isDeletable())
                     .selectable(treeItem.isSelectable())
                     .iconURL(treeItem.getIconURL())
-                    .children(children)
+                    .children(visibleChildren)
                     .hasChildren(!children.isEmpty())
-                    .expanded(!children.isEmpty())
+                    .expanded(!visibleChildren.isEmpty())
                     .build());
         }
         return Optional.empty();

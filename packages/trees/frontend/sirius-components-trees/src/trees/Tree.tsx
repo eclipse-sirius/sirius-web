@@ -45,6 +45,11 @@ export const Tree = ({
 }: TreeProps) => {
   const { classes } = useTreeStyle();
 
+  const toggleExpanded = (id: string, depth: number): void => {
+    const newExpanded = expanded.includes(id) ? expanded.filter((expandedId) => expandedId !== id) : [...expanded, id];
+    onExpandedElementChange(newExpanded, Math.max(depth, maxDepth));
+  };
+
   const onTreeNavigation = (event: React.KeyboardEvent<Element>) => {
     if (
       (event.key === 'ArrowLeft' ||
@@ -68,9 +73,7 @@ export const Tree = ({
         switch (event.key) {
           case 'ArrowLeft':
             if (hasChildren && isExpanded) {
-              const newExpanded = [...expanded];
-              newExpanded.splice(newExpanded.indexOf(id), 1);
-              onExpandedElementChange(newExpanded, Math.max(depth, maxDepth));
+              toggleExpanded(id, depth);
             } else if (index > 0) {
               const parentDepth = (depth - 1).toString();
 
@@ -83,7 +86,7 @@ export const Tree = ({
             break;
           case 'ArrowRight':
             if (hasChildren && !isExpanded) {
-              onExpandedElementChange([...expanded, id], Math.max(depth, maxDepth));
+              toggleExpanded(id, depth);
             } else if (index < treeItemDomElements.length - 1) {
               treeItemDomElements[index + 1]?.click();
             }

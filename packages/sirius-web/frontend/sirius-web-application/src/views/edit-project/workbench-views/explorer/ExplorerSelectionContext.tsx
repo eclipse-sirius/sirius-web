@@ -22,6 +22,10 @@ import {
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ExplorerContext } from './ExplorerContext';
 import { ExplorerContextValue } from './ExplorerContext.types';
+import { ExplorerFilterContext } from './ExplorerFilterContext';
+import { ExplorerFilterContextValue } from './ExplorerFilterContext.types';
+import { ExplorerInteractionContext } from './ExplorerInteractionContext';
+import { ExplorerInteractionContextValue } from './ExplorerInteractionContext.types';
 import {
   ExplorerSelectionContextProviderProps,
   ExplorerSelectionContextState,
@@ -42,12 +46,8 @@ export const ExplorerSelectionContext = React.createContext<ExplorerSelectionCon
 
 export const ExplorerSelectionContextProvider = ({
   id,
-  activeTreeDescriptionId,
-  treeFilters,
   editingContextId,
   refHandle,
-  expanded,
-  onExpandedElementChange,
   children,
 }: ExplorerSelectionContextProviderProps) => {
   const [state, setState] = useState<ExplorerSelectionContextState>({
@@ -58,6 +58,9 @@ export const ExplorerSelectionContextProvider = ({
   const { selection, setSelection } = useSelection();
   const { getTreePath, data: treePathData } = useTreePath();
   const { treeItemClick } = useTreeSelection();
+  const { activeTreeDescriptionId, expanded, onExpandedElementChange } =
+    useContext<ExplorerInteractionContextValue>(ExplorerInteractionContext);
+  const { treeFilters } = useContext<ExplorerFilterContextValue>(ExplorerFilterContext);
   const { tree } = useContext<ExplorerContextValue>(ExplorerContext);
   const treeId = !!tree ? tree.id : null;
 

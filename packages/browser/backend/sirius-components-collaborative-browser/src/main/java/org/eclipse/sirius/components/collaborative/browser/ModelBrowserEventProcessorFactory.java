@@ -91,6 +91,7 @@ public class ModelBrowserEventProcessorFactory implements IRepresentationEventPr
                     .treeDescription(treeDescription)
                     .activeFilterIds(List.of())
                     .expanded(expanded)
+                    .collapsedIds(List.of())
                     .searchedValue("")
                     .editingContext(editingContext)
                     .build();

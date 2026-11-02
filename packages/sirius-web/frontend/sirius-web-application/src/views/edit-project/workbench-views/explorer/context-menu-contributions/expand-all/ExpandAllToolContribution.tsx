@@ -16,6 +16,8 @@ import {
   ToolListItemText,
 } from '@eclipse-sirius/sirius-components-palette';
 import {
+  FilterBarContext,
+  FilterBarContextValue,
   GQLGetExpandAllTreePathVariables,
   TreePaletteContext,
   TreePaletteContextValue,
@@ -32,6 +34,7 @@ export const ExpandAllToolContribution = forwardRef(
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
+    const { filterBarTreeFiltering } = useContext<FilterBarContextValue>(FilterBarContext);
     const { editingContextId, treeId, item, onExpandedElementChange, expanded, onClose } =
       useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -39,14 +42,16 @@ export const ExpandAllToolContribution = forwardRef(
       if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
         const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
           expandAllTreePathData.viewer.editingContext.expandAllTreePath;
-        const newExpanded: string[] = [...expanded];
+        const idsToExpand = new Set(treeItemIdsToExpand ?? []);
 
-        treeItemIdsToExpand?.forEach((itemToExpand) => {
-          if (!expanded.includes(itemToExpand)) {
-            newExpanded.push(itemToExpand);
-          }
-        });
-        onExpandedElementChange(newExpanded, expandedMaxDepth);
+        if (filterBarTreeFiltering) {
+          // During search, the expanded prop carries the collapsed item IDs.
+          const newCollapsed = expanded.filter((id) => !idsToExpand.has(id));
+          onExpandedElementChange(newCollapsed, expandedMaxDepth);
+        } else {
+          const newExpanded = [...new Set([...expanded, ...idsToExpand])];
+          onExpandedElementChange(newExpanded, expandedMaxDepth);
+        }
         onClose();
       }
     }, [expandAllTreePathData]);

@@ -45,6 +45,8 @@ public class ExplorerEventProcessorFactory implements IRepresentationEventProces
 
     public static final String SEARCHED_VALUE_PARAMETER = "searchedValue";
 
+    public static final String COLLAPSED_IDS_PARAMETER = "collapsedIds";
+
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final ITreeService treeService;
@@ -90,11 +92,16 @@ public class ExplorerEventProcessorFactory implements IRepresentationEventProces
             String expandedIdsParam = parameters.get("expandedIds").get(0);
             var expanded = this.urlParser.getParameterEntries(expandedIdsParam);
             String searchedValue = parameters.getOrDefault(SEARCHED_VALUE_PARAMETER, List.of()).stream().findFirst().orElse("");
+            var collapsedIds = parameters.getOrDefault(COLLAPSED_IDS_PARAMETER, List.of()).stream()
+                    .findFirst()
+                    .map(this.urlParser::getParameterEntries)
+                    .orElse(List.of());
 
             TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(representationId)
                     .treeDescription(treeDescription)
                     .activeFilterIds(activeFilterIds)
                     .expanded(expanded)
+                    .collapsedIds(collapsedIds)
                     .searchedValue(searchedValue)
                     .targetObject(editingContext)
                     .editingContext(editingContext)

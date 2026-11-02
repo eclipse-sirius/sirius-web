@@ -11,17 +11,36 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useEffect, useState } from 'react';
-import { TreeDescriptionMetadata } from './TreeDescriptionsMenu.types';
-import { UseTreeStateContainerState, UseTreeStateContainerValue } from './useTreeStateContainer.types';
+import { FilterBarContext, FilterBarContextValue } from '@eclipse-sirius/sirius-components-trees';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  ExplorerInteractionContextProviderProps,
+  ExplorerInteractionContextState,
+  ExplorerInteractionContextValue,
+} from './ExplorerInteractionContext.types';
 
-export const useTreeStateContainer = (
-  configuredActiveTreeDescriptionId: string | null,
-  explorerDescriptions: TreeDescriptionMetadata[]
-): UseTreeStateContainerValue => {
-  const [state, setState] = useState<UseTreeStateContainerState>({
-    activeTreeDescriptionId: configuredActiveTreeDescriptionId,
+const defaultValue: ExplorerInteractionContextValue = {
+  activeTreeDescriptionId: null,
+  expanded: [],
+  collapsed: [],
+  maxDepth: 0,
+  setActiveDescriptionId: () => {},
+  onExpandedElementChange: () => {},
+};
+
+export const ExplorerInteractionContext = React.createContext<ExplorerInteractionContextValue>(defaultValue);
+
+export const ExplorerInteractionContextProvider = ({
+  activeTreeDescriptionId,
+  explorerDescriptions,
+  children,
+}: ExplorerInteractionContextProviderProps) => {
+  const { filterBarText, filterBarTreeFiltering } = useContext<FilterBarContextValue>(FilterBarContext);
+
+  const [state, setState] = useState<ExplorerInteractionContextState>({
+    activeTreeDescriptionId,
     expanded: {},
+    collapsed: {},
     maxDepth: {},
   });
 
@@ -38,6 +57,16 @@ export const useTreeStateContainer = (
     setState((prevState) => {
       if (prevState.activeTreeDescriptionId) {
         const activeTreeDescriptionId: string = prevState.activeTreeDescriptionId;
+
+        if (filterBarText && filterBarTreeFiltering) {
+          return {
+            ...prevState,
+            collapsed: {
+              ...prevState.collapsed,
+              [activeTreeDescriptionId]: newExpandedIds,
+            },
+          };
+        }
         return {
           ...prevState,
           expanded: {
@@ -58,9 +87,11 @@ export const useTreeStateContainer = (
   useEffect(() => {
     if (explorerDescriptions && explorerDescriptions.length > 0) {
       const expandedInitiated: { [key: string]: string[] } = {};
+      const collapsedInitiated: { [key: string]: string[] } = {};
       const maxDepthInitiated: { [key: string]: number } = {};
       explorerDescriptions.forEach((explorerDescription) => {
         expandedInitiated[explorerDescription.id] = [];
+        collapsedInitiated[explorerDescription.id] = [];
         maxDepthInitiated[explorerDescription.id] = 1;
       });
 
@@ -68,16 +99,23 @@ export const useTreeStateContainer = (
         ...prevState,
         activeTreeDescriptionId: prevState.activeTreeDescriptionId ?? explorerDescriptions[0].id,
         expanded: expandedInitiated,
+        collapsed: collapsedInitiated,
         maxDepth: maxDepthInitiated,
       }));
     }
   }, [explorerDescriptions]);
 
-  return {
-    activeTreeDescriptionId: state.activeTreeDescriptionId,
-    expanded: state.activeTreeDescriptionId ? state.expanded[state.activeTreeDescriptionId] ?? [] : [],
-    maxDepth: state.activeTreeDescriptionId ? state.maxDepth[state.activeTreeDescriptionId] ?? 1 : 1,
-    setActiveDescriptionId,
-    onExpandedElementChange,
-  };
+  return (
+    <ExplorerInteractionContext.Provider
+      value={{
+        activeTreeDescriptionId: state.activeTreeDescriptionId,
+        expanded: state.activeTreeDescriptionId ? state.expanded[state.activeTreeDescriptionId] ?? [] : [],
+        collapsed: state.activeTreeDescriptionId ? state.collapsed[state.activeTreeDescriptionId] ?? [] : [],
+        maxDepth: state.activeTreeDescriptionId ? state.maxDepth[state.activeTreeDescriptionId] ?? 1 : 1,
+        setActiveDescriptionId,
+        onExpandedElementChange,
+      }}>
+      {children}
+    </ExplorerInteractionContext.Provider>
+  );
 };

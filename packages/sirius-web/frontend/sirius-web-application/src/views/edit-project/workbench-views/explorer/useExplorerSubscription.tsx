@@ -31,6 +31,7 @@ export const useExplorerSubscription = (
   treeDescriptionId: string,
   activeFilterIds: string[],
   expanded: string[],
+  collapsed: string[],
   searchedValue: string,
   maxDepth: number
 ): UseExplorerSubscriptionValue => {
@@ -39,14 +40,19 @@ export const useExplorerSubscription = (
     complete: false,
     payload: null,
   });
+  const expandedIds = searchedValue ? [] : expanded;
 
   const input: GQLExplorerEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `explorer://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}&expandedIds=[${expanded
+    representationId: `explorer://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}&expandedIds=[${expandedIds
       .map(encodeURIComponent)
       .join(',')}]&activeFilterIds=[${activeFilterIds.map(encodeURIComponent).join(',')}]${
-      searchedValue ? `&searchedValue=${encodeURIComponent(searchedValue)}` : ''
+      searchedValue
+        ? `&searchedValue=${encodeURIComponent(searchedValue)}&collapsedIds=[${collapsed
+            .map(encodeURIComponent)
+            .join(',')}]`
+        : ''
     }`,
   };
 
