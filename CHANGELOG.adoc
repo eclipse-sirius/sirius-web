@@ -40,7 +40,7 @@
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6765[#6035] [tree] Save the expanded state of the explorer in local storage.
 
 
 
