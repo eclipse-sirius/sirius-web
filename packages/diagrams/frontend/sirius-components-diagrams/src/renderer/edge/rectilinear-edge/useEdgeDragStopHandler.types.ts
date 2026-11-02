@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { XYPosition, InternalNode, Node, Position } from '@xyflow/react';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeData } from '../../DiagramRenderer.types';
-import { BendPointData } from './useBendingPoints.types';
+import { BendPointData } from './BendingPointsCalculation.types';
 
 export interface UseEdgeDragStopHandlerValue {
   handleDragStop: (

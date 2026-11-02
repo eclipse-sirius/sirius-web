@@ -100,7 +100,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
   const nodes = getNodes();
   const edges = getEdges();
-  useEdgeCrossingFades();
+  useEdgeCrossingFades(edges);
   useDynamicEdgeSelectionArea();
 
   const { onDirectEdit } = useDiagramDirectEdit();

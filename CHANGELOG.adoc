@@ -46,6 +46,8 @@ The `legacyId` field is deprecated and shouldn't be used: it is a temporary iden
 === Improvements
 
 - [diagram] Update creation-handle positions while resizing parent within node changes.
+- https://github.com/eclipse-sirius/sirius-web/issues/7139[7139] [diagram] Share edge endpoint clearance and prepare handle alignment for diagram geometry.
+
 
 
 
