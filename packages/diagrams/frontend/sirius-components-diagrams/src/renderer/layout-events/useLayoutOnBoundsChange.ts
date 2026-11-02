@@ -11,70 +11,27 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
+import { Node, NodeChange } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { DiagramNodeType } from '../node/NodeTypes.types';
+import { isBoundsChangeFinished } from './isBoundsChangeFinished';
 import { UseLayoutOnBoundsChangeValue } from './useLayoutOnBoundsChange.types';
 
 export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-  const { getEdges, getNodes } = useStore();
-
-  const isMoveFinished = (
-    change: NodeChange<Node<NodeData>>,
-    nodes: Node<NodeData>[]
-  ): change is NodePositionChange => {
-    return (
-      change.type === 'position' &&
-      typeof change.dragging === 'boolean' &&
-      !change.dragging &&
-      hasDropBeenTriggered(nodes)
-    );
-  };
-  const isResizeFinished = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
-    change.type === 'dimensions' && typeof change.resizing === 'boolean' && !change.resizing;
-
-  const isBoundsChangeFinished = (
-    changes: NodeChange<Node<NodeData>>[],
-    nodes: Node<NodeData>[]
-  ): NodeChange<Node<NodeData>> | undefined => {
-    return changes.find((change) => isMoveFinished(change, nodes) || isResizeFinished(change));
-  };
-
-  const hasDropBeenTriggered = (nodes: Node<NodeData>[]): boolean => {
-    const targetNode = nodes.find((node) => node.data.isDropNodeTarget);
-    const draggedNode = nodes.find((node) => node.dragging);
-    const isDropOnNode: boolean = !!targetNode;
-    const isMovableIconLabelNode: boolean =
-      draggedNode?.type === 'iconLabelNode' && targetNode?.type === 'freeFormNode';
-
-    const isDropOnSameParent: boolean =
-      isDropOnNode &&
-      !!draggedNode?.parentId &&
-      draggedNode.parentId === targetNode?.id &&
-      (draggedNode.type !== 'iconLabelNode' || isMovableIconLabelNode);
-
-    const isDropFromDiagramToDiagram: boolean = !isDropOnNode && !draggedNode?.parentId;
-
-    return isDropOnSameParent || isDropFromDiagramToDiagram || !!draggedNode?.data.isBorderNode;
-  };
+  const { getNodes } = useStore();
 
   const layoutOnBoundsChange = useCallback(
-    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData, DiagramNodeType>[]): void => {
+    (changes: NodeChange<Node<NodeData>>[], diagram: RawDiagram): void => {
+      const { nodes } = diagram;
       const change = isBoundsChangeFinished(changes, getNodes());
       if (change) {
-        const diagramToLayout: RawDiagram = {
-          nodes,
-          edges: getEdges(),
-        };
-
-        layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
+        layout(diagram, diagram, null, 'UNDEFINED', (laidOutDiagram) => {
           const updatedNodesAfterLayout = nodes.map((node) => {
             const existingNode = laidOutDiagram.nodes.find((laidoutNode) => laidoutNode.id === node.id);
             if (existingNode) {
@@ -101,7 +58,7 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
         });
       }
     },
-    [synchronizeLayoutData, getNodes]
+    [synchronizeLayoutData, getNodes, layout]
   );
 
   return { layoutOnBoundsChange };
