@@ -20,6 +20,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/7120[#7120] [diagram] `ISingleClickOnTwoDiagramElementHandler.execute` now takes a `DiagramContext` instead of a `Diagram`.
+Implementations must reuse this context during connector tool execution so that graphical events are applied when the diagram is refreshed.
 
 
 
@@ -31,6 +33,8 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6035[#6035] [tree] Fix an issue where explorer subscription was initiated before retrieving explorer filters
+- https://github.com/eclipse-sirius/sirius-web/issues/7120[#7120] [diagram] Fix graphical operations such as revealing hidden elements being ignored when executing connector tools.
+
 
 
 === New Features
