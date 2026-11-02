@@ -17,6 +17,7 @@ export interface BendPointProps {
   y: number;
   index: number;
   direction: 'x' | 'y';
+  onDragStart?: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
   onDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
   onDragStop: (eventData: DraggableData, index: number) => void;
   temporary: boolean;
@@ -28,7 +29,7 @@ export interface TemporaryMovingLineProps {
   direction: 'x' | 'y';
   segmentLength: number;
   index: number;
-  onDragStart: () => void;
+  onDragStart: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
   onDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
   onDragStop: (eventData: DraggableData, index: number) => void;
 }
