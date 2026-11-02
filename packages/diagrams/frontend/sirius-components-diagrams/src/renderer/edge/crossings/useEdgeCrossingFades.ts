@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,9 +82,8 @@ const areGapsEqual = (first?: EdgeCrossingGap[], second?: EdgeCrossingGap[]): bo
  * triggers `setEdges` when a difference arises. While the user is dragging nodes we skip
  * the computation entirely to avoid wasteful work, then recompute right after the drag ends.
  */
-export const useEdgeCrossingFades = (): void => {
-  const { getEdges, setEdges } = useStore();
-  const edges = getEdges() as Edge<MultiLabelEdgeData>[];
+export const useEdgeCrossingFades = (edges: Edge<MultiLabelEdgeData>[]): void => {
+  const { setEdges } = useStore();
   const { dragging } = useContext<DropNodeContextValue>(DropNodeContext);
   const store = useStoreApi<Node<NodeData>, Edge<MultiLabelEdgeData>>();
 
@@ -111,33 +110,24 @@ export const useEdgeCrossingFades = (): void => {
       return;
     }
 
-    setEdges((previousEdges) =>
-      previousEdges.map((edge) => {
+    setEdges((previousEdges) => {
+      let changed = false;
+      const updatedEdges = previousEdges.map((edge) => {
         const edgeData = edge.data as MultiLabelEdgeData | undefined;
         if (!edgeData) {
           return edge;
         }
         const nextGaps = normalizeWindows(crossingWindows.get(edge.id));
-        if (!nextGaps.length) {
-          if (!edgeData.crossingGaps || edgeData.crossingGaps.length === 0) {
-            return edge;
-          }
-          return {
-            ...edge,
-            data: {
-              ...edgeData,
-              crossingGaps: undefined,
-            },
-          };
+        if (areGapsEqual(edgeData.crossingGaps, nextGaps)) {
+          return edge;
         }
+        changed = true;
         return {
           ...edge,
-          data: {
-            ...edgeData,
-            crossingGaps: nextGaps,
-          },
+          data: { ...edgeData, crossingGaps: nextGaps.length ? nextGaps : undefined },
         };
-      })
-    );
+      });
+      return changed ? updatedEdges : previousEdges;
+    });
   }, [dragging, edges, setEdges, signature, store]);
 };

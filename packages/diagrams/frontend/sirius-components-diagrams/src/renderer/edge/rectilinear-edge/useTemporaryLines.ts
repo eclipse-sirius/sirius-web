@@ -23,9 +23,9 @@ import {
   getMiddlePoint,
   isOutOfLines,
 } from './RectilinearEdgeCalculation';
-import { BendPointData, LocalBendingPointsSetter } from './useBendingPoints.types';
+import { BendPointData, LocalBendingPointsSetter } from './BendingPointsCalculation.types';
 import { useEdgeDragStopHandler } from './useEdgeDragStopHandler';
-import { MiddlePoint, TemporaryLinesState, UseTemporaryLinesValue } from './useTemporaryLines.types';
+import { MiddlePoint, TemporaryLinesState, UseTemporaryLinesValue } from './TemporaryLinesCalculation.types';
 
 export const useTemporaryLines = (
   edgeId: string,
