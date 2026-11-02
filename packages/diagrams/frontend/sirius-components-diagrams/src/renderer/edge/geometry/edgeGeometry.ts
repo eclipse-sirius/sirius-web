@@ -25,7 +25,7 @@ const copyPoints = (points: XYPosition[]): BendPointData[] => {
   });
 };
 
-export const createGeometry = (
+const createGeometry = (
   source: XYPosition,
   target: XYPosition,
   bendingPoints: BendPointData[],

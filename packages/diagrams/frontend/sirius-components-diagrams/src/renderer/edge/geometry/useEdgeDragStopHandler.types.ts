@@ -11,11 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { XYPosition } from '@xyflow/react';
 import { EdgeDragData } from './edgeGeometry.types';
 
 export interface UseEdgeDragStopHandlerValue {
   handleDragStop: (
     dragData: Pick<EdgeDragData, 'edgeId' | 'originalGeometry' | 'geometry' | 'isSourceSegment' | 'isTargetSegment'>
-  ) => { source: XYPosition; target: XYPosition } | null;
+  ) => void;
 }
