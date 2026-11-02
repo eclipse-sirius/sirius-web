@@ -25,6 +25,8 @@ export interface ConnectionHandle extends HandleProps {
   isHidden: boolean;
   XYPosition: XYPosition | null;
   handleStyleTransform: string | null;
+  /** Derived marker translation; never applied to React Flow's measured Handle. */
+  alignmentOffset?: XYPosition;
 }
 export interface ConnectionHandlesState {
   selectedHandles: string[];
