@@ -12,11 +12,11 @@
  *******************************************************************************/
 
 import { useData } from '@eclipse-sirius/sirius-components-core';
-import { EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
 import { Edge, getViewportForBounds, Node as ReactFlowNode, Rect, useReactFlow, Viewport } from '@xyflow/react';
 import { toSvg } from 'html-to-image';
 import { useCallback, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
+import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { SVGExportEngine } from './SVGExportEngine';
 import { svgExportIElementSVGExportHandlerExtensionPoint } from './SVGExportHandlerExtensionPoints';
 import { UseExperimentalSvgExport } from './useExperimentalSvgExport.types';
