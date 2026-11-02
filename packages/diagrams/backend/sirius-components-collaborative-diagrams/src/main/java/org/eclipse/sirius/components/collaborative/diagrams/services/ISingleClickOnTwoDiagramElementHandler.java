@@ -14,9 +14,9 @@ package org.eclipse.sirius.components.collaborative.diagrams.services;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.representations.IStatus;
 
 /**
@@ -26,7 +26,24 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 public interface ISingleClickOnTwoDiagramElementHandler {
 
-    boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, String sourceDiagramElementId, String targetDiagramElementId);
+    boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, String toolId, String sourceDiagramElementId, String targetDiagramElementId);
 
-    IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, String sourceDiagramElementId, String targetDiagramElementId, List<ToolVariable> variables);
+    /**
+     * Executes the connector tool using the event processor's diagram context to preserve graphical events.
+     *
+     * @param editingContext
+     *         the editing context
+     * @param diagramContext
+     *         the diagram context to reuse during tool execution
+     * @param toolId
+     *         the tool identifier
+     * @param sourceDiagramElementId
+     *         the source diagram element identifier
+     * @param targetDiagramElementId
+     *         the target diagram element identifier
+     * @param variables
+     *         the tool variables
+     * @return the execution status
+     */
+    IStatus execute(IEditingContext editingContext, DiagramContext diagramContext, String toolId, String sourceDiagramElementId, String targetDiagramElementId, List<ToolVariable> variables);
 }
