@@ -24,6 +24,7 @@ import { multiLabelEdgeStyle } from '../MultiLabelEdge';
 import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge.types';
 import { determineSegmentAxis, getMiddlePoint, isMultipleOfTwo } from './RectilinearEdgeCalculation';
+import { createGeometry } from '../geometry/edgeGeometry';
 import { useBendingPoints } from './useBendingPoints';
 import { useTemporaryLines } from './useTemporaryLines';
 
@@ -128,18 +129,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
       }
     }, [source, target, bendingPoints.map((point) => `${point.x}:${point.y}`).join()]);
 
-    const edgePath: string = useMemo(() => {
-      let edgePath = `M ${source.x} ${source.y}`;
-      const reorderBendPoint = [...localBendingPoints].sort((a, b) => a.pathOrder - b.pathOrder);
-      for (let i = 0; i < reorderBendPoint.length; i++) {
-        const currentPoint = reorderBendPoint[i];
-        if (currentPoint) {
-          edgePath += ` L ${currentPoint.x} ${currentPoint.y}`;
-        }
-      }
-      edgePath += ` L ${target.x} ${target.y}`;
-      return edgePath;
-    }, [localBendingPoints.map((point) => point.x + point.y).join(), source.x, source.y, target.x, target.y]);
+    const edgePath: string = createGeometry(source, target, localBendingPoints, customEdge).path;
 
     const hasDashOverride = useMemo(() => {
       return Boolean(style?.strokeDasharray || connectionFeedbackStyle?.strokeDasharray);
