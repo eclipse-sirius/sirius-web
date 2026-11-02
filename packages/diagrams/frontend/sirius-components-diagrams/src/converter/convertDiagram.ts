@@ -62,6 +62,53 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   return depth;
 };
 
+/**
+ * Group visible list children by parent ID, excluding border nodes.
+ */
+const groupVisibleListChildrenByParent = (nodes: Node<NodeData>[]): Map<string, Node<NodeData>[]> => {
+  const parentId2Children = new Map<string, Node<NodeData>[]>();
+  nodes.forEach((node) => {
+    if (node.parentId && node.data.isListChild && !node.hidden && !node.data.isBorderNode) {
+      const children = parentId2Children.get(node.parentId) ?? [];
+      children.push(node);
+      parentId2Children.set(node.parentId, children);
+    }
+  });
+  return parentId2Children;
+};
+
+/**
+ * Propagate each list node's bottom corner radii to its last visible child when it is rectangular.
+ *
+ * @technical-debt: This function does not consider visible growable nodes, which means, the last node of a list may have rounded corner even if it does not "touch" its parent bottom border.
+ * Even if this fix works in most of the cases, the issue will be addressed later.
+ */
+const adaptListNodeChildrenBorderRadius = (nodes: Node<NodeData>[]): void => {
+  const parentId2Children = groupVisibleListChildrenByParent(nodes);
+
+  // Conversion orders parents before their children, so inherited radii are available at each level.
+  nodes.forEach((parentNode) => {
+    if (parentNode.type === 'listNode') {
+      const children = parentId2Children.get(parentNode.id) ?? [];
+      children.forEach((child, index) => {
+        if (child.data.nodeAppearanceData.gqlStyle.__typename === 'RectangularNodeStyle') {
+          let radiusSource = child.data.style;
+          if (index === children.length - 1) {
+            // Apply the border bottom radii of the parent because child is the last child in a list
+            radiusSource = parentNode.data.style;
+          }
+
+          child.data.style = {
+            ...child.data.style,
+            borderBottomLeftRadius: radiusSource.borderBottomLeftRadius ?? radiusSource.borderRadius ?? 0,
+            borderBottomRightRadius: radiusSource.borderBottomRightRadius ?? radiusSource.borderRadius ?? 0,
+          };
+        }
+      });
+    }
+  });
+};
+
 const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLayoutData[]): EdgeLabel => {
   const labelLayoutData = gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === gqlEdgeLabel.id);
   return {
@@ -183,6 +230,8 @@ export const convertDiagram = (
     diagramDescription,
     diagramDescription.nodeDescriptions
   );
+
+  adaptListNodeChildrenBorderRadius(nodes);
 
   const nodeId2node = new Map<string, Node<NodeData>>();
   nodes.forEach((node) => nodeId2node.set(node.id, node));
