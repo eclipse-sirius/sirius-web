@@ -18,6 +18,31 @@ import { INodeLayoutHandler } from '../../layout/LayoutEngine.types';
 import { DiagramNodeType } from '../../node/NodeTypes.types';
 import { getEdgeEndpointCoordinates } from '../EdgeLayout';
 import { EdgeGeometryInput } from './edgeGeometry.types';
+import { evaluateAbsolutePosition } from '../../node/NodeUtils';
+
+/** Retains DOM handle measurements while resolving current canonical node positions. */
+export const createGeometryNodeLookup = (
+  nodes: Node<NodeData>[],
+  measuredNodes: NodeLookup<InternalNode<Node<NodeData>>>
+): NodeLookup<InternalNode<Node<NodeData>>> => {
+  const lookup = new Map(measuredNodes);
+  nodes.forEach((node) => {
+    const measured = lookup.get(node.id);
+    if (measured) {
+      lookup.set(node.id, { ...measured, ...node });
+    }
+  });
+  nodes.forEach((node) => {
+    const internal = lookup.get(node.id);
+    if (internal) {
+      lookup.set(node.id, {
+        ...internal,
+        internals: { ...internal.internals, positionAbsolute: evaluateAbsolutePosition(node, lookup) },
+      });
+    }
+  });
+  return lookup;
+};
 
 const isMultipleOfTwo = (num: number): boolean => {
   return num % 2 === 0;

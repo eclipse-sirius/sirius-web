@@ -14,10 +14,10 @@
 import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
+import { initializeEdgeDrag, moveBendingPoint } from '../geometry/edgeGeometry';
 import { NodeData } from '../../DiagramRenderer.types';
 import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
 import { determineSegmentAxis } from './RectilinearEdgeCalculation';
-import { calculateBendingPoints } from './BendingPointsCalculation';
 import { BendingPointsState, BendPointData, UseBendingPointsValue } from './BendingPointsCalculation.types';
 import { useEdgeDragStopHandler } from './useEdgeDragStopHandler';
 
@@ -73,28 +73,26 @@ export const useBendingPoints = (
 
   const onBendingPointDrag = (eventData: DraggableData, index: number, direction: 'x' | 'y') => {
     if (originalBendingPoints[index]) {
+      const edgeDragData = initializeEdgeDrag(
+        {
+          edgeId,
+          source,
+          target,
+          bendingPoints: originalBendingPoints,
+          sourceNode,
+          targetNode,
+          sourcePosition,
+          targetPosition,
+          customEdge: false,
+        },
+        { index, direction, isSegmentDragged: false }
+      );
       const {
-        source: newSource,
-        target: newTarget,
-        localBendingPoints: newPoints,
+        geometry: { source: newSource, target: newTarget, bendingPoints: newPoints },
         isSourceSegment,
         isTargetSegment,
-      } = calculateBendingPoints(
-        {
-          originalGeometry: {
-            source,
-            target,
-            bendingPoints: originalBendingPoints,
-            sourceNode,
-            targetNode,
-            sourcePosition,
-            targetPosition,
-          },
-          index,
-          direction,
-          isSourceSegment: state.isSourceSegment,
-          isTargetSegment: state.isTargetSegment,
-        },
+      } = moveBendingPoint(
+        { ...edgeDragData, isSourceSegment: state.isSourceSegment, isTargetSegment: state.isTargetSegment },
         eventData
       );
       if (index === 0) {
