@@ -149,6 +149,7 @@ export const MultiLabelObliqueEditableEdge = memo(
                 y={point.y}
                 index={index}
                 direction={'x'}
+                onDragStart={() => {}}
                 onDrag={onBendingPointDrag}
                 onDragStop={onBendingPointDragStop}
                 temporary={isMultipleOfTwo(index)}

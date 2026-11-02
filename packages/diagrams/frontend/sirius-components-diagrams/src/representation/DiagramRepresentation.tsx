@@ -23,6 +23,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { ForwardedRef, forwardRef, memo, useEffect, useImperativeHandle, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
+import { EdgeGeometryContextProvider } from '../contexts/EdgeGeometryContext';
 import { DialogContextProvider } from '../dialog/DialogContext';
 import { ManageVisibilityContextProvider } from '../renderer/actions/visibility/ManageVisibilityContextProvider';
 import { ConnectorPaletteContextProvider } from '../renderer/connector/context/ConnectorPaletteContext';
@@ -39,6 +40,7 @@ import {
   GQLDiagramDescriptionVariables,
 } from './DiagramRepresentation.types';
 import { DiagramSubscriptionProvider } from './DiagramSubscriptionProvider';
+import { StoreContextProvider } from './StoreContext';
 
 export const getDiagramDescription = gql`
   query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
@@ -191,18 +193,22 @@ export const DiagramRepresentation = memo(
                             consumePostToolSelection,
                             toolSelections: state.toolSelections,
                           }}>
-                          <ApplySelectionWrapper representationId={representationId} ref={ref}>
-                            <ManageVisibilityContextProvider>
-                              <DialogContextProvider>
-                                <DiagramSubscriptionProvider
-                                  diagramId={representationId}
-                                  editingContextId={editingContextId}
-                                  readOnly={readOnly}
-                                  onRepresentationUnavailable={onRepresentationUnavailable}
-                                />
-                              </DialogContextProvider>
-                            </ManageVisibilityContextProvider>
-                          </ApplySelectionWrapper>
+                          <StoreContextProvider key={representationId}>
+                            <EdgeGeometryContextProvider>
+                              <ApplySelectionWrapper representationId={representationId} ref={ref}>
+                                <ManageVisibilityContextProvider>
+                                  <DialogContextProvider>
+                                    <DiagramSubscriptionProvider
+                                      diagramId={representationId}
+                                      editingContextId={editingContextId}
+                                      readOnly={readOnly}
+                                      onRepresentationUnavailable={onRepresentationUnavailable}
+                                    />
+                                  </DialogContextProvider>
+                                </ManageVisibilityContextProvider>
+                              </ApplySelectionWrapper>
+                            </EdgeGeometryContextProvider>
+                          </StoreContextProvider>
                         </DiagramContext.Provider>
                       </DiagramDescriptionContext.Provider>
                     </FullscreenContextProvider>

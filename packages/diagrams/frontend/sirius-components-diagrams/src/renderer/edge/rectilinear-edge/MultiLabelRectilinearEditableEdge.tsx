@@ -12,8 +12,10 @@
  *******************************************************************************/
 
 import { useTheme } from '@mui/material/styles';
-import { BaseEdge, Edge, XYPosition } from '@xyflow/react';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { BaseEdge, Edge } from '@xyflow/react';
+import { memo, useContext, useEffect, useMemo } from 'react';
+import { EdgeGeometryContext } from '../../../contexts/EdgeGeometryContext';
+import { EdgeGeometryContextValue } from '../../../contexts/EdgeGeometryContext.types';
 import { useStore } from '../../../representation/useStore';
 import { useConnectorEdgeStyle } from '../../connector/useConnectorEdgeStyle';
 import { BendPoint, TemporaryMovingLine } from '../BendPoint';
@@ -23,10 +25,7 @@ import { EdgeCreationHandle } from '../EdgeCreationHandle';
 import { multiLabelEdgeStyle } from '../MultiLabelEdge';
 import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge.types';
-import { determineSegmentAxis, getMiddlePoint, isMultipleOfTwo } from './RectilinearEdgeCalculation';
-import { createGeometry } from '../geometry/edgeGeometry';
-import { useBendingPoints } from './useBendingPoints';
-import { useTemporaryLines } from './useTemporaryLines';
+import { determineSegmentAxis } from './RectilinearEdgeCalculation';
 
 export const MultiLabelRectilinearEditableEdge = memo(
   ({
@@ -38,98 +37,17 @@ export const MultiLabelRectilinearEditableEdge = memo(
     selected,
     sourcePosition,
     targetPosition,
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    bendingPoints,
-    customEdge,
-    sourceNode,
-    sourceHandleId,
-    targetNode,
-    targetHandleId,
+    geometry,
   }: MultiLabelEditableEdgeProps<Edge<MultiLabelEdgeData>>) => {
     const faded = !!data?.faded;
+    const { onDragStart, onBendingPointDrag, onBendingPointDragStop, onTemporaryLineDrag, onTemporaryLineDragStop } =
+      useContext<EdgeGeometryContextValue>(EdgeGeometryContext);
     const { setEdges } = useStore();
     const theme = useTheme();
-
-    const [source, setSource] = useState<XYPosition>({ x: sourceX, y: sourceY });
-    const [target, setTarget] = useState<XYPosition>({ x: targetX, y: targetY });
-
-    useEffect(() => {
-      setSource({ x: sourceX, y: sourceY });
-    }, [sourceX, sourceY]);
-
-    useEffect(() => {
-      setTarget({ x: targetX, y: targetY });
-    }, [targetX, targetY]);
-
-    const {
-      localBendingPoints,
-      isBendingPointDragged,
-      setLocalBendingPoints,
-      onBendingPointDragStop,
-      onBendingPointDrag,
-    } = useBendingPoints(
-      id,
-      bendingPoints,
-      source,
-      setSource,
-      sourceNode,
-      sourceHandleId ?? '',
-      sourcePosition,
-      target,
-      setTarget,
-      targetNode,
-      targetHandleId ?? '',
-      targetPosition,
-      customEdge
-    );
-
-    const { middleBendingPoints, isSegmentDragged, onDragStart, onTemporaryLineDragStop, onTemporaryLineDrag } =
-      useTemporaryLines(
-        id,
-        bendingPoints,
-        localBendingPoints,
-        setLocalBendingPoints,
-        sourceNode,
-        sourceHandleId ?? '',
-        sourcePosition,
-        source,
-        setSource,
-        targetNode,
-        targetHandleId ?? '',
-        targetPosition,
-        target,
-        setTarget
-      );
+    const { source, target, bendingPoints, middlePoints, path: edgePath, center: edgeCenter } = geometry;
 
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
     const { style: connectionFeedbackStyle } = useConnectorEdgeStyle(data ? data.descriptionId : '', !!data?.isHovered);
-
-    const edgeCenter: { position: XYPosition; segmentDirection: 'x' | 'y' | null } = useMemo(() => {
-      let pointsSource = bendingPoints.map((bendingPoint) => ({ x: bendingPoint.x, y: bendingPoint.y }));
-      if (isMultipleOfTwo(pointsSource.length)) {
-        //if there is an even number of bend points, this means that there is an odd number of segments
-        const prevPoint: XYPosition | undefined =
-          pointsSource.length === 0 ? source : pointsSource[Math.floor(pointsSource.length / 2) - 1];
-        const middlePoint: XYPosition | undefined =
-          pointsSource.length === 0 ? target : pointsSource[Math.floor(pointsSource.length / 2)];
-        return prevPoint && middlePoint
-          ? {
-              position: getMiddlePoint(prevPoint, middlePoint), //Place in the center of the middle segment
-              segmentDirection: determineSegmentAxis(prevPoint, middlePoint),
-            }
-          : { position: { x: 0, y: 0 }, segmentDirection: null };
-      } else {
-        return {
-          position: pointsSource[Math.floor(pointsSource.length / 2)] ?? { x: 0, y: 0 }, //Place on the middle point
-          segmentDirection: null,
-        };
-      }
-    }, [source, target, bendingPoints.map((point) => `${point.x}:${point.y}`).join()]);
-
-    const edgePath: string = createGeometry(source, target, localBendingPoints, customEdge).path;
 
     const hasDashOverride = useMemo(() => {
       return Boolean(style?.strokeDasharray || connectionFeedbackStyle?.strokeDasharray);
@@ -161,21 +79,14 @@ export const MultiLabelRectilinearEditableEdge = memo(
     }, [connectionFeedbackStyle, crossingDashArray, edgeStyle]);
 
     useEffect(() => {
-      setEdges((prevEdges) =>
-        prevEdges.map((prevEdge) => {
-          if (prevEdge.id === id && prevEdge.data) {
-            return {
-              ...prevEdge,
-              data: {
-                ...prevEdge.data,
-                edgePath,
-              },
-            };
-          }
-          return prevEdge;
-        })
-      );
-    }, [edgePath]);
+      if (edgePath !== data?.edgePath) {
+        setEdges((edges) =>
+          edges.map((edge) => {
+            return edge.id === id && edge.data ? { ...edge, data: { ...edge.data, edgePath } } : edge;
+          })
+        );
+      }
+    }, [edgePath, data?.edgePath, id, setEdges]);
 
     return (
       <>
@@ -188,15 +99,12 @@ export const MultiLabelRectilinearEditableEdge = memo(
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
         {selected ? (
-          <EdgeCreationHandle
-            edgeId={id}
-            edgePath={edgePath}
-            isPathDragged={isSegmentDragged || isBendingPointDragged}></EdgeCreationHandle>
+          <EdgeCreationHandle edgeId={id} edgePath={edgePath} isPathDragged={geometry.isDragging}></EdgeCreationHandle>
         ) : null}
         {selected &&
-          localBendingPoints &&
-          localBendingPoints.map((point, index) => {
-            const reorderBendPoint = [...localBendingPoints].sort((a, b) => a.pathOrder - b.pathOrder);
+          bendingPoints &&
+          bendingPoints.map((point, index) => {
+            const reorderBendPoint = [...bendingPoints].sort((a, b) => a.pathOrder - b.pathOrder);
             const prevPoint = reorderBendPoint[point.pathOrder - 1];
             const direction = prevPoint ? determineSegmentAxis(prevPoint, point) : determineSegmentAxis(source, point);
             return (
@@ -206,15 +114,16 @@ export const MultiLabelRectilinearEditableEdge = memo(
                 y={point.y}
                 index={index}
                 direction={direction}
-                onDrag={onBendingPointDrag}
-                onDragStop={onBendingPointDragStop}
+                onDragStart={(_eventData, index, direction) => onDragStart(id, index, direction, false)}
+                onDrag={(eventData, index, direction) => onBendingPointDrag(id, eventData, index, direction)}
+                onDragStop={(eventData, index) => onBendingPointDragStop(id, eventData, index)}
                 temporary={false}
               />
             );
           })}
         {selected &&
-          middleBendingPoints &&
-          middleBendingPoints.map((point, index) => (
+          middlePoints &&
+          middlePoints.map((point, index) => (
             <TemporaryMovingLine
               key={index}
               x={point.x}
@@ -222,9 +131,9 @@ export const MultiLabelRectilinearEditableEdge = memo(
               direction={point.direction}
               segmentLength={point.segmentLength}
               index={index}
-              onDragStart={onDragStart}
-              onDrag={onTemporaryLineDrag}
-              onDragStop={onTemporaryLineDragStop}
+              onDragStart={(_eventData, index, direction) => onDragStart(id, index, direction, true)}
+              onDrag={(eventData, index, direction) => onTemporaryLineDrag(id, eventData, index, direction)}
+              onDragStop={(eventData, index) => onTemporaryLineDragStop(id, eventData, index)}
             />
           ))}
         {data ? (
@@ -234,10 +143,10 @@ export const MultiLabelRectilinearEditableEdge = memo(
             selected={!!selected}
             sourcePosition={sourcePosition}
             targetPosition={targetPosition}
-            sourceX={sourceX}
-            sourceY={sourceY}
-            targetX={targetX}
-            targetY={targetY}
+            sourceX={source.x}
+            sourceY={source.y}
+            targetX={target.x}
+            targetY={target.y}
             edgeCenterPosition={edgeCenter.position}
             edgeCenterSegmentDirection={edgeCenter.segmentDirection}
           />
