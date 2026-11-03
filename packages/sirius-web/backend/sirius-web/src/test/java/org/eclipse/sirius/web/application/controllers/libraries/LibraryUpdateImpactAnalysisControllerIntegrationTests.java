@@ -104,7 +104,7 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
         Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
         assertThat(optionalLibrary).isPresent();
 
-        Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", optionalLibrary.get().getId());
+        Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", "papaya:sirius-web-tests-data@3.0.0");
         var result = this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
         int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
         assertThat(nbElementDeleted).isEqualTo(0);
@@ -166,7 +166,7 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
     @GivenSiriusWebServer
     @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the update of a dependency that does not exist, then the report contains an error message")
     public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheUpdateOfADependencyTheDoesNotExistThenTheReportContainsAnErrorMessage() {
-        Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", UUID.nameUUIDFromBytes("failingLibraryId".getBytes()));
+        Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", "papaya:missing-library@1.0.0");
         var result = this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
         int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
         assertThat(nbElementDeleted).isEqualTo(0);
@@ -228,7 +228,7 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
         };
 
         Runnable getUpdateLibraryImpactAnalysisReport = () -> {
-            Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", optionalLibrary.get().getId());
+            Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", "papaya:sirius-web-tests-data@3.0.0");
             this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
         };
 

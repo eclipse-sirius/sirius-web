@@ -48,7 +48,7 @@ extend type Object {
 }
 
 extend type EditingContext {
-  updateLibraryImpactAnalysisReport(libraryId: ID!): ImpactAnalysisReport!
+  updateLibraryImpactAnalysisReport(libraryId: LibraryId!): ImpactAnalysisReport!
 }
 
 input PublishLibrariesInput {
@@ -73,7 +73,7 @@ union ImportLibrariesPayload = ErrorPayload | SuccessPayload
 input UpdateLibraryInput {
   id: ID!
   editingContextId: ID!
-  libraryId: String!
+  libraryId: LibraryId!
 }
 
 union UpdateLibraryPayload = ErrorPayload | SuccessPayload

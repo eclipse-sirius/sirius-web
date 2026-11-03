@@ -49,6 +49,7 @@ import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeIt
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -250,7 +251,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         };
 
         Runnable updateLibrary = () -> {
-            var input = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), optionalLibrary.get().getId());
+            var input = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), new LibraryId("papaya", "sirius-web-tests-data", "2.0.0"));
             var result = this.updateLibraryMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.updateLibrary.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -418,7 +419,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         };
 
         Runnable updateLibrary = () -> {
-            var updateLibraryInput = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), optionalLibrary.get().getId());
+            var updateLibraryInput = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), new LibraryId("papaya", "sirius-web-tests-data", "3.0.0"));
             var result = this.updateLibraryMutationRunner.run(updateLibraryInput);
             String typename = JsonPath.read(result.data(), "$.data.updateLibrary.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());

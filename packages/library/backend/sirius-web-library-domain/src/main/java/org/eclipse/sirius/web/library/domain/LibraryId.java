@@ -26,4 +26,9 @@ public record LibraryId(String namespace, String name, String version) {
         Objects.requireNonNull(name);
         Objects.requireNonNull(version);
     }
+
+    @Override
+    public String toString() {
+        return this.namespace + ":" + this.name + "@" + this.version;
+    }
 }
