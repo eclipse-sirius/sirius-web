@@ -18,8 +18,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
-import org.eclipse.sirius.web.library.domain.events.LibraryCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.library.domain.events.LibraryCreatedEvent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
@@ -33,13 +33,13 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author gdaniel
  */
 @Table("library")
-public class Library extends AbstractValidatingAggregateRoot<Library> implements Persistable<UUID> {
+public class Library extends AbstractValidatingAggregateRoot<Library> implements Persistable<LibraryId> {
 
     @Transient
     private boolean isNew;
 
     @Id
-    private UUID id;
+    private LibraryId id;
 
     private String namespace;
 
@@ -57,7 +57,7 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
     private Instant lastModifiedOn;
 
     @Override
-    public UUID getId() {
+    public LibraryId getId() {
         return this.id;
     }
 
@@ -144,7 +144,7 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
         public Library build(ICause cause) {
             var library = new Library();
             library.isNew = true;
-            library.id = UUID.randomUUID();
+            library.id = new LibraryId(this.namespace, this.name, this.version);
             library.namespace = Objects.requireNonNull(this.namespace);
             library.name = Objects.requireNonNull(this.name);
             library.version = Objects.requireNonNull(this.version);

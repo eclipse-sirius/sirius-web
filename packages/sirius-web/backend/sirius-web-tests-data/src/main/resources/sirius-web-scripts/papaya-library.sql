@@ -221,7 +221,6 @@ INSERT INTO document (
 );
 
 INSERT INTO library (
-  id,
   namespace,
   name,
   version,
@@ -230,7 +229,6 @@ INSERT INTO library (
   created_on,
   last_modified_on
 ) VALUES (
-  '221c7352-c371-4c88-9542-8ea015c859e6',
   'papaya',
   'java',
   '1.0.0',
@@ -369,7 +367,6 @@ INSERT INTO document (
 );
 
 INSERT INTO library (
-  id,
   namespace,
   name,
   version,
@@ -378,7 +375,6 @@ INSERT INTO library (
   created_on,
   last_modified_on
 ) VALUES (
-  '0ee984b0-7c40-4b63-bcd9-16dc5e97e455',
   'papaya',
   'reactivestreams',
   '1.0.0',
@@ -466,7 +462,6 @@ INSERT INTO document (
 );
 
 INSERT INTO library (
-  id,
   namespace,
   name,
   version,
@@ -475,7 +470,6 @@ INSERT INTO library (
   created_on,
   last_modified_on
 ) VALUES (
-  '040bcff4-fe92-40d3-8180-41403ffc08bf',
   'papaya',
   'sirius-web-tests-data',
   '1.0.0',
@@ -563,7 +557,6 @@ INSERT INTO document (
 );
 
 INSERT INTO library (
-  id,
   namespace,
   name,
   version,
@@ -572,7 +565,6 @@ INSERT INTO library (
   created_on,
   last_modified_on
 ) VALUES (
-  '96721905-d5e1-40fe-ae71-8c44123661f8',
   'papaya',
   'sirius-web-tests-data',
   '2.0.0',
@@ -653,7 +645,6 @@ INSERT INTO document (
 );
 
 INSERT INTO library (
-  id,
   namespace,
   name,
   version,
@@ -662,7 +653,6 @@ INSERT INTO library (
   created_on,
   last_modified_on
 ) VALUES (
-  'af292062-6a2a-4484-a671-edae354a8a13',
   'papaya',
   'sirius-web-tests-data',
   '3.0.0',
@@ -1284,7 +1274,6 @@ INSERT INTO document (
 );
 
 INSERT INTO library (
-  id,
   namespace,
   name,
   version,
@@ -1293,7 +1282,6 @@ INSERT INTO library (
   created_on,
   last_modified_on
 ) VALUES (
-  '1819334a-e362-4997-9950-67faa8d32042',
   'papaya',
   'java',
   '0.0.3',

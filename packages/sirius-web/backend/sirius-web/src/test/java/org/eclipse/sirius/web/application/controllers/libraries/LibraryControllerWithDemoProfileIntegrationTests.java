@@ -19,6 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.Map;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.LibrariesQueryRunner;
@@ -91,7 +92,7 @@ public class LibraryControllerWithDemoProfileIntegrationTests extends AbstractIn
         var name = "java";
         var version = "1.0.0";
 
-        var itExists = this.librarySearchService.existsByNamespaceAndNameAndVersion(namespace, name, version);
+        var itExists = this.librarySearchService.existsById(new LibraryId(namespace, name, version));
         assertThat(itExists).isTrue();
 
         Map<String, Object> variables = Map.of("namespace", namespace, "name", name, "version", version);

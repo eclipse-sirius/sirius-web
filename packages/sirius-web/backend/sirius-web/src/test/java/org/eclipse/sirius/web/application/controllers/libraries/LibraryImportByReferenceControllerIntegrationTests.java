@@ -77,7 +77,7 @@ public class LibraryImportByReferenceControllerIntegrationTests extends Abstract
     @GivenSiriusWebServer
     @DisplayName("Given a project, when a library with dependencies is imported as a reference, then the editing context contains the reference to the libraries")
     public void givenProjectWhenLibraryWithDependenciesIsImportedAsReferenceThenEditingContextContainsTheReferencedLibraries() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "reactivestreams", "1.0.0");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "reactivestreams", "1.0.0"));
         assertThat(optionalLibrary).isPresent();
         Library library = optionalLibrary.get();
         var importLibrariesInput = new ImportLibrariesInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), "import", List.of(new LibraryId(library.getNamespace(), library.getName(),

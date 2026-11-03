@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.library.services.api;
 
+import org.eclipse.sirius.web.library.domain.LibraryId;
+
 /**
  * Used to interact with the editing context of libraries.
  *
  * @author sbegaudeau
  */
 public interface ILibraryEditingContextApplicationService {
-    String getCurrentEditingContextId(String namespace, String name, String version);
+    String getCurrentEditingContextId(LibraryId libraryId);
 }
