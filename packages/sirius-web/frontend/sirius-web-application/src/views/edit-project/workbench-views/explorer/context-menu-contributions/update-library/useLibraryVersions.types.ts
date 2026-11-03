@@ -41,7 +41,7 @@ export interface GQLLibraryVersionsEdge {
 }
 
 export interface GQLLibraryVersion {
-  legacyId: string;
+  id: string;
   namespace: string;
   name: string;
   version: string;

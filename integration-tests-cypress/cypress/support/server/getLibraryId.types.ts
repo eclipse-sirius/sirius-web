@@ -25,5 +25,5 @@ export interface Viewer {
 }
 
 export interface Library {
-  legacyId: string;
+  id: string;
 }

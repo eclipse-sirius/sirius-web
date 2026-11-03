@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.tests.graphql;
 
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
@@ -56,7 +57,13 @@ public class UpdateLibraryMutationRunner implements IMutationRunner<UpdateLibrar
 
     @Override
     public GraphQLResult run(UpdateLibraryInput input) {
-        return this.graphQLRequestor.execute(UPDATE_LIBRARY, input);
+        var libraryId = input.libraryId();
+        Map<String, Object> inputMap = Map.of(
+                "id", input.id().toString(),
+                "editingContextId", input.editingContextId(),
+                "libraryId", libraryId.namespace() + ":" + libraryId.name() + "@" + libraryId.version()
+        );
+        return this.graphQLRequestor.execute(UPDATE_LIBRARY, Map.of("input", inputMap));
     }
 
 }
