@@ -13,6 +13,7 @@
 == Bug fixes
 
 * Fix an issue where elements filtered by an explorer filter could be rendered for a brief moment during loading.
+* Wrapped labels now fit inside their nodes immediately after using Adjust size.
 
 
 == New features

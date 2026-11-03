@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diagramlabel:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagramlabel="domain://diagramLabel">
+	<entity1s name="A sufficiently long requirement description that wraps over several lines when the node returns to its default width" />
+</diagramlabel:Root>

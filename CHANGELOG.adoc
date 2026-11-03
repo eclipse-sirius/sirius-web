@@ -31,6 +31,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6035[#6035] [tree] Fix an issue where explorer subscription was initiated before retrieving explorer filters
+- https://github.com/eclipse-sirius/sirius-web/issues/6671[#6671] [diagram] Preserve wrapped inside labels within their nodes after using Adjust size.
 
 
 === New Features

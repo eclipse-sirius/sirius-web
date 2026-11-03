@@ -73,11 +73,12 @@ export { computePreviousPosition, computePreviousSize } from './renderer/layout/
 export { useElkLayout } from './renderer/layout/elk/useElkLayout';
 export type { UseElkLayoutValue } from './renderer/layout/elk/useElkLayout.types';
 export { getNodeBorderWidth } from './renderer/layout/getNodeBorderWidth';
-export type { ForcedDimensions, RawDiagram } from './renderer/layout/layout.types';
+export type { ForcedDimensions, LabelSize, RawDiagram } from './renderer/layout/layout.types';
 export * from './renderer/layout/layoutBorderNodes';
 export type { ILayoutEngine, INodeLayoutHandler } from './renderer/layout/LayoutEngine.types';
 export * from './renderer/layout/layoutNode';
 export { defaultHeight, defaultWidth } from './renderer/layout/layoutParams';
+export { measureInsideLabel } from './renderer/layout/measureInsideLabel';
 export { useLayout } from './renderer/layout/useLayout';
 export { useSynchronizeLayoutData } from './renderer/layout/useSynchronizeLayoutData';
 export { NodeContext } from './renderer/node/NodeContext';
