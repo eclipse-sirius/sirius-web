@@ -45,7 +45,7 @@ export class Papaya {
   public createPapayaLibraryExampleProject(): Cypress.Chainable<CreatedProjectData> {
     return cy.getLibraryId('papaya', 'java', '0.0.3').then((res) => {
       return cy
-        .createProject('PapayaLibrary', 'papaya-library-template', [res.body.data.viewer.library.legacyId])
+        .createProject('PapayaLibrary', 'papaya-library-template', [res.body.data.viewer.library.id])
         .then((res) => {
           const payload = res.body.data.createProject;
           if (isCreateProjectSuccessPayload(payload)) {

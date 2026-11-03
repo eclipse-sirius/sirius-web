@@ -29,7 +29,7 @@ const getLibraryVersionsQuery = gql`
         versions(page: $page, limit: $limit) {
           edges {
             node {
-              legacyId
+              id
               namespace
               name
               version

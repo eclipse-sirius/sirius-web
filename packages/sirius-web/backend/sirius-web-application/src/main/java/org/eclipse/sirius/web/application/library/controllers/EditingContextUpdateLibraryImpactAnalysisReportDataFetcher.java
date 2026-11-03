@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.web.application.library.dto.InvokeUpdateLibraryImpactAnalysisInput;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 
 import graphql.schema.DataFetchingEnvironment;
 import reactor.core.publisher.Mono;
@@ -51,10 +52,10 @@ public class EditingContextUpdateLibraryImpactAnalysisReportDataFetcher implemen
         Map<String, Object> localContext = environment.getLocalContext();
 
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);
-        String libraryId = environment.getArgument(LIBRARY_ID);
+        LibraryId libraryId = environment.getArgument(LIBRARY_ID);
 
         if (editingContextId != null && libraryId != null) {
-            InvokeUpdateLibraryImpactAnalysisInput input = new InvokeUpdateLibraryImpactAnalysisInput(UUID.randomUUID(), editingContextId, UUID.fromString(libraryId));
+            InvokeUpdateLibraryImpactAnalysisInput input = new InvokeUpdateLibraryImpactAnalysisInput(UUID.randomUUID(), editingContextId, libraryId);
             result = this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                     .filter(InvokeImpactAnalysisSuccessPayload.class::isInstance)
                     .map(InvokeImpactAnalysisSuccessPayload.class::cast)
