@@ -112,6 +112,10 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 ----
 +
 Use `getNodeBorderWidth` from `@eclipse-sirius/sirius-components-diagrams` when the layout depends on the node border.
++
+After determining the node width, call `layoutEngine.measureInsideLabel(node, contentWidth)` to measure its wrapped inside label at the available content width, excluding node borders.
+The method returns `LabelSize` (`width` and `height`) without updating the node, or `null` when no measurement is available.
+Use the returned dimensions to update the label before calculating the node height.
 5. Extend the GraphQL document with the extra fields required by your node (for example through a `DocumentTransform` contributed to Apollo).
 6. Finally, register everything in the `NodeTypeRegistry` passed to `DiagramRepresentationConfiguration`:
 +
