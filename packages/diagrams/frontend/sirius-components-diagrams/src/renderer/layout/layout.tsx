@@ -33,7 +33,7 @@ import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
 import { computePreviousPosition } from './bounds';
 import { getNodeBorderWidth } from './getNodeBorderWidth';
-import { RawDiagram } from './layout.types';
+import { InsideLabelMeasurer, RawDiagram } from './layout.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { computeNewlyNodePosition, getChildren } from './layoutNode';
 import { gap } from './layoutParams';
@@ -42,12 +42,31 @@ const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.ty
 
 const getNodeBorderWidthForLabel = (node: Node<NodeData>, visibleNodes: Node<NodeData>[]): number => {
   if (node.parentId) {
-    const parentNodeParent = visibleNodes.find((node) => node.id === node.parentId);
+    const parentNodeParent = visibleNodes.find((candidate) => candidate.id === node.parentId);
     if (parentNodeParent && parentNodeParent.type === 'listNode') {
       return getNodeBorderWidthForLabel(parentNodeParent, visibleNodes);
     }
   }
   return getNodeBorderWidth(node.data.style);
+};
+
+export const createInsideLabelMeasurer = (hiddenContainer: HTMLDivElement): InsideLabelMeasurer => {
+  const labelElements = new Map(
+    Array.from(hiddenContainer.querySelectorAll<HTMLElement>('[id]')).map((element) => [element.id, element])
+  );
+  return (node, contentWidth) => {
+    const label = node.data.insideLabel;
+    if (!label || label.overflowStrategy !== 'WRAP') {
+      return null;
+    }
+    const element = labelElements.get(`${label.id}-label`);
+    if (!element) {
+      return null;
+    }
+    element.style.maxWidth = `${Math.max(0, contentWidth)}px`;
+    const { width, height } = element.getBoundingClientRect();
+    return { width, height };
+  };
 };
 
 export const prepareLayoutArea = (
@@ -219,7 +238,8 @@ export const layout = (
   referencePosition: GQLReferencePosition | null,
   layoutDirection: GQLArrangeLayoutDirection,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[],
-  autoLayout: boolean
+  autoLayout: boolean,
+  labelMeasurer: InsideLabelMeasurer
 ): RawDiagram => {
   layoutDiagram(
     previousDiagram,
@@ -227,8 +247,10 @@ export const layout = (
     referencePosition,
     layoutDirection,
     nodeLayoutHandlerContributions,
-    autoLayout
+    autoLayout,
+    labelMeasurer
   );
+
   return diagram;
 };
 
@@ -238,14 +260,15 @@ const layoutDiagram = (
   referencePosition: GQLReferencePosition | null,
   layoutDirection: GQLArrangeLayoutDirection,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[],
-  autoLayout: boolean
+  autoLayout: boolean,
+  labelMeasurer: InsideLabelMeasurer
 ) => {
   const allVisibleNodes = diagram.nodes.filter(
     (node) => !node.hidden && !isEdgeAnchorNode(node) && !isHandleNode(node)
   );
   const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
 
-  const layoutEngine: ILayoutEngine = new LayoutEngine();
+  const layoutEngine: ILayoutEngine = new LayoutEngine(labelMeasurer);
 
   nodeLayoutHandlerContributions.forEach((nodeLayoutHandler) =>
     layoutEngine.registerNodeLayoutHandlerContribution(nodeLayoutHandler)
@@ -307,9 +330,13 @@ export const prepareLayoutLabels = (previousDiagram: RawDiagram | null, diagram:
   layoutEdgeLabels(previousDiagram, diagram.edges);
 };
 
-export const prepareListNodeLayout = (previousDiagram: RawDiagram | null, diagram: RawDiagram): void => {
+export const prepareListNodeLayout = (
+  previousDiagram: RawDiagram | null,
+  diagram: RawDiagram,
+  labelMeasurer: InsideLabelMeasurer
+): void => {
   const listNodeLayoutHandler = new ListNodeLayoutHandler();
-  const layoutEngine: ILayoutEngine = new LayoutEngine();
+  const layoutEngine: ILayoutEngine = new LayoutEngine(labelMeasurer);
 
   const visibleNodes: Node<NodeData, DiagramNodeType>[] = diagram.nodes.filter((node) => !node.hidden);
   const listNodes: Node<ListNodeData, DiagramNodeType>[] = visibleNodes.filter(isListNode);

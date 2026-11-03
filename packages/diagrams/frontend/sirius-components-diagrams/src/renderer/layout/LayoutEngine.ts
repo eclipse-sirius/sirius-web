@@ -18,7 +18,7 @@ import { FreeFormNodeLayoutHandler } from './FreeFormNodeLayoutHandler';
 import { IconLabelNodeLayoutHandler } from './IconLabelNodeLayoutHandler';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
-import { RawDiagram } from './layout.types';
+import { InsideLabelMeasurer, LabelSize, RawDiagram } from './layout.types';
 
 export class LayoutEngine implements ILayoutEngine {
   nodeLayoutHandlers: INodeLayoutHandler<NodeData>[] = [
@@ -26,6 +26,12 @@ export class LayoutEngine implements ILayoutEngine {
     new ListNodeLayoutHandler(),
     new IconLabelNodeLayoutHandler(),
   ];
+
+  constructor(private readonly labelMeasurer: InsideLabelMeasurer) {}
+
+  public measureInsideLabel(node: Node<NodeData>, contentWidth: number): LabelSize | null {
+    return this.labelMeasurer(node, contentWidth);
+  }
 
   public layoutNodes(
     previousDiagram: RawDiagram | null,
