@@ -19,26 +19,24 @@ import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition, computePreviousSize } from './bounds';
 import { getNodeBorderWidth } from './getNodeBorderWidth';
 import { ForcedDimensions, RawDiagram } from './layout.types';
-import { getBorderNodeExtent } from './layoutBorderNodes';
+import { computeNodeHeight, computeNodeWidth } from './nodeDimensions';
 import {
   applyRatioOnNewNodeSizeValue,
   computeNodesBox,
   getChildNodePosition,
-  getDefaultOrMinHeight,
-  getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
   getHeaderHeightFootprint,
   getInsideLabelWidthConstraint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
-  setBorderNodesPosition,
+  updateBorderNodesLayout,
 } from './layoutNode';
 import { rectangularNodePadding } from './layoutParams';
 import { updateInsideLabelSize } from './updateInsideLabelSize';
 
 export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNodeData> {
-  public canHandle(node: Node<NodeData, DiagramNodeType>) {
+  public canHandle(node: Node<NodeData, DiagramNodeType>): boolean {
     return node.type === 'freeFormNode';
   }
 
@@ -65,7 +63,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
         forceDimensions
       );
     } else {
-      this.handleLeafNode(layoutEngine, previousDiagram, node, visibleNodes, borderWidth, forceDimensions);
+      this.handleLeafNode(layoutEngine, previousDiagram, node, borderWidth, forceDimensions);
     }
   }
 
@@ -79,38 +77,33 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
-    const previousNodesById = new Map(
+    const previousNodesById: Map<string, Node<NodeData, DiagramNodeType>> = new Map(
       (previousDiagram?.nodes ?? []).map((previousNode) => [previousNode.id, previousNode])
     );
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
-    const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
+    const contentChildren = directChildren.filter((child) => !child.data.isBorderNode);
 
-    directNodesChildren.forEach((child, index) => {
-      const previousChild = previousNodesById.get(child.id);
-      const previousChildPosition = computePreviousPosition(previousChild, child);
-      const createdChild = newlyAddedNodes.find((candidate) => candidate.id === child.id);
-      let x: number;
-      if (createdChild) {
-        x = createdChild.position.x;
-      } else if (previousChildPosition) {
-        x = Math.max(previousChildPosition.x, borderWidth + rectangularNodePadding);
-      } else {
-        x = getChildNodePosition(visibleNodes, child, 0, borderWidth, directNodesChildren[index - 1]).x;
-      }
-      child.position = { ...child.position, x };
-    });
+    this.positionChildrenHorizontally(previousNodesById, visibleNodes, contentChildren, newlyAddedNodes, borderWidth);
 
     // Update node to layout size
-    let childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
+    let childrenContentBox = computeNodesBox(visibleNodes, contentChildren);
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
-    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
     const labelOnlyWidth =
       rectangularNodePadding + getInsideLabelWidthConstraint(node.data.insideLabel) + rectangularNodePadding;
 
-    const nodeMinComputeWidth =
+    const minComputedWidth =
       Math.max(
         directChildrenAwareNodeWidth,
         labelOnlyWidth,
@@ -120,76 +113,47 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
 
     const previousNode = previousNodesById.get(node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
-    const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    if (node.data.resizedByUser && !forceDimensions?.width) {
-      if (nodeMinComputeWidth > previousDimensions.width) {
-        node.width = nodeMinComputeWidth;
-      } else {
-        node.width = previousDimensions.width;
-      }
-    } else {
-      node.width = nodeWidth;
-    }
+    node.width = computeNodeWidth(node, minComputedWidth, previousDimensions.width, forceDimensions?.width);
 
     updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - borderWidth * 2);
     const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
     const footerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'BOTTOM', borderWidth);
     // Position children vertically only after measuring the header at its calculated width.
-    directNodesChildren.forEach((child) => {
-      const previousNode = previousNodesById.get(child.id);
-      const previousPosition = computePreviousPosition(previousNode, child);
-      const createdNode = newlyAddedNodes.find((n) => n.id === child.id);
-
-      if (!!createdNode) {
-        child.position = createdNode.position;
-        if (child.position.y < borderWidth + rectangularNodePadding + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + rectangularNodePadding + headerHeightFootprint };
-        }
-      } else if (previousPosition) {
-        child.position = previousPosition;
-        if (child.position.y < borderWidth + rectangularNodePadding + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + rectangularNodePadding + headerHeightFootprint };
-        }
-        if (child.position.x < borderWidth + rectangularNodePadding) {
-          child.position = { ...child.position, x: borderWidth + rectangularNodePadding };
-        }
-      } else {
-        const { y } = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
-        child.position = { ...child.position, y };
-      }
-    });
-
-    childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
+    this.positionChildrenVertically(
+      previousNodesById,
+      visibleNodes,
+      contentChildren,
+      newlyAddedNodes,
+      borderWidth,
+      headerHeightFootprint
+    );
+    childrenContentBox = computeNodesBox(visibleNodes, contentChildren);
 
     // WARN: the label is not used for the height because children are already position under the label
     const directChildrenAwareNodeHeight =
       childrenContentBox.y + childrenContentBox.height + footerHeightFootprint + rectangularNodePadding;
-    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
-    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
 
-    const nodeMinComputeHeight =
+    const minComputedHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth;
 
-    const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
-    if (node.data.resizedByUser && !forceDimensions?.height) {
-      if (nodeMinComputeHeight > previousDimensions.height) {
-        node.height = nodeMinComputeHeight;
-      } else {
-        node.height = previousDimensions.height;
-      }
-    } else {
-      node.height = nodeHeight;
-    }
+    node.height = computeNodeHeight(node, minComputedHeight, previousDimensions.height, forceDimensions?.height);
 
     if (node.data.nodeDescription?.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
 
-    borderNodes.forEach((borderNode) => {
-      borderNode.extent = getBorderNodeExtent(node, borderNode);
-    });
-    setBorderNodesPosition(borderNodes, node, previousDiagram);
+    updateBorderNodesLayout(node, borderNodes, previousNodesById);
 
     node.data.minComputedWidth =
       Math.max(
@@ -212,44 +176,81 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
     node: Node<FreeFormNodeData, 'freeFormNode'>,
-    _visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
-    const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel) + borderWidth * 2;
+    const minComputedWidth = getInsideLabelWidthConstraint(node.data.insideLabel) + borderWidth * 2;
 
     const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
-    const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    if (node.data.resizedByUser && !forceDimensions?.width) {
-      if (nodeMinComputeWidth > previousDimensions.width) {
-        node.width = nodeMinComputeWidth;
-      } else {
-        node.width = previousDimensions.width;
-      }
-    } else {
-      node.width = nodeWidth;
-    }
+    node.width = computeNodeWidth(node, minComputedWidth, previousDimensions.width, forceDimensions?.width);
 
     updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - borderWidth * 2);
-    const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
-    const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
-    if (node.data.resizedByUser && !forceDimensions?.height) {
-      if (nodeMinComputeHeight > previousDimensions.height) {
-        node.height = nodeMinComputeHeight;
-      } else {
-        node.height = previousDimensions.height;
-      }
-    } else {
-      node.height = nodeHeight;
-    }
+    const minComputedHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
+    node.height = computeNodeHeight(node, minComputedHeight, previousDimensions.height, forceDimensions?.height);
 
     if (node.data.nodeDescription?.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
 
-    node.data.minComputedWidth = nodeMinComputeWidth;
-    node.data.minComputedHeight = nodeMinComputeHeight;
+    node.data.minComputedWidth = minComputedWidth;
+    node.data.minComputedHeight = minComputedHeight;
+  }
+
+  private positionChildrenHorizontally(
+    previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    contentChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
+    borderWidth: number
+  ): void {
+    contentChildren.forEach((child, index) => {
+      const previousChild = previousNodesById.get(child.id);
+      const previousChildPosition = computePreviousPosition(previousChild, child);
+      const createdChild = newlyAddedNodes.find((candidate) => candidate.id === child.id);
+      let x: number;
+      if (createdChild) {
+        x = createdChild.position.x;
+      } else if (previousChildPosition) {
+        x = Math.max(previousChildPosition.x, borderWidth + rectangularNodePadding);
+      } else {
+        x = getChildNodePosition(visibleNodes, child, 0, borderWidth, contentChildren[index - 1]).x;
+      }
+      child.position = { ...child.position, x };
+    });
+  }
+
+  private positionChildrenVertically(
+    previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    contentChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
+    borderWidth: number,
+    headerHeightFootprint: number
+  ): void {
+    contentChildren.forEach((child) => {
+      const previousNode = previousNodesById.get(child.id);
+      const previousPosition = computePreviousPosition(previousNode, child);
+      const createdNode = newlyAddedNodes.find((n) => n.id === child.id);
+
+      if (!!createdNode) {
+        child.position = createdNode.position;
+        if (child.position.y < borderWidth + rectangularNodePadding + headerHeightFootprint) {
+          child.position = { ...child.position, y: borderWidth + rectangularNodePadding + headerHeightFootprint };
+        }
+      } else if (previousPosition) {
+        child.position = previousPosition;
+        if (child.position.y < borderWidth + rectangularNodePadding + headerHeightFootprint) {
+          child.position = { ...child.position, y: borderWidth + rectangularNodePadding + headerHeightFootprint };
+        }
+        if (child.position.x < borderWidth + rectangularNodePadding) {
+          child.position = { ...child.position, x: borderWidth + rectangularNodePadding };
+        }
+      } else {
+        const { y } = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
+        child.position = { ...child.position, y };
+      }
+    });
   }
 }

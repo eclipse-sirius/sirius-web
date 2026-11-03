@@ -27,6 +27,9 @@ Implementations must reuse this context during connector tool execution so that 
 The `legacyId` field is deprecated and shouldn't be used: it is a temporary identifier that will be removed soon.
 - https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Add the `LibraryId` scalar, serialized as `namespace:name@version`.
 `CreateProjectInput#libraryIds` and `ImportLibrariesInput#libraryIds` now accept `[LibraryId!]!`, and the Java `CreateProjectInput`, `ICreateProjectInput`, and `ImportLibrariesInput` use `List<LibraryId>`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6671[#6671] [diagram] Node layout handlers have also been refactored for clarity, separating horizontal and vertical child positioning into dedicated methods and sharing dimension and border node layout helpers.
+Downstream applications with custom nodes can follow the same structure in their layout handlers, using `EllipseNodeLayoutHandler` as an example.
+Adopting this refactoring is optional.
 
 
 === Dependency update
