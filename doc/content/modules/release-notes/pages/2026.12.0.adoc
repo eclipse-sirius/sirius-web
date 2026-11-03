@@ -11,8 +11,7 @@
 Custom implementations must reuse the provided context during connector tool execution.
 - The `FormEventProcessor` constructor no longer accepts the `representationDescriptionSearchService` parameter of type `IRepresentationDescriptionSearchService`.
 Custom factories and subclasses must remove this argument from constructor calls.
-- Use the `LibraryId` scalar for `UpdateLibraryInput#libraryId` and `EditingContext#updateLibraryImpactAnalysisReport`.
-The Java `UpdateLibraryInput`, `InvokeUpdateLibraryImpactAnalysisInput`, and `IUpdateLibraryExecutor#updateLibrary` now use `LibraryId` instead of `UUID` for the library identifier.
+- Use the new `LibraryId` scalar instead of an UUID for queries and mutations related to the libraries in the GraphQL schema.
 
 
 == Bug fixes
