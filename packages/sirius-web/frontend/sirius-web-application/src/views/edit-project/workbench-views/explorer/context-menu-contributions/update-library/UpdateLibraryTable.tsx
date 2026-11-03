@@ -114,7 +114,7 @@ export const UpdateLibraryTable = ({ namespace, name, version, onLibrarySelected
     // Configure selection
     enableMultiRowSelection: false,
     enableRowSelection: (row) => row.original.version !== version,
-    getRowId: (originalRow) => originalRow.legacyId,
+    getRowId: (originalRow) => originalRow.id,
     onRowSelectionChange: setRowSelection,
     muiTableBodyCellProps: ({ column, row }) => {
       if (column.columnDef.header === 'Select') {
