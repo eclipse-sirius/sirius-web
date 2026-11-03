@@ -41,9 +41,10 @@ import org.eclipse.sirius.web.application.studio.services.library.api.Dependency
 import org.eclipse.sirius.web.application.studio.services.library.api.IStudioLibrarySemanticDataCreationService;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -170,8 +171,8 @@ public class StudioLibrarySemanticDataCreationService implements IStudioLibraryS
                     .toList();
 
             IResult<SemanticData> semanticData = this.semanticDataCreationService.create(event, List.of(documentData.document()), documents, dependencies);
-            if (semanticData instanceof Success<SemanticData> success) {
-                result = Optional.ofNullable(success.data());
+            if (semanticData instanceof Success<SemanticData>(SemanticData data)) {
+                result = Optional.ofNullable(data);
             }
         }
         return result;
@@ -195,7 +196,7 @@ public class StudioLibrarySemanticDataCreationService implements IStudioLibraryS
                     .findFirst();
             if (optLibraryMetadata.isPresent()) {
                 LibraryMetadataAdapter libraryMetadata = optLibraryMetadata.get();
-                this.librarySearchService.findByNamespaceAndNameAndVersion(libraryMetadata.getNamespace(), libraryMetadata.getName(), libraryMetadata.getVersion())
+                this.librarySearchService.findById(new LibraryId(libraryMetadata.getNamespace(), libraryMetadata.getName(), libraryMetadata.getVersion()))
                         .ifPresent(library -> dependencies.add(library.getSemanticData()));
             } else {
                 SemanticData existingSemanticData = createdSemanticData.get(this.getResourceName(dependencyCandidate.eResource()));

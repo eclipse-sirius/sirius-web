@@ -28,10 +28,7 @@ import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
-import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateRequiredLibrary;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -44,8 +41,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProjectTemplateApplicationService implements IProjectTemplateApplicationService {
-
-    private final Logger logger = LoggerFactory.getLogger(ProjectTemplateApplicationService.class);
 
     private final List<IProjectTemplateProvider> projectTemplateProviders;
 
@@ -133,30 +128,11 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
     }
 
     private Optional<ProjectTemplateDTO> toDTO(ProjectTemplate projectTemplate) {
-        // We should load all the libraries with findAllById once #6743 is fixed.
-        List<LibraryDTO> libraryDTOs = new ArrayList<>();
-        for (ProjectTemplateRequiredLibrary projectTemplateRequiredLibrary : projectTemplate.requiredLibraries()) {
-            Optional<LibraryDTO> optionalLibraryDTO = this.toDTO(projectTemplateRequiredLibrary);
-            if (optionalLibraryDTO.isPresent()) {
-                libraryDTOs.add(optionalLibraryDTO.get());
-            } else {
-                this.logger.atWarn()
-                        .setMessage("Cannot retrieve required library {}-{}@{} for template {}")
-                        .addArgument(projectTemplateRequiredLibrary.namespace())
-                        .addArgument(projectTemplateRequiredLibrary.name())
-                        .addArgument(projectTemplateRequiredLibrary.version())
-                        .addArgument(projectTemplate.id())
-                        .log();
-                return Optional.empty();
-            }
-        }
+        List<LibraryDTO> libraryDTOs = this.librarySearchService.findAllById(projectTemplate.requiredLibraryIds()).stream()
+                .map(this.libraryMapper::toDTO)
+                .toList();
 
         return Optional.of(new ProjectTemplateDTO(projectTemplate.id(), projectTemplate.label(), projectTemplate.imageURL(), libraryDTOs));
-    }
-
-    private Optional<LibraryDTO> toDTO(ProjectTemplateRequiredLibrary library) {
-        return this.librarySearchService.findByNamespaceAndNameAndVersion(library.namespace(), library.name(), library.version())
-                .map(this.libraryMapper::toDTO);
     }
 
     private Optional<ProjectTemplate> getUploadProject() {

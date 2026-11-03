@@ -41,13 +41,13 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IProxyRemo
 import org.eclipse.sirius.web.application.library.dto.UpdateLibraryInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.studio.services.library.api.IUpdateLibraryExecutor;
-import org.eclipse.sirius.web.library.domain.Library;
-import org.eclipse.sirius.web.library.domain.LibraryId;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -88,7 +88,7 @@ public class UpdateLibraryExecutor implements IUpdateLibraryExecutor {
     public IStatus updateLibrary(ICause cause, IEditingContext editingContext, LibraryId libraryId) {
         IStatus result = new Failure(List.of());
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            Optional<Library> optionalNewLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(libraryId.namespace(), libraryId.name(), libraryId.version());
+            Optional<Library> optionalNewLibrary = this.librarySearchService.findById(libraryId);
             if (optionalNewLibrary.isPresent()) {
                 Library newLibrary = optionalNewLibrary.get();
 

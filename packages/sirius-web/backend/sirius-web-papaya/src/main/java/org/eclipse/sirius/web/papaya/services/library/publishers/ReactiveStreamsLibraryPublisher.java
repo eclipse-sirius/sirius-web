@@ -27,9 +27,10 @@ import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
-import org.eclipse.sirius.web.library.domain.Library;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.papaya.factories.ReactiveStreamsFactory;
 import org.eclipse.sirius.web.papaya.services.library.PublishPapayaLibraryCommand;
 import org.eclipse.sirius.web.papaya.services.library.api.IPapayaLibraryPublisher;
@@ -63,7 +64,7 @@ public class ReactiveStreamsLibraryPublisher implements IPapayaLibraryPublisher 
 
     @Override
     public void publish(PublishPapayaLibraryCommand command) {
-        if (this.librarySearchService.existsByNamespaceAndNameAndVersion(command.namespace(), command.name(), command.version())) {
+        if (this.librarySearchService.existsById(new LibraryId(command.namespace(), command.name(), command.version()))) {
             return;
         }
 
@@ -76,9 +77,9 @@ public class ReactiveStreamsLibraryPublisher implements IPapayaLibraryPublisher 
         resource.eAdapters().add(resourceMetadataAdapter);
         resourceSet.getResources().add(resource);
 
-        var optionalJava001Library = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.1");
-        var optionalJava002Library = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.2");
-        var optionalJava003Library = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.3");
+        var optionalJava001Library = this.librarySearchService.findById(new LibraryId("papaya", "java", "0.0.1"));
+        var optionalJava002Library = this.librarySearchService.findById(new LibraryId("papaya", "java", "0.0.2"));
+        var optionalJava003Library = this.librarySearchService.findById(new LibraryId("papaya", "java", "0.0.3"));
 
         if (command.version().equals("0.0.1") && optionalJava001Library.isPresent()) {
             var java001Library = optionalJava001Library.get();

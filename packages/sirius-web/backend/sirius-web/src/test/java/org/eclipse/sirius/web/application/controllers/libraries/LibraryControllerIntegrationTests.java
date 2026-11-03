@@ -48,13 +48,13 @@ import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescri
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
-import org.eclipse.sirius.web.library.domain.Library;
-import org.eclipse.sirius.web.library.domain.LibraryId;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.LibrariesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.PublishLibrariesMutationRunner;
@@ -175,14 +175,14 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         long updatedLibraryCount = this.librarySearchService.findAll(PageRequest.of(1, 1)).getTotalElements();
         assertThat(updatedLibraryCount).isEqualTo(initialLibraryCount + 7);
 
-        Optional<Library> optionalSharedComponentsLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "shared_components", version);
+        Optional<Library> optionalSharedComponentsLibrary = this.librarySearchService.findById(new LibraryId(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "shared_components", version));
         assertThat(optionalSharedComponentsLibrary).isPresent();
 
         var sharedComponentsLibrary = optionalSharedComponentsLibrary.get();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(sharedComponentsLibrary, description, List.of());
         this.assertThatLibraryDocumentsAreReadOnly(sharedComponentsLibrary);
 
-        Optional<Library> optionalBuckLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "buck", version);
+        Optional<Library> optionalBuckLibrary = this.librarySearchService.findById(new LibraryId(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "buck", version));
         assertThat(optionalBuckLibrary).isPresent();
 
         var buckLibrary = optionalBuckLibrary.get();
@@ -192,22 +192,22 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(buckRepresentationMetadata).hasSize(1)
                 .anySatisfy(representationMetadata -> assertThat(representationMetadata.getLabel()).isEqualTo("Domain"));
 
-        Optional<Library> humanFormLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Human Form", version);
+        Optional<Library> humanFormLibrary = this.librarySearchService.findById(new LibraryId(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Human Form", version));
         assertThat(humanFormLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(humanFormLibrary.get(), description, List.of(buckLibrary));
         this.assertThatLibraryDocumentsAreReadOnly(humanFormLibrary.get());
 
-        Optional<Library> newTableDescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "New Table Description", version);
+        Optional<Library> newTableDescriptionLibrary = this.librarySearchService.findById(new LibraryId(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "New Table Description", version));
         assertThat(newTableDescriptionLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(newTableDescriptionLibrary.get(), description, List.of(buckLibrary));
         this.assertThatLibraryDocumentsAreReadOnly(newTableDescriptionLibrary.get());
 
-        Optional<Library> rootDiagramDescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Root Diagram0", version);
+        Optional<Library> rootDiagramDescriptionLibrary = this.librarySearchService.findById(new LibraryId(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Root Diagram0", version));
         assertThat(rootDiagramDescriptionLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(rootDiagramDescriptionLibrary.get(), description, List.of(buckLibrary, sharedComponentsLibrary));
         this.assertThatLibraryDocumentsAreReadOnly(rootDiagramDescriptionLibrary.get());
 
-        Optional<Library> rootDiagram1DescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Root Diagram1", version);
+        Optional<Library> rootDiagram1DescriptionLibrary = this.librarySearchService.findById(new LibraryId(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Root Diagram1", version));
         assertThat(rootDiagram1DescriptionLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(rootDiagram1DescriptionLibrary.get(), description, List.of(buckLibrary, sharedComponentsLibrary));
         this.assertThatLibraryDocumentsAreReadOnly(rootDiagram1DescriptionLibrary.get());
@@ -217,7 +217,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a project with dependencies, when a dependency is updated, then the editing context contains the new version of the dependency")
     public void givenProjectWithDependenciesWhenDependencyIsUpdatedThenEditingContextContainsTheNewVersionOfDependency() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "2.0.0");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "sirius-web-tests-data", "2.0.0"));
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
@@ -299,7 +299,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a project with dependencies, when a dependency is removed, then the editing context does not contain the dependency's resources")
     public void givenProjectWithDependenciesWhenDependencyIsRemovedThenTheEditingContextDoesNotContainTheDependencysResources() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "2.0.0");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "sirius-web-tests-data", "2.0.0"));
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
@@ -386,7 +386,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a project with dependencies, when a dependency is updated, then the editing context does not contain proxies")
     public void givenProjectWithDependenciesWhenDependencyIsUpdatedThenEditingContextDoesNotContainProxies() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "sirius-web-tests-data", "3.0.0"));
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());

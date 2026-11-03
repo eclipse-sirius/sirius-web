@@ -33,11 +33,11 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextDependencyLoader;
 import org.eclipse.sirius.web.application.library.dto.ImportLibrariesInput;
-import org.eclipse.sirius.web.library.domain.Library;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -96,11 +96,7 @@ public class ReferenceLibraryImportHandler implements IEditingContextEventHandle
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         if (input instanceof ImportLibrariesInput importLibrariesInput && Objects.equals(importLibrariesInput.type(), "import")) {
             if (editingContext instanceof EditingContext siriusWebEditingContext) {
-                List<Library> libraries = importLibrariesInput.libraryIds().stream()
-                        .distinct()
-                        .map(libraryId -> this.librarySearchService.findByNamespaceAndNameAndVersion(libraryId.namespace(), libraryId.name(), libraryId.version()))
-                        .flatMap(Optional::stream)
-                        .toList();
+                List<Library> libraries = this.librarySearchService.findAllById(importLibrariesInput.libraryIds());
                 Optional<SemanticData> optionalSemanticData = new UUIDParser().parse(siriusWebEditingContext.getId())
                         .flatMap(this.semanticDataSearchService::findById);
 

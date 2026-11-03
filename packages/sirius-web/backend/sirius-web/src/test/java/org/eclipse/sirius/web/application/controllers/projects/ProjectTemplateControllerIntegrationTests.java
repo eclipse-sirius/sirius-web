@@ -191,10 +191,10 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     @GivenSiriusWebServer
     @DisplayName("Given a project template with required and optional libraries, when the mutation is performed, then the project is created with a dependency to the libraries")
     public void givenProjectTemplateWithRequiredAndOptionalLibrariesWhenTheMutationIsPerformedThenTheProjectIsCreatedWithDependencyToTheLibraries(CapturedOutput capturedOutput) throws Exception {
-        Optional<Library> optionalJavaLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.3");
+        Optional<Library> optionalJavaLibrary = this.librarySearchService.findById(new LibraryId("papaya", "java", "0.0.3"));
         assertThat(optionalJavaLibrary).isPresent();
         Library javaLibrary = optionalJavaLibrary.get();
-        Optional<Library> optionalSiriusWebTestsDataLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        Optional<Library> optionalSiriusWebTestsDataLibrary = this.librarySearchService.findById(new LibraryId("papaya", "sirius-web-tests-data", "3.0.0"));
         assertThat(optionalSiriusWebTestsDataLibrary).isPresent();
         Library siriusWebTestsDataLibrary = optionalSiriusWebTestsDataLibrary.get();
 
@@ -229,10 +229,10 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
             "Given a project template with required and optional libraries, when the mutation is performed from an input without the required library, then the project is created with dependencies to all the libraries")
     public void givenProjectTemplateWithRequiredAndOptionalLibrariesWhenTheMutationIsPerformedFromAnInputWithoutTheRequiredLibraryThenTheProjectIsCreatedWithDependenciesToAllTheLibraries(
             CapturedOutput capturedOutput) throws Exception {
-        Optional<Library> optionalJavaLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.3");
+        Optional<Library> optionalJavaLibrary = this.librarySearchService.findById(new LibraryId("papaya", "java", "0.0.3"));
         assertThat(optionalJavaLibrary).isPresent();
         Library javaLibrary = optionalJavaLibrary.get();
-        Optional<Library> optionalSiriusWebTestsDataLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        Optional<Library> optionalSiriusWebTestsDataLibrary = this.librarySearchService.findById(new LibraryId("papaya", "sirius-web-tests-data", "3.0.0"));
         assertThat(optionalSiriusWebTestsDataLibrary).isPresent();
         Library siriusWebTestsDataLibrary = optionalSiriusWebTestsDataLibrary.get();
 

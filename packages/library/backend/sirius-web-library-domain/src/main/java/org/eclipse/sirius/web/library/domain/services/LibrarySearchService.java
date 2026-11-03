@@ -17,10 +17,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.repositories.ILibraryRepository;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -46,13 +47,18 @@ public class LibrarySearchService implements ILibrarySearchService {
     }
 
     @Override
-    public boolean existsByNamespaceAndNameAndVersion(String namespace, String name, String version) {
-        return this.libraryRepository.existsByNamespaceAndNameAndVersion(namespace, name, version);
+    public boolean existsById(LibraryId libraryId) {
+        return this.libraryRepository.existsById(libraryId);
     }
 
     @Override
-    public Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version) {
-        return this.libraryRepository.findByNamespaceAndNameAndVersion(namespace, name, version);
+    public Optional<Library> findById(LibraryId libraryId) {
+        return this.libraryRepository.findById(libraryId);
+    }
+
+    @Override
+    public List<Library> findAllById(Iterable<LibraryId> libraryIds) {
+        return this.libraryRepository.findAllById(libraryIds);
     }
 
     @Override
@@ -63,15 +69,5 @@ public class LibrarySearchService implements ILibrarySearchService {
     @Override
     public Page<Library> findAllByNamespaceAndName(String namespace, String name, Pageable pageable) {
         return this.libraryRepository.findAllByNamespaceAndName(namespace, name, pageable);
-    }
-
-    @Override
-    public List<Library> findAllById(Iterable<UUID> ids) {
-        return this.libraryRepository.findAllById(ids);
-    }
-
-    @Override
-    public Optional<Library> findById(UUID id) {
-        return this.libraryRepository.findById(id);
     }
 }

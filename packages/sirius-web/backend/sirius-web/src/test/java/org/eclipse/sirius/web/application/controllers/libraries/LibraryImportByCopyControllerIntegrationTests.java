@@ -77,7 +77,7 @@ public class LibraryImportByCopyControllerIntegrationTests extends AbstractInteg
     @GivenSiriusWebServer
     @DisplayName("Given a project, when a library with dependencies is imported as a copy, then the editing context contains the copy of the libraries")
     public void givenProjectWhenLibraryWithDependenciesIsImportedAsCopyThenEditingContextContainsTheCopyOfLibraries() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "reactivestreams", "1.0.0");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "reactivestreams", "1.0.0"));
         assertThat(optionalLibrary).isPresent();
         Library library = optionalLibrary.get();
 

@@ -39,11 +39,12 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IProxyRemovalService;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
-import org.eclipse.sirius.web.library.domain.Library;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -137,8 +138,8 @@ public class RemoveLibrarySingleClickTreeItemContextMenuEntryExecutor implements
                     .map(LibraryMetadataAdapter.class::cast)
                     .findFirst();
             if (optionalLibraryMetadataAdapter.isPresent()) {
-                optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(optionalLibraryMetadataAdapter.get().getNamespace(), optionalLibraryMetadataAdapter.get().getName(),
-                        optionalLibraryMetadataAdapter.get().getVersion());
+                optionalLibrary = this.librarySearchService.findById(new LibraryId(optionalLibraryMetadataAdapter.get().getNamespace(), optionalLibraryMetadataAdapter.get().getName(),
+                        optionalLibraryMetadataAdapter.get().getVersion()));
             }
         }
         return optionalLibrary;
