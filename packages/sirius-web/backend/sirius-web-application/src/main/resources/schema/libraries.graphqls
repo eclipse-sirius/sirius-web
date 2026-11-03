@@ -17,7 +17,6 @@ type ViewerLibrariesEdge {
 
 type Library {
   id: LibraryId!
-  legacyId: ID!
   namespace: String!
   name: String!
   version: String!

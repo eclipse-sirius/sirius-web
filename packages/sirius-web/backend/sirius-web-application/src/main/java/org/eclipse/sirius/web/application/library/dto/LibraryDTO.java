@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.application.library.dto;
 
 import java.time.Instant;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.library.domain.LibraryId;
 
@@ -26,21 +25,10 @@ import jakarta.validation.constraints.NotNull;
  */
 public record LibraryDTO(
         @NotNull LibraryId id,
-        @NotNull UUID legacyId,
         @NotNull String namespace,
         @NotNull String name,
         @NotNull String version,
         @NotNull String description,
         @NotNull Instant createdOn) {
 
-    /**
-     * The legacy identifier of the library.
-     *
-     * @deprecated this is a temporary value representing the unique identifier previously assigned to libraries on creation, it will be removed soon.
-     */
-    @Override
-    @Deprecated
-    public UUID legacyId() {
-        return this.legacyId;
-    }
 }
