@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.library.api;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 
 /**
  * Used to execute a library update.
@@ -25,6 +24,6 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 public interface IUpdateLibraryExecutor {
 
-    IStatus updateLibrary(ICause cause, IEditingContext editingContext, UUID libraryId);
+    IStatus updateLibrary(ICause cause, IEditingContext editingContext, LibraryId libraryId);
 
 }

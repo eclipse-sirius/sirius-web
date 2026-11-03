@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 public class EditingContextUpdateLibraryImpactAnalysisReportQueryRunner implements IQueryRunner {
 
     public static final String EDITING_CONTEXT_UPDATE_LIBRARY_IMPACT_ANALYSIS_REPORT_QUERY = """
-            query getImpactAnalysisReport($editingContextId: ID!, $libraryId: ID!) {
+            query getImpactAnalysisReport($editingContextId: ID!, $libraryId: LibraryId!) {
                 viewer {
                     editingContext(editingContextId: $editingContextId) {
                         updateLibraryImpactAnalysisReport(libraryId: $libraryId) {

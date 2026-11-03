@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.library.dto;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -23,6 +24,6 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author gdaniel
  */
-public record UpdateLibraryInput(@NotNull UUID id, @NotNull String editingContextId, @NotNull UUID libraryId) implements IInput {
+public record UpdateLibraryInput(@NotNull UUID id, @NotNull String editingContextId, @NotNull LibraryId libraryId) implements IInput {
 
 }

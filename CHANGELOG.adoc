@@ -29,6 +29,8 @@ The `legacyId` field is deprecated and shouldn't be used: it is a temporary iden
 `CreateProjectInput#libraryIds` and `ImportLibrariesInput#libraryIds` now accept `[LibraryId!]!`, and the Java `CreateProjectInput`, `ICreateProjectInput`, and `ImportLibrariesInput` use `List<LibraryId>`.
 - https://github.com/eclipse-sirius/sirius-web/issues/7162[#7162] [form] The `representationDescriptionSearchService` parameter of type `IRepresentationDescriptionSearchService` has been removed from the `FormEventProcessor` constructor.
 Custom factories and subclasses must remove this argument from constructor calls.
+- https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Use the `LibraryId` scalar for `UpdateLibraryInput#libraryId` and `EditingContext#updateLibraryImpactAnalysisReport`.
+The Java `UpdateLibraryInput`, `InvokeUpdateLibraryImpactAnalysisInput`, and `IUpdateLibraryExecutor#updateLibrary` now use `LibraryId` (serialized as `namespace:name@version`) instead of `UUID` for the library identifier.
 
 
 === Dependency update
