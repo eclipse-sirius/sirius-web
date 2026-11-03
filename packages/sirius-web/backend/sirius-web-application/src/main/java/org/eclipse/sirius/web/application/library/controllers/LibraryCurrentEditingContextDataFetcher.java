@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public class LibraryCurrentEditingContextDataFetcher implements IDataFetcherWith
     @Override
     public DataFetcherResult<String> get(DataFetchingEnvironment environment) throws Exception {
         LibraryDTO libraryDTO = environment.getSource();
-        String editingContextId = this.libraryEditingContextApplicationService.getCurrentEditingContextId(libraryDTO.namespace(), libraryDTO.name(), libraryDTO.version());
+        String editingContextId = this.libraryEditingContextApplicationService.getCurrentEditingContextId(libraryDTO.id());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, editingContextId);

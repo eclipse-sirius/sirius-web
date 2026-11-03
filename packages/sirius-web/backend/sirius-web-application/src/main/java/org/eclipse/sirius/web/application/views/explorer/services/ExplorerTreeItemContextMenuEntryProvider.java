@@ -36,6 +36,7 @@ import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageS
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -192,7 +193,7 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
                 .flatMap(Collection::stream)
                 .map(AggregateReference::getId)
                 .toList();
-        return this.librarySearchService.findByNamespaceAndNameAndVersion(libraryMetadataAdapter.getNamespace(), libraryMetadataAdapter.getName(), libraryMetadataAdapter.getVersion())
+        return this.librarySearchService.findById(new LibraryId(libraryMetadataAdapter.getNamespace(), libraryMetadataAdapter.getName(), libraryMetadataAdapter.getVersion()))
                 .map(Library::getSemanticData)
                 .map(AggregateReference::getId)
                 .map(editingContextDependencies::contains)

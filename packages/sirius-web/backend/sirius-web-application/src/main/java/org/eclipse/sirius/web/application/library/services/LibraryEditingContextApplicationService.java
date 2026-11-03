@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.application.library.services.api.ILibraryEditingContextApplicationService;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,8 @@ public class LibraryEditingContextApplicationService implements ILibraryEditingC
 
     @Override
     @Transactional(readOnly = true)
-    public String getCurrentEditingContextId(String namespace, String name, String version) {
-        return this.librarySearchService.findByNamespaceAndNameAndVersion(namespace, name, version)
+    public String getCurrentEditingContextId(LibraryId libraryId) {
+        return this.librarySearchService.findById(libraryId)
                 .map(Library::getSemanticData)
                 .map(AggregateReference::getId)
                 .map(Object::toString)

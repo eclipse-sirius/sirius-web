@@ -11,7 +11,10 @@
 Custom implementations must reuse the provided context during connector tool execution.
 - The `FormEventProcessor` constructor no longer accepts the `representationDescriptionSearchService` parameter of type `IRepresentationDescriptionSearchService`.
 Custom factories and subclasses must remove this argument from constructor calls.
-- Use the new `LibraryId` scalar instead of an UUID for queries and mutations related to the libraries in the GraphQL schema.
+- Switch the identifier of libraries from a UUID to a dedicated `LibraryId` type.
+This type is now used in the repository, domain services and applications services on the backend.
+The GraphQL queries and mutations have also been updated to leverage a matching GraphQL `LibraryId` scalar.
+On the frontend, the new id should be treated as an opaque string just like the previous one.
 
 
 == Bug fixes

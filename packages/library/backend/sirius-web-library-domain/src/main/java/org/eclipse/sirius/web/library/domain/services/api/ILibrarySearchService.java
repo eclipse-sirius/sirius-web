@@ -16,8 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.library.domain.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -31,15 +32,13 @@ public interface ILibrarySearchService {
 
     Page<Library> findAll(Pageable pageable);
 
-    boolean existsByNamespaceAndNameAndVersion(String namespace, String name, String version);
+    boolean existsById(LibraryId libraryId);
 
-    Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
+    Optional<Library> findById(LibraryId libraryId);
+
+    List<Library> findAllById(Iterable<LibraryId> libraryIds);
 
     Optional<Library> findBySemanticData(AggregateReference<SemanticData, UUID> semanticData);
 
     Page<Library> findAllByNamespaceAndName(String namespace, String name, Pageable pageable);
-
-    List<Library> findAllById(Iterable<UUID> ids);
-
-    Optional<Library> findById(UUID id);
 }

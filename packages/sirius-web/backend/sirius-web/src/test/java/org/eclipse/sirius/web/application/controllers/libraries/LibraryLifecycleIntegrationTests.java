@@ -33,6 +33,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.services.forms.FormWithViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -73,7 +74,7 @@ public class LibraryLifecycleIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a library, when its editing context is loaded, then all its data are loaded properly")
     public void givenLibraryWhenItsEditingContextIsLoadedThenAllItsDataAreLoadedProperly() {
-        var optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "1.0.0");
+        var optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "java", "1.0.0"));
         assertThat(optionalLibrary).isPresent();
 
         var library = optionalLibrary.get();

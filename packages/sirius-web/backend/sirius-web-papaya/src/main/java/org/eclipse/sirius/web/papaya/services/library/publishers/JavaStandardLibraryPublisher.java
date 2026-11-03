@@ -27,8 +27,9 @@ import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.papaya.factories.JavaIoFactory;
 import org.eclipse.sirius.web.papaya.factories.JavaLangFactory;
 import org.eclipse.sirius.web.papaya.factories.JavaTextFactory;
@@ -66,7 +67,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
     @Override
     public void publish(PublishPapayaLibraryCommand command) {
-        if (this.librarySearchService.existsByNamespaceAndNameAndVersion(command.namespace(), command.name(), command.version())) {
+        if (this.librarySearchService.existsById(new LibraryId(command.namespace(), command.name(), command.version()))) {
             return;
         }
 
