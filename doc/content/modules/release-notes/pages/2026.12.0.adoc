@@ -7,7 +7,9 @@
 
 == Breaking changes
 
-
+- Node layout handlers have also been refactored for clarity, separating horizontal and vertical child positioning into dedicated methods and sharing dimension and border node layout helpers.
+Downstream applications with custom nodes can follow the same structure in their layout handlers, using `EllipseNodeLayoutHandler` as an example.
+Adopting this refactoring is optional.
 
 
 == Bug fixes

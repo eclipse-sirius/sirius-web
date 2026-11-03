@@ -18,6 +18,7 @@ import { InsideLabel, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
+import { INodeLayoutHandler } from './LayoutEngine.types';
 import {
   getBorderNodeExtent,
   getNewlyAddedBorderNodePosition,
@@ -245,6 +246,23 @@ const getRightMostSibling = (
 
       return borderNodeRight > rightMostBorderNodeRight ? borderNode : rightMostBorderNode;
     }, siblings[index - 1]);
+};
+
+/**
+ * Updates border node extents and positions using the optional custom node geometry.
+ *
+ * @since v2026.11.0
+ */
+export const updateBorderNodesLayout = (
+  node: Node<NodeData>,
+  borderNodes: Node<NodeData, DiagramNodeType>[],
+  previousDiagram: RawDiagram | null,
+  calculateCustomNodeBorderNodePosition?: INodeLayoutHandler<NodeData>['calculateCustomNodeBorderNodePosition']
+): void => {
+  borderNodes.forEach((borderNode) => {
+    borderNode.extent = getBorderNodeExtent(node, borderNode);
+  });
+  setBorderNodesPosition(borderNodes, node, previousDiagram, calculateCustomNodeBorderNodePosition);
 };
 
 export const setBorderNodesPosition = (

@@ -18,10 +18,11 @@ import {
   NodeData,
   RawDiagram,
   applyRatioOnNewNodeSizeValue,
+  computeNodeHeight,
+  computeNodeWidth,
   computeNodesBox,
   computePreviousPosition,
   computePreviousSize,
-  getBorderNodeExtent,
   getChildNodePosition,
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
@@ -33,7 +34,7 @@ import {
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   measureInsideLabel,
-  setBorderNodesPosition,
+  updateBorderNodesLayout,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Dimensions, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeHandle } from '@xyflow/system';
@@ -53,7 +54,7 @@ const findBorderNodePosition = (borderNodePosition: XYPosition | undefined, pare
 };
 
 export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
-  canHandle(node: Node<NodeData, DiagramNodeType>) {
+  canHandle(node: Node<NodeData, DiagramNodeType>): boolean {
     return node.type === 'ellipseNode';
   }
 
@@ -73,6 +74,72 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
 
+    this.positionChildrenHorizontally(previousDiagram, visibleNodes, directNodesChildren, newlyAddedNodes, borderWidth);
+
+    let childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
+    const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width;
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
+    const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel);
+
+    const requiredWidth =
+      Math.max(
+        directChildrenAwareNodeWidth,
+        labelOnlyWidth,
+        northBorderNodeFootprintWidth,
+        southBorderNodeFootprintWidth
+      ) +
+      borderWidth * 2;
+
+    const previousNode = previousDiagram?.nodes.find((candidate) => candidate.id === node.id);
+    const previousDimensions = computePreviousSize(previousNode, node);
+    node.width = computeNodeWidth(node, requiredWidth, previousDimensions.width, forceDimensions?.width);
+
+    measureInsideLabel(layoutEngine, node, (node.width ?? 0) - borderWidth * 2 - ellipseNodePadding * 2);
+    const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
+
+    // Position children vertically after measuring the label at the calculated width.
+    this.positionChildrenVertically(
+      previousDiagram,
+      visibleNodes,
+      directNodesChildren,
+      newlyAddedNodes,
+      borderWidth,
+      headerHeightFootprint
+    );
+
+    childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
+    const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height;
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
+    const labelOnlyHeight = node.data.insideLabel ? node.data.insideLabel.height + ellipseNodePadding * 2 : 0;
+    const requiredHeight =
+      Math.max(
+        directChildrenAwareNodeHeight,
+        eastBorderNodeFootprintHeight,
+        westBorderNodeFootprintHeight,
+        labelOnlyHeight
+      ) +
+      borderWidth * 2;
+    node.height = computeNodeHeight(node, requiredHeight, previousDimensions.height, forceDimensions?.height);
+
+    if (node.data.nodeDescription?.keepAspectRatio) {
+      applyRatioOnNewNodeSizeValue(node);
+    }
+
+    updateBorderNodesLayout(node, borderNodes, previousDiagram, this.calculateCustomNodeBorderNodePosition);
+
+    node.data.minComputedWidth = getDefaultOrMinWidth(requiredWidth, node);
+    node.data.minComputedHeight = getDefaultOrMinHeight(requiredHeight, node);
+  }
+
+  private positionChildrenHorizontally(
+    previousDiagram: RawDiagram | null,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    directNodesChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
+    borderWidth: number
+  ): void {
     directNodesChildren.forEach((child, index) => {
       const previousChild = previousDiagram?.nodes.find((candidate) => candidate.id === child.id);
       const previousPosition = computePreviousPosition(previousChild, child);
@@ -87,39 +154,16 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       }
       child.position = { ...child.position, x };
     });
+  }
 
-    let childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
-    const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width;
-    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel);
-
-    const nodeMinComputeWidth =
-      Math.max(
-        directChildrenAwareNodeWidth,
-        labelOnlyWidth,
-        northBorderNodeFootprintWidth,
-        southBorderNodeFootprintWidth
-      ) +
-      borderWidth * 2;
-
-    const previousNode = previousDiagram?.nodes.find((candidate) => candidate.id === node.id);
-    const previousDimensions = computePreviousSize(previousNode, node);
-    const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    if (node.data.resizedByUser && !forceDimensions?.width) {
-      if (nodeMinComputeWidth > previousDimensions.width) {
-        node.width = nodeMinComputeWidth;
-      } else {
-        node.width = previousDimensions.width;
-      }
-    } else {
-      node.width = nodeWidth;
-    }
-
-    measureInsideLabel(layoutEngine, node, (node.width ?? 0) - borderWidth * 2 - ellipseNodePadding * 2);
-    const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
-
-    // Position children vertically after measuring the label at the calculated width.
+  private positionChildrenVertically(
+    previousDiagram: RawDiagram | null,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    directNodesChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
+    borderWidth: number,
+    headerHeightFootprint: number
+  ): void {
     directNodesChildren.forEach((child) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
@@ -140,42 +184,6 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
         child.position = { ...child.position, y };
       }
     });
-
-    childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
-    const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height;
-    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
-    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
-    const labelOnlyHeight = node.data.insideLabel ? node.data.insideLabel.height + ellipseNodePadding * 2 : 0;
-    const nodeMinComputeHeight =
-      Math.max(
-        directChildrenAwareNodeHeight,
-        eastBorderNodeFootprintHeight,
-        westBorderNodeFootprintHeight,
-        labelOnlyHeight
-      ) +
-      borderWidth * 2;
-    const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
-    if (node.data.resizedByUser && !forceDimensions?.height) {
-      if (nodeMinComputeHeight > previousDimensions.height) {
-        node.height = nodeMinComputeHeight;
-      } else {
-        node.height = previousDimensions.height;
-      }
-    } else {
-      node.height = nodeHeight;
-    }
-
-    if (node.data.nodeDescription?.keepAspectRatio) {
-      applyRatioOnNewNodeSizeValue(node);
-    }
-
-    borderNodes.forEach((borderNode) => {
-      borderNode.extent = getBorderNodeExtent(node, borderNode);
-    });
-    setBorderNodesPosition(borderNodes, node, previousDiagram, this.calculateCustomNodeBorderNodePosition);
-
-    node.data.minComputedWidth = getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    node.data.minComputedHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
   }
 
   calculateCustomNodeEdgeHandlePosition(
