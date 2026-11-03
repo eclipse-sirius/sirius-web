@@ -1,0 +1,113 @@
+:author: Florian Rouëné
+:date: 2026-11-03
+:status: proposed
+:consulted: Arthur Daussy
+:informed: Jérome Gout
+:deciders: Stéphane Bégaudeau
+:pitch: /
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/5410
+
+= ADR-243 - Compute select cell options on demand
+
+== Context and Problem Statement
+
+`SelectCellComponent` and `MultiSelectCellComponent` evaluate their candidate providers and compute every option's identifier and label whenever a table is refreshed.
+These options are stored in the rendered cells and sent to the frontend, although users usually open only a few editors.
+Issue #5410 reports a Papaya table taking about five seconds to render ten rows, with 640 options in an approximately 89 kB payload.
+In this example, `CellOptionsProvider` spends most of the refresh time calling `IItemPropertyDescriptor.getChoiceOfValues`.
+
+== Decision Drivers
+
+- Table refresh must not enumerate candidates for select or multi-select cells.
+- Closed and read-only cells must display their current values without loading candidates.
+- Each implementation contribution must leave a working application and a consistent GraphQL contract.
+
+== Considered Options
+
+=== Custom cells with an explicit query for candidates
+
+Render only their current values, corresponding labels, and common cell metadata during refresh.
+Retrieve candidates through a dedicated query when an editable cell's editor opens.
+
+This avoids both candidate computation and candidate transfer for unopened cells.
+It requires API migration, independent selected-value label providers, and asynchronous editor states.
+
+=== Cache or deduplicate candidates during refresh
+
+Sharing candidate lists could reduce repeated computation and transfer when several cells have identical choices.
+However, choices can depend on the row, column, and semantic state.
+A shared cache would require context-aware keys and invalidation, and would still compute candidates for unopened editors.
+
+=== Remove candidates only from GraphQL subscription fragments
+
+This reduces network traffic but leaves eager candidate enumeration and storage in the backend rendering model.
+It also removes the data currently used to display selected labels.
+It does not solve the reported refresh cost.
+
+== Decision Outcome
+
+In the context of editable tables, facing expensive candidate enumeration during refresh, we decided to implement select and multi-select as custom cells with candidate retrieval on editor opening, to keep refresh proportional to displayed values, accepting an additional query when editing and migration of the existing cell APIs.
+
+Candidate retrieval is a read operation and must not trigger a semantic change or a table refresh.
+
+== Consequences
+
+=== Advantages
+
+- Initial rendering and subsequent refreshes do not compute, serialize, or retain candidate lists for unopened cells.
+- Selected values remain readable independently of whether they are still available as candidates.
+- Candidate lists are evaluated against the current state when editing starts.
+
+=== Drawbacks
+
+- Opening an editor introduces a network round trip and requires loading and error.
+- Programmatic descriptions need providers for selected-value labels which do not enumerate candidates.
+- A single opened cell can still have many expensive candidates.
+Search, pagination, and sharing candidate lists are outside this decision and may require later work.
+
+== More Information
+
+=== Decision Details
+
+==== Refresh data
+
+Labels are computed directly from the selected semantic values, never by enumerating all candidates or calling `getChoiceOfValues`.
+An empty selection keeps the existing empty-value semantics.
+An unavailable selected value remains visible and is not silently cleared.
+Candidate lists and closures capturing an evaluation context are not stored in the rendered cells.
+
+==== Candidate query
+
+Extend `TableDescription` in the table schema with the following read operation, usable by both select kinds:
+
+[source,graphql]
+----
+extend type TableDescription {
+  selectCellOptions(cellId: ID!): [SelectCellOption!]!
+}
+----
+
+The enclosing query supplies the editing context and representation identifiers through the existing GraphQL local context.
+Following the row-context-menu query pattern, the fetcher dispatches a query to a table event handler through `IEditingContextDispatcher`.
+The handler uses `ChangeKind.NOTHING` and returns the candidates without refreshing the table.
+An empty candidate list is a successful result.
+Missing cells, unavailable representations, and provider failures produce an empty list.
+
+The handler resolves the current cell, its owning line and column, and its description on the server.
+It reconstructs the evaluation context used for rendering, including the row semantic object as `self`, the editing context, the column semantic object, and the applicable row and table variables.
+The cell's target object must not be assumed to be the row's semantic object, since a description can override the cell target.
+The rendering cache and old variable managers must not be retained for later requests.
+Each candidate's identifier and label are evaluated with the existing `candidate` variable and preserve provider ordering.
+
+==== Editor lifecycle
+
+The editor displays a loading state, distinguishes errors from an empty result.
+Closed and disabled cells do not request candidates.
+
+Closing the editor discards its candidates, reopening queries the current state again.
+
+=== References
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5410[Compute the available options for a Select cell on demand]
+- xref:174_add_table_description_in_view_dsl.adoc[ADR-174 - Add table description in View DSL]
+- xref:192_improve_table_lifecycle.adoc[ADR-192 - Improve table representation lifecycle]
