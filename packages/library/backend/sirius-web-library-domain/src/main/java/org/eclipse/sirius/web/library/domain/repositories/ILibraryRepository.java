@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -29,20 +30,7 @@ import org.springframework.stereotype.Repository;
  * @author gdaniel
  */
 @Repository
-public interface ILibraryRepository extends ListPagingAndSortingRepository<Library, UUID>, ListCrudRepository<Library, UUID> {
-
-    @Query("""
-        SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
-        FROM library
-        WHERE library.namespace = :namespace AND library.name = :name AND library.version = :version
-        """)
-    boolean existsByNamespaceAndNameAndVersion(String namespace, String name, String version);
-
-    @Query("""
-        SELECT * FROM library
-        WHERE library.namespace = :namespace AND library.name = :name AND library.version = :version
-        """)
-    Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
+public interface ILibraryRepository extends ListPagingAndSortingRepository<Library, LibraryId>, ListCrudRepository<Library, LibraryId> {
 
     Page<Library> findAllByNamespaceAndName(String namespace, String name, Pageable pageable);
 

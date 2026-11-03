@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.application.studio.services.library;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -92,10 +91,7 @@ public class CopyLibraryImportHandler implements IEditingContextEventHandler {
 
         if (input instanceof ImportLibrariesInput importLibrariesInput && Objects.equals(importLibrariesInput.type(), "copy")) {
             if (editingContext instanceof EditingContext siriusWebEditingContext) {
-                List<Library> libraries = importLibrariesInput.libraryIds().stream()
-                        .map(libraryId -> this.librarySearchService.findByNamespaceAndNameAndVersion(libraryId.namespace(), libraryId.name(), libraryId.version()))
-                        .flatMap(Optional::stream)
-                        .toList();
+                List<Library> libraries = this.librarySearchService.findAllById(importLibrariesInput.libraryIds());
 
                 Set<SemanticData> semanticDataToCopy = new LinkedHashSet<>();
                 for (Library library : libraries) {

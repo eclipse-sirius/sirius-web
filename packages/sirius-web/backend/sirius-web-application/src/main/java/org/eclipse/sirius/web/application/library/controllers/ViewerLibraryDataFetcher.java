@@ -20,6 +20,7 @@ import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +76,7 @@ public class ViewerLibraryDataFetcher implements IDataFetcherWithFieldCoordinate
             return null;
         }
 
-        var optionalLibrary = this.libraryApplicationService.findByNamespaceAndNameAndVersion(namespace, name, version);
+        var optionalLibrary = this.libraryApplicationService.findById(new LibraryId(namespace, name, version));
         if (optionalLibrary.isPresent()) {
             this.logger.atInfo()
                     .setMessage("Library {}:{}:{} retrieved")

@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -52,7 +53,7 @@ public class ObjectLibraryDataFetcher implements IDataFetcherWithFieldCoordinate
                 .map(LibraryMetadataAdapter.class::cast)
                 .findFirst();
 
-        return optionalLibraryMetadataAdapter.flatMap(libraryMetadata -> this.libraryApplicationService.findByNamespaceAndNameAndVersion(libraryMetadata.getNamespace(), libraryMetadata.getName(), libraryMetadata.getVersion()))
+        return optionalLibraryMetadataAdapter.flatMap(libraryMetadata -> this.libraryApplicationService.findById(new LibraryId(libraryMetadata.getNamespace(), libraryMetadata.getName(), libraryMetadata.getVersion())))
                 .orElse(null);
     }
 }
