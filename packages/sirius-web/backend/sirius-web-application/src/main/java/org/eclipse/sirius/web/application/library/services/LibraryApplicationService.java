@@ -23,8 +23,9 @@ import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryMapper;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryPublicationHandler;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -65,8 +66,8 @@ public class LibraryApplicationService implements ILibraryApplicationService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<LibraryDTO> findByNamespaceAndNameAndVersion(String namespace, String name, String version) {
-        return this.librarySearchService.findByNamespaceAndNameAndVersion(namespace, name, version).map(this.libraryMapper::toDTO);
+    public Optional<LibraryDTO> findById(LibraryId libraryId) {
+        return this.librarySearchService.findById(libraryId).map(this.libraryMapper::toDTO);
     }
 
     @Override

@@ -48,6 +48,7 @@ import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescri
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.TreeImpactAnalysisReportQueryRunner;
@@ -110,7 +111,7 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
     @GivenSiriusWebServer
     @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the removal of a dependency, then the report is returned")
     public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheRemovalOfADependencyThenTheReportIsReturned() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "sirius-web-tests-data", "3.0.0"));
         assertThat(optionalLibrary).isPresent();
 
         var representationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
@@ -189,7 +190,7 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
     @GivenSiriusWebServer
     @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the removal of a dependency, then the project's content is not changed")
     public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheRemovalOfADependencyThenTheProjectsContentIsNotChanged() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "sirius-web-tests-data", "3.0.0"));
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());

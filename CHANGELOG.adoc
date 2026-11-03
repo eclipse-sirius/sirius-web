@@ -28,6 +28,10 @@ The `legacyId` field is deprecated and shouldn't be used: it is a temporary iden
 The Java `UpdateLibraryInput`, `InvokeUpdateLibraryImpactAnalysisInput`, and `IUpdateLibraryExecutor#updateLibrary` now use `LibraryId` (serialized as `namespace:name@version`) instead of `UUID` for the library identifier.
 - https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Remove `LibraryDTO#legacyId` and the GraphQL `Library#legacyId`.
 These fields were temporary while reworking library identifiers, and are needed anymore.
+- https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Use `(namespace, name, version)` as the primary key of the `library` table and remove its legacy `id` column.
+`Library#id` is now typed with `LibraryId` instead of `UUID`.
+`ILibrarySearchService`, `ILibraryApplicationService`, and `ILibraryRepository` now use `LibraryId` as identifier to search for libraries.
+`ProjectTemplateRequiredLibrary` has been replaced with `LibraryId`, which requires the same parameters.
 
 
 === Dependency update
