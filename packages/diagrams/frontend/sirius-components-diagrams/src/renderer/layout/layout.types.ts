@@ -24,3 +24,10 @@ export interface ForcedDimensions {
   width: number | null;
   height: number | null;
 }
+
+export interface LabelSize {
+  width: number;
+  height: number;
+}
+
+export type InsideLabelMeasurer = (node: Node<NodeData>, contentWidth: number) => LabelSize | null;
