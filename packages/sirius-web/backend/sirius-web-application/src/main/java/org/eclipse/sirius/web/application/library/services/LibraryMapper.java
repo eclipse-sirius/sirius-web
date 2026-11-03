@@ -30,7 +30,6 @@ public class LibraryMapper implements ILibraryMapper {
     public LibraryDTO toDTO(Library library) {
         return new LibraryDTO(
                 new LibraryId(library.getNamespace(), library.getName(), library.getVersion()),
-                library.getId(),
                 library.getNamespace(),
                 library.getName(),
                 library.getVersion(),
