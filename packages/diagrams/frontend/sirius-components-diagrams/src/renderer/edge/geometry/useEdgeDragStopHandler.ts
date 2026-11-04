@@ -68,9 +68,7 @@ export const useEdgeDragStopHandler = (): UseEdgeDragStopHandlerValue => {
   const updateNodeInternals = useUpdateNodeInternals();
   const { synchronizeEdgeLayoutData } = useEditableEdgePath();
 
-  const handleDragStop = (
-    dragData: Pick<EdgeDragData, 'edgeId' | 'originalGeometry' | 'geometry' | 'isSourceSegment' | 'isTargetSegment'>
-  ): void => {
+  const handleDragStop = (dragData: EdgeDragData): void => {
     const { edgeId, originalGeometry, geometry, isSourceSegment, isTargetSegment } = dragData;
     const edge = getEdges().find((candidate) => {
       return candidate.id === edgeId;

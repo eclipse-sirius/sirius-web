@@ -15,10 +15,11 @@ import { NodeLookup } from '@xyflow/system';
 import parse from 'svg-path-parser';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { INodeLayoutHandler } from '../../layout/LayoutEngine.types';
+import { evaluateAbsolutePosition } from '../../node/NodeUtils';
 import { DiagramNodeType } from '../../node/NodeTypes.types';
 import { getEdgeEndpointCoordinates } from '../EdgeLayout';
-import { EdgeGeometryInput } from './edgeGeometry.types';
-import { evaluateAbsolutePosition } from '../../node/NodeUtils';
+import { EdgeDragData, EdgeGeometryInput, RenderedDiagram } from './edgeGeometry.types';
+import { computeEdgeGeometry, getBendingPoints } from './edgeGeometry';
 
 /** Retains DOM handle measurements while resolving current canonical node positions. */
 export const createGeometryNodeLookup = (
@@ -218,4 +219,101 @@ export const resolveEdgeGeometryInput = (
     sourceAlignmentOffset: { x: sourceX - rawSource.x, y: sourceY - rawSource.y },
     targetAlignmentOffset: { x: targetX - rawTarget.x, y: targetY - rawTarget.y },
   };
+};
+
+/** Resolves the manual bend data saved at accepted move/resize completion. */
+export const getEdgesUpdatedWithGeometry = (
+  nodes: Node<NodeData>[],
+  edges: Edge<EdgeData>[],
+  measuredNodes: NodeLookup<InternalNode<Node<NodeData>>>,
+  nodeLayoutHandlers: INodeLayoutHandler<NodeData>[]
+): Edge<EdgeData>[] => {
+  const lookup = createGeometryNodeLookup(nodes, measuredNodes);
+  let changed = false;
+  const prepared = edges.map((edge) => {
+    if (edge.type !== 'manhattan' || !edge.data) {
+      return edge;
+    }
+    const input = resolveEdgeGeometryInput(edge, lookup, nodeLayoutHandlers);
+    if (!input) {
+      return edge;
+    }
+    const points = edge.data.bendingPoints?.length
+      ? input.customEdge
+        ? getBendingPoints(input).map((point) => {
+            return { x: point.x, y: point.y };
+          })
+        : []
+      : edge.data.bendingPoints;
+    const relative =
+      points?.map((point) => {
+        return { x: point.x - input.source.x, y: point.y - input.source.y };
+      }) ?? null;
+    if (
+      JSON.stringify(points) === JSON.stringify(edge.data.bendingPoints) &&
+      JSON.stringify(relative) === JSON.stringify(edge.data.relativePositionBendingPoints)
+    ) {
+      return edge;
+    }
+    changed = true;
+    return { ...edge, data: { ...edge.data, bendingPoints: points, relativePositionBendingPoints: relative } };
+  });
+  return changed ? prepared : edges;
+};
+
+/** Supplies drawing geometry without publishing changes to the canonical graph. */
+export const getRenderedDiagram = (
+  nodes: Node<NodeData>[],
+  edges: Edge<EdgeData>[],
+  measuredNodes: NodeLookup<InternalNode<Node<NodeData>>>,
+  nodeLayoutHandlers: INodeLayoutHandler<NodeData>[],
+  dragData: EdgeDragData | null
+): RenderedDiagram => {
+  const lookup = createGeometryNodeLookup(nodes, measuredNodes);
+  const offsets = new Map<string, Map<string, XYPosition>>();
+  const addOffset = (nodeId: string, handleId: string | null | undefined, offset: XYPosition | undefined): void => {
+    if (!handleId || !offset) {
+      return;
+    }
+    const handles = offsets.get(nodeId) ?? new Map<string, XYPosition>();
+    handles.set(handleId, offset);
+    offsets.set(nodeId, handles);
+  };
+  const renderedEdges = edges.map((edge) => {
+    if (edge.type !== 'manhattan' || !edge.data) {
+      return edge;
+    }
+    const input = resolveEdgeGeometryInput(edge, lookup, nodeLayoutHandlers);
+    if (!input) {
+      return edge;
+    }
+    addOffset(edge.source, edge.sourceHandle, input.sourceAlignmentOffset);
+    addOffset(edge.target, edge.targetHandle, input.targetAlignmentOffset);
+    const geometry = dragData?.edgeId === edge.id ? dragData.geometry : computeEdgeGeometry(input);
+    return { ...edge, data: { ...edge.data, edgePath: geometry.path, rectilinearGeometry: geometry } };
+  });
+  const renderedNodes = nodes.map((node) => {
+    const handles = offsets.get(node.id);
+    let changed = false;
+    const connectionHandles = node.data.connectionHandles.map((handle) => {
+      const offset = handle.id ? handles?.get(handle.id) : undefined;
+      if (!offset || (!offset.x && !offset.y)) {
+        // React Flow replacement updates can carry displayed node data back
+        // into the graph. Never retain an alignment from an earlier frame.
+        if (handle.alignmentOffset !== undefined) {
+          const { alignmentOffset: _alignmentOffset, ...baseHandle } = handle;
+          changed = true;
+          return baseHandle;
+        }
+        return handle;
+      }
+      if (handle.alignmentOffset?.x === offset.x && handle.alignmentOffset.y === offset.y) {
+        return handle;
+      }
+      changed = true;
+      return { ...handle, alignmentOffset: offset };
+    });
+    return changed ? { ...node, data: { ...node.data, connectionHandles } } : node;
+  });
+  return { nodes: renderedNodes, edges: renderedEdges };
 };
