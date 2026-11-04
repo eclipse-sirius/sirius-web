@@ -117,6 +117,15 @@ public interface TablePackage extends EPackage {
     int TABLE_DESCRIPTION__DESCRIPTION = ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION;
 
     /**
+     * The feature id for the '<em><b>End User Documentation</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TABLE_DESCRIPTION__END_USER_DOCUMENTATION = ViewPackage.REPRESENTATION_DESCRIPTION__END_USER_DOCUMENTATION;
+
+    /**
      * The feature id for the '<em><b>Use Striped Rows Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -628,6 +637,16 @@ public interface TablePackage extends EPackage {
     int CELL_LABEL_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.CellSelectWidgetDescriptionImpl
+     * <em>Cell Select Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.table.impl.CellSelectWidgetDescriptionImpl
+     * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellSelectWidgetDescription()
+     * @generated
+     */
+    int CELL_SELECT_WIDGET_DESCRIPTION = 10;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl <em>Row
      * Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -797,6 +816,51 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_FILTER_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The feature id for the '<em><b>Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CELL_SELECT_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Candidate Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CELL_SELECT_WIDGET_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CELL_SELECT_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Cell Select Widget Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CELL_SELECT_WIDGET_DESCRIPTION_FEATURE_COUNT = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Cell Select Widget Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CELL_SELECT_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.TableDescription
@@ -1310,6 +1374,52 @@ public interface TablePackage extends EPackage {
      * @generated
      */
     EAttribute getCellLabelWidgetDescription_IconExpression();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription
+     * <em>Cell Select Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Cell Select Widget Description</em>'.
+     * @see org.eclipse.sirius.components.view.table.CellSelectWidgetDescription
+     * @generated
+     */
+    EClass getCellSelectWidgetDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription#getCandidatesExpression
+     * <em>Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Candidates Expression</em>'.
+     * @see org.eclipse.sirius.components.view.table.CellSelectWidgetDescription#getCandidatesExpression()
+     * @see #getCellSelectWidgetDescription()
+     * @generated
+     */
+    EAttribute getCellSelectWidgetDescription_CandidatesExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription#getCandidateLabelExpression
+     * <em>Candidate Label Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Candidate Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.table.CellSelectWidgetDescription#getCandidateLabelExpression()
+     * @see #getCellSelectWidgetDescription()
+     * @generated
+     */
+    EAttribute getCellSelectWidgetDescription_CandidateLabelExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription#getBody <em>Body</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.CellSelectWidgetDescription#getBody()
+     * @see #getCellSelectWidgetDescription()
+     */
+    EReference getCellSelectWidgetDescription_Body();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription
@@ -1839,6 +1949,41 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EAttribute CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION = eINSTANCE.getCellLabelWidgetDescription_IconExpression();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.table.impl.CellSelectWidgetDescriptionImpl <em>Cell Select Widget
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.table.impl.CellSelectWidgetDescriptionImpl
+         * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellSelectWidgetDescription()
+         * @generated
+         */
+        EClass CELL_SELECT_WIDGET_DESCRIPTION = eINSTANCE.getCellSelectWidgetDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Candidates Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CELL_SELECT_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION = eINSTANCE.getCellSelectWidgetDescription_CandidatesExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Candidate Label Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CELL_SELECT_WIDGET_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION = eINSTANCE.getCellSelectWidgetDescription_CandidateLabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CELL_SELECT_WIDGET_DESCRIPTION__BODY = eINSTANCE.getCellSelectWidgetDescription_Body();
 
         /**
          * The meta object literal for the

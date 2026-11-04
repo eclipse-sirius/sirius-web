@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.emf.table.TableIdProvider;
+import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -88,7 +89,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
     private TableDescription createTableDescription() {
 
         var columnDescription = new TableBuilders().newColumnDescription()
-                .semanticCandidatesExpression("aql:Sequence{'Name', 'Description', 'Abstract'}")
+                .semanticCandidatesExpression("aql:Sequence{'Name', 'Description', 'Abstract', 'Visibility'}")
                 .headerLabelExpression("aql:self")
                 .headerIndexLabelExpression("aql:columnIndex")
                 .isSortableExpression("aql:true")
@@ -162,7 +163,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .titleExpression("View Package Table")
                 .columnDescriptions(columnDescription)
                 .rowDescription(rowDescription)
-                .cellDescriptions(nameCellDescription, descriptionCellDescription, abstractCellDescription)
+                .cellDescriptions(nameCellDescription, descriptionCellDescription, abstractCellDescription, this.createVisibilityCellDescription())
                 .useStripedRowsExpression("aql:false")
                 .enableSubRows(true)
                 .rowFilters(hideFailureFilter)
@@ -171,6 +172,23 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .build();
 
         return this.tableDescription;
+    }
+
+    private CellDescription createVisibilityCellDescription() {
+        return new TableBuilders().newCellDescription()
+                .name("cell-visibility")
+                .preconditionExpression("aql:columnTargetObject = 'Visibility' and not self.oclIsKindOf(papaya::Parameter)")
+                .valueExpression("aql:papaya::Visibility.getEEnumLiteralByLiteral(self.visibility.toString())")
+                .tooltipExpression("aql:self.name + ' visibility'")
+                .cellWidgetDescription(new TableBuilders().newCellSelectWidgetDescription()
+                        .candidatesExpression("aql:if columnTargetObject = 'Visibility' then papaya::Visibility.eLiterals else Sequence{} endif")
+                        .candidateLabelExpression("aql:candidate.name")
+                        .body(new ViewBuilders().newSetValue()
+                                .featureName("visibility")
+                                .valueExpression("aql:newValue.instance")
+                                .build())
+                        .build())
+                .build();
     }
 
 }
