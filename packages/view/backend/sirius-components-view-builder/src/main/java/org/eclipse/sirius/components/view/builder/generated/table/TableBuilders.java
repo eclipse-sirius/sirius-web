@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ package org.eclipse.sirius.components.view.builder.generated.table;
  * @generated
  */
 public class TableBuilders {
+
     /**
      * Instantiate a TableDescriptionBuilder .
      *
@@ -107,6 +108,16 @@ public class TableBuilders {
      */
     public RowFilterDescriptionBuilder newRowFilterDescription() {
         return new RowFilterDescriptionBuilder();
+    }
+
+    /**
+     * Instantiate a CellSelectWidgetDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public CellSelectWidgetDescriptionBuilder newCellSelectWidgetDescription() {
+        return new CellSelectWidgetDescriptionBuilder();
     }
 
 
