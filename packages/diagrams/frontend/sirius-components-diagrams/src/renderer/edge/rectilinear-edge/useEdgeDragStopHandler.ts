@@ -10,111 +10,53 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { InternalNode, Node, Position, useUpdateNodeInternals, XYPosition, useStoreApi, Edge } from '@xyflow/react';
-import { useStore } from '../../../representation/useStore';
-import { NodeData, EdgeData } from '../../DiagramRenderer.types';
-import { getNodesUpdatedWithHandles } from '../EdgeLayout';
-import { useEditableEdgePath } from '../useEditableEdgePath';
-import { cleanBendPoint, determineSegmentAxis, getHandlePositionFromXYPosition } from './RectilinearEdgeCalculation';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
+import { NodeData } from '../../DiagramRenderer.types';
 import { BendPointData } from './BendingPointsCalculation.types';
+import { useEdgeDragStopHandler as useGeometryDragStopHandler } from '../geometry/useEdgeDragStopHandler';
+import { computeEdgeGeometry } from '../geometry/edgeGeometry';
 import { UseEdgeDragStopHandlerValue } from './useEdgeDragStopHandler.types';
 
 export const useEdgeDragStopHandler = (): UseEdgeDragStopHandlerValue => {
-  const { getNodes, setEdges, setNodes } = useStore();
-  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-  const { synchronizeEdgeLayoutData } = useEditableEdgePath();
-  const updateNodeInternals = useUpdateNodeInternals();
-
+  const { handleDragStop: saveDrag } = useGeometryDragStopHandler();
   const handleDragStop = (
     edgeId: string,
     source: XYPosition,
     setSource: (position: XYPosition) => void,
     sourceNode: InternalNode<Node<NodeData>>,
-    sourceHandleId: string,
+    _sourceHandleId: string,
     sourcePosition: Position,
     target: XYPosition,
     setTarget: (position: XYPosition) => void,
     targetNode: InternalNode<Node<NodeData>>,
-    targetHandleId: string,
+    _targetHandleId: string,
     targetPosition: Position,
     isSourceSegment: boolean,
     isTargetSegment: boolean,
     localBendingPoints: BendPointData[]
   ) => {
-    const edges = store.getState().edges;
-    const edge = store.getState().edgeLookup.get(edgeId);
-    if (edge?.data) {
-      const newBendingPoint = cleanBendPoint([...localBendingPoints].sort((a, b) => a.pathOrder - b.pathOrder));
-      edge.data.bendingPoints = newBendingPoint;
-      let nodes = getNodes();
-
-      if (isSourceSegment) {
-        const newSource = { ...source };
-        if (newBendingPoint.length === 0) {
-          if (determineSegmentAxis(source, target) === 'x') {
-            newSource.y = target.y;
-          } else {
-            newSource.x = target.x;
-          }
-          setSource(newSource);
-        }
-        let newPosition: Position | null = null;
-        if (newBendingPoint[0]) {
-          newPosition = getHandlePositionFromXYPosition(
-            sourceNode,
-            newSource,
-            determineSegmentAxis(newSource, newBendingPoint[0])
-          );
-        }
-        nodes = getNodesUpdatedWithHandles(
-          nodes,
-          sourceNode,
-          edge.id,
-          sourceHandleId,
-          newSource,
-          newPosition ?? sourcePosition
-        );
-      }
-
-      if (isTargetSegment) {
-        const newTarget = { ...target };
-        if (newBendingPoint.length === 0) {
-          if (determineSegmentAxis(source, target) === 'x') {
-            newTarget.y = source.y;
-          } else {
-            newTarget.x = source.x;
-          }
-          setTarget(newTarget);
-        }
-        let newPosition: Position | null = null;
-        const lastBendingPoint = newBendingPoint[newBendingPoint.length - 1];
-        if (lastBendingPoint) {
-          newPosition = getHandlePositionFromXYPosition(
-            targetNode,
-            newTarget,
-            determineSegmentAxis(newTarget, lastBendingPoint)
-          );
-        }
-        nodes = getNodesUpdatedWithHandles(
-          nodes,
-          targetNode,
-          edge.id,
-          targetHandleId,
-          newTarget,
-          newPosition ?? targetPosition
-        );
-      }
-      edge.data.relativePositionBendingPoints = newBendingPoint.map((point) => ({
-        x: point.x - source.x,
-        y: point.y - source.y,
-      }));
-
-      setEdges(edges);
-      setNodes(nodes);
-      updateNodeInternals([sourceNode.id, targetNode.id]);
-      synchronizeEdgeLayoutData(edges, nodes);
+    const originalGeometry = {
+      edgeId,
+      source,
+      target,
+      sourceNode,
+      targetNode,
+      sourcePosition,
+      targetPosition,
+      bendingPoints: [...localBendingPoints].sort((left, right) => left.pathOrder - right.pathOrder),
+      customEdge: false,
+    };
+    const updatedEndpoints = saveDrag({
+      edgeId,
+      originalGeometry,
+      geometry: computeEdgeGeometry(originalGeometry),
+      isSourceSegment,
+      isTargetSegment,
+    });
+    if (updatedEndpoints) {
+      setSource(updatedEndpoints.source);
+      setTarget(updatedEndpoints.target);
     }
   };
-
   return { handleDragStop };
 };
