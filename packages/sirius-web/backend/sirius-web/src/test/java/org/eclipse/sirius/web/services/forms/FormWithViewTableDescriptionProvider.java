@@ -130,6 +130,12 @@ public class FormWithViewTableDescriptionProvider implements IEditingContextProc
                 .initialWidthExpression("-1")
                 .build();
 
+        var visibilityColumnDescription = new TableBuilders().newColumnDescription()
+                .name("Visibility")
+                .semanticCandidatesExpression("aql:'VisibilityColumn'")
+                .headerLabelExpression("Visibility")
+                .build();
+
         var rowDescription = new TableBuilders().newRowDescription()
                 .name("TypesRow")
                 .semanticCandidatesExpression("aql:self.types->toPaginatedData()")
@@ -144,7 +150,7 @@ public class FormWithViewTableDescriptionProvider implements IEditingContextProc
 
         var cellDescriptions = new TableBuilders().newCellDescription()
                 .name("TypeCell")
-                .preconditionExpression("true")
+                .preconditionExpression("aql:columnTargetObject == 'NameColumn'")
                 .cellWidgetDescription(new TableBuilders()
                         .newCellTextfieldWidgetDescription()
                         .body(setValue)
@@ -152,13 +158,27 @@ public class FormWithViewTableDescriptionProvider implements IEditingContextProc
                 .valueExpression("aql:self.name")
                 .build();
 
+        var visibilityCellDescription = new TableBuilders().newCellDescription()
+                .name("VisibilityCell")
+                .preconditionExpression("aql:columnTargetObject == 'VisibilityColumn'")
+                .valueExpression("aql:papaya::Visibility.getEEnumLiteralByLiteral(self.visibility.toString())")
+                .cellWidgetDescription(new TableBuilders().newCellSelectWidgetDescription()
+                        .candidatesExpression("aql:papaya::Visibility.eLiterals")
+                        .candidateLabelExpression("aql:candidate.name")
+                        .body(new ViewBuilders().newSetValue()
+                                .featureName("visibility")
+                                .valueExpression("aql:newValue.instance")
+                                .build())
+                        .build())
+                .build();
+
         return new TableWidgetBuilders().newTableWidgetDescription()
                 .name("Types")
                 .labelExpression("Types")
                 .useStripedRowsExpression("true")
-                .columnDescriptions(columnDescriptions)
+                .columnDescriptions(columnDescriptions, visibilityColumnDescription)
                 .rowDescription(rowDescription)
-                .cellDescriptions(cellDescriptions)
+                .cellDescriptions(cellDescriptions, visibilityCellDescription)
                 .build();
     }
 

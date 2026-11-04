@@ -27,7 +27,7 @@ It allows reducing the selected tree item and all its children recursively.
 
 == Improvements
 
-
+- Support Select cells in View-based tables
 
 
 == Technical details

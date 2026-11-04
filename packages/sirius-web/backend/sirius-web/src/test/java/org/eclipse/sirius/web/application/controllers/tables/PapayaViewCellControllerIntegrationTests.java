@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,11 +22,17 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.EditSelectCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.tables.TextfieldCell;
+import org.eclipse.sirius.components.tables.tests.graphql.EditSelectCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.EditTextfieldCellMutationRunner;
+import org.eclipse.sirius.components.tables.tests.navigation.LineNavigator;
+import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.table.customcells.CheckboxCell;
 import org.eclipse.sirius.web.application.table.customcells.EditCheckboxCellInput;
@@ -71,6 +77,9 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
     @Autowired
     private EditCheckboxCellMutationRunner editCheckboxCellMutationRunner;
 
+    @Autowired
+    private EditSelectCellMutationRunner editSelectCellMutationRunner;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -100,7 +109,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
             tableId.set(table.getId());
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(6);
-            assertThat(table.getLines().get(0).getCells()).hasSize(3);
+            assertThat(table.getLines().get(0).getCells()).hasSize(4);
             assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
             cellId.set(table.getLines().get(0).getCells().get(0).getId());
@@ -141,7 +150,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
             tableId.set(table.getId());
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(6);
-            assertThat(table.getLines().get(0).getCells()).hasSize(3);
+            assertThat(table.getLines().get(0).getCells()).hasSize(4);
             assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(CheckboxCell.class);
             assertThat(((CheckboxCell) table.getLines().get(0).getCells().get(2)).isValue()).isEqualTo(false);
             cellId.set(table.getLines().get(0).getCells().get(2).getId());
@@ -164,6 +173,42 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
                 .then(editName)
+                .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a view table with an enum select cell, when its value is edited, then the cell body updates the value")
+    public void givenViewTableWithEnumSelectCellWhenItsValueIsEditedThenTheCellBodyUpdatesTheValue() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+        var tableId = new AtomicReference<String>();
+        var cellId = new AtomicReference<UUID>();
+        var privateVisibilityId = EcoreUtil.getURI(PapayaPackage.eINSTANCE.getVisibility().getEEnumLiteral("PRIVATE")).toString();
+
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            tableId.set(table.getId());
+            var cell = new LineNavigator(table.getLines().get(0)).selectCellByColumnId(new TableNavigator(table).column("Visibility").getId());
+            cellId.set(cell.getId());
+            assertThat(cell.getValue()).isEqualTo(EcoreUtil.getURI(PapayaPackage.eINSTANCE.getVisibility().getEEnumLiteral("PUBLIC")).toString());
+        });
+
+        Runnable editVisibility = () -> {
+            var input = new EditSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), tableId.get(), tableId.get(), cellId.get(), privateVisibilityId);
+            var result = this.editSelectCellMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.editSelectCell.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            var cell = new LineNavigator(table.getLines().get(0)).selectCellByColumnId(new TableNavigator(table).column("Visibility").getId());
+            assertThat(cell.getValue()).isEqualTo(privateVisibilityId);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(editVisibility)
                 .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

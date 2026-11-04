@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,14 +21,20 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextareaCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
+import org.eclipse.sirius.components.view.emf.form.converters.MultiValueProvider;
+import org.eclipse.sirius.components.view.emf.form.converters.OptionIdProvider;
+import org.eclipse.sirius.components.view.emf.form.converters.SelectValueProvider;
 import org.eclipse.sirius.components.view.emf.table.api.ICustomCellConverter;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellSelectWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 
@@ -103,6 +109,27 @@ public class CellDescriptionConverter {
                     .targetObjectKindProvider(targetObjectKindProvider)
                     .canCreatePredicate(canCreatePredicate)
                     .cellValueProvider(cellValueProvider)
+                    .cellTooltipValueProvider(cellTooltipValueProvider)
+                    .build());
+        } else if (viewCellDescription.getCellWidgetDescription() instanceof CellSelectWidgetDescription cellSelectWidgetDescription) {
+            var selectValueProvider = new SelectValueProvider(interpreter, this.identityService, viewCellDescription.getValueExpression());
+            var optionsProvider = new MultiValueProvider<>(interpreter, cellSelectWidgetDescription.getCandidatesExpression(), Object.class);
+            optionalICellDescription = Optional.of(SelectCellDescription.newSelectCellDescription(this.tableIdProvider.getId(viewCellDescription))
+                    .targetObjectIdProvider(targetObjectIdProvider)
+                    .targetObjectKindProvider(targetObjectKindProvider)
+                    .canCreatePredicate(canCreatePredicate)
+                    .cellValueProvider((variableManager, columnTargetObject) -> {
+                        var child = variableManager.createChild();
+                        child.put("columnTargetObject", columnTargetObject);
+                        return selectValueProvider.apply(child);
+                    })
+                    .cellOptionsProvider((variableManager, columnTargetObject) -> {
+                        var child = variableManager.createChild();
+                        child.put("columnTargetObject", columnTargetObject);
+                        return optionsProvider.apply(child);
+                    })
+                    .cellOptionsIdProvider(new OptionIdProvider(this.identityService))
+                    .cellOptionsLabelProvider(new StringValueProvider(interpreter, cellSelectWidgetDescription.getCandidateLabelExpression()))
                     .cellTooltipValueProvider(cellTooltipValueProvider)
                     .build());
         } else if (viewCellDescription.getCellWidgetDescription() instanceof CellLabelWidgetDescription cellLabelWidgetDescription) {
