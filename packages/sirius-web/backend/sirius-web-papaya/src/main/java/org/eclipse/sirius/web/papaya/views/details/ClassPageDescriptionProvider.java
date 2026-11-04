@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -177,6 +177,13 @@ public class ClassPageDescriptionProvider implements IPageDescriptionProvider {
                 .isResizableExpression("false")
                 .initialWidthExpression("-1")
                 .build();
+        var visibilityColumnDescription = new TableBuilders().newColumnDescription()
+                .name("Visibility")
+                .semanticCandidatesExpression("aql:'VisibilityColumn'")
+                .headerLabelExpression("Visibility")
+                .isResizableExpression("false")
+                .initialWidthExpression("-1")
+                .build();
         var rowDescription = new TableBuilders().newRowDescription()
                 .name("AttributesRow")
                 .semanticCandidatesExpression("aql:self.attributes->toPaginatedData()")
@@ -186,7 +193,7 @@ public class ClassPageDescriptionProvider implements IPageDescriptionProvider {
                 .build();
         var cellDescriptions = new TableBuilders().newCellDescription()
                 .name("AttributesCell")
-                .preconditionExpression("true")
+                .preconditionExpression("aql:columnTargetObject == 'NameColumn'")
                 .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription()
                         .body(
                                 new ViewBuilders().newSetValue()
@@ -197,13 +204,28 @@ public class ClassPageDescriptionProvider implements IPageDescriptionProvider {
                         .build())
                 .valueExpression("aql:self.name")
                 .build();
+        var visibilityCellDescription = new TableBuilders().newCellDescription()
+                .name("visibilityCell")
+                .preconditionExpression("aql:columnTargetObject == 'VisibilityColumn'")
+                .valueExpression("aql:papaya::Visibility.getEEnumLiteralByLiteral(self.visibility.toString())")
+                .cellWidgetDescription(new TableBuilders().newCellSelectWidgetDescription()
+                        .body(
+                                new ViewBuilders().newSetValue()
+                                        .featureName("visibility")
+                                        .valueExpression("aql:newValue.instance")
+                                        .build()
+                        )
+                        .candidatesExpression("aql:papaya::Visibility.eLiterals")
+                        .candidateLabelExpression("aql:candidate.name")
+                        .build())
+                .build();
         return new TableWidgetBuilders().newTableWidgetDescription()
                 .name("Attributes")
                 .labelExpression("Attributes")
                 .useStripedRowsExpression("true")
-                .columnDescriptions(columnDescriptions)
+                .columnDescriptions(columnDescriptions, visibilityColumnDescription)
                 .rowDescription(rowDescription)
-                .cellDescriptions(cellDescriptions)
+                .cellDescriptions(cellDescriptions, visibilityCellDescription)
                 .build();
     }
 }

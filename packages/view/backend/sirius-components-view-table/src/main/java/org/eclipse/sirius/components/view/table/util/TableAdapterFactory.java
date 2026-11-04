@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellSelectWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
@@ -99,6 +100,11 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseRowFilterDescription(RowFilterDescription object) {
             return TableAdapterFactory.this.createRowFilterDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseCellSelectWidgetDescription(CellSelectWidgetDescription object) {
+            return TableAdapterFactory.this.createCellSelectWidgetDescriptionAdapter();
         }
 
         @Override
@@ -250,6 +256,20 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createCellLabelWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription <em>Cell Select Widget
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.table.CellSelectWidgetDescription
+     * @generated
+     */
+    public Adapter createCellSelectWidgetDescriptionAdapter() {
         return null;
     }
 

@@ -234,6 +234,8 @@ public class CellDescriptionItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION, TableFactory.eINSTANCE.createCellLabelWidgetDescription()));
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION, TableFactory.eINSTANCE.createCellTextareaWidgetDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION, TableFactory.eINSTANCE.createCellSelectWidgetDescription()));
     }
 
     /**
