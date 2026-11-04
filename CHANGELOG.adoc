@@ -11,6 +11,7 @@
 === Architectural decision records
 
 - [ADR-241] Remove randomly generated library ids
+- [ADR-242] Propagate the inside label background to its footprint
 
 
 === Deprecation warning
