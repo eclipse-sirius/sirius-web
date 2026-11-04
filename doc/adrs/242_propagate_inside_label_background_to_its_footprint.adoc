@@ -1,0 +1,120 @@
+:author: Guillaume Coutable
+:date: 2026-11-04
+:status: proposed
+:consulted:
+:informed: Florian Rouëné
+:deciders: Stéphane Bégaudeau
+:pitch: None
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/7153
+
+= ADR-242 - Propagate the inside label background to its footprint
+
+== Context and Problem Statement
+
+An inside label in header mode reserves space inside its node so that the node's children can be laid out around it.
+We call this reserved region the label's _footprint_, as opposed to the smaller box containing its text and icons.
+For a horizontal header, this region spans the usable width of the node and includes the space around the label content.
+Customizing colors makes the difference between this region and the background painted only behind the label's text and icons visible.
+We want the label's background to identify its whole footprint when it is in header mode.
+
+The name _header_ describes a mode rather than a fixed position: a header-mode label can already be placed at the top or bottom of a node.
+The term _footprint_ also accommodates possible left and right placements without introducing those placements in this change.
+
+Propagating the background alone covers the current need and can be delivered with a simple solution within the limited time available.
+Propagating borders would raise additional geometry questions and is outside the scope of this decision.
+
+== Decision Drivers
+
+- Make the region reserved for a header-mode label visually consistent with the label's configured appearance.
+- Keep content styling, footprint styling, and layout responsibilities explicit.
+- Preserve node geometry, rounded corners, interaction affordances, and label overflow behavior.
+- Cover the current need with a small contribution that fits the available time.
+
+== Considered Options
+
+=== Paint the background on the footprint in header mode
+
+In header mode, assign the background to the footprint instead of the content.
+Outside header mode, keep the background on the content.
+This covers the current need and paints the background once in both cases.
+It requires the renderer and layout measurements to agree on the footprint's bounds.
+
+=== Keep the background on the label content
+
+This preserves the current rendering structure and styling behavior.
+It does not fill the region reserved for the header, particularly when the content is centered or has a maximum width.
+
+=== Paint the same background on both the content and the footprint
+
+This is a small local change, but translucent backgrounds accumulate under the content and produce a different color there.
+
+== Decision Outcome
+
+In the context of customizing inside label colors, facing the difference between the content box and the reserved footprint, we decided to propagate the label's background to its footprint in header mode, accepting that this changes the painted region in existing diagrams.
+
+This decision applies only to the background color of header-mode labels on list and free-form nodes.
+Outside header mode, the background remains on the label content.
+In both cases, the background is painted once.
+The footprint background follows the node's inner rounded outline without extending into the space outside its corners.
+
+The label's border stays around its content, while the node's contour and the existing header separator retain their behavior.
+
+== Consequences
+
+=== Advantages
+
+- The background identifies the complete label footprint independently of text length, alignment, or maximum width.
+- Conversion determines where the background belongs, without copying and stripping label properties during rendering.
+- The shared inside-label rendering keeps the behavior consistent between list and free-form nodes.
+- The change covers the current need without requiring a broader styling redesign.
+
+=== Drawbacks
+
+- Existing header-mode labels acquire a larger painted background region, which changes the appearance of existing diagrams.
+- The footprint must match the node's inner rounded outline, including nodes with different border widths on different sides.
+- Rendering, measurement, and export paths need regression coverage for the new background region.
+
+== More Information
+
+=== Implementation
+
+Deliver background propagation in one reviewable contribution, including its integration and regression coverage.
+
+Introduce a shared `NodeInsideLabel` component to factor out the common inside-label rendering of list and free-form nodes.
+Add `headerStyle` to the frontend `InsideLabel` model to carry the footprint background in header mode.
+During conversion, assign the background to `headerStyle` when `isHeader` is true, and to `contentStyle` otherwise.
+Keep the other content styles, including the label's borders, in `contentStyle`.
+Prepare these destinations explicitly rather than copying and stripping properties during rendering.
+Preserve typography, alignment margins, padding, maximum width, and `WRAP`/`ELLIPSIS` constraints at their existing level, along with the placement of actions.
+The node's own background continues to paint the rest of the node.
+
+Ensure that label measurement uses the same composition and width constraints as the displayed label wherever the composition changes measured bounds.
+Keep the existing separator rules and count its footprint only once.
+Preserve the other consumers of shared label converters, including image, icon-label, and custom node renderers.
+Cover list and free-form nodes, top and bottom headers, non-header labels, translucent and theme-based colors, rounded corners, and different border widths per side.
+Check resizing and wrapping, direct editing, faded state, actions on hover, connection handles, and image and SVG exports.
+Include a regression with a node radius larger than the header height so that an independently rounded header cannot silently change the node's curve.
+
+=== Decision Details
+
+This decision does not prescribe the DOM structure used to render the content and footprint.
+It does not require a preparatory restructuring of the node.
+
+The background color comes from the label, while the rounded shape comes from the node.
+A `TOP` header follows the node's top corners, and a `BOTTOM` header follows its bottom corners.
+The inner boundary must account for the node's effective border widths on the adjacent sides; inheriting its outer `borderRadius` unchanged is insufficient and can leave the node background visible at the corners.
+The drawing technique and any conversion helpers are implementation choices, not additional APIs established by this ADR.
+Clipping must remain limited to the relevant visual content: clipping the whole node would also hide connection handles or decorators that extend beyond its bounds.
+
+Propagating other properties is outside the scope of this decision.
+If border propagation is considered, its relationship with the node's contour, the header separator, and rounded corners will need to be decided separately.
+
+The change is frontend-only and reuses the existing backend, GraphQL, and View DSL appearance properties.
+It introduces no database migration, backend API, GraphQL field, extension point, or new label position.
+It keeps the existing `isHeader` contract and the label within the same React Flow node.
+Documentation and release notes will describe background propagation when that behavior is delivered.
+
+=== References
+
+- xref:130_add_support_for_outside_inside_node_labels.adoc[ADR-130 - Add support for outside and inside node labels]
+- xref:090_improve_support_for_compartment.adoc[ADR-090 - Improve support for compartment]
