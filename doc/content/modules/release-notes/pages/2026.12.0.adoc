@@ -26,7 +26,7 @@ Custom implementations must reuse the provided context during connector tool exe
 
 == Improvements
 
-
+- Support Select cells in View-based tables
 
 
 == Technical details

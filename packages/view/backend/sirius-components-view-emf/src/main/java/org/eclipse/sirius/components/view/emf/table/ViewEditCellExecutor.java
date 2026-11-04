@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
+import org.eclipse.sirius.components.view.emf.form.converters.SelectNewValueHandler;
 import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
@@ -44,6 +45,7 @@ import org.eclipse.sirius.components.view.emf.table.api.ICustomViewEditCellExecu
 import org.eclipse.sirius.components.view.emf.table.api.IViewEditCellExecutor;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellSelectWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
@@ -116,6 +118,9 @@ public class ViewEditCellExecutor implements IViewEditCellExecutor {
             status = this.executeOperations(variableManager, interpreter, textfieldDescription.getBody());
         } else if (cellWidgetDescription instanceof CellTextareaWidgetDescription textareaWidgetDescription) {
             status = this.executeOperations(variableManager, interpreter, textareaWidgetDescription.getBody());
+        } else if (cellWidgetDescription instanceof CellSelectWidgetDescription selectWidgetDescription) {
+            status = new SelectNewValueHandler(interpreter, this.objectSearchService, this.operationExecutor, this.feedbackMessageService, selectWidgetDescription.getBody())
+                    .apply(variableManager, variableManager.get("newValue", String.class).orElse(null));
         } else if (cellWidgetDescription instanceof CellLabelWidgetDescription) {
             status = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
         } else {

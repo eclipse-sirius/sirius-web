@@ -102,9 +102,36 @@ When authoring the `semanticCandidatesExpression` remember that pagination and f
 * `CellLabelWidgetDescription`: read-only cell that displays text and an optional `iconExpression`.
 * `CellTextfieldWidgetDescription`: inline text field that can execute operations (`body`) when the user commits a change.
 * `CellTextareaWidgetDescription`: multi-line editor that also exposes an operation `body` for custom persistence logic.
+* `CellSelectWidgetDescription`: drop-down editor that displays candidate elements and executes an operation `body` when the selection changes.
 
 The operation bodies reuse the shared operation language (`ChangeContext`, `SetValue`, `CreateInstance`, etc.).
 Editing a cell can trigger complex semantic updates beyond simple attribute assignment.
+
+=== Select cells
+
+To configure a select cell, add a `CellSelectWidgetDescription` as the `cellWidgetDescription` of a `CellDescription`.
+Configure the following properties:
+
+* `candidatesExpression`: expression returning the collection of available values.
+* `candidateLabelExpression`: expression returning the label of each option, with the current candidate available as `candidate`.
+* `body`: operations executed when the user selects a value.
+
+Set the parent `CellDescription.valueExpression` to return the currently selected candidate, rather than its label.
+The selected value and the candidates are converted to identifiers to determine which option is selected.
+Both `valueExpression` and `candidatesExpression` can use `self`, the semantic element of the row, and `columnTargetObject`, the semantic element of the column.
+
+In the operation `body`, `self` is the semantic element of the row, and `cell`, `row`, `column`, and `editingContext` are also available.
+The `newValue` variable contains the selected object resolved from its identifier, or the selected string if no object is found.
+
+For example, to edit the `visibility` of a Papaya type, configure:
+
+* `CellDescription.valueExpression`: `aql:papaya::Visibility.getEEnumLiteralByLiteral(self.visibility.toString())`.
+* `CellSelectWidgetDescription.candidatesExpression`: `aql:papaya::Visibility.eLiterals`.
+* `CellSelectWidgetDescription.candidateLabelExpression`: `aql:candidate.name`.
+* A `SetValue` operation in the `body`, with `featureName` set to `visibility` and `valueExpression` set to `aql:newValue.instance`.
+
+Here, the candidates are EMF enumeration literals.
+The operation uses `newValue.instance` to assign the corresponding enumeration value to the semantic feature.
 
 == Row actions and context menus
 Row-level actions are modeled with `RowContextMenuEntry` and attached to the `contextMenuEntries` reference of the row description.

@@ -25,6 +25,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditMultiSelectCellInput;
@@ -33,7 +34,9 @@ import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellI
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
+import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.tables.Line;
+import org.eclipse.sirius.components.tables.SelectCellOption;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.tests.graphql.EditMultiSelectCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.EditSelectCellMutationRunner;
@@ -235,15 +238,23 @@ public class TableControllerTests extends AbstractIntegrationTests {
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var tableWidget = new FormNavigator(form).page("Page").group("Group1").findWidget("Types", TableWidget.class);
 
-            assertThat(tableWidget.getTable().getColumns()).hasSize(1);
+            assertThat(tableWidget.getTable().getColumns()).hasSize(2);
             assertThat(tableWidget.getTable().getLines()).hasSize(4);
-            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(4);
+            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(8);
 
             Line line = tableWidget.getTable().getLines().get(0);
             LineNavigator lineNavigator = new LineNavigator(line);
 
             TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
             assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Success");
+
+            var visibilityCell = lineNavigator.selectCellByColumnId(tableNavigator.column("Visibility").getId());
+            assertThat(visibilityCell).hasValue(EcoreUtil.getURI(PapayaPackage.eINSTANCE.getVisibility().getEEnumLiteral("PUBLIC")).toString());
+            assertThat(visibilityCell.getOptions()).extracting(SelectCellOption::getId)
+                    .containsExactlyElementsOf(PapayaPackage.eINSTANCE.getVisibility().getELiterals().stream()
+                            .map(literal -> EcoreUtil.getURI(literal).toString()).toList());
+            assertThat(visibilityCell.getOptions()).extracting(SelectCellOption::getLabel)
+                    .containsExactly("PUBLIC", "PROTECTED", "PACKAGE", "PRIVATE");
 
         });
 
@@ -302,9 +313,9 @@ public class TableControllerTests extends AbstractIntegrationTests {
             formId.set(form.getId());
             var tableWidget = new FormNavigator(form).page("Page").group("Group1").findWidget("Types", TableWidget.class);
 
-            assertThat(tableWidget.getTable().getColumns()).hasSize(1);
+            assertThat(tableWidget.getTable().getColumns()).hasSize(2);
             assertThat(tableWidget.getTable().getLines()).hasSize(4);
-            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(4);
+            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(8);
 
             Line line = tableWidget.getTable().getLines().get(0);
             LineNavigator lineNavigator = new LineNavigator(line);

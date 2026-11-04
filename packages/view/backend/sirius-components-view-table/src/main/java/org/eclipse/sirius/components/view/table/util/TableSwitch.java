@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellSelectWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
@@ -158,6 +159,15 @@ public class TableSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case TablePackage.CELL_SELECT_WIDGET_DESCRIPTION: {
+                CellSelectWidgetDescription cellSelectWidgetDescription = (CellSelectWidgetDescription) theEObject;
+                T result = this.caseCellSelectWidgetDescription(cellSelectWidgetDescription);
+                if (result == null)
+                    result = this.caseCellWidgetDescription(cellSelectWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -264,6 +274,21 @@ public class TableSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseCellLabelWidgetDescription(CellLabelWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Cell Select Widget Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Cell Select Widget Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCellSelectWidgetDescription(CellSelectWidgetDescription object) {
         return null;
     }
 
