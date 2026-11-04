@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, useStoreApi, useUpdateNodeInternals, XYPosition } from '@xyflow/react';
+import { Edge, Node, useStoreApi, useUpdateNodeInternals } from '@xyflow/react';
 import { useStore } from '../../../representation/useStore';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { getNodesUpdatedWithHandles } from '../EdgeLayout';
-import { EdgeDragData } from './edgeGeometry.types';
+import { EdgeDragData, EdgeGeometryInput } from './edgeGeometry.types';
 import { createGeometryNodeLookup } from './resolveEdgeGeometry';
 import { useEditableEdgePath } from '../useEditableEdgePath';
 import {
@@ -24,6 +24,42 @@ import {
   getHandlePositionFromXYPosition,
 } from '../rectilinear-edge/RectilinearEdgeCalculation';
 import { UseEdgeDragStopHandlerValue } from './useEdgeDragStopHandler.types';
+
+export const setConnectionHandlesHidden = (
+  nodes: Node<NodeData>[],
+  originalGeometry: EdgeGeometryInput,
+  isHidden: boolean
+): Node<NodeData>[] => {
+  let changed = false;
+  const updatedNodes = nodes.map((node) => {
+    const originalNode =
+      node.id === originalGeometry.sourceNode.id
+        ? originalGeometry.sourceNode
+        : node.id === originalGeometry.targetNode.id
+        ? originalGeometry.targetNode
+        : null;
+    if (!originalNode) {
+      return node;
+    }
+    let nodeChanged = false;
+    const connectionHandles = node.data.connectionHandles.map((handle) => {
+      if (handle.edgeId !== originalGeometry.edgeId) {
+        return handle;
+      }
+      const originalHandle = originalNode.data.connectionHandles.find((candidate) => {
+        return candidate.id === handle.id;
+      });
+      const hidden = isHidden ? true : originalHandle?.isHidden ?? false;
+      if (handle.isHidden === hidden) {
+        return handle;
+      }
+      changed = nodeChanged = true;
+      return { ...handle, isHidden: hidden };
+    });
+    return nodeChanged ? { ...node, data: { ...node.data, connectionHandles } } : node;
+  });
+  return changed ? updatedNodes : nodes;
+};
 
 /** Saves an accepted drag directly, like the other diagram interaction hooks. */
 export const useEdgeDragStopHandler = (): UseEdgeDragStopHandlerValue => {
@@ -34,13 +70,13 @@ export const useEdgeDragStopHandler = (): UseEdgeDragStopHandlerValue => {
 
   const handleDragStop = (
     dragData: Pick<EdgeDragData, 'edgeId' | 'originalGeometry' | 'geometry' | 'isSourceSegment' | 'isTargetSegment'>
-  ): { source: XYPosition; target: XYPosition } | null => {
+  ): void => {
     const { edgeId, originalGeometry, geometry, isSourceSegment, isTargetSegment } = dragData;
     const edge = getEdges().find((candidate) => {
       return candidate.id === edgeId;
     });
     if (!edge?.data) {
-      return null;
+      return;
     }
     const newBendingPoint = cleanBendPoint(
       [...geometry.bendingPoints].sort((a, b) => {
@@ -99,6 +135,7 @@ export const useEdgeDragStopHandler = (): UseEdgeDragStopHandlerValue => {
         newPosition ?? originalGeometry.targetPosition
       );
     }
+    nodes = setConnectionHandlesHidden(nodes, originalGeometry, false);
     const edges = getEdges().map((candidate) => {
       if (candidate.id !== edge.id || !candidate.data) {
         return candidate;
@@ -119,7 +156,6 @@ export const useEdgeDragStopHandler = (): UseEdgeDragStopHandlerValue => {
     setEdges(edges);
     updateNodeInternals([edge.source, edge.target]);
     synchronizeEdgeLayoutData(edges, nodes);
-    return { source, target };
   };
 
   return { handleDragStop };
