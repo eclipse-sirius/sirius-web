@@ -100,7 +100,16 @@ INSERT INTO document (
                            "id": "c715807f-73f6-44fb-b17b-df6d12558458",
                            "eClass": "papaya:Class",
                            "data": {
-                             "name": "Success"
+                             "name": "Success",
+                             "attributes": [
+                               {
+                                 "id": "8bf8af58-7821-4de4-b107-b33ed00adbf1",
+                                 "eClass": "papaya:Attribute",
+                                 "data": {
+                                   "name": "value"
+                                 }
+                               }
+                             ]
                            }
                          },
                          {

@@ -35,7 +35,6 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapab
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -78,8 +77,6 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IURLParser urlParser;
 
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
     private final IDetailsViewPageDescriptionProvider detailsViewPageDescriptionProvider;
 
     public PropertiesEventProcessorFactory(IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
@@ -90,7 +87,6 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         this.detailsViewFormDescriptionAggregator = Objects.requireNonNull(detailsViewFormDescriptionAggregator);
         this.objectSearchService = Objects.requireNonNull(formConfiguration.getObjectSearchService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
-        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
         this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
@@ -137,7 +133,6 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                     new FormEventProcessorConfiguration(editingContext, this.objectSearchService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
                     this.subscriptionManagerFactory.create(),
                     this.representationSearchService,
-                    this.representationDescriptionSearchService,
                     this.representationRefreshPolicyRegistry,
                     this.formPostProcessor,
                     this.formCapabilitiesService);

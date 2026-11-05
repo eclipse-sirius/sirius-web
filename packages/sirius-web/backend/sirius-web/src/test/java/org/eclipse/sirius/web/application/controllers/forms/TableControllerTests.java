@@ -40,7 +40,6 @@ import org.eclipse.sirius.components.tables.SelectCellOption;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.tests.graphql.EditMultiSelectCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.EditSelectCellMutationRunner;
-import org.eclipse.sirius.components.tables.tests.graphql.EditTextfieldCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.navigation.LineNavigator;
 import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
 import org.eclipse.sirius.components.widget.table.TableWidget;
@@ -53,6 +52,7 @@ import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.EditCheckboxCellMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.tables.EditTextfieldCellExecutor;
 import org.eclipse.sirius.web.tests.services.tables.navigation.LineCheckboxCellNavigator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -81,7 +81,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedFormSubscription givenCreatedFormSubscription;
 
     @Autowired
-    private EditTextfieldCellMutationRunner editTextfieldCellMutationRunner;
+    private EditTextfieldCellExecutor editTextfieldCellExecutor;
 
     @Autowired
     private EditSelectCellMutationRunner editSelectCellMutationRunner;
@@ -166,13 +166,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
 
         });
 
-        Runnable editNameTextfieldCell = () -> {
-            var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), textfieldCellId.get(), "newName");
-            var result = this.editTextfieldCellMutationRunner.run(input);
-
-            String typename = JsonPath.read(result.data(), "$.data.editTextfieldCell.__typename");
-            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
-        };
+        Runnable editNameTextfieldCell = () -> this.editTextfieldCellExecutor.execute(new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(),
+                textfieldCellId.get(), "newName")).isSuccess();
 
         Consumer<Object> editNameConsumer = this.getEditNameConsumer(tableId, selectCellId);
 
@@ -328,14 +323,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
 
         });
 
-        Runnable editNameTextfieldCell = () -> {
-            var editNameTextfieldCellInput = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), textfieldCellId.get(),
-                    "newName");
-            var result = this.editTextfieldCellMutationRunner.run(editNameTextfieldCellInput);
-
-            String typename = JsonPath.read(result.data(), "$.data.editTextfieldCell.__typename");
-            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
-        };
+        Runnable editNameTextfieldCell = () -> this.editTextfieldCellExecutor.execute(new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), textfieldCellId.get(),
+                "newName")).isSuccess();
 
         Consumer<Object> editNameConsumer = assertRefreshedFormThat(form -> {
             var tableWidget = new FormNavigator(form).page("Page").group("Group1").findWidget("Types", TableWidget.class);

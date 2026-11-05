@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapab
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
@@ -53,8 +52,6 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
     private final IObjectSearchService objectSearchService;
 
     private final IRepresentationSearchService representationSearchService;
-
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final List<IWidgetDescriptor> widgetDescriptors;
 
@@ -77,7 +74,6 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
         this.relatedElementsDescriptionProvider = Objects.requireNonNull(relatedElementsDescriptionProvider);
         this.objectSearchService = Objects.requireNonNull(formConfiguration.getObjectSearchService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
-        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
         this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
@@ -116,7 +112,6 @@ public class RelatedElementsEventProcessorFactory implements IRepresentationEven
                     new FormEventProcessorConfiguration(editingContext, this.objectSearchService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
                     this.subscriptionManagerFactory.create(),
                     this.representationSearchService,
-                    this.representationDescriptionSearchService,
                     this.representationRefreshPolicyRegistry,
                     this.formPostProcessor,
                     this.formCapabilitiesService);

@@ -9,6 +9,8 @@
 
 - `ISingleClickOnTwoDiagramElementHandler.execute` now takes a `DiagramContext` instead of a `Diagram`.
 Custom implementations must reuse the provided context during connector tool execution.
+- The `FormEventProcessor` constructor no longer accepts the `representationDescriptionSearchService` parameter of type `IRepresentationDescriptionSearchService`.
+Custom factories and subclasses must remove this argument from constructor calls.
 
 
 == Bug fixes
@@ -18,6 +20,8 @@ Custom implementations must reuse the provided context during connector tool exe
 - Bending points, segment controls and paths share the same geometry while editing rectilinear edges.
 - Wrapped labels now fit inside their nodes immediately after using Adjust size.
 - Helper lines now appear when resizing a node containing children from the left or top.
+- Tables embedded in the Details view can now be edited.
+
 
 == New features
 

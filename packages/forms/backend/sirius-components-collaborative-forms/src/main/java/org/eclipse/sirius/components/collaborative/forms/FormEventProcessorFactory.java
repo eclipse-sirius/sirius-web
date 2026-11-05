@@ -108,7 +108,6 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                         new FormEventProcessorConfiguration(editingContext, this.objectSearchService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
                         this.subscriptionManagerFactory.create(),
                         this.representationSearchService,
-                        this.representationDescriptionSearchService,
                         this.representationRefreshPolicyRegistry,
                         this.formPostProcessor,
                         this.formCapabilitiesService
