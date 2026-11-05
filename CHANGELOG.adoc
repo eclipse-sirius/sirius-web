@@ -212,6 +212,7 @@ A new API has been introduced to support this use case more properly, for that d
 As such, the view based representation description can be registered as usual and converted by Sirius Web.
 You just have to find it in the editing context and return it from the delegate.
 It will also allow to share a form description between the details view and a regular form representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/7162[#7162] [form] Fix editing of table widgets in the Details view.
 
 
 === New Features
