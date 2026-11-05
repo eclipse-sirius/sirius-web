@@ -56,6 +56,7 @@ import { DiagramToolbarActionProps, DiagramToolbarProps, DiagramToolbarState } f
 import { diagramToolbarActionExtensionPoint } from './DiagramToolbarExtensionPoints';
 import { ExportImageButton } from './ExportImageButton';
 import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
+import { ZoomLevelMenu } from './ZoomLevelMenu';
 import { FilterSelectionToolbarButton } from './filter-selection/FilterSelectionToolbarButton';
 
 export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => {
@@ -65,6 +66,7 @@ export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => 
     arrangeAllInProgress: false,
     expanded: diagramToolbar.expandedByDefault,
     contentWidth: null,
+    contentScrollEnabled: diagramToolbar.expandedByDefault,
   });
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramToolbar' });
 
@@ -125,20 +127,31 @@ export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => 
   }, [collapsibleContentRef.current?.scrollWidth]);
 
   const onCollapse = (collapse: boolean) => {
-    setState((prevState) => ({ ...prevState, expanded: !collapse }));
+    setState((prevState) => ({ ...prevState, expanded: !collapse, contentScrollEnabled: false }));
+  };
+
+  // The actions can only be scrolled once the toolbar is fully expanded, to prevent a scrollbar from being displayed
+  // during the animation
+  const onContentTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>): void => {
+    if (event.target === event.currentTarget && event.propertyName === 'width' && state.expanded) {
+      setState((prevState) => ({ ...prevState, contentScrollEnabled: true }));
+    }
   };
 
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
   return (
     <>
-      <Panel position="top-left" data-testid="diagram-toolbar">
+      <Panel position="top-left" data-testid="diagram-toolbar" style={{ maxWidth: 'calc(100% - 30px)' }}>
         <Paper style={{ display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
           <Box
             ref={collapsibleContentRef}
+            onTransitionEnd={onContentTransitionEnd}
             style={{
               display: 'flex',
-              overflow: 'hidden',
+              overflowX: state.contentScrollEnabled ? 'auto' : 'hidden',
+              overflowY: 'hidden',
+              scrollbarWidth: 'thin',
               width: state.expanded ? state.contentWidth ?? 'auto' : 0,
               visibility: state.expanded ? 'visible' : 'hidden',
               transition: 'width 0.5s ease, visibility 0.5s ease',
@@ -191,6 +204,7 @@ export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => 
                 <ZoomInIcon />
               </IconButton>
             </Tooltip>
+            <ZoomLevelMenu />
             <Tooltip title={t('zoomOut')}>
               <IconButton size="small" aria-label={t('zoomOut')} onClick={handleZoomOut} data-testid="zoom-out">
                 <ZoomOutIcon />

@@ -25,6 +25,7 @@ All your changes are automatically reflected in the underlying model and synchro
 === Toolbar
 
 The toolbar provides general actions for navigating and managing the diagram as a whole.
+When the diagram is too narrow to display all the actions, the toolbar can be scrolled horizontally.
 
 [cols="10%,20%,70%",options="header"]
 |===
@@ -41,6 +42,8 @@ a|image::global-palette-fit-to-screen.png[Fit to screen]
 a|image::global-palette-zoom.png[Zoom]
 | Zoom
 | Lets you zoom in and out manually using the toolbar buttons.
+The current zoom level is displayed between the two buttons.
+Click on it to zoom directly to a predefined level, from 25% to 400%.
 
 a|image::global-palette-share.png[Share]
 | Share

@@ -1,0 +1,34 @@
+= 2026.12.0
+
+== Key highlights
+
+
+
+
+== Breaking changes
+
+
+
+
+== Bug fixes
+
+
+
+
+== New features
+
+* The diagram toolbar now displays the current zoom level, between the zoom in and zoom out buttons.
+Click on it to zoom directly to a predefined level, from 25% to 400%.
+When the diagram is too narrow to display all its actions, the toolbar can now be scrolled horizontally instead of overflowing the diagram.
++
+image::diagram-toolbar-zoom-level.png[Display the zoom level menu opened from the diagram toolbar with the current zoom level highlighted, width=85%,height=85%]
+
+
+== Improvements
+
+
+
+
+== Technical details
+
+* For technical details on this {product} release, including breaking changes, please refer to {changelog-url}[changelog].
