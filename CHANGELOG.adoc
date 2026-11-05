@@ -12,6 +12,7 @@
 
 - [ADR-241] Remove randomly generated library ids
 - [ADR-242] Add the ability to fit table row height and column width
+- [ADR-243] Compute select cell options on demand
 
 
 === Deprecation warning
