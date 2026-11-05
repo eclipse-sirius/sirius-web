@@ -40,13 +40,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
-import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.FormRenderer;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
@@ -94,8 +92,6 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final IRepresentationSearchService representationSearchService;
 
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
@@ -111,7 +107,6 @@ public class FormEventProcessor implements IFormEventProcessor {
     public FormEventProcessor(FormEventProcessorConfiguration configuration,
             ISubscriptionManager subscriptionManager,
             IRepresentationSearchService representationSearchService,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
             IFormPostProcessor formPostProcessor,
             IFormCapabilitiesService formCapabilitiesService) {
@@ -126,7 +121,6 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.widgetDescriptors = Objects.requireNonNull(configuration.widgetDescriptors());
         this.formEventHandlers = Objects.requireNonNull(configuration.formEventHandlers());
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.formPostProcessor = Objects.requireNonNull(formPostProcessor);
@@ -191,7 +185,7 @@ public class FormEventProcessor implements IFormEventProcessor {
                 ITableEventHandler tableEventHandler = optionalTableEventHandler.get();
                 Optional<Table> tableOptional = this.getTable(this.currentForm.get(), tableInput.tableId());
                 if (tableOptional.isPresent()) {
-                    Optional<TableDescription> tableDescriptionOptional = this.getTableDescription(this.currentForm.get().getDescriptionId(), tableOptional.get().getDescriptionId());
+                    Optional<TableDescription> tableDescriptionOptional = this.getTableDescription(tableOptional.get().getDescriptionId());
                     if (tableDescriptionOptional.isPresent()) {
                         tableEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, new TableContext(tableOptional.get()), tableDescriptionOptional.get(), tableInput);
                     } else {
@@ -226,13 +220,9 @@ public class FormEventProcessor implements IFormEventProcessor {
                 .findFirst();
     }
 
-    private Optional<TableDescription> getTableDescription(String formDescriptionId, String tableDescriptionId) {
-        return this.representationDescriptionSearchService
-                .findById(this.editingContext, formDescriptionId)
-                .filter(FormDescription.class::isInstance)
-                .map(FormDescription.class::cast)
-                .stream()
-                .flatMap(form -> form.getPageDescriptions().stream())
+    private Optional<TableDescription> getTableDescription(String tableDescriptionId) {
+        return this.formCreationParameters.getFormDescription()
+                .getPageDescriptions().stream()
                 .flatMap(page -> page.getGroupDescriptions().stream())
                 .flatMap(group -> group.getControlDescriptions().stream())
                 .filter(TableWidgetDescription.class::isInstance)

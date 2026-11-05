@@ -15,20 +15,27 @@ package org.eclipse.sirius.web.application.controllers.forms;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
+import static org.eclipse.sirius.components.tables.tests.assertions.TablesAssertions.assertThat;
 
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Page;
+import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
+import org.eclipse.sirius.components.tables.tests.navigation.LineNavigator;
+import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
+import org.eclipse.sirius.components.widget.table.TableWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -36,6 +43,7 @@ import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
+import org.eclipse.sirius.web.tests.services.tables.EditTextfieldCellExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,6 +72,9 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
 
+    @Autowired
+    private EditTextfieldCellExecutor editTextfieldCellExecutor;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -85,6 +96,51 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
 
         StepVerifier.create(flux)
                 .expectNextMatches(formContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a Papaya class details view, when a table cell is edited, then its value is updated")
+    public void givenPapayaClassDetailsViewWhenTableCellIsEditedThenItsValueIsUpdated() {
+        var editingContextId = PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString();
+        var classId = PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString();
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(classId));
+        var input = new DetailsEventInput(UUID.randomUUID(), editingContextId, detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input).flux().filter(FormRefreshedEventPayload.class::isInstance);
+        var tableId = new AtomicReference<String>();
+        var lineId = new AtomicReference<UUID>();
+        var cellId = new AtomicReference<UUID>();
+
+        Consumer<Object> initialFormConsumer = assertRefreshedFormThat(form -> {
+            assertThat(form.getId()).isEqualTo(detailsRepresentationId);
+            var table = new FormNavigator(form).page("Success").group("Additional Information").findWidget("Attributes", TableWidget.class).getTable();
+            assertThat(table.getLines()).hasSize(1);
+            var line = table.getLines().getFirst();
+            var columnId = new TableNavigator(table).column("Name").getId();
+            var cell = new LineNavigator(line).textfieldCellByColumnId(columnId);
+            assertThat(cell).hasValue("value");
+            tableId.set(table.getId());
+            lineId.set(line.getId());
+            cellId.set(cell.getId());
+        });
+
+        Runnable editAttributeName = () -> this.editTextfieldCellExecutor.execute(new EditTextfieldCellInput(
+                UUID.randomUUID(), editingContextId, detailsRepresentationId, tableId.get(), cellId.get(), "renamedAttribute")).isSuccess();
+
+        Consumer<Object> updatedFormConsumer = assertRefreshedFormThat(form -> {
+            assertThat(form.getId()).isEqualTo(detailsRepresentationId);
+            var table = new FormNavigator(form).page("Success").group("Additional Information").findWidget("Attributes", TableWidget.class).getTable();
+            assertThat(table.getId()).isEqualTo(tableId.get());
+            var cell = new TableNavigator(table).line(lineId.get()).textfieldCell(cellId.get());
+            assertThat(cell).hasValue("renamedAttribute");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormConsumer)
+                .then(editAttributeName)
+                .consumeNextWith(updatedFormConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

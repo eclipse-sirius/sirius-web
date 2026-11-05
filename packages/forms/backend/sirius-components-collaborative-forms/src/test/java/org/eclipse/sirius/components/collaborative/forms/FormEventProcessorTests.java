@@ -32,7 +32,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.junit.jupiter.api.Test;
 
@@ -133,7 +132,6 @@ public class FormEventProcessorTests {
                 new FormEventProcessorConfiguration(editingContext, new IObjectSearchService.NoOp(), formCreationParameters, List.of(), List.of(), List.of()),
                 new SubscriptionManager(),
                 new IRepresentationSearchService.NoOp(),
-                new IRepresentationDescriptionSearchService.NoOp(),
                 new RepresentationRefreshPolicyRegistry(List.of()),
                 new IFormPostProcessor.NoOp(),
                 new IFormCapabilitiesService.NoOp());

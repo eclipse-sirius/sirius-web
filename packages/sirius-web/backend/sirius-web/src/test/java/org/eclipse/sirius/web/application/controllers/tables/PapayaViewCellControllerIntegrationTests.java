@@ -30,7 +30,6 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.components.tables.tests.graphql.EditSelectCellMutationRunner;
-import org.eclipse.sirius.components.tables.tests.graphql.EditTextfieldCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.navigation.LineNavigator;
 import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -42,6 +41,7 @@ import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.EditCheckboxCellMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.tables.EditTextfieldCellExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -72,7 +72,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
     private ViewTableDescriptionProvider viewTableDescriptionProvider;
 
     @Autowired
-    private EditTextfieldCellMutationRunner editTextfieldCellMutationRunner;
+    private EditTextfieldCellExecutor editTextfieldCellExecutor;
 
     @Autowired
     private EditCheckboxCellMutationRunner editCheckboxCellMutationRunner;
@@ -115,13 +115,8 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
             cellId.set(table.getLines().get(0).getCells().get(0).getId());
         });
 
-        Runnable editName = () -> {
-            var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), tableId.get(), tableId.get(), cellId.get(), "newName");
-            var result = this.editTextfieldCellMutationRunner.run(input);
-
-            String typename = JsonPath.read(result.data(), "$.data.editTextfieldCell.__typename");
-            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
-        };
+        Runnable editName = () -> this.editTextfieldCellExecutor.execute(new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), tableId.get(), tableId.get(), cellId.get(),
+                "newName")).isSuccess();
 
         Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();

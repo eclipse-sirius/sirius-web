@@ -27,6 +27,8 @@ Implementations must reuse this context during connector tool execution so that 
 The `legacyId` field is deprecated and shouldn't be used: it is a temporary identifier that will be removed soon.
 - https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Add the `LibraryId` scalar, serialized as `namespace:name@version`.
 `CreateProjectInput#libraryIds` and `ImportLibrariesInput#libraryIds` now accept `[LibraryId!]!`, and the Java `CreateProjectInput`, `ICreateProjectInput`, and `ImportLibrariesInput` use `List<LibraryId>`.
+- https://github.com/eclipse-sirius/sirius-web/issues/7162[#7162] [form] The `representationDescriptionSearchService` parameter of type `IRepresentationDescriptionSearchService` has been removed from the `FormEventProcessor` constructor.
+Custom factories and subclasses must remove this argument from constructor calls.
 
 
 === Dependency update
@@ -40,6 +42,7 @@ The `legacyId` field is deprecated and shouldn't be used: it is a temporary iden
 - https://github.com/eclipse-sirius/sirius-web/issues/7120[#7120] [diagram] Fix graphical operations such as revealing hidden elements being ignored when executing connector tools.
 - https://github.com/eclipse-sirius/sirius-web/issues/6671[#6671] [diagram] Preserve wrapped inside labels within their nodes after using Adjust size.
 - https://github.com/eclipse-sirius/sirius-web/issues/7115[#7115] [diagram] Display helper lines when resizing nodes with children from the left or top.
+- https://github.com/eclipse-sirius/sirius-web/issues/7162[#7162] [form] Fix editing of table widgets in the Details view.
 
 
 === New Features
