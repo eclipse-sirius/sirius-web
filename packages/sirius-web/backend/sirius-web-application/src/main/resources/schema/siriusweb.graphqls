@@ -83,7 +83,7 @@ input CreateProjectInput {
   id: ID!
   name: String!
   templateId: ID!
-  libraryIds: [String!]!
+  libraryIds: [LibraryId!]!
 }
 
 union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload

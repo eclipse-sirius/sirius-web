@@ -30,11 +30,12 @@ import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateP
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
-import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
-import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.papaya.projecttemplates.PapayaProjectTemplateProvider;
+import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
+import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectExecutor;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
@@ -199,7 +200,8 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
 
         // The library is part of the input: this is the nominal use case where the frontend sends consistent data.
         var input = new CreateProjectInput(UUID.randomUUID(), "Papaya - Empty", PapayaProjectTemplateProvider.EMPTY_PROJECT_TEMPLATE_ID,
-                List.of(javaLibrary.getId().toString(), siriusWebTestsDataLibrary.getId().toString()));
+                List.of(new LibraryId(javaLibrary.getNamespace(), javaLibrary.getName(), javaLibrary.getVersion()), new LibraryId(siriusWebTestsDataLibrary.getNamespace(),
+                        siriusWebTestsDataLibrary.getName(), siriusWebTestsDataLibrary.getVersion())));
         var projectId = this.createProjectExecutor.execute(input, capturedOutput)
                 .isSuccess()
                 .getProjectId();
@@ -235,7 +237,8 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         Library siriusWebTestsDataLibrary = optionalSiriusWebTestsDataLibrary.get();
 
         // The library is not part of the input: this is not the nominal case, but it should create a project with required dependencies anyways.
-        var input = new CreateProjectInput(UUID.randomUUID(), "Papaya - Empty", PapayaProjectTemplateProvider.EMPTY_PROJECT_TEMPLATE_ID, List.of(siriusWebTestsDataLibrary.getId().toString()));
+        var input = new CreateProjectInput(UUID.randomUUID(), "Papaya - Empty", PapayaProjectTemplateProvider.EMPTY_PROJECT_TEMPLATE_ID, List.of(new LibraryId(siriusWebTestsDataLibrary.getNamespace(), siriusWebTestsDataLibrary.getName(),
+                siriusWebTestsDataLibrary.getVersion())));
         var projectId = this.createProjectExecutor.execute(input, capturedOutput)
                 .isSuccess()
                 .getProjectId();

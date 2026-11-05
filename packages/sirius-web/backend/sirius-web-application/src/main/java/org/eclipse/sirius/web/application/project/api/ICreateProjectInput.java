@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.project.api;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 
 /**
  * Interface implemented by all the inputs creating a project.
@@ -24,5 +25,5 @@ import org.eclipse.sirius.components.core.api.IInput;
 public interface ICreateProjectInput extends IInput {
     String name();
     String templateId();
-    List<String> libraryIds();
+    List<LibraryId> libraryIds();
 }

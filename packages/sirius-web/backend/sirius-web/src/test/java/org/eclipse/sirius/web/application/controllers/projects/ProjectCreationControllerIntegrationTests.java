@@ -25,6 +25,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDe
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.projects.semanticdata.domain.ProjectSemanticData;
@@ -115,7 +116,7 @@ public class ProjectCreationControllerIntegrationTests extends AbstractIntegrati
     @GivenSiriusWebServer
     @DisplayName("Given a project to create with libraries, when mutation is performed, then the libraries are present")
     public void givenProjectToCreateWithLibrariesWhenMutationIsPerformedThenTheLibrariesArePresent(CapturedOutput capturedOutput) {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of(PapayaIdentifiers.PAPAYA_JAVA_LIBRARY_ID.toString()));
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of(new LibraryId(PapayaIdentifiers.PAPAYA_JAVA_LIBRARY_NAMESPACE, PapayaIdentifiers.PAPAYA_JAVA_LIBRARY_NAME, PapayaIdentifiers.PAPAYA_JAVA_LIBRARY_VERSION)));
         var projectId = this.createProjectExecutor.execute(input, capturedOutput)
                 .isSuccess()
                 .getProjectId();
