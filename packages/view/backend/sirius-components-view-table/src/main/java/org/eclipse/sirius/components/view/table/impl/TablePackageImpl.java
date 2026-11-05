@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellSelectWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
@@ -93,6 +94,13 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     private EClass cellLabelWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass cellSelectWidgetDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -632,6 +640,46 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
+    public EClass getCellSelectWidgetDescription() {
+        return this.cellSelectWidgetDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getCellSelectWidgetDescription_CandidatesExpression() {
+        return (EAttribute) this.cellSelectWidgetDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getCellSelectWidgetDescription_CandidateLabelExpression() {
+        return (EAttribute) this.cellSelectWidgetDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getCellSelectWidgetDescription_Body() {
+        return (EReference) this.cellSelectWidgetDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getCellTextareaWidgetDescription() {
         return this.cellTextareaWidgetDescriptionEClass;
     }
@@ -833,6 +881,11 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.createEAttribute(this.rowFilterDescriptionEClass, ROW_FILTER_DESCRIPTION__ID);
         this.createEAttribute(this.rowFilterDescriptionEClass, ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION);
         this.createEAttribute(this.rowFilterDescriptionEClass, ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION);
+
+        this.cellSelectWidgetDescriptionEClass = this.createEClass(CELL_SELECT_WIDGET_DESCRIPTION);
+        this.createEAttribute(this.cellSelectWidgetDescriptionEClass, CELL_SELECT_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION);
+        this.createEAttribute(this.cellSelectWidgetDescriptionEClass, CELL_SELECT_WIDGET_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION);
+        this.createEReference(this.cellSelectWidgetDescriptionEClass, CELL_SELECT_WIDGET_DESCRIPTION__BODY);
     }
 
     /**
@@ -863,6 +916,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.cellTextfieldWidgetDescriptionEClass.getESuperTypes().add(this.getCellWidgetDescription());
         this.cellLabelWidgetDescriptionEClass.getESuperTypes().add(this.getCellWidgetDescription());
         this.cellTextareaWidgetDescriptionEClass.getESuperTypes().add(this.getCellWidgetDescription());
+        this.cellSelectWidgetDescriptionEClass.getESuperTypes().add(this.getCellWidgetDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.tableDescriptionEClass, TableDescription.class, "TableDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -980,6 +1034,14 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getRowFilterDescription_InitialStateExpression(), theViewPackage.getInterpretedExpression(), "initialStateExpression", "", 0, 1, RowFilterDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.cellSelectWidgetDescriptionEClass, CellSelectWidgetDescription.class, "CellSelectWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getCellSelectWidgetDescription_CandidatesExpression(), theViewPackage.getInterpretedExpression(), "candidatesExpression", null, 0, 1,
+                CellSelectWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCellSelectWidgetDescription_CandidateLabelExpression(), theViewPackage.getInterpretedExpression(), "candidateLabelExpression", null, 0, 1,
+                CellSelectWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getCellSelectWidgetDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, CellSelectWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

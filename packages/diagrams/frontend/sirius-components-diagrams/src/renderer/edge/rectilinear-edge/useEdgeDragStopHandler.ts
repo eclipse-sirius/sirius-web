@@ -16,7 +16,7 @@ import { NodeData, EdgeData } from '../../DiagramRenderer.types';
 import { getNodesUpdatedWithHandles } from '../EdgeLayout';
 import { useEditableEdgePath } from '../useEditableEdgePath';
 import { cleanBendPoint, determineSegmentAxis, getHandlePositionFromXYPosition } from './RectilinearEdgeCalculation';
-import { BendPointData } from './useBendingPoints.types';
+import { BendPointData } from './BendingPointsCalculation.types';
 import { UseEdgeDragStopHandlerValue } from './useEdgeDragStopHandler.types';
 
 export const useEdgeDragStopHandler = (): UseEdgeDragStopHandlerValue => {

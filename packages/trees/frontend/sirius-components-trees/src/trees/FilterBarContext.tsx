@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FilterBarContextProps, FilterBarContextStates, FilterBarContextValue } from './FilterBarContext.types';
 
 export const FilterBarContext = React.createContext<FilterBarContextValue>({
@@ -20,11 +20,12 @@ export const FilterBarContext = React.createContext<FilterBarContextValue>({
   filterBarTreeFiltering: false,
   setFilterBarText: () => {},
   setFilterBarTreeFiltering: () => {},
+  onKeyDown: () => {},
   toggleFilter: () => {},
   onClose: () => {},
 });
 
-export const FilterBarContextProvider = ({ containerRef, children }: FilterBarContextProps) => {
+export const FilterBarContextProvider = ({ children }: FilterBarContextProps) => {
   const [state, setState] = useState<FilterBarContextStates>({
     isOpen: false,
     filterBarText: null,
@@ -53,25 +54,22 @@ export const FilterBarContextProvider = ({ containerRef, children }: FilterBarCo
       return { ...prevState, isOpen: !prevState.isOpen, filterBarText: '', filterBarTreeFiltering: false };
     });
 
-  useEffect(() => {
-    const downHandler = (event) => {
-      if ((event.ctrlKey === true || event.metaKey === true) && event.key === 'f' && event.target.tagName !== 'INPUT') {
-        event.preventDefault();
-        setState((prevState) => {
-          return { ...prevState, isOpen: !state.isOpen, filterBarText: '', filterBarTreeFiltering: false };
-        });
-      }
-    };
-    const element = containerRef?.current;
-    if (element) {
-      element.addEventListener('keydown', downHandler);
-
-      return () => {
-        element.removeEventListener('keydown', downHandler);
-      };
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      event.key === 'f' &&
+      event.target instanceof HTMLElement &&
+      event.target.tagName !== 'INPUT'
+    ) {
+      event.preventDefault();
+      setState((prevState) => ({
+        ...prevState,
+        isOpen: !prevState.isOpen,
+        filterBarText: '',
+        filterBarTreeFiltering: false,
+      }));
     }
-    return () => {};
-  }, [containerRef]);
+  };
 
   return (
     <FilterBarContext.Provider
@@ -81,6 +79,7 @@ export const FilterBarContextProvider = ({ containerRef, children }: FilterBarCo
         filterBarTreeFiltering: state.filterBarTreeFiltering,
         setFilterBarText,
         setFilterBarTreeFiltering,
+        onKeyDown,
         toggleFilter,
         onClose,
       }}>

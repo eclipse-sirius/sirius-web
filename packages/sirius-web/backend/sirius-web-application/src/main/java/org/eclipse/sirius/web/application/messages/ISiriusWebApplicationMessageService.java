@@ -22,6 +22,8 @@ public interface ISiriusWebApplicationMessageService {
 
     String treeToolExpandAll();
 
+    String treeToolCollapseAll();
+
     String treeToolDownload();
 
     String treeToolNewObject();

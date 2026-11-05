@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,10 +23,22 @@ import jakarta.validation.constraints.NotNull;
  * @author gdaniel
  */
 public record LibraryDTO(
-        @NotNull UUID id,
+        @NotNull UUID legacyId,
         @NotNull String namespace,
         @NotNull String name,
         @NotNull String version,
         @NotNull String description,
         @NotNull Instant createdOn) {
+
+    /**
+     * The legacy identifier of the library.
+     *
+     * @deprecated This is a temporary value representing the unique identifier previously assigned to libraries on creation, it will be removed soon.
+     * See <a href="https://github.com/eclipse-sirius/sirius-web/pull/7125" />
+     */
+    @Override
+    @Deprecated(forRemoval = true)
+    public UUID legacyId() {
+        return this.legacyId;
+    }
 }

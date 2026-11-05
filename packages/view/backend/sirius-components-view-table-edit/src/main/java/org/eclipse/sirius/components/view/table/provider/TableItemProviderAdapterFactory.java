@@ -277,6 +277,30 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CellSelectWidgetDescriptionItemProvider cellSelectWidgetDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCellSelectWidgetDescriptionAdapter() {
+        if (this.cellSelectWidgetDescriptionItemProvider == null) {
+            this.cellSelectWidgetDescriptionItemProvider = new CellSelectWidgetDescriptionItemProvider(this);
+        }
+
+        return this.cellSelectWidgetDescriptionItemProvider;
+    }
+
+    /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -468,6 +492,8 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
             this.cellTextareaWidgetDescriptionItemProvider.dispose();
         if (this.rowFilterDescriptionItemProvider != null)
             this.rowFilterDescriptionItemProvider.dispose();
+        if (this.cellSelectWidgetDescriptionItemProvider != null)
+            this.cellSelectWidgetDescriptionItemProvider.dispose();
     }
 
     /**

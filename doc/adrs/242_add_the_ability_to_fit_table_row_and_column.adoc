@@ -1,0 +1,145 @@
+:author: lfasani
+:date: 2026-10-28
+:status: accepted
+:consulted: Stéphane Bégaudeau
+:informed: Florian Rouëné
+:deciders: Stéphane Bégaudeau
+:pitch: 
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/7088
+
+= ADR-242 - Add the ability to fit table row height and column width 
+
+== Context and Problem Statement
+
+Currently, it is possible to resize manually the row height and the column width in a table.
+This is painful for a user.
+
+The aim of the enhancement is to:
+
+- have an action button in the toolbar that will automatically adapt the row height so that the full content of the cell can be displayed. The action applies only on displayed rows but not on rows belonging to other pages.
+- have an action button on a column that will adapt its width, so that any cells of the column can display the full content
+
+For multi-line cells, we will keep the line breaks and measure the width of the longest line.
+
+Concretely, the button in `TableContent.tsx` will calculate the height of each displayed row at *the current column width*.
+The action in `ColumnHeader.tsx` will retain the largest required width among the cells of that column on the displayed page.
+
+The sizes will then be sent via the existing `resizeTableRow` and `resizeTableColumn` mutations, preserving their sharing across users.
+
+== Preliminary solution look up
+
+No solution has been found around neither configuration of MRT React table nor dedicated JS Library.
+
+The only way to achieve the goal is to use native DOM measurement strategy.
+
+
+== Decision Drivers
+
+The computation is done on front end and no performance issue is expected.
+
+So the main drivers are result quality and code simplicity.
+
+
+== Considered Options
+
+Considering native DOM measurement strategy, there is only one solution that consists in measuring the cell that would be configured to fit the height or the width.
+
+To do that we need an off-screen copy.
+The off-screen copy lets us remove width constraints to find a natural width, or keep the column width while allowing the content to find its natural height
+
+This page perfectly explains how to determine the dimensions of elements and the several properties you can look at in order to determine the width and height of elements.
+https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/Determining_the_dimensions_of_elements
+
+
+## What each API measures
+
+[cols="1,2,3",options="header"]
+|===
+| API | What it provides | Limitation for auto-sizing
+
+| `getBoundingClientRect()`
+| Rendered border box, with fractional precision.
+Accounts for transforms on the element and its ancestors.
+| Reports the current size, not the size required by the content.
+A parent's rectangle does not necessarily include overflow from its descendants.
+
+| `offsetWidth` / `offsetHeight`
+| Current layout border box, without transforms.
+| Returns integers.
+A cell stretched by its row still reports its current height.
+
+| `clientWidth` / `clientHeight`
+| Current inner space, including padding but excluding borders and scrollbars.
+| Does not include the full space needed for the cell or reveal intrinsic content size.
+
+| `scrollWidth` / `scrollHeight`
+| Extent of the scrollable area, including padding.
+| Useful for overflow, but generally cannot determine how much to shrink an oversized box.
+Wrapped text may have no horizontal overflow.
+|===
+
+
+== Why Copy a Cell That Does Not Overflow?
+
+"No overflow" does not imply "correct intrinsic size."
+
+* A 500 px column containing a 100 px label does not overflow.
+Its `scrollWidth` may remain close to 500 px, so it does not show how far the column can shrink.
+* Text may wrap inside a narrow column without horizontal overflow, although displaying it on one line requires more width.
+* A `<td>` takes its row's height, which may come from another cell or a persisted value.
+Its current height does not reveal the minimum height of its own content.
+* An `<input>` value can be clipped without enlarging the input's box.
+In Sirius, the `Cell` wrapper occupies `100%` of the available width and the MUI `TextField` uses `fullWidth`.
+
+An off-screen copy can remove width constraints to find a natural width, or retain the column width while allowing content to find its natural height.
+
+
+== CSS Transforms
+
+The layout width persisted by MRT must be distinguished from the visual extent after a transform.
+For example, a column with a CSS width of 100 px inside a table scaled by `1.5` may have a bounding rectangle 150 px wide.
+Persisting 150 px would make its rendered width 225 px while that transform remains active.
+`offsetWidth` still reports the 100 px layout width.
+
+A transformed descendant can also enlarge the overflow area.
+Thus, `scrollWidth` does not always ignore transforms, but it is not a reliable measure of the visual bounds to persist.
+
+
+== Decision Outcome and recommendations
+
+We will retain off-screen intrinsic measurement for constrained cells and MUI fields, but address these points.
+
+- Define the measurement contract: the copied cell will be placed in a parent attached to `document.body`.
+We will use an appropriate layout to release width or height constraint.
+```
+.parent {
+  display : grid;
+  align-items : start;
+  justify-content : start;
+  overflow-y: auto;
+  width : currentWidth; // to measure height
+  height : currentHeight; // to measure width
+}
+```
+- Preserve the CSS context.
+The copied cell  can lose inherited styles, CSS variables, ancestor-dependent rules, or text direction.
+so, we will copy the CSS inherited from parent with `getComputedStyle`.
+- Include everything that must fit.
+The header measurement covers `ColumnHeader`, but not necessarily the controls MRT places around it.
+- Batch measurements : The code inserts, measures, and removes a copy for each cell.
+So if necessary for performance reason, preparing copies first and then reading their dimensions together would reduce repeated synchronous layout work.
+
+We will accept to ignore copied cell CSS transform by using `scrollWidth` / `scrollHeight` to measure width or height.
+
+== Consequences
+
+=== Advantages
+
+* Achieve the needs
+* No JS libray dependency.
+* Adapted for any type of Cell
+
+=== Drawbacks
+
+The JS computation code may be complex.
+

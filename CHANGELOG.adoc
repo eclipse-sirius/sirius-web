@@ -1,5 +1,57 @@
 = Changelog
 
+
+== 2026.12.0
+
+=== Pitches
+
+
+
+
+=== Architectural decision records
+
+- [ADR-241] Remove randomly generated library ids
+- [ADR-242] Add the ability to fit table row height and column width
+
+
+=== Deprecation warning
+
+
+
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/7120[#7120] [diagram] `ISingleClickOnTwoDiagramElementHandler.execute` now takes a `DiagramContext` instead of a `Diagram`.
+Implementations must reuse this context during connector tool execution so that graphical events are applied when the diagram is refreshed.
+- https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Rename `LibraryDTO#id` and the GraphQL `Library#id` field to `legacyId` as the initial refactoring of ADR 241.
+The `legacyId` field is deprecated and shouldn't be used: it is a temporary identifier that will be removed soon.
+
+
+=== Dependency update
+
+[releng] Remove `@types/react-router-dom` from dependencies
+
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/6035[#6035] [tree] Fix an issue where explorer subscription was initiated before retrieving explorer filters
+- https://github.com/eclipse-sirius/sirius-web/issues/7120[#7120] [diagram] Fix graphical operations such as revealing hidden elements being ignored when executing connector tools.
+
+
+
+=== New Features
+
+- https://github.com/eclipse-sirius/sirius-web/issues/7084[#7084] [explorer] Add "Collapse All" action.
+
+
+
+=== Improvements
+
+- [diagram] Update creation-handle positions while resizing parent within node changes.
+- https://github.com/eclipse-sirius/sirius-web/issues/7139[7139] [diagram] Share edge endpoint clearance and prepare handle alignment for diagram geometry.
+- https://github.com/eclipse-sirius/sirius-web/issues/7163[#7163] [table] Support Select cells in View-based tables
+
+
 == 2026.11.0
 
 === Pitches

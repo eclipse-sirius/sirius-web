@@ -1,0 +1,35 @@
+= 2026.12.0
+
+== Key highlights
+
+
+
+
+== Breaking changes
+
+- `ISingleClickOnTwoDiagramElementHandler.execute` now takes a `DiagramContext` instead of a `Diagram`.
+Custom implementations must reuse the provided context during connector tool execution.
+
+
+
+== Bug fixes
+
+- Fix an issue where elements filtered by an explorer filter could be rendered for a brief moment during loading.
+- Graphical operations such as revealing hidden elements are now applied when executing connector tools.
+
+
+
+== New features
+
+* A "Collapse All" action has been added in the explorer.
+It allows reducing the selected tree item and all its children recursively.
+
+
+== Improvements
+
+- Support Select cells in View-based tables
+
+
+== Technical details
+
+* For technical details on this {product} release, including breaking changes, please refer to {changelog-url}[changelog].

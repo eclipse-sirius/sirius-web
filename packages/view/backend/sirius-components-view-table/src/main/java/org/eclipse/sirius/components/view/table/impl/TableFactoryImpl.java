@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellSelectWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
@@ -88,6 +89,8 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
                 return this.createCellTextareaWidgetDescription();
             case TablePackage.ROW_FILTER_DESCRIPTION:
                 return this.createRowFilterDescription();
+            case TablePackage.CELL_SELECT_WIDGET_DESCRIPTION:
+                return this.createCellSelectWidgetDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -157,6 +160,17 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
     public CellLabelWidgetDescription createCellLabelWidgetDescription() {
         CellLabelWidgetDescriptionImpl cellLabelWidgetDescription = new CellLabelWidgetDescriptionImpl();
         return cellLabelWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CellSelectWidgetDescription createCellSelectWidgetDescription() {
+        CellSelectWidgetDescriptionImpl cellSelectWidgetDescription = new CellSelectWidgetDescriptionImpl();
+        return cellSelectWidgetDescription;
     }
 
     /**

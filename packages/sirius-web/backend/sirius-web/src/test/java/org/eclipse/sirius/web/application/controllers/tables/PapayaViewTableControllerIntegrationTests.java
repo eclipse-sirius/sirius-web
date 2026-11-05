@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST and others.
+ * Copyright (c) 2024, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,16 +24,21 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeRowContextMenuEntryInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.tables.ColumnSort;
+import org.eclipse.sirius.components.tables.SelectCellOption;
 import org.eclipse.sirius.components.tables.TextareaCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.components.tables.tests.graphql.InvokeRowContextMenuEntryMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.RowContextMenuQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
+import org.eclipse.sirius.components.tables.tests.navigation.LineNavigator;
+import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.table.customcells.CheckboxCell;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -123,13 +128,14 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getColumns()).hasSize(3);
+            assertThat(table.getColumns()).hasSize(4);
             assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Name");
             assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("0");
             assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Description");
             assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("1");
             assertThat(table.getColumns().get(2).getHeaderLabel()).isEqualTo("Abstract");
             assertThat(table.getColumns().get(2).getHeaderIndexLabel()).isEqualTo("2");
+            assertThat(table.getColumns().get(3).getHeaderLabel()).isEqualTo("Visibility");
 
             assertThat(table.getLines()).hasSize(6);
             assertThat(table.getLines().get(0).getHeaderIndexLabel()).isEqualTo("0");
@@ -140,6 +146,16 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
             assertThat(table.getLines().get(1).getHeaderIndexLabel()).isEqualTo("1");
             assertThat(table.getLines().get(1).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("Failure");
+
+            var lineNavigator = new LineNavigator(table.getLines().get(0));
+            var tableNavigator = new TableNavigator(table);
+            var visibilityCell = lineNavigator.selectCellByColumnId(tableNavigator.column("Visibility").getId());
+            assertThat(visibilityCell.getValue()).isEqualTo(EcoreUtil.getURI(PapayaPackage.eINSTANCE.getVisibility().getEEnumLiteral("PUBLIC")).toString());
+            assertThat(visibilityCell.getOptions()).extracting(SelectCellOption::getId)
+                    .containsExactlyElementsOf(PapayaPackage.eINSTANCE.getVisibility().getELiterals().stream().map(literal -> EcoreUtil.getURI(literal).toString()).toList());
+            assertThat(visibilityCell.getOptions()).extracting(SelectCellOption::getLabel).containsExactly("PUBLIC", "PROTECTED", "PACKAGE", "PRIVATE");
+            assertThat(visibilityCell.getTooltipValue()).isEqualTo("Success visibility");
+
         });
 
         StepVerifier.create(flux)
@@ -328,7 +344,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         var columnNameId = new AtomicReference<String>();
         Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getColumns()).hasSize(3);
+            assertThat(table.getColumns()).hasSize(4);
             assertThat(table.getLines()).hasSize(6);
 
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");

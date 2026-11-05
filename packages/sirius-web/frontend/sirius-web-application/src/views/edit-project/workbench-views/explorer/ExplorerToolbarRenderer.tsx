@@ -18,8 +18,6 @@ import {
   TreeToolBarContextValue,
 } from '@eclipse-sirius/sirius-components-trees';
 import { useContext } from 'react';
-import { ExplorerContext } from './ExplorerContext';
-import { ExplorerContextValue } from './ExplorerContext.types';
 import { ExplorerSelectionContext } from './ExplorerSelectionContext';
 import { ExplorerSelectionContextValue } from './ExplorerSelectionContext.types';
 import { ExplorerToolbarRendererProps } from './ExplorerToolbarRenderer.types';
@@ -36,7 +34,6 @@ export const ExplorerToolbarRenderer = ({
 }: ExplorerToolbarRendererProps) => {
   const { toggleFilter } = useContext<FilterBarContextValue>(FilterBarContext);
   const { onRevealSelection } = useContext<ExplorerSelectionContextValue>(ExplorerSelectionContext);
-  const { resetTree } = useContext<ExplorerContextValue>(ExplorerContext);
 
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
     (contribution) => contribution.props.component
@@ -50,10 +47,7 @@ export const ExplorerToolbarRenderer = ({
     <TreeDescriptionsMenu
       treeDescriptions={explorerDescriptions}
       activeTreeDescriptionId={activeTreeDescriptionId}
-      onTreeDescriptionChange={(treeDescription) => {
-        setActiveDescriptionId(treeDescription.id);
-        resetTree();
-      }}
+      onTreeDescriptionChange={(treeDescription) => setActiveDescriptionId(treeDescription.id)}
     />
   );
 
