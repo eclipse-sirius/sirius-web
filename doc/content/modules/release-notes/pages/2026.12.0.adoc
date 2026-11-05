@@ -16,7 +16,7 @@ Custom implementations must reuse the provided context during connector tool exe
 
 - Fix an issue where elements filtered by an explorer filter could be rendered for a brief moment during loading.
 - Graphical operations such as revealing hidden elements are now applied when executing connector tools.
-
+- Wrapped labels now fit inside their nodes immediately after using Adjust size.
 
 
 == New features

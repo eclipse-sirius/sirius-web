@@ -22,7 +22,14 @@ import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresent
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useLayoutConfigurations } from './arrange-all/useLayoutConfigurations';
 import { useElkLayout } from './elk/useElkLayout';
-import { cleanLayoutArea, layout, prepareLayoutArea, prepareLayoutLabels, prepareListNodeLayout } from './layout';
+import {
+  cleanLayoutArea,
+  createInsideLabelMeasurer,
+  layout,
+  prepareLayoutArea,
+  prepareLayoutLabels,
+  prepareListNodeLayout,
+} from './layout';
 import { RawDiagram } from './layout.types';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
 
@@ -97,20 +104,22 @@ export const useLayout = (): UseLayoutValue => {
         root: root,
       }));
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
+      const labelMeasurer = createInsideLabelMeasurer(state.hiddenContainer);
       prepareLayoutLabels(state.previousDiagram, state.diagramToLayout);
       if (
         layoutConfigurations[0] &&
         (diagramDescription?.layoutOption === 'AUTO_LAYOUT' ||
           (diagramDescription?.layoutOption === 'AUTO_UNTIL_MANUAL' && state.diagramToLayout.autoLaidOut))
       ) {
-        prepareListNodeLayout(state.previousDiagram, state.diagramToLayout);
+        prepareListNodeLayout(state.previousDiagram, state.diagramToLayout, labelMeasurer);
         const postLaidoutDiagram = layout(
           { nodes: state.diagramToLayout.nodes, edges: state.diagramToLayout.edges },
           { nodes: state.diagramToLayout.nodes, edges: state.diagramToLayout.edges },
           state.referencePosition,
           state.layoutDirection,
           nodeLayoutHandlers,
-          true
+          true,
+          labelMeasurer
         );
         elkLayout(postLaidoutDiagram.nodes, postLaidoutDiagram.edges, layoutConfigurations[0].layoutOptions).then(
           (layoutDiagram) => {
@@ -129,7 +138,8 @@ export const useLayout = (): UseLayoutValue => {
               state.referencePosition,
               state.layoutDirection,
               nodeLayoutHandlers,
-              true
+              true,
+              labelMeasurer
             );
             setState((prevState) => ({
               ...prevState,
@@ -146,7 +156,8 @@ export const useLayout = (): UseLayoutValue => {
           state.referencePosition,
           state.layoutDirection,
           nodeLayoutHandlers,
-          false
+          false,
+          labelMeasurer
         );
         setState((prevState) => ({
           ...prevState,

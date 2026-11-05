@@ -86,3 +86,82 @@ test.describe('diagram - adjust size', () => {
     expect(c3SizeAfter.height).toBe(nodeDefaultHeight);
   });
 });
+
+test.describe('diagram - adjust size with wrapped label', () => {
+  let projectId: string;
+  const nodeName =
+    'A sufficiently long requirement description that wraps over several lines when the node returns to its default width';
+
+  test.beforeEach(async ({ page, request }) => {
+    await page.addInitScript(() => {
+      // @ts-expect-error: disable automatic viewport changes during the resize interaction.
+      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
+    });
+    const project = await new PlaywrightProject(request).createProject('Adjust size wrapped label', 'blank-project');
+    projectId = project.projectId;
+    await page.goto(`/projects/${projectId}/edit`);
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.uploadDocument('diagramAdjustSizeWrappedLabel.xml');
+    await explorer.expand('diagramAdjustSizeWrappedLabel.xml');
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      explorer.createRepresentation(
+        'Root',
+        'diagramLabel - Wrap the label without changing the node width',
+        'Adjust size wrapped label'
+      )
+    );
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when adjusting a widened node with a wrapped label, then the label remains inside the node', async ({
+    page,
+  }) => {
+    const node = new PlaywrightNode(page, nodeName);
+    await node.click();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+    await node.resize({ width: 350, height: 100 });
+    await expect
+      .poll(() => node.nodeLocator.evaluate((element) => Math.round(parseFloat(getComputedStyle(element).width))))
+      .toBe(500);
+    await node.waitForAnimationToFinish();
+    const positionBefore = await node.getDOMXYPosition();
+
+    await node.openPalette();
+    await page.getByTestId('Palette').getByTestId('Adjust size - Tool').click();
+
+    await expect
+      .poll(() =>
+        node.nodeStyleLocator.evaluate((element, position) => {
+          const text = element.querySelector<HTMLElement>('[data-svg="text"]');
+          const content = text?.parentElement;
+          if (!text || !content) {
+            return null;
+          }
+          const nodeBounds = element.getBoundingClientRect();
+          const textBounds = text.getBoundingClientRect();
+          const style = getComputedStyle(element);
+          const scale = nodeBounds.width / (element as HTMLElement).offsetWidth;
+          const tolerance = 1;
+          return {
+            width: Math.round(parseFloat(getComputedStyle(element.parentElement!).width)),
+            textFits:
+              textBounds.left >= nodeBounds.left + parseFloat(style.borderLeftWidth) * scale - tolerance &&
+              textBounds.right <= nodeBounds.right - parseFloat(style.borderRightWidth) * scale + tolerance &&
+              textBounds.top >= nodeBounds.top + parseFloat(style.borderTopWidth) * scale - tolerance &&
+              textBounds.bottom <= nodeBounds.bottom - parseFloat(style.borderBottomWidth) * scale + tolerance,
+            textUnclipped:
+              text.scrollWidth <= text.clientWidth + tolerance &&
+              text.scrollHeight <= text.clientHeight + tolerance &&
+              content.scrollWidth <= content.clientWidth + tolerance &&
+              content.scrollHeight <= content.clientHeight + tolerance,
+            positionUnchanged:
+              Math.abs(nodeBounds.x - position.x) <= tolerance && Math.abs(nodeBounds.y - position.y) <= tolerance,
+          };
+        }, positionBefore)
+      )
+      .toEqual({ width: 150, textFits: true, textUnclipped: true, positionUnchanged: true });
+  });
+});
