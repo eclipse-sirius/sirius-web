@@ -46,7 +46,6 @@ import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
-import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.FormRenderer;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
@@ -191,7 +190,7 @@ public class FormEventProcessor implements IFormEventProcessor {
                 ITableEventHandler tableEventHandler = optionalTableEventHandler.get();
                 Optional<Table> tableOptional = this.getTable(this.currentForm.get(), tableInput.tableId());
                 if (tableOptional.isPresent()) {
-                    Optional<TableDescription> tableDescriptionOptional = this.getTableDescription(this.currentForm.get().getDescriptionId(), tableOptional.get().getDescriptionId());
+                    Optional<TableDescription> tableDescriptionOptional = this.getTableDescription(tableOptional.get().getDescriptionId());
                     if (tableDescriptionOptional.isPresent()) {
                         tableEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, new TableContext(tableOptional.get()), tableDescriptionOptional.get(), tableInput);
                     } else {
@@ -226,13 +225,9 @@ public class FormEventProcessor implements IFormEventProcessor {
                 .findFirst();
     }
 
-    private Optional<TableDescription> getTableDescription(String formDescriptionId, String tableDescriptionId) {
-        return this.representationDescriptionSearchService
-                .findById(this.editingContext, formDescriptionId)
-                .filter(FormDescription.class::isInstance)
-                .map(FormDescription.class::cast)
-                .stream()
-                .flatMap(form -> form.getPageDescriptions().stream())
+    private Optional<TableDescription> getTableDescription(String tableDescriptionId) {
+        return this.formCreationParameters.getFormDescription()
+                .getPageDescriptions().stream()
                 .flatMap(page -> page.getGroupDescriptions().stream())
                 .flatMap(group -> group.getControlDescriptions().stream())
                 .filter(TableWidgetDescription.class::isInstance)
