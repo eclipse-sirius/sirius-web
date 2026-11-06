@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
-import { NodeData } from '../../DiagramRenderer.types';
+import { Edge, InternalNode, Node, Position, XYPosition } from '@xyflow/react';
+import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { BendPointData } from '../rectilinear-edge/BendingPointsCalculation.types';
 import { MiddlePoint } from '../rectilinear-edge/TemporaryLinesCalculation.types';
 
@@ -58,4 +58,9 @@ export interface EdgeDragData extends EdgeDragControl {
   isSourceSegment: boolean;
   isTargetSegment: boolean;
   middleBendingPoints: MiddlePoint[];
+}
+
+export interface RenderedDiagram {
+  nodes: Node<NodeData>[];
+  edges: Edge<EdgeData>[];
 }
