@@ -11,26 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
-import { DraggableData } from 'react-draggable';
 import { NodeData } from '../../DiagramRenderer.types';
-
-export interface BendingPointsState {
-  isSourceSegment: boolean;
-  isTargetSegment: boolean;
-  dragInProgress: boolean;
-}
-
-export type LocalBendingPointsSetter = (
-  localBendingPoints: BendPointData[] | ((prevState: BendPointData[]) => BendPointData[])
-) => void;
-
-export interface UseBendingPointsValue {
-  localBendingPoints: BendPointData[];
-  setLocalBendingPoints: LocalBendingPointsSetter;
-  onBendingPointDragStop: (eventData: DraggableData, index: number) => void;
-  onBendingPointDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
-  isBendingPointDragged: boolean;
-}
 
 export type BendPointData = {
   x: number;
