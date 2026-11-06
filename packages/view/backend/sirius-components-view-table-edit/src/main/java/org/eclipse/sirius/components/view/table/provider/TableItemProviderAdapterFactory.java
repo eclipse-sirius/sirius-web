@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.view.table.TableFactory;
 import org.eclipse.sirius.components.view.table.TablePackage;
 import org.eclipse.sirius.components.view.table.provider.spec.CellDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.table.provider.spec.CellLabelWidgetDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.table.provider.spec.CellSelectWidgetDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.table.provider.spec.CellTextareaWidgetDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.table.provider.spec.CellTextfieldWidgetDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.table.provider.spec.ColumnDescriptionItemProviderSpec;
@@ -145,6 +146,15 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * @generated
      */
     protected CellLabelWidgetDescriptionItemProvider cellLabelWidgetDescriptionItemProvider;
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CellSelectWidgetDescriptionItemProvider cellSelectWidgetDescriptionItemProvider;
 
     /**
      * This keeps track of the one adapter used for all
@@ -277,24 +287,15 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription} instances. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected CellSelectWidgetDescriptionItemProvider cellSelectWidgetDescriptionItemProvider;
-
-    /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.CellSelectWidgetDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCellSelectWidgetDescriptionAdapter() {
         if (this.cellSelectWidgetDescriptionItemProvider == null) {
-            this.cellSelectWidgetDescriptionItemProvider = new CellSelectWidgetDescriptionItemProvider(this);
+            this.cellSelectWidgetDescriptionItemProvider = new CellSelectWidgetDescriptionItemProviderSpec(this);
         }
 
         return this.cellSelectWidgetDescriptionItemProvider;
