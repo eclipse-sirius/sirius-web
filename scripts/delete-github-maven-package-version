@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+
+# Copyright (c) 2026 Obeo.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Eclipse Public License v2.0 which is available at
+# https://www.eclipse.org/legal/epl-2.0/.
+#
+# SPDX-License-Identifier: EPL-2.0
+
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+Usage: scripts/delete-github-maven-package-version VERSION [OPTIONS]
+
+Lists, or deletes, every Maven package version named VERSION in GitHub Packages.
+
+Options:
+  --dry-run           List the REST URLs that would be deleted (default).
+  --execute           Delete the listed package versions.
+  --owner OWNER       GitHub organization that owns the packages
+                        (default: eclipse-sirius).
+  --hostname HOST     GitHub hostname (default: github.com or $GH_HOST).
+  -h, --help          Show this help.
+
+The GitHub CLI must be authenticated for HOST. Reading packages requires a
+token with read:packages; deletion also requires delete:packages.
+EOF
+}
+
+version=''
+owner='eclipse-sirius'
+hostname="${GH_HOST:-github.com}"
+dry_run=true
+
+while (($#)); do
+    case "$1" in
+        --dry-run)
+            dry_run=true
+            ;;
+        --execute)
+            dry_run=false
+            ;;
+        --owner)
+            owner="${2:?Missing value for --owner}"
+            shift
+            ;;
+        --hostname)
+            hostname="${2:?Missing value for --hostname}"
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -*)
+            printf 'Unknown option: %s\n' "$1" >&2
+            usage >&2
+            exit 2
+            ;;
+        *)
+            if [[ -n "$version" ]]; then
+                printf 'Only one version may be specified.\n' >&2
+                usage >&2
+                exit 2
+            fi
+            version="$1"
+            ;;
+    esac
+    shift
+done
+
+if [[ -z "$version" ]]; then
+    printf 'A version is required.\n' >&2
+    usage >&2
+    exit 2
+fi
+
+for command in gh jq; do
+    if ! command -v "$command" >/dev/null; then
+        printf 'Required command not found: %s\n' "$command" >&2
+        exit 1
+    fi
+done
+
+api() {
+    gh api --hostname "$hostname" --paginate --slurp "$@"
+}
+
+printf 'Searching Maven packages in %s on %s for version %s.\n' "$owner" "$hostname" "$version"
+if "$dry_run"; then
+    printf 'Dry run: no package versions will be deleted. Use --execute to delete them.\n'
+fi
+
+package_names=$(api "orgs/$owner/packages?package_type=maven&per_page=100" | jq -r '.[][] | .name')
+deleted_or_listed=0
+
+while IFS= read -r package_name; do
+    [[ -z "$package_name" ]] && continue
+
+    encoded_package_name=$(jq -rn --arg value "$package_name" '$value | @uri')
+    versions=$(api "orgs/$owner/packages/maven/$encoded_package_name/versions?per_page=100")
+
+    while IFS= read -r package_version_id; do
+        [[ -z "$package_version_id" ]] && continue
+
+        endpoint="orgs/$owner/packages/maven/$encoded_package_name/versions/$package_version_id"
+        url="https://$hostname/$endpoint"
+        printf '%s\n' "$url"
+        ((deleted_or_listed += 1))
+
+        if ! "$dry_run"; then
+            gh api --hostname "$hostname" --method DELETE "$endpoint" >/dev/null
+        fi
+    done < <(jq -r --arg version "$version" '.[][] | select(.name == $version) | .id' <<<"$versions")
+done <<<"$package_names"
+
+if ((deleted_or_listed == 0)); then
+    printf 'No Maven package versions named %s were found.\n' "$version"
+elif "$dry_run"; then
+    printf 'Dry run complete: %d package version(s) would be deleted.\n' "$deleted_or_listed"
+else
+    printf 'Deleted %d package version(s).\n' "$deleted_or_listed"
+fi
