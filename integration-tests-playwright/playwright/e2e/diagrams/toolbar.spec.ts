@@ -65,3 +65,46 @@ test.describe('diagram - toolbar', () => {
     await expect(page.getByTestId('zoom-out')).not.toBeAttached();
   });
 });
+
+test.describe('diagram - toolbar - zoom level', () => {
+  let projectId;
+
+  test.beforeEach(async ({ page, request }) => {
+    await page.addInitScript(() => {
+      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
+      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
+    });
+
+    const project = await new PlaywrightProject(request).createProject('diagram-toolbar', 'blank-project');
+    projectId = project.projectId;
+    await page.goto(`/projects/${projectId}/edit`);
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.uploadDocument('diagramToolbar.xml');
+    await explorer.expand('diagramToolbar.xml');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a zoom level is selected in the toolbar, then the diagram is zoomed to this level', async ({ page }) => {
+    const explorer = new PlaywrightExplorer(page);
+    await new PlaywrightDiagram(page).waitForInitialLayout(() =>
+      explorer.createRepresentation('Root', 'diagramToolbar - with toolbar', 'diagram')
+    );
+    await expect(page.getByTestId('zoom-level')).toHaveText('100%');
+
+    await page.getByTestId('zoom-level').click();
+    await expect(page.getByTestId('zoom-level-menu')).toBeVisible();
+    await page.getByTestId('zoom-level-200').click();
+    await expect(page.getByTestId('zoom-level-menu')).not.toBeAttached();
+    await expect(page.getByTestId('zoom-level')).toHaveText('200%');
+
+    await page.getByTestId('zoom-out').click();
+    await expect(page.getByTestId('zoom-level')).toHaveText('167%');
+
+    await page.getByTestId('zoom-level').click();
+    await page.getByTestId('zoom-level-100').click();
+    await expect(page.getByTestId('zoom-level')).toHaveText('100%');
+  });
+});

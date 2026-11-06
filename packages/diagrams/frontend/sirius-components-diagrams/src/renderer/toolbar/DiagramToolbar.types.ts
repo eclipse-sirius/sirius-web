@@ -22,6 +22,7 @@ export interface DiagramToolbarState {
   arrangeAllInProgress: boolean;
   expanded: boolean;
   contentWidth: number | null;
+  contentScrollEnabled: boolean;
 }
 
 export type DiagramToolbarDialog = 'Share';

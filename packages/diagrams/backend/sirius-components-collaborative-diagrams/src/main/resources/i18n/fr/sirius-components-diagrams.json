@@ -24,6 +24,7 @@
     "unpinAll": "Détacher tous les éléments",
     "zoomIn": "Agrandir",
     "zoomOut": "Réduire",
+    "zoomLevel": "Niveau de zoom",
     "expand": "Étendre la barre d'outils",
     "collapse": "Plier la barre d'outils"
   },
