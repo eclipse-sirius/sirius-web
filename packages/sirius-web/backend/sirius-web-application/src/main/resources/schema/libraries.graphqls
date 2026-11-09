@@ -17,7 +17,6 @@ type ViewerLibrariesEdge {
 
 type Library {
   id: LibraryId!
-  legacyId: ID!  @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/pull/7125")
   namespace: String!
   name: String!
   version: String!
