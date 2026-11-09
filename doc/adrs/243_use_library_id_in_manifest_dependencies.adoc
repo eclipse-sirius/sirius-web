@@ -1,0 +1,105 @@
+:author: Gwendal DANIEL
+:date: 2026-11-09
+:status: proposed
+:consulted: Stéphane Bégaudeau
+:informed: 
+:deciders: Stéphane Bégaudeau
+:pitch: None
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6453
+
+= ADR-243 - Use library ID in manifest dependencies
+
+== Context and Problem Statement
+
+Dependencies in exported projects' manifests are currently exported as a list of semantic data identifiers.
+When a project is imported, Sirius Web looks for the semantic data and loads it in the editing context.
+
+This design does not work if a project is exported from one Sirius Web instance and loaded into another one: library publication mechanisms do not ensure the library semantic data identifier remains consistent across instances of the application.
+
+We can build on the refactoring proposed in xref:241_remove_randomly_generated_library_ids.adoc[ADR-241] to propose a robust dependency identification mechanism that works between Sirius Web instances.
+
+== Decision Drivers
+
+- Compatibility: Sirius Web should still be able to load exported projects with semantic data dependencies
+- Portability: the proposed solution should work on any Sirius Web instance, as long as they both have a published library with the same namespace/name/version
+
+== Considered Options
+
+=== Use the LibraryId to identify dependencies
+
+We will reuse the `LibraryId` introduced in ADR-241 to identify library dependencies in manifests.
+This new identifier will replace the semantic data `UUID` currently used to identify dependencies.
+
+We will support both formats in `SemanticDataProjectContentImportParticipant`:
+
+[source, java]
+====
+if (dependenciesEntry instanceof List<?> list) {
+  List<AggregateReference<SemanticData, UUID>> dependencies = List.of();
+  if (list.stream().anyMatch(String.class::isInstance)) {
+    // Existing implementation
+    dependencies = list.stream()
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .map(new UUIDParser()::parse)
+            .flatMap(Optional::stream)
+            .map(AggregateReference::<SemanticData, UUID> to)
+            .toList();
+  } else {
+    // New implementation
+    dependencies = list.stream()
+            .filter(Map.class::isInstance)
+            .map(Map.class::cast)
+            .map(map -> this.objectMapper.convertValue(LibraryId.class))
+            .map(this.libraryRepository::findBy)
+            .flatMap(Optional.stream())
+            .map(Library::semanticData)
+            .toList();
+  }
+}
+====
+
+We will also update the `ProjectZipContentValidator` to make it verify the specified libraries exist, and report an error if a dependency is unknown.
+
+
+=== Use the serialized LibraryId to identify dependencies
+
+This solution is the same as the one above, but `LibraryId` will be serialized as `namespace:name@version` in the manifest instead of objects.
+
+This solution could also be selected, it's a matter of preference between maven-like and gradle-like dependencies.
+
+
+== Decision Outcome
+
+In the context of exporting and importing projects with dependencies to libraries, facing the need to create a solution that could work across Sirius Web instances, we decided to switch from semantic data `UUID` to `LibraryId` in the exported manifest file.
+We will continue to support importing manifests containing semantic data UUIDs, but all the exported projects will now use the new `LibraryId` format.
+
+== Consequences
+
+=== Advantages
+
+- It will be possible to import a project with a dependency to a given library on another Sirius Web instance if this library exists on the instance (with the same namespace/name/version)
+- Dependencies will be human-readable in the manifest
+
+=== Drawbacks
+
+- We will have to maintain two import solutions (one based on `UUID`, one on `LibraryId`).
+- Previous version of Sirius Web won't be able to import projects exported with the new format.
+
+== More Information
+
+=== Implementation
+
+The implementation will be carried out in 2 steps:
+
+1. Update the import participant and validator to support the new format, keep tests based on `UUID` that should continue to work, and add new tests based on `LibraryId`
+2. Update the export to use the new format, and adapt the tests
+
+
+=== Decision Details
+
+
+=== References
+
+- https://github.com/eclipse-sirius/sirius-web/issues/6743[6743 - Library's identifier should be derived from its namespace, name, and version] 
+- https://github.com/eclipse-sirius/sirius-web/issues/6453[6453 - Use library name and version in exported project's manifest]
