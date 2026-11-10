@@ -123,3 +123,7 @@ jobs:
         working-directory: scripts
         run: java PullRequestSizeChecker.java ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
 
+      - name: Check that the documentation contribution is sufficient
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-documentation-coverage.js

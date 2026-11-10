@@ -48,7 +48,7 @@ Staying current with {product} ensures access to the latest features, fixes, and
 
 == Generate a new OpenAPI documentation of REST API
 
-. Build and run the {}} server locally (using docker compose as example) on `http://localhost:8080`.
+. Build and run the server locally (using docker compose as example) on `http://localhost:8080`.
 . Download the documentation at the url: `http://localhost:8080/v3/api-docs/rest-apis`.
 . The swagger-ui user interface is `http://localhost:8080/swagger-ui/index.html`.
 
@@ -66,7 +66,7 @@ Refer to the published changelog for the detailed scope of each release.
 
 == Upgrade checklist
 
-. *Review the changelog*: list breaking changes for both backend and frontend modules.
+. *Review the changelog, release notes and documentation*: list breaking changes for both backend and frontend modules along with new features or change in behavior.
 . *Update backend dependencies*:
 .. Bump {product} artifacts in your build files (for example, Maven `pom.xml`).
 .. Rebuild and resolve any compilation errors introduced by API changes.
@@ -80,6 +80,19 @@ Refer to the published changelog for the detailed scope of each release.
 . *Package and deploy* once the upgraded build passes the quality gates.
 
 TIP: Automate the checklist whenever possible. Continuous integration pipelines help flag regressions early.
+
+
+== Documentation contribution
+
+Given that we have recently added our documentation and given that we need to update the documentation to a higher standard, every pull request will be required to contribute to the documentation under `doc/content`.
+At least ten lines of documentation must be added in every pull request.
+The reviewer will be in charge of checking that the documentation is sufficient and will request additional documentation if needed.
+The documentation may be provided in another commit in the same pull request, especially if it is not relevant to the code changed.
+
+For pull requests that add code, the required number is the greater of ten lines and one documentation line for every twenty added Java, JavaScript, TypeScript, or TSX lines.
+The calculation applies to the complete pull request rather than to individual commits.
+You may document another topic when the contribution itself needs no user, studio-maker, or developer documentation.
+
 
 == Model and schema migrations
 
