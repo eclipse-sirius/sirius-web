@@ -36,6 +36,7 @@ public class PullRequestSizeChecker {
     public static void main(String[] args) {
         var baseCommit = args[0];
         var headCommit = args[1];
+        var sizeOnly = args.length > 2 && "--size-only".equals(args[2]);
 
         try {
             var processBuilder = new ProcessBuilder("git", "log", "-p", "-w", baseCommit + ".." + headCommit);
@@ -46,9 +47,16 @@ public class PullRequestSizeChecker {
 
             var exitCode = process.waitFor();
 
-            PullRequestSizeChecker.publishResult(lineCount, exitCode);
+            if (sizeOnly) {
+                System.out.println(lineCount);
+            } else {
+                PullRequestSizeChecker.publishResult(lineCount, exitCode);
+            }
         } catch (IOException | InterruptedException exception) {
-            System.out.println(exception);
+            if (!sizeOnly) {
+                System.out.println(exception);
+            }
+            System.exit(1);
         }
     }
 
