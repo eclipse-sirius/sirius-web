@@ -15,6 +15,8 @@ package org.eclipse.sirius.web.application.project.services.api;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.web.library.domain.LibraryId;
+
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -27,12 +29,12 @@ public record ProjectTemplate(
         @NotNull String label,
         @NotNull String imageURL,
         @NotNull List<ProjectTemplateNature> natures,
-        @NotNull List<ProjectTemplateRequiredLibrary> requiredLibraries) {
+        @NotNull List<LibraryId> requiredLibraryIds) {
     public ProjectTemplate {
         Objects.requireNonNull(id);
         Objects.requireNonNull(label);
         Objects.requireNonNull(imageURL);
         Objects.requireNonNull(natures);
-        Objects.requireNonNull(requiredLibraries);
+        Objects.requireNonNull(requiredLibraryIds);
     }
 }

@@ -43,9 +43,10 @@ import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.library.domain.Library;
-import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.EditingContextUpdateLibraryImpactAnalysisReportQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -101,7 +102,7 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
     @GivenSiriusWebServer
     @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the update of a dependency, then the report is returned")
     public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheUpdateOfADependencyThenTheReportIsReturned() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "sirius-web-tests-data", "3.0.0"));
         assertThat(optionalLibrary).isPresent();
 
         Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", "papaya:sirius-web-tests-data@3.0.0");
@@ -194,7 +195,7 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
     @GivenSiriusWebServer
     @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the update of a dependency, then the project's content is not changed")
     public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheUpdateOfADependencyThenTheProjectsContentIsNotChanged() {
-        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        Optional<Library> optionalLibrary = this.librarySearchService.findById(new LibraryId("papaya", "sirius-web-tests-data", "3.0.0"));
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
