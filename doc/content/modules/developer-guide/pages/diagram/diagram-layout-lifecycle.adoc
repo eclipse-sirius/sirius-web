@@ -1,0 +1,27 @@
+= Diagram Layout Lifecycle
+
+The frontend computes diagram geometry, while the backend stores it and shares it between subscribers.
+
+== Receiving a refreshed diagram
+
+The backend refreshes the diagram from its description and semantic data, then publishes a `DiagramRefreshedEventPayload` through the diagram subscription.
+The payload contains the diagram, its stored `layoutData`, a cause, and an optional reference position for newly created elements.
+`DiagramRenderer` converts the received diagram into Reactflow nodes and edges.
+The `layoutData` determine the positions and sizes of nodes and the geometry of edges.
+
+== Measuring and computing geometry
+
+`useLayout` first renders labels in a hidden DOM container so that the browser can measure their dimensions.
+The layout engine uses these measurements and node layout handlers to compute node sizes, nested layouts, and edge geometry.
+Incremental layout reuses existing positions where possible and places new elements using the reference position and layout direction.
+After computation, `useLayout` removes the temporary measurement container and delivers the resulting nodes and edges to its callback.
+`DiagramRenderer` applies this geometry while preserving the selection.
+
+== Persisting and sharing the result
+
+After a refresh layout, if the diagram is not read-only, then it sends the computed geometry through `useSynchronizeLayoutData`.
+The `layoutDiagram` mutation carries node positions and sizes, connection handles, edge bend points and anchors, label geometry, and the automatic-layout state.
+For a result computed from a `refresh`, `DiagramEventProcessor` accepts it only if its identifier matches the current revision, avoiding stale layout updates.
+For an accepted update, the backend updates the diagram geometry, applies its persistence strategy, and broadcasts a new payload with cause `layout`.
+Subscribers apply a `layout` payload directly without running the refresh layout computation again.
+This distinction between `refresh` and `layout` prevents a synchronization feedback loop between subscribers.

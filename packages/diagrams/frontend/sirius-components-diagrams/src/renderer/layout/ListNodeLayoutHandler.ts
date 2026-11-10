@@ -19,7 +19,6 @@ import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousSize } from './bounds';
 import { getNodeBorderWidth } from './getNodeBorderWidth';
 import { ForcedDimensions, RawDiagram } from './layout.types';
-import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
   applyRatioOnNewNodeSizeValue,
   computeNodesBox,
@@ -31,9 +30,10 @@ import {
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
-  setBorderNodesPosition,
+  updateBorderNodesLayout,
 } from './layoutNode';
 import { updateInsideLabelSize } from './updateInsideLabelSize';
+import { computeNodeHeight, computeNodeWidth } from './nodeDimensions';
 
 const getChildNodeHeightMinFootPrint = (node: Node<NodeData>): number => {
   if (node.type === 'iconLabelNode') {
@@ -91,30 +91,18 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
         .filter((child) => child.parentId === node.id && !child.hidden)
         .reduce<number>((height, child) => height + (child.height ?? 0), 0) ?? 0;
 
-    const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    if (node.data.resizedByUser && !forceDimensions?.width) {
-      if (nodeMinComputeWidth > previousDimensions.width) {
-        node.width = nodeMinComputeWidth;
-      } else {
-        node.width = previousDimensions.width;
-      }
-    } else {
-      node.width = nodeWidth;
-    }
+    node.width = computeNodeWidth(node, nodeMinComputeWidth, previousDimensions.width, forceDimensions?.width);
 
     updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - borderWidth * 2);
     const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
 
-    const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
-    if (node.data.resizedByUser && !forceDimensions?.height) {
-      if (nodeMinComputeHeight > previousDimensions.height) {
-        node.height = nodeMinComputeHeight;
-      } else {
-        node.height = previousDimensions.height - heightLostSincePrevDiagram;
-      }
-    } else {
-      node.height = nodeHeight;
-    }
+    node.height = computeNodeHeight(
+      node,
+      nodeMinComputeHeight,
+      previousDimensions.height,
+      forceDimensions?.height,
+      heightLostSincePrevDiagram
+    );
     node.data.minComputedWidth = nodeMinComputeWidth;
     node.data.minComputedHeight = nodeMinComputeHeight;
   }
@@ -129,12 +117,23 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
+    const previousNodesById: Map<string, Node<NodeData, DiagramNodeType>> = new Map(
+      (previousDiagram?.nodes ?? []).map((previousNode) => [previousNode.id, previousNode])
+    );
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
-    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
 
     const previousNode: Node<NodeData, DiagramNodeType> | undefined = (previousDiagram?.nodes ?? []).find(
       (candidate) => candidate.id === node.id
@@ -174,16 +173,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const nodeMinComputeWidth = Math.max(fixedWidth, labelOnlyWidth) + borderWidth * 2;
 
     const previousDimensions = computePreviousSize(previousNode, node);
-    const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    if (node.data.resizedByUser && !forceDimensions?.width) {
-      if (nodeMinComputeWidth > previousDimensions.width) {
-        node.width = nodeMinComputeWidth;
-      } else {
-        node.width = previousDimensions.width;
-      }
-    } else {
-      node.width = nodeWidth;
-    }
+    node.width = computeNodeWidth(node, nodeMinComputeWidth, previousDimensions.width, forceDimensions?.width);
 
     updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - borderWidth * 2);
     const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
@@ -223,8 +213,16 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const directChildrenAwareNodeHeight =
       childrenContentBox.y + childrenContentBox.height + borderWidth + node.data.bottomGap;
-    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
-    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
     const nodeMinComputeHeight = Math.max(
       directChildrenAwareNodeHeight,
       eastBorderNodeFootprintHeight,
@@ -232,25 +230,19 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       headerHeightFootprint
     );
 
-    const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
-    if (node.data.resizedByUser && !forceDimensions?.height) {
-      if (nodeMinComputeHeight > previousDimensions.height) {
-        node.height = nodeMinComputeHeight;
-      } else {
-        node.height = previousDimensions.height - heightLostSincePrevDiagram;
-      }
-    } else {
-      node.height = nodeHeight;
-    }
+    node.height = computeNodeHeight(
+      node,
+      nodeMinComputeHeight,
+      previousDimensions.height,
+      forceDimensions?.height,
+      heightLostSincePrevDiagram
+    );
     node.height = Math.max(nodeMinComputeHeight, node.height);
 
     if (node.data.nodeDescription?.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
-    borderNodes.forEach((borderNode) => {
-      borderNode.extent = getBorderNodeExtent(node, borderNode);
-    });
-    setBorderNodesPosition(borderNodes, node, previousDiagram);
+    updateBorderNodesLayout(node, borderNodes, previousNodesById);
 
     // The min size is different from the actual one since children list elements could be resized manually
     const minComputeChildrenWidth = directNodesChildren
