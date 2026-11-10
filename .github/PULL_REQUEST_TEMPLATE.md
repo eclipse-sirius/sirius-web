@@ -1,75 +1,22 @@
-# Pull request template
+# PLEASE READ ALL ITEMS AND CHECK ONLY RELEVANT CHECKBOXES BELOW
 
-## General purpose
-What is the main goal of this pull request?
-- [ ] Bug fixes
-- [ ] New features
-- [ ] Documentation
-- [ ] Cleanup
-- [ ] Tests
-- [ ] Build / releng
+## Auto review
 
-## Project management
-- [ ] Has the pull request been added to the relevant project and milestone? (Only if you know that your work is part of a specific iteration such as the current one)
-- [ ] Have the `priority:` and `pr:` labels been added to the pull request? (In case of doubt, start with the labels `priority: low` and `pr: to review later`)
-- [ ] Have the relevant issues been added to the pull request?
-- [ ] Have the relevant labels been added to the issues? (`area:`, `difficulty:`, `type:`)
-- [ ] Have the relevant issues been added to the same project and milestone as the pull request?
-- [ ] Has the `CHANGELOG.adoc` been updated to reference the relevant issues?
-- [ ] Have the relevant API breaks been described in the `CHANGELOG.adoc`? (Including changes in the GraphQL API)
-- [ ] In case of a change with a visual impact, are there any screenshots in the `CHANGELOG.adoc`? For example in `doc/screenshots/2022.5.0-my-new-feature.png`
+- [ ] Have you reviewed this PR? Please do a first quick review, It is very useful to detect typos and missing copyrights, check comments, check your code... The reviewer will thank you for that :)
 
-## Architectural decision records (ADR)
-- [ ] Does the title of the commit contributing the ADR start with `[doc]`?
-- [ ] Are the ADRs mentioned in the relevant section of the  `CHANGELOG.adoc`?
+## Changelog and release notes
 
-## Dependencies
-- [ ] Are the new / upgraded dependencies mentioned in the relevant section of the `CHANGELOG.adoc`?
-- [ ] Are the new dependencies justified in the `CHANGELOG.adoc`?
+- [ ] Have the `CHANGELOG.adoc` and `doc/content/modules/release-notes/pages/YYYY.MM.0.adoc` been updated to reference the relevant changes?
+- [ ] Have the relevant API breaks been described in the `CHANGELOG.adoc` and release notes?
+- [ ] Are the new / upgraded dependencies mentioned in the relevant section of the `CHANGELOG.adoc` and release notes?
+- [ ] In case of a change with a visual impact, are there any screenshots in the `doc/content/modules/release-notes/pages/YYYY.MM.0.adoc`?
+- [ ] In case of a key change, has the change been added to `Key highlights` section in `doc/content/modules/release-notes/pages/YYYY.MM.0.adoc`?
 
-## Frontend
+## Documentation
 
-This section is not relevant if your contribution does not come with changes to the frontend.
+- [ ] Have you included an update of the [documentation](https://eclipse-sirius.github.io/sirius-web) in your pull request? Please ask yourself if an update (installation manual, user manual, studio maker manual, developer manual...) is needed and add one accordingly.
+- [ ] Has the documentation has been manually written? AI generated documentation has created sizable issues in the past, thus pull requests with AI generated documentations will be rejected.
 
-### General purpose
-- [ ] Is the code properly tested? (Plain old JavaScript tests for business code and tests based on React Testing Library for the components)
+## Tests
 
-### Typing
-We need to improve the typing of our code, as such, we require every contribution to come with proper TypeScript typing for both changes contributing new files and those modifying existing files.
-Please ensure that the following statements are true for each file created or modified (this may require you to improve code outside of your contribution).
-
-- [ ] Variables have a proper type
-- [ ] Functions’ arguments have a proper type
-- [ ] Functions’ return type are specified
-- Hooks are properly typed:
-	- [ ] `useMutation<DATA_TYPE, VARIABLE_TYPE>(…)`
-	- [ ] `useQuery<DATA_TYPE, VARIABLE_TYPE>(…)`
-	- [ ] `useSubscription<DATA_TYPE, VARIABLE_TYPE>(…)`
-	- [ ] `useMachine<CONTEXT_TYPE, EVENTS_TYPE>(…)`
-	- [ ] `useState<STATE_TYPE>(…)`
-- [ ] All components have a proper typing for their props
-- [ ] No useless optional chaining with `?.` (if the GraphQL API specifies that a field cannot be `null`, do not treat it has potentially `null` for example)
-- [ ] Nullable values have a proper type (for example `let diagram: Diagram | null = null;`)
-
-## Backend
-
-This section is not relevant if your contribution does not come with changes to the backend.
-
-### General purpose
-- [ ] Are all the event handlers tested?
-- [ ] Are the event processor tested?
-- [ ] Is the business code (services) tested?
-- [ ] Are diagram layout changes tested?
-
-### Architecture
-- [ ] Are data structure classes properly separated from behavioral classes?
-- [ ] Are all the relevant fields final?
-- [ ] Is any data structure mutable? If so, please write a comment indicating why
-- [ ] Are behavioral classes either stateless or side effect free?
-
-## Review
-
-### How to test this PR?
-_Please describe here the various use cases to test this pull request_
-
-- [ ] Has the Kiwi TCMS test suite been updated with tests for this contribution?
+- [ ] Is the code properly tested? Any pull request (fix, enhancement or new feature) should come with a test (or several). It could be integration tests, unit tests or Playwright tests depending on the context. Only documentation and releng pull request do not need for tests.
