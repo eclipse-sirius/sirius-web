@@ -17,7 +17,7 @@ import {
   TreeToolBarContext,
   TreeToolBarContextValue,
 } from '@eclipse-sirius/sirius-components-trees';
-import { useContext } from 'react';
+import { JSX, useContext } from 'react';
 import { ExplorerSelectionContext } from './ExplorerSelectionContext';
 import { ExplorerSelectionContextValue } from './ExplorerSelectionContext.types';
 import { ExplorerToolbarRendererProps } from './ExplorerToolbarRenderer.types';
