@@ -93,8 +93,16 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 
     let childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width;
-    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
     const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel);
 
     const nodeMinComputeWidth =
@@ -146,8 +154,16 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 
     childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
     const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height;
-    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
-    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
     const labelOnlyHeight = node.data.insideLabel ? node.data.insideLabel.height + ellipseNodePadding * 2 : 0;
     const nodeMinComputeHeight =
       Math.max(
@@ -175,7 +191,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     borderNodes.forEach((borderNode) => {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
-    setBorderNodesPosition(borderNodes, node, previousDiagram, this.calculateCustomNodeBorderNodePosition);
+    setBorderNodesPosition(borderNodes, node, previousNodesById, this.calculateCustomNodeBorderNodePosition);
 
     node.data.minComputedWidth = getDefaultOrMinWidth(nodeMinComputeWidth, node);
     node.data.minComputedHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
