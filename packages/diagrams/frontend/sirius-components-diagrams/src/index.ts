@@ -79,6 +79,7 @@ export type { ILayoutEngine, INodeLayoutHandler } from './renderer/layout/Layout
 export * from './renderer/layout/layoutNode';
 export { defaultHeight, defaultWidth } from './renderer/layout/layoutParams';
 export { updateInsideLabelSize } from './renderer/layout/updateInsideLabelSize';
+export { computeNodeHeight, computeNodeWidth } from './renderer/layout/nodeDimensions';
 export { useLayout } from './renderer/layout/useLayout';
 export { useSynchronizeLayoutData } from './renderer/layout/useSynchronizeLayoutData';
 export { NodeContext } from './renderer/node/NodeContext';

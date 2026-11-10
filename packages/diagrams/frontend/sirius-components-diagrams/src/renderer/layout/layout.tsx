@@ -30,7 +30,6 @@ import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
-import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
 import { computePreviousPosition } from './bounds';
 import { getNodeBorderWidth } from './getNodeBorderWidth';
 import { InsideLabelMeasurer, RawDiagram } from './layout.types';
@@ -48,6 +47,18 @@ const getNodeBorderWidthForLabel = (node: Node<NodeData>, visibleNodes: Node<Nod
     }
   }
   return getNodeBorderWidth(node.data.style);
+};
+
+const getInsideLabelConstraintWidth = (node: Node<NodeData>, visibleNodes: Node<NodeData>[]): number => {
+  const borderWidth = getNodeBorderWidthForLabel(node, visibleNodes);
+  let width = node.width ?? 0;
+  if (node.parentId) {
+    const parentNode = visibleNodes.find((candidate) => candidate.id === node.parentId);
+    if (parentNode && isListNode(parentNode) && parentNode.width) {
+      width = parentNode.width;
+    }
+  }
+  return Math.max(0, width - borderWidth * 2);
 };
 
 export const createInsideLabelMeasurer = (hiddenContainer: HTMLDivElement): InsideLabelMeasurer => {
@@ -86,14 +97,6 @@ export const prepareLayoutArea = (
   // Render all label first
   const labelElements: React.JSX.Element[] = [];
   visibleNodes.forEach((node) => {
-    const borderWidth: number = getNodeBorderWidthForLabel(node, visibleNodes);
-    let insideLabelConstraintWidth = (node.width ?? 0) - borderWidth * 2;
-    if (node.parentId) {
-      const parentNode = visibleNodes.find((n) => n.id === node.parentId);
-      if (parentNode && parentNode.type === 'listNode' && parentNode.width) {
-        insideLabelConstraintWidth = parentNode.width - borderWidth * 2;
-      }
-    }
     if (hiddenContainer && node.data.insideLabel) {
       const children: React.JSX.Element[] = [
         createElement(Label, {
@@ -107,7 +110,10 @@ export const prepareLayoutArea = (
         id: `${node.data.insideLabel.id}-label`,
         key: `${node.data.insideLabel.id}-label`,
         style: {
-          maxWidth: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : insideLabelConstraintWidth,
+          maxWidth:
+            node.data.insideLabel.overflowStrategy === 'NONE'
+              ? undefined
+              : getInsideLabelConstraintWidth(node, visibleNodes),
         },
         children,
       });
@@ -335,16 +341,14 @@ export const prepareListNodeLayout = (
   diagram: RawDiagram,
   labelMeasurer: InsideLabelMeasurer
 ): void => {
-  const listNodeLayoutHandler = new ListNodeLayoutHandler();
   const layoutEngine: ILayoutEngine = new LayoutEngine(labelMeasurer);
 
   const visibleNodes: Node<NodeData, DiagramNodeType>[] = diagram.nodes.filter((node) => !node.hidden);
   const listNodes: Node<ListNodeData, DiagramNodeType>[] = visibleNodes.filter(isListNode);
+  const listNodeIds = new Set(listNodes.map((node) => node.id));
+  const listRoots = listNodes.filter((node) => !node.parentId || !listNodeIds.has(node.parentId));
 
-  listNodes.forEach((node: Node<ListNodeData, DiagramNodeType>) => {
-    const directChildren = visibleNodes.filter((visibleNode) => visibleNode.parentId === node.id);
-    listNodeLayoutHandler.handle(layoutEngine, previousDiagram, node, visibleNodes, directChildren, []);
-  });
+  layoutEngine.layoutNodes(previousDiagram, visibleNodes, listRoots, []);
 };
 
 const layoutNodeLabels = (previousDiagram: RawDiagram | null, nodes: Node<NodeData>[]) => {

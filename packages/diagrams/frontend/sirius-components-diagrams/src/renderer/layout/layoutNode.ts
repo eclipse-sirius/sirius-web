@@ -17,7 +17,7 @@ import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresent
 import { InsideLabel, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { computePreviousPosition } from './bounds';
-import { RawDiagram } from './layout.types';
+import { INodeLayoutHandler } from './LayoutEngine.types';
 import {
   getBorderNodeExtent,
   getNewlyAddedBorderNodePosition,
@@ -191,13 +191,13 @@ const getNodeFootprint = (allVisibleNodes: Node<NodeData>[], node: Node<NodeData
 
 const spreadPositionedNodesFromNonPositionedNodes = (
   nodes: Node<NodeData>[],
-  previousDiagram: RawDiagram | null
+  previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>
 ): { positionedNodes: Node<NodeData>[]; nonPositionedNodes: Node<NodeData>[] } => {
   const positionedNodes: Node<NodeData>[] = [];
   const nonPositionedNodes: Node<NodeData>[] = [];
 
   nodes.forEach((borderNode) => {
-    const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === borderNode.id);
+    const previousNode = previousNodesById.get(borderNode.id);
     if (previousNode) {
       positionedNodes.push(previousNode);
     } else {
@@ -213,11 +213,11 @@ const spreadPositionedNodesFromNonPositionedNodes = (
 
 const getLowestSibling = (
   siblings: Node<NodeData>[],
-  previousDiagram: RawDiagram | null,
+  previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>,
   index: number
 ): Node<NodeData> | undefined => {
   return siblings
-    .map((borderNode) => (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === borderNode.id))
+    .map((borderNode) => previousNodesById.get(borderNode.id))
     .reduce<Node<NodeData> | undefined>((lowestBorderNode, borderNode) => {
       if (!borderNode) return lowestBorderNode;
       if (!lowestBorderNode) return borderNode;
@@ -231,11 +231,11 @@ const getLowestSibling = (
 
 const getRightMostSibling = (
   siblings: Node<NodeData>[],
-  previousDiagram: RawDiagram | null,
+  previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>,
   index: number
 ): Node<NodeData> | undefined => {
   return siblings
-    .map((borderNode) => (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === borderNode.id))
+    .map((borderNode) => previousNodesById.get(borderNode.id))
     .reduce<Node<NodeData> | undefined>((rightMostBorderNode, borderNode) => {
       if (!borderNode) return rightMostBorderNode;
       if (!rightMostBorderNode) return borderNode;
@@ -247,17 +247,34 @@ const getRightMostSibling = (
     }, siblings[index - 1]);
 };
 
+/**
+ * Updates border node extents and positions using the optional custom node geometry.
+ *
+ * @since v2026.11.0
+ */
+export const updateBorderNodesLayout = (
+  node: Node<NodeData>,
+  borderNodes: Node<NodeData, DiagramNodeType>[],
+  previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>,
+  calculateCustomNodeBorderNodePosition?: INodeLayoutHandler<NodeData>['calculateCustomNodeBorderNodePosition']
+): void => {
+  borderNodes.forEach((borderNode) => {
+    borderNode.extent = getBorderNodeExtent(node, borderNode);
+  });
+  setBorderNodesPosition(borderNodes, node, previousNodesById, calculateCustomNodeBorderNodePosition);
+};
+
 export const setBorderNodesPosition = (
   borderNodes: Node<NodeData, DiagramNodeType>[],
   nodeToLayout: Node<NodeData>,
-  previousDiagram: RawDiagram | null,
+  previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>,
   calculateCustomNodeBorderNodePosition?:
     | ((node: Node<NodeData>, borderNode: XYPosition & Dimensions, isDragging: boolean) => XYPosition)
     | undefined
 ): void => {
   if (calculateCustomNodeBorderNodePosition) {
     borderNodes.forEach((child) => {
-      const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
+      const previousBorderNode = previousNodesById.get(child.id);
       const previousPosition = computePreviousPosition(previousBorderNode, child);
       if (previousPosition) {
         child.position = calculateCustomNodeBorderNodePosition(
@@ -274,7 +291,7 @@ export const setBorderNodesPosition = (
   } else {
     const borderNodesEast = borderNodes.filter(isEastBorderNode);
     borderNodesEast.forEach((child, index) => {
-      const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
+      const previousBorderNode = previousNodesById.get(child.id);
       const previousPosition = computePreviousPosition(previousBorderNode, child);
       if (previousPosition) {
         let newY = previousPosition.y;
@@ -287,7 +304,7 @@ export const setBorderNodesPosition = (
         };
       } else {
         child.position = { x: nodeToLayout.width ?? 0, y: defaultNodeMargin };
-        const previousSibling = getLowestSibling(borderNodesEast, previousDiagram, index);
+        const previousSibling = getLowestSibling(borderNodesEast, previousNodesById, index);
         if (previousSibling) {
           child.position = { ...child.position, y: previousSibling.position.y + (previousSibling.height ?? 0) + gap };
           child.extent = getBorderNodeExtent(nodeToLayout, child);
@@ -298,7 +315,7 @@ export const setBorderNodesPosition = (
 
     const borderNodesWest = borderNodes.filter(isWestBorderNode);
     borderNodesWest.forEach((child, index) => {
-      const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
+      const previousBorderNode = previousNodesById.get(child.id);
       const previousPosition = computePreviousPosition(previousBorderNode, child);
       if (previousPosition) {
         let newY = previousPosition.y;
@@ -311,7 +328,7 @@ export const setBorderNodesPosition = (
         };
       } else {
         child.position = { x: 0 - (child.width ?? 0), y: defaultNodeMargin };
-        const previousSibling = getLowestSibling(borderNodesWest, previousDiagram, index);
+        const previousSibling = getLowestSibling(borderNodesWest, previousNodesById, index);
         if (previousSibling) {
           child.position = { ...child.position, y: previousSibling.position.y + (previousSibling.height ?? 0) + gap };
         }
@@ -321,7 +338,7 @@ export const setBorderNodesPosition = (
 
     const borderNodesSouth = borderNodes.filter(isSouthBorderNode);
     borderNodesSouth.forEach((child, index) => {
-      const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
+      const previousBorderNode = previousNodesById.get(child.id);
       const previousPosition = computePreviousPosition(previousBorderNode, child);
       if (previousPosition) {
         let newX = previousPosition.x;
@@ -334,7 +351,7 @@ export const setBorderNodesPosition = (
         };
       } else {
         child.position = { x: defaultNodeMargin, y: nodeToLayout.height ?? 0 };
-        const previousSibling = getRightMostSibling(borderNodesSouth, previousDiagram, index);
+        const previousSibling = getRightMostSibling(borderNodesSouth, previousNodesById, index);
         if (previousSibling) {
           child.position = { ...child.position, x: previousSibling.position.x + (previousSibling.width ?? 0) + gap };
           child.extent = getBorderNodeExtent(nodeToLayout, child);
@@ -345,7 +362,7 @@ export const setBorderNodesPosition = (
 
     const borderNodesNorth = borderNodes.filter(isNorthBorderNode);
     borderNodesNorth.forEach((child, index) => {
-      const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
+      const previousBorderNode = previousNodesById.get(child.id);
       const previousPosition = computePreviousPosition(previousBorderNode, child);
       if (previousPosition) {
         let newX = previousPosition.x;
@@ -358,7 +375,7 @@ export const setBorderNodesPosition = (
         };
       } else {
         child.position = { x: defaultNodeMargin, y: 0 - (child.height ?? 0) };
-        const previousSibling = getRightMostSibling(borderNodesNorth, previousDiagram, index);
+        const previousSibling = getRightMostSibling(borderNodesNorth, previousNodesById, index);
         if (previousSibling) {
           child.position = { ...child.position, x: previousSibling.position.x + (previousSibling.width ?? 0) + gap };
         }
@@ -376,17 +393,17 @@ export const setBorderNodesPosition = (
  *
  * @param allVisibleNodes all diagram visible nodes
  * @param borderNodes The border nodes used to compute the footprint width
- * @param previousDiagram The previous diagram
+ * @param previousNodesById Map use to retrieve the previous node
  * @returns the footprint width of north border nodes from given border nodes
  */
 export const getNorthBorderNodeFootprintWidth = (
   allVisibleNodes: Node<NodeData>[],
   borderNodes: Node<NodeData>[],
-  previousDiagram: RawDiagram | null
+  previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>
 ): number => {
   const northBorderNodes = borderNodes.filter(isNorthBorderNode);
   const { positionedNodes: previousBorderNodes, nonPositionedNodes: nonPositionedBorderNode } =
-    spreadPositionedNodesFromNonPositionedNodes(northBorderNodes, previousDiagram);
+    spreadPositionedNodesFromNonPositionedNodes(northBorderNodes, previousNodesById);
   const previousBorderNodeFootprint = computeNodesBox(allVisibleNodes, previousBorderNodes);
 
   return nonPositionedBorderNode.reduce<number>(
@@ -408,17 +425,17 @@ export const getNorthBorderNodeFootprintWidth = (
  *
  * @param allVisibleNodes all diagram visible nodes
  * @param borderNodes The border nodes used to compute the footprint width
- * @param previousDiagram The previous diagram
+ * @param previousNodesById Map use to retrieve the previous node
  * @returns the footprint width of south border nodes from given border nodes
  */
 export const getSouthBorderNodeFootprintWidth = (
   allVisibleNodes: Node<NodeData>[],
   borderNodes: Node<NodeData>[],
-  previousDiagram: RawDiagram | null
+  previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>
 ): number => {
   const southBorderNodes = borderNodes.filter(isSouthBorderNode);
   const { positionedNodes: previousBorderNodes, nonPositionedNodes: nonPositionedBorderNode } =
-    spreadPositionedNodesFromNonPositionedNodes(southBorderNodes, previousDiagram);
+    spreadPositionedNodesFromNonPositionedNodes(southBorderNodes, previousNodesById);
   const previousBorderNodeFootprint = computeNodesBox(allVisibleNodes, previousBorderNodes);
 
   return nonPositionedBorderNode.reduce<number>(
@@ -440,17 +457,17 @@ export const getSouthBorderNodeFootprintWidth = (
  *
  * @param allVisibleNodes all diagram visible nodes
  * @param borderNodes The border nodes used to compute the footprint height
- * @param previousDiagram The previous diagram
+ * @param previousNodesById Map use to retrieve the previous node
  * @returns the footprint height of east border nodes from given border nodes
  */
 export const getEastBorderNodeFootprintHeight = (
   allVisibleNodes: Node<NodeData>[],
   borderNodes: Node<NodeData>[],
-  previousDiagram: RawDiagram | null
+  previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>
 ): number => {
   const eastBorderNodes = borderNodes.filter(isEastBorderNode);
   const { positionedNodes: previousBorderNodes, nonPositionedNodes: nonPositionedBorderNode } =
-    spreadPositionedNodesFromNonPositionedNodes(eastBorderNodes, previousDiagram);
+    spreadPositionedNodesFromNonPositionedNodes(eastBorderNodes, previousNodesById);
   const previousBorderNodeFootprint = computeNodesBox(allVisibleNodes, previousBorderNodes);
 
   return nonPositionedBorderNode.reduce<number>(
@@ -472,17 +489,17 @@ export const getEastBorderNodeFootprintHeight = (
  *
  * @param allVisibleNodes all diagram visible nodes
  * @param borderNodes The border nodes used to compute the footprint height
- * @param previousDiagram The previous diagram
+ * @param previousNodesById Map use to retrieve the previous node
  * @returns the footprint height of west border nodes from given border nodes
  */
 export const getWestBorderNodeFootprintHeight = (
   allVisibleNodes: Node<NodeData>[],
   borderNodes: Node<NodeData>[],
-  previousDiagram: RawDiagram | null
+  previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>
 ): number => {
   const westBorderNodes = borderNodes.filter(isWestBorderNode);
   const { positionedNodes: previousBorderNodes, nonPositionedNodes: nonPositionedBorderNode } =
-    spreadPositionedNodesFromNonPositionedNodes(westBorderNodes, previousDiagram);
+    spreadPositionedNodesFromNonPositionedNodes(westBorderNodes, previousNodesById);
   const previousBorderNodeFootprint = computeNodesBox(allVisibleNodes, previousBorderNodes);
 
   return nonPositionedBorderNode.reduce<number>(
