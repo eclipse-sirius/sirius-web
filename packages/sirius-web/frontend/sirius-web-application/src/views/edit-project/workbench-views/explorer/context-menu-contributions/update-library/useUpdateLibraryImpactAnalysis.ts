@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import {
 } from './useUpdateLibraryImpactAnalysis.types';
 
 const getImpactAnalysisReportQuery = gql`
-  query getImpactAnalysisReport($editingContextId: ID!, $libraryId: ID!) {
+  query getImpactAnalysisReport($editingContextId: ID!, $libraryId: LibraryId!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         updateLibraryImpactAnalysisReport(libraryId: $libraryId) {

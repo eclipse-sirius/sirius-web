@@ -42,6 +42,7 @@ import org.eclipse.sirius.web.application.library.dto.UpdateLibraryInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.studio.services.library.api.IUpdateLibraryExecutor;
 import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
 import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
@@ -84,10 +85,10 @@ public class UpdateLibraryExecutor implements IUpdateLibraryExecutor {
     }
 
     @Override
-    public IStatus updateLibrary(ICause cause, IEditingContext editingContext, UUID libraryId) {
+    public IStatus updateLibrary(ICause cause, IEditingContext editingContext, LibraryId libraryId) {
         IStatus result = new Failure(List.of());
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            Optional<Library> optionalNewLibrary = this.librarySearchService.findById(libraryId);
+            Optional<Library> optionalNewLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(libraryId.namespace(), libraryId.name(), libraryId.version());
             if (optionalNewLibrary.isPresent()) {
                 Library newLibrary = optionalNewLibrary.get();
 
@@ -132,7 +133,7 @@ public class UpdateLibraryExecutor implements IUpdateLibraryExecutor {
                     result = new Failure(List.of(new Message("Cannot update Library " + newLibrary.getName() + ": the library is not a direct dependency", MessageLevel.ERROR)));
                 }
             } else {
-                result = new Failure(List.of(new Message("Cannot find the library " + libraryId.toString(), MessageLevel.ERROR)));
+                result = new Failure(List.of(new Message("Cannot find the library " + libraryId.namespace() + ":" + libraryId.name() + "@" + libraryId.version(), MessageLevel.ERROR)));
             }
         }
         return result;
