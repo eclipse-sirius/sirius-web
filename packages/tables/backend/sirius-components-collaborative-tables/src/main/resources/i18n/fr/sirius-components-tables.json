@@ -3,6 +3,7 @@
     "rowsPerPage": "Lignes par page :"
   },
   "tableContent": {
+    "autoSizeRowHeights": "Ajuster la hauteur des lignes au contenu",
     "resetRowHeights": "Réinitialiser la hauteur des lignes"
   },
   "rowContextMenuContent": {

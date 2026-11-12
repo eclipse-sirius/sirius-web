@@ -197,6 +197,7 @@ extend type Mutation {
   resizeTableColumn(input: ResizeTableColumnInput!): ResizeTableColumnPayload!
   changeTableColumnVisibility(input: ChangeTableColumnVisibilityInput!): ChangeTableColumnVisibilityPayload!
   resizeTableRow(input: ResizeTableRowInput!): ResizeTableRowPayload!
+  resizeTableRows(input: ResizeTableRowsInput!): ResizeTableRowsPayload!
   resetTableRowsHeight(input: ResetTableRowsHeightInput!): ResetTableRowsHeightPayload!
   changeGlobalFilterValue(input: ChangeGlobalFilterValueInput!): ChangeGlobalFilterValuePayload!
   changeColumnFilter(input: ChangeColumnFilterInput!): ChangeColumnFilterPayload!
@@ -286,6 +287,21 @@ input ResizeTableRowInput {
 }
 
 union ResizeTableRowPayload = ErrorPayload | SuccessPayload
+
+input ResizeTableRowsInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  rows: [TableRowHeightInput!]!
+}
+
+input TableRowHeightInput {
+  rowId: ID!
+  height: Int!
+}
+
+union ResizeTableRowsPayload = ErrorPayload | SuccessPayload
 
 input ChangeGlobalFilterValueInput {
   id: ID!
