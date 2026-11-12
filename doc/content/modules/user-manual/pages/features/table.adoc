@@ -34,6 +34,7 @@ Depending on how the table was configured, you may also:
 * Enable sorting by particular columns.
 * Pin columns on the left or right so that important attributes remain visible while you scroll horizontally.
 * Hide columns you do not need (and restore them later); column visibility is persistent per table.
+* Fit column width to content; dynamically expands or shrinks column widths to accommodate the longest entry in each cell.
 
 === Toolbars and menus
 

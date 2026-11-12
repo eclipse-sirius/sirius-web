@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection, theme, useSelection } from '@eclipse-sirius/sirius-components-core';
+import WidthNormalIcon from '@mui/icons-material/WidthNormal';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import MenuItem from '@mui/material/MenuItem';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { Cell } from '../cells/Cell';
 import { ColumnHeader } from '../columns/ColumnHeader';
@@ -47,12 +51,14 @@ export const useTableColumns = (
   enableRowSizing: boolean,
   enableSelectionSynchronization: boolean,
   handleRowHeightChange: (rowId: string, height: number) => void,
+  onAutoSizeColumn: (columnId: string) => void,
   onExpandedElement: (rowId: string) => void,
   expandedRowIds: string[],
   onExpandAllChange: () => void,
   expandAll: boolean
 ): UseTableColumnsValue => {
   const { setSelection } = useSelection();
+  const { t } = useTranslation('sirius-components-tables', { keyPrefix: 'tableContent' });
   const { classes } = useStyles();
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
@@ -63,8 +69,28 @@ export const useTableColumns = (
         Header: ({}) => {
           return <ColumnHeader column={column} />;
         },
+        renderColumnActionsMenuItems: ({ closeMenu, internalColumnMenuItems }) => {
+          if (readOnly || !enableColumnSizing || !column.isResizable) {
+            return internalColumnMenuItems;
+          }
+          return [
+            ...internalColumnMenuItems,
+            <MenuItem
+              key="auto-size-column-width"
+              onClick={() => {
+                onAutoSizeColumn(column.id);
+                closeMenu();
+              }}>
+              <ListItemIcon>
+                <WidthNormalIcon fontSize="small" />
+              </ListItemIcon>
+              {t('autoSizeColumnWidth')}
+            </MenuItem>,
+          ];
+        },
         filterVariant: enableColumnFilters ? column.filterVariant : undefined,
         size: enableColumnSizing && column.width > 0 ? column.width : undefined,
+        maxSize: Number.MAX_SAFE_INTEGER,
         enableResizing: enableColumnSizing && column.isResizable,
         visibleInShowHideMenu: enableColumnVisibility,
         enableColumnDragging: enableColumnOrdering,
