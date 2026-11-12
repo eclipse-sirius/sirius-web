@@ -18,6 +18,9 @@
   "toolsButton": {
     "tools": "Outils"
   },
+  "useTableColumns": {
+    "autoSizeColumnWidth": "Ajuster la largeur de la colonne au contenu"
+  },
   "useTableTranslation": {
     "actions": "Actions",
     "and": "et",

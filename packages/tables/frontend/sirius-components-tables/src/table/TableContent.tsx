@@ -38,7 +38,7 @@ import { RowAction } from '../rows/RowAction';
 import { useResetRowsMutation } from '../rows/useResetRows';
 import { useResizeRows } from '../rows/useResizeRows';
 import { CursorBasedPagination } from './CursorBasedPagination';
-import { measureVisibleRowHeights } from './measureTableContent';
+import { measureVisibleColumnWidth, measureVisibleRowHeights } from './measureTableContent';
 import { GQLLine, TableContentProps } from './TableContent.types';
 import { useGlobalFilter } from './useGlobalFilter';
 import { useTableColumns } from './useTableColumns';
@@ -78,6 +78,22 @@ export const TableContent = memo(
     const localization = useTableTranslation();
     const tableRootRef = useRef<HTMLDivElement>(null);
 
+    const { columnSizing, setColumnSizing, resizeColumn } = useTableColumnSizing(
+      editingContextId,
+      representationId,
+      table,
+      enableColumnResizing
+    );
+
+    const handleAutoSizeColumn = (columnId: string) => {
+      if (tableRootRef.current && resizeColumn) {
+        const width = measureVisibleColumnWidth(tableRootRef.current, columnId);
+        if (width !== null) {
+          resizeColumn(columnId, width);
+        }
+      }
+    };
+
     const handleRowHeightChange = (rowId: string, height: number) => {
       setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
     };
@@ -94,16 +110,11 @@ export const TableContent = memo(
       enableRowSizing,
       enableSelectionSynchronization,
       handleRowHeightChange,
+      handleAutoSizeColumn,
       onExpandedElementChange,
       expandedRowIds,
       onExpandAllChange,
       expandAll
-    );
-    const { columnSizing, setColumnSizing } = useTableColumnSizing(
-      editingContextId,
-      representationId,
-      table,
-      enableColumnResizing
     );
     const { columnOrder, setColumnOrder } = useTableColumnOrdering(
       editingContextId,
@@ -220,6 +231,7 @@ export const TableContent = memo(
         const cellSelected =
           cellTargetObjectId && selection.entries.map((entry) => entry.id).includes(cellTargetObjectId);
         return {
+          'data-table-column-id': cell.column.id,
           sx: {
             border: !rowSelected && cellSelected ? `2px dashed ${theme.palette.action.selected}` : undefined,
             padding: '0px',

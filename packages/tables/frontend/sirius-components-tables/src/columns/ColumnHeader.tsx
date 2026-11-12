@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2025, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ export const ColumnHeader = ({ column }: ColumnHeaderProps) => {
   const theme = useTheme();
   return (
     <Box
+      data-table-column-header-id={column.id}
       display="flex"
       flexDirection="column"
       alignItems="center"

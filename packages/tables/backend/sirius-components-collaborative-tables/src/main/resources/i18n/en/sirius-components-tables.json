@@ -18,6 +18,9 @@
   "toolsButton": {
     "tools": "Tools"
   },
+  "useTableColumns": {
+    "autoSizeColumnWidth": "Fit column width to content"
+  },
   "useTableTranslation": {
     "actions": "Actions",
     "and": "and",
