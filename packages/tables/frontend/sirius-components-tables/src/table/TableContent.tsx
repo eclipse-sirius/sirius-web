@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,11 @@
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import FormatLineSpacingIcon from '@mui/icons-material/FormatLineSpacing';
+import HeightIcon from '@mui/icons-material/Height';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { Theme, useTheme } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
 import {
   MaterialReactTable,
   MRT_ShowHideColumnsButton,
@@ -23,7 +25,7 @@ import {
   MRT_ToggleFullScreenButton,
   useMaterialReactTable,
 } from 'material-react-table';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToolsButton } from '../actions/ToolsButton';
 import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
@@ -34,7 +36,9 @@ import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
 import { RowFiltersMenu } from '../rows/filters/RowFiltersMenu';
 import { RowAction } from '../rows/RowAction';
 import { useResetRowsMutation } from '../rows/useResetRows';
+import { useResizeRows } from '../rows/useResizeRows';
 import { CursorBasedPagination } from './CursorBasedPagination';
+import { measureVisibleRowHeights } from './measureTableContent';
 import { GQLLine, TableContentProps } from './TableContent.types';
 import { useGlobalFilter } from './useGlobalFilter';
 import { useTableColumns } from './useTableColumns';
@@ -72,6 +76,7 @@ export const TableContent = memo(
     const theme: Theme = useTheme();
     const { t } = useTranslation('sirius-components-tables', { keyPrefix: 'tableContent' });
     const localization = useTableTranslation();
+    const tableRootRef = useRef<HTMLDivElement>(null);
 
     const handleRowHeightChange = (rowId: string, height: number) => {
       setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
@@ -129,6 +134,14 @@ export const TableContent = memo(
     const [linesState, setLinesState] = useState<GQLLine[]>(table.lines);
 
     const { resetRowsHeight } = useResetRowsMutation(editingContextId, representationId, table.id, enableRowSizing);
+    const { resizeRows } = useResizeRows(editingContextId, representationId, table.id);
+
+    const handleAutoSizeRows = () => {
+      if (tableRootRef.current) {
+        const resizableRowIds = new Set(table.lines.filter((line) => line.isResizable).map((line) => line.id));
+        resizeRows(measureVisibleRowHeights(tableRootRef.current, resizableRowIds));
+      }
+    };
 
     const handlePreviousPage = () => {
       const cursorRow = table.lines[0];
@@ -191,6 +204,7 @@ export const TableContent = memo(
       muiTableBodyRowProps: ({ row }) => {
         return {
           selected: selection.entries.map((entry) => entry.id).includes(row.original.targetObjectId),
+          'data-table-row-id': row.original.id,
           sx: {
             backgroundColor: 'transparent', // required to remove the default mui backgroundColor that is defined as !important
             cursor: 'pointer',
@@ -240,13 +254,32 @@ export const TableContent = memo(
       ),
       renderToolbarInternalActions: ({ table }) => (
         <Box>
-          <IconButton
-            aria-label={t('resetRowHeights')}
-            title={t('resetRowHeights')}
-            data-testid="reset-row-heights"
-            onClick={() => resetRowsHeight()}>
-            <FormatLineSpacingIcon />
-          </IconButton>
+          {!readOnly && enableRowSizing ? (
+            <>
+              {linesState.some((line) => line.isResizable) ? (
+                <Tooltip disableInteractive title={t('autoSizeRowHeights')}>
+                  <IconButton
+                    aria-label={t('autoSizeRowHeights')}
+                    title={t('autoSizeRowHeights')}
+                    data-testid="auto-size-row-heights"
+                    onClick={handleAutoSizeRows}>
+                    <HeightIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : null}
+              {linesState.every((line) => line.isResizable) ? (
+                <Tooltip disableInteractive title={t('resetRowHeights')}>
+                  <IconButton
+                    aria-label={t('resetRowHeights')}
+                    title={t('resetRowHeights')}
+                    data-testid="reset-row-heights"
+                    onClick={() => resetRowsHeight()}>
+                    <FormatLineSpacingIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : null}
+            </>
+          ) : null}
           <RowFiltersMenu
             data-testid="row-filters-menu-button"
             readOnly={readOnly}
@@ -279,7 +312,7 @@ export const TableContent = memo(
 
     const muiTable = useMaterialReactTable(tableOptions);
     return (
-      <div>
+      <div ref={tableRootRef}>
         <MaterialReactTable table={muiTable} />
       </div>
     );

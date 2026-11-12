@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST and others.
+ * Copyright (c) 2024, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,11 +29,13 @@ import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeRowContextMenuEntryInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ResetTableRowsHeightInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ResizeTableRowInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.TableRowHeightInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.tests.graphql.InvokeRowContextMenuEntryMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ResetTableRowsHeightMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ResizeTableRowMutationRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.ResizeTableRowsExecutor;
 import org.eclipse.sirius.components.tables.tests.graphql.RowContextMenuQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.RowFiltersQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
@@ -65,6 +67,9 @@ import reactor.test.StepVerifier;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaTableRowControllerIntegrationTests extends AbstractIntegrationTests {
+
+    @Autowired
+    private ResizeTableRowsExecutor resizeTableRowsExecutor;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -147,6 +152,44 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
                 .then(resizeRow)
+                .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table, when several row heights are changed, then the representation is refreshed with the new row heights")
+    public void givenTableWhenSeveralRowsResizeThenOneRefreshPersistsBothHeights() {
+        var flux = this.givenSubscriptionToTable();
+        var rowIds = new AtomicReference<List<String>>();
+        var tableId = new AtomicReference<String>();
+
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            tableId.set(table.getId());
+            rowIds.set(table.getLines().stream().limit(2).map(line -> line.getId().toString()).toList());
+        });
+
+        Runnable resizeRows = () -> this.resizeTableRowsExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), tableId.get(),
+                List.of(new TableRowHeightInput(rowIds.get().getFirst(), 90), new TableRowHeightInput(rowIds.get().get(1), 120))).isSuccess();
+
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table.getLines().get(0).getHeight()).isEqualTo(90);
+            assertThat(table.getLines().get(1).getHeight()).isEqualTo(120);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(resizeRows)
+                .consumeNextWith(updatedTableContentConsumer)
+                .expectNoEvent(Duration.ofMillis(250))
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+
+        var newSubscription = this.tableEventSubscriptionRunner.run(new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), tableId.get())).flux();
+
+        StepVerifier.create(newSubscription)
                 .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

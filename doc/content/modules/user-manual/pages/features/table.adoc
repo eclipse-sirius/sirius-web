@@ -42,6 +42,8 @@ The top toolbar groups global actions:
 image::representations/table-top-toolbar.png[Table top toolbar]
 
 * *Settings* menu (CSV export, etc.).
+* *Fit row heights to content* to automatically adjust row heights so all text is visible.
+It applies only on rows in the current page.
 * *Global filter* textfield which searches across every textual cell.
 * *Reset row height* to return manually resized rows to their default.
 * *Row filters* menu (switches for domain-specific filters provided by the specifier).
