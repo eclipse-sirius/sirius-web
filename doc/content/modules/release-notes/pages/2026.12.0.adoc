@@ -42,6 +42,7 @@ The `sirius-components-collaborative-diagrams` module provides the default confi
 It allows reducing the selected tree item and all its children recursively.
 - The selected explorer description and expanded items are now saved in your browser and restored when you refresh the page or reopen the project.
 - The table top toolbar provides an action to dynamically resize the visible row heights to fit the cell contents.
+- The table column provides an action to resize a column width to fit the cell contents.
 
 
 == Improvements
