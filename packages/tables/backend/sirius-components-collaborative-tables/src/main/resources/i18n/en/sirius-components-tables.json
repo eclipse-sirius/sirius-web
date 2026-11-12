@@ -3,7 +3,8 @@
     "rowsPerPage": "Rows per page:"
   },
   "tableContent": {
-    "resetRowHeights": "Reset Row Heights"
+    "autoSizeRowHeights": "Fit row heights to content",
+    "resetRowHeights": "Reset row heights"
   },
   "rowContextMenuContent": {
     "noEntriesFound": "No entries found"
