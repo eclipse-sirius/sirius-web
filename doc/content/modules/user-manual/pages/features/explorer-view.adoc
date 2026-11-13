@@ -21,6 +21,15 @@ At the top of the {explorer-view}, a toolbar provides quick access to essential 
 
 Depending on the description, additional controls can be available tolet you choose an alternative tree structure (for example, to display an alternate semantic hierarchy or group by type).
 
+== Saved explorer state
+
+For each project, the selected explorer description and expanded items are saved in your browser if local storage is available.
+They are restored when you refresh the page or reopen the project in the same browser.
+Expanded items are remembered separately for each explorer description.
+
+When you open a shared project link, the explorer description specified in the link takes precedence over your saved choice.
+Expanded items are restored from your browser's saved state and are not included in the shared link.
+
 == Selection
 
 Users can select any item in the {explorer-view}:
