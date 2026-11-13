@@ -29,6 +29,9 @@ The `legacyId` field is deprecated and shouldn't be used: it is a temporary iden
 `CreateProjectInput#libraryIds` and `ImportLibrariesInput#libraryIds` now accept `[LibraryId!]!`, and the Java `CreateProjectInput`, `ICreateProjectInput`, and `ImportLibrariesInput` use `List<LibraryId>`.
 - https://github.com/eclipse-sirius/sirius-web/issues/7162[#7162] [form] The `representationDescriptionSearchService` parameter of type `IRepresentationDescriptionSearchService` has been removed from the `FormEventProcessor` constructor.
 Custom factories and subclasses must remove this argument from constructor calls.
+- https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Diagram layout configurations are now retrieved through the new `DiagramDescription.layoutConfigurations: [LayoutConfiguration!]!` GraphQL field instead of being hardcoded in the frontend.
+The `sirius-components-collaborative-diagrams` module provides the default configurations, implement `ILayoutConfigurationProvider` to contribute additional configurations.
+Each configuration exposes `id`, `label`, `iconURL` and a list of string `key`/`value` entries in `layoutOptions`.
 
 
 === Dependency update
@@ -61,7 +64,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - https://github.com/eclipse-sirius/sirius-web/issues/7163[#7163] [table] Support Select cells in View-based tables
 - https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Add the `LibraryId` scalar, serialized as `namespace:name@version`.
 - [releng] Update the `check-labels.js` script to check for the `queue:` and `review-window:` labels
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Move diagram layout configurations from frontend to backend
 
 
 == 2026.11.0

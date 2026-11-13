@@ -11,6 +11,8 @@
 Custom implementations must reuse the provided context during connector tool execution.
 - The `FormEventProcessor` constructor no longer accepts the `representationDescriptionSearchService` parameter of type `IRepresentationDescriptionSearchService`.
 Custom factories and subclasses must remove this argument from constructor calls.
+- Diagram layout configurations are now retrieved through the new `DiagramDescription.layoutConfigurations` GraphQL field instead of being hardcoded in the frontend.
+The `sirius-components-collaborative-diagrams` module provides the default configurations, applications can implement `ILayoutConfigurationProvider` to contribute additional configurations.
 
 
 == Bug fixes
@@ -33,6 +35,8 @@ It allows reducing the selected tree item and all its children recursively.
 
 - Support Select cells in View-based tables
 - Add the `LibraryId` scalar in the GraphQL schema, serialized as `namespace:name@version`.
+- Applications can contribute diagram layout configurations from the backend to populate the Arrange All menu and configure automatic layout.
+Sirius Components provides Flow Layout, Compact Layout and Orthogonal Layout by default.
 
 
 == Technical details

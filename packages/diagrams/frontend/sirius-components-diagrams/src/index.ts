@@ -66,7 +66,7 @@ export { useArrangeAll } from './renderer/layout/arrange-all/useArrangeAll';
 export type { UseArrangeAllValue } from './renderer/layout/arrange-all/useArrangeAll.types';
 export { useLayoutConfigurations } from './renderer/layout/arrange-all/useLayoutConfigurations';
 export type {
-  LayoutConfiguration,
+  GQLLayoutConfiguration,
   UseLayoutConfigurationsValue,
 } from './renderer/layout/arrange-all/useLayoutConfigurations.types';
 export { computePreviousPosition, computePreviousSize } from './renderer/layout/bounds';
