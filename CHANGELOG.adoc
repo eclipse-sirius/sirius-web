@@ -61,7 +61,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - https://github.com/eclipse-sirius/sirius-web/issues/7163[#7163] [table] Support Select cells in View-based tables
 - https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Add the `LibraryId` scalar, serialized as `namespace:name@version`.
 - [releng] Update the `check-labels.js` script to check for the `queue:` and `review-window:` labels
-
+- [releng] Run end-to-end tests at the end of the main build job so that their failures do not prevent Docker images from being published.
 
 
 == 2026.11.0
@@ -347,7 +347,6 @@ The `ci: run e2e` label can be added to a pull request to force end-to-end test 
 - https://github.com/eclipse-sirius/sirius-web/issues/6761[#6761] [sirius-web] Extract the explorer subscription in a dedicated component in order to reduce the number of rerender.
 - https://github.com/eclipse-sirius/sirius-web/issues/7056[#7056] [form] Reference widget in View DSL now have a dedicated body for add: `Add`.
 - https://github.com/eclipse-sirius/sirius-web/issues/7075[#7075] [form] Introduce documentation for the reference widget.
-
 
 
 == 2026.9.0
