@@ -3,6 +3,7 @@
     "rowsPerPage": "Rows per page:"
   },
   "tableContent": {
+    "autoSizeRowHeights": "Fit row heights to content",
     "resetRowHeights": "Reset Row Heights"
   },
   "rowContextMenuContent": {
