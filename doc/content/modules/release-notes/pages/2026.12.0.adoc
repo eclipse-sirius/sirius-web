@@ -27,6 +27,8 @@ Custom factories and subclasses must remove this argument from constructor calls
 
 - A "Collapse All" action has been added in the explorer.
 It allows reducing the selected tree item and all its children recursively.
+- The Explorer text filter now searches inside the whole tree when the filter button inside the filter is activated.
+
 
 
 == Improvements
