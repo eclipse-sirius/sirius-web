@@ -90,8 +90,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - [doc] Add a minimal documentation requirement for every pull request to ensure that the documentation is kept up to date with the code changes.
 At least 10 to 25 lines of documentation must be added in every pull request depending on the size of the changes.
 - [releng] Run end-to-end tests at the end of the main build job so that their failures do not prevent Docker images from being published.
-
-
+- [cleanup] Removed a remaining (unused) reference to the Maven repository for Sirius Desktop.
 
 == 2026.11.0
 
