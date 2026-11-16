@@ -120,6 +120,24 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
                     treeItem.getLabel().styledStringFragments().get(0).styledStringFragmentStyle().getBackgroundColor().equals("red")
     );
 
+    private final TreeItemMatcher documentIsExpanded = new TreeItemMatcher(
+            tree -> {
+                assertThat(tree.getChildren()).hasSize(1);
+                return tree.getChildren().get(0);
+            },
+            treeItem -> treeItem.isExpanded() && treeItem.getChildren().size() == 1
+    );
+
+    private final TreeItemMatcher ePackageIsExpanded = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(0),
+            treeItem -> treeItem.isExpanded() && treeItem.getChildren().size() == 1
+    );
+
+    private final TreeItemMatcher representationIsCollapsed = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(0).getChildren().get(0),
+            treeItem -> !treeItem.isExpanded()
+    );
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -164,6 +182,40 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(projectContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a collapsed explorer, when we search for a leaf, then only the matching leaf and its ancestors are sent")
+    public void givenCollapsedExplorerWhenWeSearchForLeafThenOnlyMatchingLeafAndItsAncestorsAreSent() {
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of(), "package portal");
+        var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
+
+        var filteredProjectContentMatcher = this.getTreeRefreshedEventPayloadMatcher(List.of(
+                this.documentIsExpanded, this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageIsExpanded, this.representationIsAPortal, this.representationIsCollapsed));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(filteredProjectContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a collapsed explorer, when we search for a leaf, then only the matching leaf and its ancestors are sent")
+    public void givenExplorerWhenWeSearchForLeafWithCollapsedElementsThenOnlyMatchingLeafAndItsAncestorsAreSent() {
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of(), "package portal");
+        var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
+
+        var filteredProjectContentMatcher = this.getTreeRefreshedEventPayloadMatcher(List.of(
+                documentIsExpanded, this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, ePackageIsExpanded, this.representationIsAPortal, representationIsCollapsed));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(filteredProjectContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

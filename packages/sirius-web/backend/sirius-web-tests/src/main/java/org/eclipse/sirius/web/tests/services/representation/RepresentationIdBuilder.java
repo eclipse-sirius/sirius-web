@@ -32,6 +32,11 @@ public class RepresentationIdBuilder {
 
     @SuppressWarnings("checkstyle:MultipleStringLiterals")
     public String buildExplorerRepresentationId(String treeDescriptionId, List<String> expandedObjects, List<String> activatedFilters) {
+        return this.buildExplorerRepresentationId(treeDescriptionId, expandedObjects, activatedFilters, "");
+    }
+
+    @SuppressWarnings("checkstyle:MultipleStringLiterals")
+    public String buildExplorerRepresentationId(String treeDescriptionId, List<String> expandedObjects, List<String> activatedFilters, String searchedValue) {
         List<String> expandedObjectIds = expandedObjects.stream()
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
@@ -40,8 +45,12 @@ public class RepresentationIdBuilder {
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
 
-        return "explorer://?treeDescriptionId=" + URLEncoder.encode(treeDescriptionId, StandardCharsets.UTF_8) + EXPANDED_IDS + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" +
+        String representationId = "explorer://?treeDescriptionId=" + URLEncoder.encode(treeDescriptionId, StandardCharsets.UTF_8) + EXPANDED_IDS + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" +
                 String.join(",", activatedFilterIds) + "]";
+        if (!searchedValue.isEmpty()) {
+            representationId += "&searchedValue=" + URLEncoder.encode(searchedValue, StandardCharsets.UTF_8);
+        }
+        return representationId;
     }
 
     public String buildSelectionRepresentationId(String treeDescriptionId, String targetObjectId, List<String> expandedObjectIds) {

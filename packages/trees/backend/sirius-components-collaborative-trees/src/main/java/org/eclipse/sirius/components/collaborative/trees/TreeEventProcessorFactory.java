@@ -95,6 +95,7 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
                         .treeDescription(treeDescription)
                         .activeFilterIds(List.of())
                         .expanded(this.getExpandedIdsFromRepresentationId(representationId))
+                        .searchedValue("")
                         .editingContext(editingContext)
                         .targetObject(object)
                         .build();

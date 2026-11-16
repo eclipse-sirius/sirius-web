@@ -32,14 +32,14 @@ To filter elements in the {explorer-view} using the filter bar:
 image::hands-on-filter-name-shortcut.png[Filter name shortcut]
 +
 . All visible tree items containing the typed value are highlighted.
-. Use the filter button inside the filter bar to hide all visible tree items that don't contain the entered value.
+. Use the filter button inside the filter bar to search the complete tree and display matching items with their ancestors.
 
 This capability allows for precise filtering and highlighting of elements based on specified criteria.
 
 [NOTE]
 ====
-The filter bar can only highlight items in the expanded state; it doesn't search within unexpanded children.
-Ensure the desired tree items are expanded to effectively use the filter and highlight capability.
+Without the filter button enabled, only visible items are highlighted.
+When filtering is enabled, collapsed items are also searched.
 ====
 
 [#filter-explorer]
