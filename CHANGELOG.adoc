@@ -12,6 +12,7 @@
 
 - [ADR-241] Remove randomly generated library ids
 - [ADR-242] Add the ability to fit table row height and column width
+- [ADR-243] Add support for backend filtering in tree based representations
 
 
 === Deprecation warning
