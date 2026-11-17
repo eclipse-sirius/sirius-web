@@ -15,11 +15,8 @@ package org.eclipse.sirius.web.application.controllers.impactanalysis;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
-import com.jayway.jsonpath.JsonPath;
-
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,14 +24,15 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.datatree.DataTree;
 import org.eclipse.sirius.components.datatree.DataTreeNode;
-import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteOneDiagramElementToolHandler;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.eclipse.sirius.web.services.diagrams.ModelOperationDiagramDescriptionProvider;
+import org.eclipse.sirius.web.services.diagrams.UndoRedoDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.DiagramImpactAnalysisReportExecutor;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-import tools.jackson.databind.ObjectMapper;
 
 /**
  * Integration tests of the impact analysis for diagram tools.
@@ -58,47 +55,6 @@ import tools.jackson.databind.ObjectMapper;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegrationTests {
 
-    private static final String GET_IMPACT_ANALYSIS_REPORT = """
-            query getImpactAnalysisReport(
-              $editingContextId: ID!
-              $representationId: ID!
-              $toolId: ID!
-              $diagramElementId: ID!
-              $variables: [ToolVariable!]!
-            ) {
-              viewer {
-                editingContext(editingContextId: $editingContextId) {
-                  representation(representationId: $representationId) {
-                    description {
-                      ... on DiagramDescription {
-                        diagramImpactAnalysisReport(toolId: $toolId, diagramElementId: $diagramElementId, variables: $variables) {
-                          nbElementDeleted
-                          nbElementModified
-                          nbElementCreated
-                          additionalReports
-                          impactTree {
-                            id
-                            nodes {
-                              id
-                              parentId
-                              label {
-                                styledStringFragments {
-                                  text
-                                }
-                              }
-                              iconURLs
-                              endIconsURLs
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            """;
-
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -109,13 +65,10 @@ public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegratio
     private ModelOperationDiagramDescriptionProvider modelOperationDiagramDescriptionProvider;
 
     @Autowired
-    private IGraphQLRequestor graphQLRequestor;
+    private DiagramImpactAnalysisReportExecutor diagramImpactAnalysisReportExecutor;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private IMessageService messageService;
+    private UndoRedoDiagramDescriptionProvider undoRedoDiagramDescriptionProvider;
 
     @BeforeEach
     public void beforeEach() {
@@ -145,76 +98,64 @@ public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegratio
             diagramId.set(diagram.getId());
         });
 
-        Runnable invokeImpactAnalysisReport = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", diagramId.get(),
-                    "toolId", this.modelOperationDiagramDescriptionProvider.getCreateNodeToolId(),
-                    "diagramElementId", diagramId.get(),
-                    "variables", List.of());
-            var result = this.graphQLRequestor.execute(GET_IMPACT_ANALYSIS_REPORT, variables);
-
-            int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementDeleted");
-            assertThat(nbElementDeleted).isEqualTo(0);
-
-            int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementCreated");
-            assertThat(nbElementCreated).isEqualTo(2);
-
-            int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementModified");
-            assertThat(nbElementModified).isEqualTo(3);
-
-            DataTree dataTree = this.objectMapper.convertValue(
-                    JsonPath.parse(result.data()).read("$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.impactTree"),
-                    DataTree.class
-            );
-
-            assertThat(dataTree.id()).isEqualTo("impact_tree");
-            assertThat(dataTree.nodes().stream().filter(node -> node.parentId() == null)).hasSize(1);
-            assertThat(dataTree.nodes()).anySatisfy(node -> {
-                assertThat(node.label().toString()).isEqualTo("elements: a");
-                assertThat(node.endIconsURLs()).hasSize(1);
-                List<String> endIconsURL = node.endIconsURLs().get(0);
-                assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureAddition.svg"));
-                Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
-                    .findFirst();
-                assertThat(parentNode).isPresent()
-                    .get()
-                    .returns("Sirius Web", dataTreeNode -> dataTreeNode.label().toString());
-            });
-            assertThat(dataTree.nodes()).anySatisfy(node -> {
-                assertThat(node.label().toString()).isEqualTo("elements: c");
-                assertThat(node.endIconsURLs()).hasSize(1);
-                List<String> endIconsURL = node.endIconsURLs().get(0);
-                assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureAddition.svg"));
-                Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
-                    .findFirst();
-                assertThat(parentNode).isPresent()
-                    .get()
-                    .returns("Sirius Web", dataTreeNode -> dataTreeNode.label().toString());
-            });
-            assertThat(dataTree.nodes()).anySatisfy(node -> {
-                assertThat(node.label().toString()).isEqualTo("name: a");
-                assertThat(node.endIconsURLs()).hasSize(1);
-                List<String> endIconsURL = node.endIconsURLs().get(0);
-                assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureAddition.svg"));
-                Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
-                    .findFirst();
-                assertThat(parentNode).isPresent()
-                    .get()
-                    .returns("a", dataTreeNode -> dataTreeNode.label().toString());
-            });
-            assertThat(dataTree.nodes()).anySatisfy(node -> {
-                assertThat(node.label().toString()).isEqualTo("name: c");
-                assertThat(node.endIconsURLs()).hasSize(1);
-                List<String> endIconsURL = node.endIconsURLs().get(0);
-                assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureAddition.svg"));
-                Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
-                    .findFirst();
-                assertThat(parentNode).isPresent()
-                    .get()
-                    .returns("c", dataTreeNode -> dataTreeNode.label().toString());
-            });
-        };
+        Runnable invokeImpactAnalysisReport = () -> this.diagramImpactAnalysisReportExecutor.execute(
+                        PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                        diagramId.get(),
+                        this.modelOperationDiagramDescriptionProvider.getCreateNodeToolId(),
+                        diagramId.get(),
+                        List.of())
+                .isSuccess()
+                .hasElementsDeleted(0)
+                .hasElementsCreated(2)
+                .hasElementsModified(3)
+                .assertImpactTree(dataTree -> {
+                    assertThat(dataTree.id()).isEqualTo("impact_tree");
+                    assertThat(dataTree.nodes().stream().filter(node -> node.parentId() == null)).hasSize(1);
+                    assertThat(dataTree.nodes()).anySatisfy(node -> {
+                        assertThat(node.label().toString()).isEqualTo("elements: a");
+                        assertThat(node.endIconsURLs()).hasSize(1);
+                        List<String> endIconsURL = node.endIconsURLs().get(0);
+                        assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureAddition.svg"));
+                        Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
+                                .findFirst();
+                        assertThat(parentNode).isPresent()
+                                .get()
+                                .returns("Sirius Web", dataTreeNode -> dataTreeNode.label().toString());
+                    });
+                    assertThat(dataTree.nodes()).anySatisfy(node -> {
+                        assertThat(node.label().toString()).isEqualTo("elements: c");
+                        assertThat(node.endIconsURLs()).hasSize(1);
+                        List<String> endIconsURL = node.endIconsURLs().get(0);
+                        assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureAddition.svg"));
+                        Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
+                                .findFirst();
+                        assertThat(parentNode).isPresent()
+                                .get()
+                                .returns("Sirius Web", dataTreeNode -> dataTreeNode.label().toString());
+                    });
+                    assertThat(dataTree.nodes()).anySatisfy(node -> {
+                        assertThat(node.label().toString()).isEqualTo("name: a");
+                        assertThat(node.endIconsURLs()).hasSize(1);
+                        List<String> endIconsURL = node.endIconsURLs().get(0);
+                        assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureAddition.svg"));
+                        Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
+                                .findFirst();
+                        assertThat(parentNode).isPresent()
+                                .get()
+                                .returns("a", dataTreeNode -> dataTreeNode.label().toString());
+                    });
+                    assertThat(dataTree.nodes()).anySatisfy(node -> {
+                        assertThat(node.label().toString()).isEqualTo("name: c");
+                        assertThat(node.endIconsURLs()).hasSize(1);
+                        List<String> endIconsURL = node.endIconsURLs().get(0);
+                        assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureAddition.svg"));
+                        Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
+                                .findFirst();
+                        assertThat(parentNode).isPresent()
+                                .get()
+                                .returns("c", dataTreeNode -> dataTreeNode.label().toString());
+                    });
+                });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -235,37 +176,63 @@ public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegratio
             diagramId.set(diagram.getId());
         });
 
-        Runnable invokeImpactAnalysisReport = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", diagramId.get(),
-                    "toolId", "failingNodeToolId",
-                    "diagramElementId", diagramId.get(),
-                    "variables", List.of());
-            var result = this.graphQLRequestor.execute(GET_IMPACT_ANALYSIS_REPORT, variables);
+        Runnable invokeImpactAnalysisReport = () -> this.diagramImpactAnalysisReportExecutor.execute(
+                        PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                        diagramId.get(),
+                        "failingNodeToolId",
+                        diagramId.get(),
+                        List.of())
+                .hasExecutionFailure()
+                .hasElementsDeleted(0)
+                .hasElementsCreated(0)
+                .hasElementsModified(0)
+                .assertImpactTree(dataTree -> {
+                    assertThat(dataTree.id()).isEqualTo("impact_tree");
+                    assertThat(dataTree.nodes()).isEmpty();
+                });
 
-            int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementDeleted");
-            assertThat(nbElementDeleted).isEqualTo(0);
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(invokeImpactAnalysisReport)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 
-            int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementCreated");
-            assertThat(nbElementCreated).isEqualTo(0);
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with a delete tool, when asking for impact analysis, then the deletion is reported")
+    public void givenDiagramWithDeleteToolWhenAskingForImpactAnalysisThenDeletionIsReported() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                this.undoRedoDiagramDescriptionProvider.getRepresentationDescriptionId(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
+                "DeleteImpactAnalysis"
+        );
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
+        var diagramId = new AtomicReference<String>();
+        var nodeId = new AtomicReference<String>();
 
-            int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementModified");
-            assertThat(nbElementModified).isEqualTo(0);
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            nodeId.set(new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode().getId());
+        });
 
-            List<String> additionalReports = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.additionalReports[*]");
-            assertThat(additionalReports).hasSize(1);
-            assertThat(additionalReports.get(0)).startsWith(this.messageService.operationExecutionFailed(""));
-
-            DataTree dataTree = this.objectMapper.convertValue(
-                    JsonPath.parse(result.data()).read("$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.impactTree"),
-                    DataTree.class
-            );
-
-            assertThat(dataTree.id()).isEqualTo("impact_tree");
-            assertThat(dataTree.nodes()).isEmpty();
-
-        };
+        Runnable invokeImpactAnalysisReport = () -> this.diagramImpactAnalysisReportExecutor.execute(
+                        PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                        diagramId.get(),
+                        DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID,
+                        nodeId.get(),
+                        List.of())
+                .isSuccess()
+                .hasElementsDeleted(1)
+                .hasElementsCreated(0)
+                .hasElementsModified(1)
+                .assertImpactTree(dataTree -> assertThat(dataTree.nodes()).anySatisfy(node -> {
+                    assertThat(node.label().toString()).isEqualTo("elements: sirius-web-infrastructure");
+                    assertThat(node.endIconsURLs()).anySatisfy(icons ->
+                            assertThat(icons).anyMatch(icon -> icon.contains("FeatureDeletion.svg")));
+                }));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

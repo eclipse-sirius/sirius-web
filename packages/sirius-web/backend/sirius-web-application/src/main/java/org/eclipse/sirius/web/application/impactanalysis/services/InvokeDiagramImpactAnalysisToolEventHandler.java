@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.datatree.DataTree;
+import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.Success;
@@ -57,14 +58,14 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
 
     private final IMessageService messageService;
 
-    private final ISingleClickOnOneDiagramElementHandler singleClickOnOneDiagramElementHandler;
+    private final List<ISingleClickOnOneDiagramElementHandler> singleClickOnOneDiagramElementHandler;
 
     private final IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider;
 
     private final Counter counter;
 
     public InvokeDiagramImpactAnalysisToolEventHandler(IEditingContextSnapshotService editingContextSnapshotService, IMessageService messageService,
-            ISingleClickOnOneDiagramElementHandler singleClickOnOneDiagramElementHandler, IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider, MeterRegistry meterRegistry) {
+            List<ISingleClickOnOneDiagramElementHandler> singleClickOnOneDiagramElementHandler, IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider, MeterRegistry meterRegistry) {
         this.editingContextSnapshotService = Objects.requireNonNull(editingContextSnapshotService);
         this.messageService = Objects.requireNonNull(messageService);
         this.singleClickOnOneDiagramElementHandler = Objects.requireNonNull(singleClickOnOneDiagramElementHandler);
@@ -95,8 +96,11 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
 
                 changeRecorder.beginRecording(siriusEditingContext.getDomain().getResourceSet().getResources());
 
-                IStatus toolExecutionResult = this.singleClickOnOneDiagramElementHandler.execute(editingContext, diagramContext, invokeImpactAnalysisToolInput.toolId(),
-                        invokeImpactAnalysisToolInput.diagramElementId(), invokeImpactAnalysisToolInput.variables());
+                IStatus toolExecutionResult = this.singleClickOnOneDiagramElementHandler.stream()
+                        .filter(handler -> handler.canHandle(editingContext, diagramContext, invokeImpactAnalysisToolInput.toolId(), invokeImpactAnalysisToolInput.diagramElementId()))
+                        .findFirst()
+                        .map(handler -> handler.execute(editingContext, diagramContext, invokeImpactAnalysisToolInput.toolId(), invokeImpactAnalysisToolInput.diagramElementId(), invokeImpactAnalysisToolInput.variables()))
+                        .orElse(new Failure("No handler found"));
 
                 var diff = siriusEditingContext.getChangeRecorder().summarize();
                 siriusEditingContext.getChangeRecorder().endRecording();
