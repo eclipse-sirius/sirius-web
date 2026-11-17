@@ -18,9 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
@@ -609,6 +611,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return result.asBoolean().orElse(true);
         };
 
+        Predicate<Element> compatibleSourceMapping = this.isFromCompatibleSourceMapping(viewEdgeDescription);
         Function<VariableManager, List<Element>> sourceProvider = null;
         if (viewEdgeDescription.isIsDomainBasedEdge()) {
             sourceProvider = variableManager -> {
@@ -624,7 +627,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 var diagramElementCandidates = semanticCandidates.stream().flatMap(semanticObject -> cache.getElementsRepresenting(semanticObject).stream());
 
                 return diagramElementCandidates
-                        .filter(diagramElement -> viewEdgeDescription.getSourceDescriptions().stream().anyMatch(description -> this.isFromDescription(diagramElement, description)))
+                        .filter(compatibleSourceMapping)
                         .filter(Objects::nonNull)
                         .toList();
             };
@@ -640,7 +643,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 Object object = optionalObject.get();
 
                 return cache.getElementsRepresenting(object).stream()
-                        .filter(this.isFromCompatibleSourceMapping(viewEdgeDescription))
+                        .filter(compatibleSourceMapping)
                         .filter(Objects::nonNull)
                         .toList();
             };
@@ -762,12 +765,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private Predicate<Element> isFromCompatibleSourceMapping(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription) {
-        return diagramElement -> edgeDescription.getSourceDescriptions().stream().anyMatch(description -> this.isFromDescription(diagramElement, description));
-    }
-
-    private boolean isFromDescription(Element diagramElement, DiagramElementDescription diagramElementDescription) {
-        return diagramElement.getProps() instanceof NodeElementProps nodeElementProps && Objects.equals(this.diagramIdProvider.getId(diagramElementDescription), nodeElementProps.getDescriptionId())
-                || diagramElement.getProps() instanceof EdgeElementProps edgeElementProps && Objects.equals(this.diagramIdProvider.getId(diagramElementDescription), edgeElementProps.getDescriptionId());
+        Set<String> sourceDescriptionIds = edgeDescription.getSourceDescriptions().stream()
+                .map(this.diagramIdProvider::getId)
+                .collect(Collectors.toUnmodifiableSet());
+        return diagramElement -> diagramElement.getProps() instanceof NodeElementProps nodeElementProps && sourceDescriptionIds.contains(nodeElementProps.getDescriptionId())
+                || diagramElement.getProps() instanceof EdgeElementProps edgeElementProps && sourceDescriptionIds.contains(edgeElementProps.getDescriptionId());
     }
 
     private Optional<Object> self(VariableManager variableManager) {
