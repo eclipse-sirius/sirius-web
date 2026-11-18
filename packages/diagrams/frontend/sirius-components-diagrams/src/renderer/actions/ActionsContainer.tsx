@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useDebounce } from '@eclipse-sirius/sirius-components-core';
+import Box from '@mui/material/Box';
 import { useContext } from 'react';
-import { makeStyles } from 'tss-react/mui';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { Action } from './Action';
@@ -20,27 +20,10 @@ import { ActionsContainerProps } from './ActionsContainer.types';
 import { useActions } from './useActions';
 import { GQLAction } from './useActions.types';
 
-const useStyles = makeStyles()((theme) => ({
-  actionsContainer: {
-    gridRow: 1,
-    gridColumn: 1,
-    width: 'fit-content',
-    justifySelf: 'flex-end',
-    zIndex: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    gap: theme.spacing(1),
-  },
-}));
-
 // How long the user has to hover on the element for the actions to be displayed (in ms).
 const REVEAL_DELAY = 500;
 
 export const ActionsContainer = ({ diagramElementId }: ActionsContainerProps) => {
-  const { classes } = useStyles();
-
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const delayPassed = useDebounce(true, REVEAL_DELAY);
   const shouldDisplay = delayPassed && !readOnly;
@@ -52,10 +35,37 @@ export const ActionsContainer = ({ diagramElementId }: ActionsContainerProps) =>
   }
 
   return (
-    <div className={classes.actionsContainer}>
-      {actions.map((action: GQLAction) => {
-        return <Action key={`action_${action.tooltip}`} action={action} diagramElementId={diagramElementId} />;
-      })}
-    </div>
+    <Box
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'grid',
+        gridTemplateRows: 'auto',
+        gridTemplateColumns: 'minmax(0, 1fr)',
+        alignContent: 'start',
+        pointerEvents: 'none',
+        zIndex: 10,
+      }}>
+      <Box
+        sx={(theme) => ({
+          gridRow: 1,
+          gridColumn: 1,
+          width: 'fit-content',
+          justifySelf: 'flex-end',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          gap: theme.spacing(1),
+          pointerEvents: 'auto',
+        })}>
+        {actions.map((action: GQLAction) => {
+          return <Action key={`action_${action.tooltip}`} action={action} diagramElementId={diagramElementId} />;
+        })}
+      </Box>
+    </Box>
   );
 };

@@ -15,9 +15,7 @@ import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/
 import { Theme, useTheme } from '@mui/material/styles';
 import { Node, NodeProps } from '@xyflow/react';
 import React, { memo, useContext, useMemo } from 'react';
-import { makeStyles } from 'tss-react/mui';
 import { BorderNodePosition } from '../DiagramRenderer.types';
-import { Label } from '../Label';
 import { ActionsContainer } from '../actions/ActionsContainer';
 import { useConnectionLineNodeStyle } from '../connector/useConnectionLineNodeStyle';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
@@ -30,6 +28,7 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DraggableResizableOutsideLabel } from './DraggableResizableOutsideLabel';
 import { FreeFormNodeData } from './FreeFormNode.types';
+import { NodeInsideLabel } from './NodeInsideLabel';
 import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
 
@@ -95,18 +94,6 @@ const backgroundNodeStyle = (
   return freeFormNodeStyle;
 };
 
-const useStyles = makeStyles()((_) => ({
-  labelAndAction: {
-    display: 'grid',
-    gridTemplateRows: '1fr',
-    gridTemplateColumns: 'minmax(0, 1fr)',
-  },
-  label: {
-    gridRow: 1,
-    gridColumn: 1,
-  },
-}));
-
 const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
   if (data?.isBorderNode && data.positionDependentRotation) {
     switch (data.borderNodePosition) {
@@ -135,7 +122,6 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
     height,
   }: NodeProps<Node<FreeFormNodeData>>) => {
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-    const { classes } = useStyles();
 
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
@@ -194,12 +180,10 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
           <div data-svg="image" style={{ ...backgroundStyle }} />
           <DecoratorContainer decorators={data.decorators} />
-          <div className={classes.labelAndAction}>
-            <div className={classes.label}>
-              {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
-            </div>
-            {actionsSection}
-          </div>
+          {actionsSection}
+          {data.insideLabel ? (
+            <NodeInsideLabel diagramElementId={id} insideLabel={data.insideLabel} faded={data.faded} />
+          ) : null}
           {selected && width && height ? (
             <ConnectionCreationHandles
               nodeId={id}
