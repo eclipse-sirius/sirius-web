@@ -62,6 +62,7 @@ Each configuration exposes `id`, `label`, `iconURL` and a list of string `key`/`
 - https://github.com/eclipse-sirius/sirius-web/issues/7162[#7162] [form] Fix editing of table widgets in the Details view.
 - https://github.com/eclipse-sirius/sirius-web/issues/5485[#5485] [diagram] Edge bending points are above line segments
 - https://github.com/eclipse-sirius/sirius-web/issues/7181[#7181] [diagram] Fix an issue where a tool configured with an impact analysis report and defined outside the View DSL was not executed correctly.
+- https://github.com/eclipse-sirius/sirius-web/issues/7187[#7187] [diagram] Keep creation handles aligned when node replacements change position or size.
 
 
 === New Features

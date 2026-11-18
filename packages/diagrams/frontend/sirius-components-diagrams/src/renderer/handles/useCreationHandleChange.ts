@@ -11,35 +11,56 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, NodeChange, useStoreApi } from '@xyflow/react';
+import { Node, NodeChange } from '@xyflow/react';
 import { useCallback } from 'react';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 import { getHandlePosition } from '../connector/useHandles';
 import { isHandleNode } from '../node/HandleNode.types';
-import { evaluateAbsolutePosition } from '../node/NodeUtils';
+import {
+  isDimensionChange,
+  isPositionChange,
+  isReplaceAndBoundsChange,
+  isReplaceChange,
+} from '../node/nodeChangePredicates';
 import { UseCreationHandleChangeValue } from './useCreationHandleChange.types';
 
 /** Updates existing creation handles when their owner is moved. */
 export const useCreationHandleChange = (): UseCreationHandleChangeValue => {
-  const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const updateCreationHandlePositions = useCallback(
     (ownerIds: string[], newNodes: Node<NodeData>[]): Node<NodeData>[] => {
       if (ownerIds.length === 0) {
         return newNodes;
       }
 
-      const { nodeLookup } = storeApi.getState();
+      const nodeLookup = new Map(newNodes.map((node) => [node.id, node]));
+      const changedOwnerIds = new Set(ownerIds);
       return newNodes.map((node) => {
         if (!isHandleNode(node) || node.data.nodeId === null) {
           return node;
         }
-        const owner = newNodes.find((newNode) => newNode.id === node.data.nodeId);
-        if (!ownerIds.includes(node.data.nodeId) || !owner) {
+        const owner = nodeLookup.get(node.data.nodeId);
+        if (!owner) {
+          return node;
+        }
+        const absolutePosition = { ...owner.position };
+        let ownerOrAncestor = owner;
+        let ownerChanged = changedOwnerIds.has(owner.id);
+        while (ownerOrAncestor.parentId) {
+          const parent = nodeLookup.get(ownerOrAncestor.parentId);
+          if (!parent) {
+            break;
+          }
+          absolutePosition.x += parent.position.x;
+          absolutePosition.y += parent.position.y;
+          ownerChanged = ownerChanged || changedOwnerIds.has(parent.id);
+          ownerOrAncestor = parent;
+        }
+        if (!ownerChanged) {
           return node;
         }
         const position = getHandlePosition(
           node.data.position,
-          evaluateAbsolutePosition(owner, nodeLookup),
+          absolutePosition,
           owner.width ?? owner.measured?.width ?? 0,
           owner.height ?? owner.measured?.height ?? 0
         );
@@ -53,9 +74,22 @@ export const useCreationHandleChange = (): UseCreationHandleChangeValue => {
   );
 
   const applyCreationHandleChange = useCallback(
-    (changes: NodeChange<Node<NodeData>>[], newNodes: Node<NodeData>[]): Node<NodeData>[] => {
+    (
+      changes: NodeChange<Node<NodeData>>[],
+      previousNodes: Node<NodeData>[],
+      newNodes: Node<NodeData>[]
+    ): Node<NodeData>[] => {
+      const previousNodeLookup = changes.some(isReplaceChange)
+        ? new Map(previousNodes.map((node) => [node.id, node]))
+        : null;
       const ownerIds = changes.flatMap((change): string[] => {
-        if (change.type === 'dimensions' || change.type === 'position') {
+        if (
+          isDimensionChange(change) ||
+          isPositionChange(change) ||
+          (isReplaceChange(change) &&
+            previousNodeLookup !== null &&
+            isReplaceAndBoundsChange(change, previousNodeLookup.get(change.id)))
+        ) {
           return [change.id];
         }
         return [];

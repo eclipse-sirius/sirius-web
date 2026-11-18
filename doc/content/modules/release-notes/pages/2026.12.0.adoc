@@ -33,6 +33,7 @@ The `sirius-components-collaborative-diagrams` module provides the default confi
 - Tables embedded in the Details view can now be edited.
 - Bending points on rectilinear edges now take priority over line segments when dragging.
 - Fix an issue where a tool configured with an impact analysis report and defined outside the View DSL was not executed correctly.
+- Creation handles follow their nodes when arranging diagram elements.
 
 
 == New features
