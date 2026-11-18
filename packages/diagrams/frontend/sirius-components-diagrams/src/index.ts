@@ -83,6 +83,8 @@ export { useLayout } from './renderer/layout/useLayout';
 export { useSynchronizeLayoutData } from './renderer/layout/useSynchronizeLayoutData';
 export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
+export { NodeInsideLabel } from './renderer/node/NodeInsideLabel';
+export type { NodeInsideLabelProps } from './renderer/node/NodeInsideLabel.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
 export { Resizer } from './renderer/node/Resizer';

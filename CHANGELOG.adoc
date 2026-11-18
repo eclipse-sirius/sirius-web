@@ -72,6 +72,8 @@ Each configuration exposes `id`, `label`, `iconURL` and a list of string `key`/`
 
 - https://github.com/eclipse-sirius/sirius-web/issues/7084[#7084] [explorer] Add "Collapse All" action.
 - https://github.com/eclipse-sirius/sirius-web/issues/7088[#7088] [table] Add the ability to adjust table row heights and table column width to fit the cell contents.
+- https://github.com/eclipse-sirius/sirius-web/issues/7088[#7088] [table] Add the ability to adjust table row heights to fit their content.
+- https://github.com/eclipse-sirius/sirius-web/issues/7198[#7198] [diagram] Add support for NodeInsideLabel
 
 
 
@@ -93,6 +95,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - [doc] Add a minimal documentation requirement for every pull request to ensure that the documentation is kept up to date with the code changes.
 At least 10 to 25 lines of documentation must be added in every pull request depending on the size of the changes.
 - [releng] Run end-to-end tests at the end of the main build job so that their failures do not prevent Docker images from being published.
+- https://github.com/eclipse-sirius/sirius-web/issues/7198[#7198] [diagram] Render inside labels and node actions separately
 
 
 

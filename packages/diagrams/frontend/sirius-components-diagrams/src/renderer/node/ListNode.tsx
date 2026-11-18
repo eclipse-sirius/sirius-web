@@ -15,9 +15,7 @@ import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
 import { Node, NodeProps } from '@xyflow/react';
 import { memo, useMemo } from 'react';
-import { makeStyles } from 'tss-react/mui';
 
-import { Label } from '../Label';
 import { ActionsContainer } from '../actions/ActionsContainer';
 import { useConnectionLineNodeStyle } from '../connector/useConnectionLineNodeStyle';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
@@ -29,6 +27,7 @@ import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { ListNodeData } from './ListNode.types';
+import { NodeInsideLabel } from './NodeInsideLabel';
 import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
 
@@ -55,18 +54,6 @@ const listNodeStyle = (
   return listNodeStyle;
 };
 
-const useStyles = makeStyles()((_) => ({
-  labelAndAction: {
-    display: 'grid',
-    gridTemplateRows: '1fr',
-    gridTemplateColumns: 'minmax(0, 1fr)',
-  },
-  label: {
-    gridRow: 1,
-    gridColumn: 1,
-  },
-}));
-
 export const ListNode: NodeComponentsMap['listNode'] = memo(
   ({
     data,
@@ -79,7 +66,6 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
     height,
   }: NodeProps<Node<ListNodeData>>) => {
     const theme = useTheme();
-    const { classes } = useStyles();
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(
@@ -121,12 +107,10 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
           onDrop={handleOnDrop}
           data-testid={`List - ${data?.insideLabel?.text}`}>
           <DecoratorContainer decorators={data.decorators} />
-          <div className={classes.labelAndAction}>
-            <div className={classes.label}>
-              {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
-            </div>
-            {actionsSection}
-          </div>
+          {actionsSection}
+          {data.insideLabel ? (
+            <NodeInsideLabel diagramElementId={id} insideLabel={data.insideLabel} faded={data.faded} />
+          ) : null}
           {selected && width && height ? (
             <ConnectionCreationHandles
               nodeId={id}
