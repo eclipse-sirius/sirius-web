@@ -13,13 +13,14 @@
 import { Edge, EdgeChange, InternalNode, Node, useStoreApi } from '@xyflow/react';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { isEdgeSelectionChange } from '../node/nodeChangePredicates';
 import { UseSelectEdgeChangeValue } from './useSelectEdgeChange.types';
 
 export const useSelectEdgeChange = (): UseSelectEdgeChangeValue => {
   const reactFlowStore = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { setNodes, setEdges } = useStore();
   const onEdgeSelectedChange = (changes: EdgeChange<Edge<EdgeData>>[]) => {
-    const edgesId = changes.filter((change) => change.type === 'select').map((change) => change['id']);
+    const edgesId = changes.filter(isEdgeSelectionChange).map((change) => change['id']);
     const edgesToUpdate: Edge<EdgeData>[] = [];
     const nodesToUpdate: InternalNode<Node<NodeData>>[] = [];
     edgesId.forEach((edgeId) => {
@@ -73,10 +74,10 @@ export const useSelectEdgeChange = (): UseSelectEdgeChangeValue => {
     );
 
     const selectedEdgesIds: string[] = changes
-      .filter((change) => change.type === 'select' && change.selected)
+      .filter((change) => isEdgeSelectionChange(change) && change.selected)
       .map((change) => change['id']);
     const unSelectedEdgesIds = changes
-      .filter((change) => change.type === 'select' && !change.selected)
+      .filter((change) => isEdgeSelectionChange(change) && !change.selected)
       .map((change) => change['id']);
 
     setEdges((previousEdges) =>
