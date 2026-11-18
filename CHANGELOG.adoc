@@ -84,6 +84,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - https://github.com/eclipse-sirius/sirius-web/issues/7039[#7039] [projects] Add projects style customizations infrastructure module
 - https://github.com/eclipse-sirius/sirius-web/issues/6765[#6765] [tree]  The selected explorer description and expanded items are now saved in your browser local storage and restored when you refresh the page or reopen the project.
 - https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Move diagram layout configurations from frontend to backend
+- [cleanup] [diagram] Centralize XYFlow change predicates.
 
 
 == 2026.11.0

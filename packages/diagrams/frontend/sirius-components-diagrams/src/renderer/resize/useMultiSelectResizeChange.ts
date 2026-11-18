@@ -14,7 +14,7 @@ import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyfl
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
-import { isResize, isMove } from '../node/nodeChangePredicates';
+import { isDimensionChange, isMove } from '../node/nodeChangePredicates';
 import { UseMultiSelectResizeChangeValue } from './useMultiSelectResizeChange.types';
 
 const applyMultiSelectResize = (
@@ -83,7 +83,7 @@ export const useMultiSelectResizeChange = (): UseMultiSelectResizeChangeValue =>
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       const newChanges: NodeChange<Node<NodeData>>[] = [];
       changes.forEach((currentChange) => {
-        if (isResize(currentChange)) {
+        if (isDimensionChange(currentChange)) {
           const resizedNode = getNode(currentChange.id);
           const positionChangeForSameNode: NodePositionChange | undefined = changes.find(
             (change): change is NodePositionChange => isMove(change) && change.id === currentChange.id

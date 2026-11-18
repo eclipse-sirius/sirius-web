@@ -25,13 +25,10 @@ import { useCallback, useContext, useState } from 'react';
 import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf } from '../layout/layoutNode';
 import { horizontalHelperLinesSnapGap, verticalHelperLinesSnapGap } from '../layout/layoutParams';
-import { isResizing } from '../node/nodeChangePredicates';
+import { isMoving, isPositionChange, isResizing } from '../node/nodeChangePredicates';
 import { HelperLinesContext } from './HelperLinesContext';
 import { HelperLinesContextValue } from './HelperLinesContext.types';
 import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
-
-const isMove = (change: NodeChange<Node<NodeData>>, dragging: boolean): change is NodePositionChange =>
-  change.type === 'position' && (!dragging || (typeof change.dragging === 'boolean' && change.dragging));
 
 interface RectangularBounds {
   x1: number;
@@ -324,7 +321,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
   const applyHelperLines = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       const nodeLookup = storeApi.getState().nodeLookup;
-      if (isHelperLineEnabled && changes.every((change) => isMove(change, true))) {
+      if (isHelperLineEnabled && changes.every(isMoving)) {
         const nodePositionChanges = changes.map((change) => change as NodePositionChange);
         const movingNodes: InternalNode<Node<NodeData>>[] = nodePositionChanges
           .map((change) => nodeLookup.get(change.id))
@@ -370,7 +367,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
         const [resizingChange] = resizingChanges;
         if (resizingChanges.length === 1 && resizingChange) {
           const movingChange = changes.find(
-            (change): change is NodePositionChange => isMove(change, false) && change.id === resizingChange.id
+            (change): change is NodePositionChange => isPositionChange(change) && change.id === resizingChange.id
           );
           const resizingNode = nodeLookup.get(resizingChange.id);
           if (resizingNode && !movingChange) {
@@ -434,7 +431,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
               const deltaY = movingChange.position.y - positionBeforeSnap.y;
               return changes.map((change) => {
                 if (
-                  isMove(change, false) &&
+                  isPositionChange(change) &&
                   change.position &&
                   nodeLookup.get(change.id)?.parentId === resizingNode.id
                 ) {

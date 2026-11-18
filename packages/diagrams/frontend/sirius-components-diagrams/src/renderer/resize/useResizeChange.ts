@@ -27,7 +27,7 @@ import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types
 import { getBorderNodeExtent } from '../layout/layoutBorderNodes';
 import { borderNodeOffset, defaultNodeMargin } from '../layout/layoutParams';
 import { ListNodeData } from '../node/ListNode.types';
-import { isResizing, isMove, isResize, isResizeFinished } from '../node/nodeChangePredicates';
+import { isDimensionChange, isMove, isResizeFinished, isResizing } from '../node/nodeChangePredicates';
 import { UseResizeChangeValue } from './useResizeChange.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { computeNodesBox, getHeaderHeightFootprint } from '../layout/layoutNode';
@@ -171,7 +171,7 @@ const constrainFreeFormChildMoveChanges = (
   nodes: Node<NodeData>[],
   changes: NodeChange<Node<NodeData>>[]
 ): Map<string, NodePositionChange> => {
-  const resizedNodeIds = changes.filter(isResize).map((change) => change.id);
+  const resizedNodeIds = changes.filter(isDimensionChange).map((change) => change.id);
   const moveChangesByParentNodeId = new Map<string, { movedNode: Node<NodeData>; change: NodePositionChange }[]>();
 
   changes.filter(isMove).forEach((change) => {
@@ -203,7 +203,7 @@ const constrainFreeFormChildMoveChanges = (
         }));
       const movedNodesBox = computeNodesBox(nodes, movedNodes);
       const parentResizeChange = changes.find(
-        (change): change is NodeDimensionChange => isResize(change) && change.id === parentNodeId
+        (change): change is NodeDimensionChange => isDimensionChange(change) && change.id === parentNodeId
       );
       const delta = computeFreeFormContentContainmentDelta(parentNode, movedNodesBox, {
         width: parentResizeChange?.dimensions?.width ?? parentNode.width ?? 0,
@@ -364,7 +364,7 @@ export const useResizeChange = (): UseResizeChangeValue => {
           }
 
           const isCurrentMovedNodeNotResized = (node: Node<NodeData>) =>
-            changes.filter((change) => isResize(change) && change.id === node.id).length === 0;
+            changes.filter((change) => isDimensionChange(change) && change.id === node.id).length === 0;
 
           const movedNode = nodes
             .filter((node) => !node.data.isBorderNode)

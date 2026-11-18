@@ -10,16 +10,59 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
-import { NodeData } from '../DiagramRenderer.types';
+import {
+  EdgeChange,
+  EdgeSelectionChange,
+  Node,
+  NodeChange,
+  NodeDimensionChange,
+  NodePositionChange,
+  NodeReplaceChange,
+  NodeSelectionChange,
+} from '@xyflow/react';
 
-export const isResizing = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
-  change.type === 'dimensions' && (change.resizing ?? false);
-export const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
-  change.type === 'dimensions';
-export const isResizeFinished = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
-  change.type === 'dimensions' && typeof change.resizing === 'boolean' && !change.resizing;
-export const isMoving = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
-  change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
-export const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
-  change.type === 'position' && !change.dragging;
+export const isPositionChange = (change: NodeChange): change is NodePositionChange => {
+  return change.type === 'position';
+};
+
+export const isDimensionChange = (change: NodeChange): change is NodeDimensionChange => {
+  return change.type === 'dimensions';
+};
+
+export const isNodeSelectionChange = (change: NodeChange): change is NodeSelectionChange => {
+  return change.type === 'select';
+};
+
+export const isEdgeSelectionChange = (change: EdgeChange): change is EdgeSelectionChange => {
+  return change.type === 'select';
+};
+
+export const isReplaceChange = <NodeType extends Node>(
+  change: NodeChange<NodeType>
+): change is NodeReplaceChange<NodeType> => {
+  return change.type === 'replace';
+};
+
+export const isResizing = (change: NodeChange): change is NodeDimensionChange => {
+  return isDimensionChange(change) && (change.resizing ?? false);
+};
+
+export const isResizeFinished = (change: NodeChange): change is NodeDimensionChange => {
+  return isDimensionChange(change) && typeof change.resizing === 'boolean' && !change.resizing;
+};
+
+export const isMoving = (change: NodeChange): change is NodePositionChange => {
+  return isPositionChange(change) && typeof change.dragging === 'boolean' && change.dragging;
+};
+
+export const isMove = (change: NodeChange): change is NodePositionChange => {
+  return isPositionChange(change) && !change.dragging;
+};
+
+export const isDragChange = (change: NodeChange): change is NodePositionChange => {
+  return isPositionChange(change) && typeof change.dragging === 'boolean';
+};
+
+export const isMoveFinished = (change: NodeChange): change is NodePositionChange => {
+  return isDragChange(change) && !change.dragging;
+};

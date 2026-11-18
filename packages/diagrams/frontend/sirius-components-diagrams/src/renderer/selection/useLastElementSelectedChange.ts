@@ -10,16 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, InternalNode, Node, NodeChange, NodeSelectionChange, useStoreApi, XYPosition } from '@xyflow/react';
+import { Edge, InternalNode, Node, NodeChange, useStoreApi, XYPosition } from '@xyflow/react';
 import { pointToRendererPoint, SelectionRect } from '@xyflow/system';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { isNodeSelectionChange } from '../node/nodeChangePredicates';
 import { findClosest } from './distanceComputation';
 import { UseLastElementSelectedChangeValue } from './useLastElementSelectedChange.types';
-
-function isNodeSelectionChange(change: NodeChange<Node<NodeData>>): change is NodeSelectionChange {
-  return change.type === 'select';
-}
 
 export const useLastElementSelectedChange = (): UseLastElementSelectedChangeValue => {
   const reactFlowStore = useStoreApi<Node<NodeData>, Edge<EdgeData>>();

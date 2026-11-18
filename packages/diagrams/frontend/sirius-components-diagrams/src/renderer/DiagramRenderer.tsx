@@ -78,6 +78,7 @@ import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
 import { MiniMapContext } from './mini-map/MiniMapContext';
 import { MiniMapContextValue } from './mini-map/MiniMapContext.types';
 import { useMoveChange } from './move/useMoveChange';
+import { isReplaceChange } from './node/nodeChangePredicates';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
@@ -280,7 +281,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const handleNodesChange: OnNodesChange<Node<NodeData>> = useCallback(
     (changes: NodeChange<Node<NodeData>>[]) => {
       const noReadOnlyChanges = filterReadOnlyChanges(changes);
-      const isResetChange = changes.find((change) => change.type === 'replace');
+      const isResetChange = changes.find(isReplaceChange);
       const isSelectChange = changes.find(
         (change) => change.type === 'select' && !change.id.startsWith('edgeAnchorNodeCreationHandles')
       );
