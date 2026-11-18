@@ -61,6 +61,7 @@ a|image::global-palette-helper-lines.png[Helper lines]
 a|image::global-palette-arrange-all.png[Arrange all]
 | Arrange all
 | Automatically reorganizes all elements to improve overall layout clarity.
+Creation handles remain attached to their owning node or edge after the layout changes.
 
 a|image::global-palette-smart-edges.png[Smart Edges]
 | Smart Edges

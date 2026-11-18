@@ -66,3 +66,21 @@ export const isDragChange = (change: NodeChange): change is NodePositionChange =
 export const isMoveFinished = (change: NodeChange): change is NodePositionChange => {
   return isDragChange(change) && !change.dragging;
 };
+
+/** Detects geometry changes carried by a replacement rather than a dedicated bounds change. */
+export const isReplaceAndBoundsChange = <NodeType extends Node>(
+  change: NodeChange<NodeType>,
+  previousNode: NodeType | undefined
+): change is NodeReplaceChange<NodeType> => {
+  if (!isReplaceChange(change) || !previousNode) {
+    return false;
+  }
+  const node = change.item;
+  return (
+    node.position.x !== previousNode.position.x ||
+    node.position.y !== previousNode.position.y ||
+    node.parentId !== previousNode.parentId ||
+    (node.width ?? node.measured?.width ?? 0) !== (previousNode.width ?? previousNode.measured?.width ?? 0) ||
+    (node.height ?? node.measured?.height ?? 0) !== (previousNode.height ?? previousNode.measured?.height ?? 0)
+  );
+};

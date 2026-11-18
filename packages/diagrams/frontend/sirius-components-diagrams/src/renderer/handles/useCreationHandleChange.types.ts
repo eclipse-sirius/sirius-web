@@ -15,6 +15,10 @@ import { Node, NodeChange } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseCreationHandleChangeValue {
-  applyCreationHandleChange: (changes: NodeChange<Node<NodeData>>[], newNodes: Node<NodeData>[]) => Node<NodeData>[];
+  applyCreationHandleChange: (
+    changes: NodeChange<Node<NodeData>>[],
+    previousNodes: Node<NodeData>[],
+    newNodes: Node<NodeData>[]
+  ) => Node<NodeData>[];
   updateCreationHandlePositions: (ownerIds: string[], newNodes: Node<NodeData>[]) => Node<NodeData>[];
 }

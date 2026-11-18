@@ -19,7 +19,7 @@ export class PlaywrightDiagram {
     this.page = page;
   }
 
-  async waitForInitialLayout(openDiagram: () => Promise<unknown>): Promise<void> {
+  async waitForLayout(action: () => Promise<unknown>, cause: 'refresh' | 'layout' | null = null): Promise<void> {
     const [response] = await Promise.all([
       this.page.waitForResponse((response) => {
         const request = response.request();
@@ -27,15 +27,23 @@ export class PlaywrightDiagram {
           return false;
         }
         const body = request.postDataJSON();
-        return body?.operationName === 'layoutDiagram' && body?.variables?.input?.cause === 'refresh';
+        return body?.operationName === 'layoutDiagram' && (cause === null || body?.variables?.input?.cause === cause);
       }),
-      openDiagram(),
+      action(),
     ]);
 
     expect(response.ok()).toBeTruthy();
     const body = await response.json();
     expect(body.errors).toBeUndefined();
     expect(body.data.layoutDiagram.__typename).toBe('SuccessPayload');
+  }
+
+  waitForInitialLayout(openDiagram: () => Promise<unknown>): Promise<void> {
+    return this.waitForLayout(openDiagram, 'refresh');
+  }
+
+  arrangeAll(): Promise<void> {
+    return this.waitForLayout(() => this.page.getByTestId('arrange-all-main-button').click(), 'layout');
   }
 
   async hideDebugPanel() {

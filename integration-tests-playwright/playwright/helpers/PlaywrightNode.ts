@@ -48,6 +48,48 @@ export class PlaywrightNode {
     return (await this.nodeLocator.boundingBox())!;
   }
 
+  /** Returns the absolute flow position, including parent offsets and excluding viewport translation and zoom. */
+  getNodePosition(): Promise<{ x: number; y: number }> {
+    return this.nodeLocator.evaluate((element) => {
+      const transform = new DOMMatrixReadOnly(window.getComputedStyle(element).transform);
+      return { x: transform.m41, y: transform.m42 };
+    });
+  }
+
+  areCreationHandlesAligned(tolerance: number = 1): Promise<boolean> {
+    return this.nodeLocator.evaluate((element, tolerance) => {
+      const nodeId = element.getAttribute('data-id');
+      const viewport = element.closest('.react-flow__viewport');
+      if (!nodeId || !viewport) {
+        return false;
+      }
+      const handles = viewport.querySelectorAll(`.react-flow__node[data-id^="handleNode_${nodeId}_"]`);
+      if (handles.length !== 4) {
+        return false;
+      }
+      const scale = new DOMMatrixReadOnly(window.getComputedStyle(viewport).transform).a;
+      const bounds = element.getBoundingClientRect();
+      const offset = 20 * scale;
+      const expectedPositions = {
+        left: { x: bounds.left - offset, y: bounds.top + bounds.height / 2 },
+        top: { x: bounds.left + bounds.width / 2, y: bounds.top - offset },
+        right: { x: bounds.right + offset, y: bounds.top + bounds.height / 2 },
+        bottom: { x: bounds.left + bounds.width / 2, y: bounds.bottom + offset },
+      };
+      return Object.entries(expectedPositions).every(([side, expectedPosition]) => {
+        const handle = viewport.querySelector(`[data-id="handleNode_${nodeId}_${side}"]`);
+        if (!handle) {
+          return false;
+        }
+        const handleBounds = handle.getBoundingClientRect();
+        return (
+          Math.abs(handleBounds.x - expectedPosition.x) / scale < tolerance &&
+          Math.abs(handleBounds.y - expectedPosition.y) / scale < tolerance
+        );
+      });
+    }, tolerance);
+  }
+
   async getReactFlowXYPosition(label: string | null = null, withClick = true) {
     if (withClick) {
       await this.nodeLocator.click({ position: { x: 10, y: 10 } });

@@ -295,7 +295,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       ) {
         setNodes((previousNodes) => {
           const newNodes = applyLastElementSelected(changes, previousNodes, selectedElementsIds);
-          return applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, newNodes);
+          const updatedNodes = applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, newNodes);
+          return applyCreationHandleChange(noReadOnlyChanges, previousNodes, updatedNodes);
         });
       } else {
         resetHelperLines(changes);
@@ -310,7 +311,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         newNodes = applyHandleChange(transformedNodeChanges, newNodes);
         newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
         newNodes = applyResizeByUserState(transformedNodeChanges, newNodes);
-        newNodes = applyCreationHandleChange(transformedNodeChanges, newNodes);
+        newNodes = applyCreationHandleChange(transformedNodeChanges, nodes, newNodes);
 
         const previousEdges = getEdges();
         const newEdges = applyEdgeGeometryChange(transformedNodeChanges, newNodes, previousEdges);
@@ -333,7 +334,16 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         layoutOnBoundsChange(transformedNodeChanges, { nodes: newNodes, edges: newEdges });
       }
     },
-    [layoutOnBoundsChange, getNodes, getEdges, selectedElementsIds, nodes, applyEdgeGeometryChange, setEdges]
+    [
+      layoutOnBoundsChange,
+      getNodes,
+      getEdges,
+      selectedElementsIds,
+      nodes,
+      applyEdgeGeometryChange,
+      applyCreationHandleChange,
+      setEdges,
+    ]
   );
 
   const { onEdgeSelectedChange } = useSelectEdgeChange();
