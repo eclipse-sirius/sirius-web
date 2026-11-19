@@ -96,6 +96,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 At least 10 to 25 lines of documentation must be added in every pull request depending on the size of the changes.
 - [releng] Run end-to-end tests at the end of the main build job so that their failures do not prevent Docker images from being published.
 - https://github.com/eclipse-sirius/sirius-web/issues/7198[#7198] [diagram] Render inside labels and node actions separately
+- https://github.com/eclipse-sirius/sirius-web/issues/7153[#7153] [diagram] Propagate inside label header backgrounds across the full header area of list and free-form nodes, following the rounded corners of the node.
 
 
 

@@ -11,9 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { InsideLabel } from '../DiagramRenderer.types';
+import { BorderRadius } from './getNodeInnerBorderRadius.types';
 
 export interface NodeInsideLabelProps {
   diagramElementId: string;
   insideLabel: InsideLabel;
   faded: boolean;
+  innerBorderRadius: BorderRadius;
 }

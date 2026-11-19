@@ -26,6 +26,7 @@ import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles'
 import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
+import { getNodeInnerBorderRadius } from './getNodeInnerBorderRadius';
 import { ListNodeData } from './ListNode.types';
 import { NodeInsideLabel } from './NodeInsideLabel';
 import { NodeComponentsMap } from './NodeTypes';
@@ -80,6 +81,7 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
       () => listNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
       [data.style, selected, data.isHovered, data.faded]
     );
+    const innerBorderRadius = useMemo(() => getNodeInnerBorderRadius(data.style), [data.style]);
 
     const handleOnDrop = (event: React.DragEvent) => {
       onDrop(event, id);
@@ -101,6 +103,7 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
             ...connectionLineActiveNodeStyle,
+            isolation: data.insideLabel?.headerPosition ? 'isolate' : nodeStyle.isolation,
           }}
           data-svg={data.isListChild ? 'rect:compartment' : 'rect'}
           onDragOver={onDragOver}
@@ -109,7 +112,12 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
           <DecoratorContainer decorators={data.decorators} />
           {actionsSection}
           {data.insideLabel ? (
-            <NodeInsideLabel diagramElementId={id} insideLabel={data.insideLabel} faded={data.faded} />
+            <NodeInsideLabel
+              diagramElementId={id}
+              insideLabel={data.insideLabel}
+              faded={data.faded}
+              innerBorderRadius={innerBorderRadius}
+            />
           ) : null}
           {selected && width && height ? (
             <ConnectionCreationHandles

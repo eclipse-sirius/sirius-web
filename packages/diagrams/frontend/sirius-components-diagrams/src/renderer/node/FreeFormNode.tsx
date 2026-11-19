@@ -28,6 +28,7 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DraggableResizableOutsideLabel } from './DraggableResizableOutsideLabel';
 import { FreeFormNodeData } from './FreeFormNode.types';
+import { getNodeInnerBorderRadius } from './getNodeInnerBorderRadius';
 import { NodeInsideLabel } from './NodeInsideLabel';
 import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
@@ -53,34 +54,17 @@ const freeFormNodeStyle = (
   return freeFormNodeStyle;
 };
 
-const innerRadius = (radius: string | number | undefined, borderWidth: string | number | undefined): number => {
-  return Math.max(0, Number.parseFloat(String(radius ?? 0)) - Number.parseFloat(String(borderWidth ?? 0)));
-};
-
 const backgroundNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   rotation: string | undefined,
   imageURL: string | undefined
 ): React.CSSProperties => {
-  const topLeft = style.borderTopLeftRadius ?? style.borderRadius;
-  const topRight = style.borderTopRightRadius ?? style.borderRadius;
-  const bottomRight = style.borderBottomRightRadius ?? style.borderRadius;
-  const bottomLeft = style.borderBottomLeftRadius ?? style.borderRadius;
-  // The absolutely positioned background fills the padding box, inside the node's borders.
-  const topWidth = style.borderTopWidth ?? style.borderWidth;
-  const rightWidth = style.borderRightWidth ?? style.borderWidth;
-  const bottomWidth = style.borderBottomWidth ?? style.borderWidth;
-  const leftWidth = style.borderLeftWidth ?? style.borderWidth;
   const freeFormNodeStyle: React.CSSProperties = {
     width: '100%',
     height: '100%',
     transform: rotation,
     background: getCSSColor(String(style.background), theme),
-    borderTopLeftRadius: `${innerRadius(topLeft, leftWidth)}px ${innerRadius(topLeft, topWidth)}px`,
-    borderTopRightRadius: `${innerRadius(topRight, rightWidth)}px ${innerRadius(topRight, topWidth)}px`,
-    borderBottomRightRadius: `${innerRadius(bottomRight, rightWidth)}px ${innerRadius(bottomRight, bottomWidth)}px`,
-    borderBottomLeftRadius: `${innerRadius(bottomLeft, leftWidth)}px ${innerRadius(bottomLeft, bottomWidth)}px`,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -151,6 +135,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
       () => backgroundNodeStyle(theme, data.style, rotation, imageURL),
       [data.style, rotation, imageURL]
     );
+    const innerBorderRadius = useMemo(() => getNodeInnerBorderRadius(data.style), [data.style]);
 
     const handleOnDrop = (event: React.DragEvent) => {
       onDrop(event, id);
@@ -172,17 +157,23 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
             ...connectionLineActiveNodeStyle,
+            isolation: data.insideLabel?.headerPosition ? 'isolate' : nodeStyle.isolation,
           }}
           data-svg={data.isListChild ? 'rect:compartment' : 'rect'}
           className="custom-drag-handle"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
-          <div data-svg="image" style={{ ...backgroundStyle }} />
+          <div data-svg="image" style={{ ...backgroundStyle, ...innerBorderRadius }} />
           <DecoratorContainer decorators={data.decorators} />
           {actionsSection}
           {data.insideLabel ? (
-            <NodeInsideLabel diagramElementId={id} insideLabel={data.insideLabel} faded={data.faded} />
+            <NodeInsideLabel
+              diagramElementId={id}
+              insideLabel={data.insideLabel}
+              faded={data.faded}
+              innerBorderRadius={innerBorderRadius}
+            />
           ) : null}
           {selected && width && height ? (
             <ConnectionCreationHandles
