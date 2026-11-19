@@ -1163,13 +1163,63 @@ public interface FormPackage extends EPackage {
     int FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Flexbox Justify Content</b></em>' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @since v2026.12.0
+     * @ordered
+     */
+    int FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_JUSTIFY_CONTENT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Flexbox Align Items</b></em>' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @since v2026.12.0
+     * @ordered
+     */
+    int FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_ALIGN_ITEMS = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Margin</b></em>' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @since v2026.12.0
+     * @ordered
+     */
+    int FLEXBOX_CONTAINER_DESCRIPTION__MARGIN = WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Padding</b></em>' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @since v2026.12.0
+     * @ordered
+     */
+    int FLEXBOX_CONTAINER_DESCRIPTION__PADDING = WIDGET_DESCRIPTION_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @since v2026.12.0
+     * @ordered
+     */
+    int FLEXBOX_CONTAINER_DESCRIPTION__GAP = WIDGET_DESCRIPTION_FEATURE_COUNT + 9;
+
+    /**
      * The number of structural features of the '<em>Flexbox Container Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int FLEXBOX_CONTAINER_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+    int FLEXBOX_CONTAINER_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Flexbox Container Description</em>' class. <!-- begin-user-doc --> <!--
@@ -5802,6 +5852,30 @@ public interface FormPackage extends EPackage {
     int DATE_TIME_TYPE = 60;
 
     /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.form.JustifyContent <em>Justify
+     * Content</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.form.JustifyContent
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getJustifyContent()
+     * @generated
+     * @since v2026.12.0
+     */
+    int JUSTIFY_CONTENT = 61;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.form.AlignItems <em>Align
+     * Items</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.form.AlignItems
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getAlignItems()
+     * @generated
+     * @since v2026.12.0
+     */
+    int ALIGN_ITEMS = 62;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FormDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6494,6 +6568,72 @@ public interface FormPackage extends EPackage {
      * @generated
      */
     EClass getImageDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexboxJustifyContent
+     * <em>Flexbox Justify Content</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the meta object for the attribute '<em>Flexbox Justify Content</em>'.
+     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexboxJustifyContent()
+     * @see #getFlexboxContainerDescription()
+     * @generated
+     * @since v2026.12.0
+     */
+    EAttribute getFlexboxContainerDescription_FlexboxJustifyContent();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexboxAlignItems
+     * <em>Flexbox Align Items</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Flexbox Align Items</em>'.
+     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexboxAlignItems()
+     * @see #getFlexboxContainerDescription()
+     * @generated
+     * @since v2026.12.0
+     */
+    EAttribute getFlexboxContainerDescription_FlexboxAlignItems();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getMargin
+     * <em>Margin</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Margin</em>'.
+     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getMargin()
+     * @see #getFlexboxContainerDescription()
+     * @generated
+     * @since v2026.12.0
+     */
+    EAttribute getFlexboxContainerDescription_Margin();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getPadding
+     * <em>Padding</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Padding</em>'.
+     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getPadding()
+     * @see #getFlexboxContainerDescription()
+     * @generated
+     * @since v2026.12.0
+     */
+    EAttribute getFlexboxContainerDescription_Padding();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getGap
+     * <em>Gap</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Gap</em>'.
+     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getGap()
+     * @see #getFlexboxContainerDescription()
+     * @generated
+     * @since v2026.12.0
+     */
+    EAttribute getFlexboxContainerDescription_Gap();
 
     /**
      * Returns the meta object for the attribute
@@ -8364,6 +8504,30 @@ public interface FormPackage extends EPackage {
     EEnum getDateTimeType();
 
     /**
+     * Returns the meta object for enum
+     * '{@link org.eclipse.sirius.components.view.form.JustifyContent <em>Justify
+     * Content</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Justify Content</em>'.
+     * @see org.eclipse.sirius.components.view.form.JustifyContent
+     * @generated
+     * @since v2026.12.0
+     */
+    EEnum getJustifyContent();
+
+    /**
+     * Returns the meta object for enum
+     * '{@link org.eclipse.sirius.components.view.form.AlignItems <em>Align
+     * Items</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Align Items</em>'.
+     * @see org.eclipse.sirius.components.view.form.AlignItems
+     * @generated
+     * @since v2026.12.0
+     */
+    EEnum getAlignItems();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -8891,6 +9055,53 @@ public interface FormPackage extends EPackage {
          * @generated
          */
         EClass IMAGE_DESCRIPTION = eINSTANCE.getImageDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Flexbox Justify Content</b></em>'
+         * attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @since v2026.12.0
+         */
+        EAttribute FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_JUSTIFY_CONTENT = eINSTANCE
+                .getFlexboxContainerDescription_FlexboxJustifyContent();
+
+        /**
+         * The meta object literal for the '<em><b>Flexbox Align Items</b></em>'
+         * attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @since v2026.12.0
+         */
+        EAttribute FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_ALIGN_ITEMS = eINSTANCE
+                .getFlexboxContainerDescription_FlexboxAlignItems();
+
+        /**
+         * The meta object literal for the '<em><b>Margin</b></em>' attribute feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @since v2026.12.0
+         */
+        EAttribute FLEXBOX_CONTAINER_DESCRIPTION__MARGIN = eINSTANCE.getFlexboxContainerDescription_Margin();
+
+        /**
+         * The meta object literal for the '<em><b>Padding</b></em>' attribute feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @since v2026.12.0
+         */
+        EAttribute FLEXBOX_CONTAINER_DESCRIPTION__PADDING = eINSTANCE.getFlexboxContainerDescription_Padding();
+
+        /**
+         * The meta object literal for the '<em><b>Gap</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @since v2026.12.0
+         */
+        EAttribute FLEXBOX_CONTAINER_DESCRIPTION__GAP = eINSTANCE.getFlexboxContainerDescription_Gap();
 
         /**
          * The meta object literal for the '<em><b>Url Expression</b></em>' attribute feature. <!-- begin-user-doc -->
@@ -10320,6 +10531,30 @@ public interface FormPackage extends EPackage {
          * @generated
          */
         EEnum DATE_TIME_TYPE = eINSTANCE.getDateTimeType();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.form.JustifyContent <em>Justify
+         * Content</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.form.JustifyContent
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getJustifyContent()
+         * @generated
+         * @since v2026.12.0
+         */
+        EEnum JUSTIFY_CONTENT = eINSTANCE.getJustifyContent();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.form.AlignItems <em>Align
+         * Items</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.form.AlignItems
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getAlignItems()
+         * @generated
+         * @since v2026.12.0
+         */
+        EEnum ALIGN_ITEMS = eINSTANCE.getAlignItems();
 
     }
 

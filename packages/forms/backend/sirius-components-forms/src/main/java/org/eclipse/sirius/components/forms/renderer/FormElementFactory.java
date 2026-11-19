@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -616,7 +616,9 @@ public class FormElementFactory implements IElementFactory {
                 .flexGrow(1)
                 .children(widgets)
                 .diagnostics(diagnostics)
-                .readOnly(props.isReadOnly());
+                .readOnly(props.isReadOnly())
+                .alignItems(props.getAlignItems().toString())
+                .justifyContent(props.getJustifyContent().toString());
 
         if (props.getHelpTextProvider() != null) {
             builder.helpTextProvider(props.getHelpTextProvider());
@@ -624,6 +626,16 @@ public class FormElementFactory implements IElementFactory {
 
         if (props.getBorderStyle() != null) {
             builder.borderStyle(props.getBorderStyle());
+        }
+
+        if (props.getMargin() != null) {
+            builder.margin(props.getMargin());
+        }
+        if (props.getPadding() != null) {
+            builder.padding(props.getPadding());
+        }
+        if (props.getGap() != null) {
+            builder.gap(props.getGap());
         }
 
         return builder.build();

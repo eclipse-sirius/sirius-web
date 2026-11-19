@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:view="http://www.eclipse.org/sirius-web/view" xmlns:form="http://www.eclipse.org/sirius-web/form">
+  <descriptions xmi:type="form:FormDescription" name="FlexboxForm" domainType="flow::System" titleExpression="Flexbox form">
+    <pages name="Page" labelExpression="Page" domainType="flow::System" semanticCandidatesExpression="aql:self">
+      <groups name="Group" labelExpression="Group" semanticCandidatesExpression="aql:self">
+        <children xmi:type="form:FlexboxContainerDescription" name="StyledRow" labelExpression="Styled row" flexDirection="row" flexboxAlignItems="flexStart" flexboxJustifyContent="spaceBetween" margin="0 12px" padding="1rem 2rem" gap="8px 16px">
+          <children xmi:type="form:LabelDescription" name="First" labelExpression="First" valueExpression="First value"/>
+          <children xmi:type="form:FlexboxContainerDescription" name="NestedColumn" labelExpression="Nested column" flexDirection="column" flexboxAlignItems="flexEnd" flexboxJustifyContent="center" margin="2px 4px" padding="6px 10px" gap="12px">
+            <children xmi:type="form:LabelDescription" name="Second" labelExpression="Second" valueExpression="Second value"/>
+            <children xmi:type="form:LabelDescription" name="Third" labelExpression="Third" valueExpression="Third value"/>
+          </children>
+        </children>
+        <children xmi:type="form:FlexboxContainerDescription" name="DefaultContainer" labelExpression="Default container">
+          <children xmi:type="form:LabelDescription" name="DefaultChild" labelExpression="Default child" valueExpression="Default value"/>
+        </children>
+        <children xmi:type="form:FlexboxContainerDescription" name="BorderedContainer" labelExpression="Bordered container">
+          <children xmi:type="form:LabelDescription" name="BorderedChild" labelExpression="Bordered child" valueExpression="Bordered value"/>
+          <borderStyle borderRadius="3" borderSize="1"/>
+        </children>
+      </groups>
+    </pages>
+  </descriptions>
+</view:View>

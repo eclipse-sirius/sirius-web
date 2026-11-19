@@ -355,6 +355,11 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       flexGrow: 1,
       borderStyle: null,
       children: (widget as GQLContainer).children,
+      justifyContent: 'stretch',
+      alignItems: 'stretch',
+      margin: null,
+      padding: '4px',
+      gap: null,
     };
     widgetElement = (
       <FlexboxContainerWidget data-testid={widget.id} page={page} container={container} widget={ifPreview} />
@@ -367,6 +372,11 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       flexGrow: 1,
       borderStyle: null,
       children: (widget as GQLContainer).children,
+      justifyContent: 'stretch',
+      alignItems: 'stretch',
+      margin: null,
+      padding: '4px',
+      gap: null,
     };
     widgetElement = (
       <FlexboxContainerWidget data-testid={widget.id} page={page} container={container} widget={forPreview} />

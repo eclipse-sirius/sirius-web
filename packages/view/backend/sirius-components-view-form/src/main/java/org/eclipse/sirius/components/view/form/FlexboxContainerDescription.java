@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,13 @@ import org.eclipse.emf.common.util.EList;
  * Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getConditionalBorderStyles
  * <em>Conditional Border Styles</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexboxJustifyContent <em>Flexbox
+ * Justify Content</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexboxAlignItems <em>Flexbox Align
+ * Items</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getMargin <em>Margin</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getPadding <em>Padding</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getGap <em>Gap</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription()
@@ -136,5 +143,134 @@ public interface FlexboxContainerDescription extends WidgetDescription {
      * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_ConditionalBorderStyles()
      */
     EList<ConditionalContainerBorderStyle> getConditionalBorderStyles();
+
+    /**
+     * Returns the value of the '<em><b>Flexbox Justify Content</b></em>' attribute. The literals are from the
+     * enumeration {@link org.eclipse.sirius.components.view.form.JustifyContent}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Flexbox Justify Content</em>' attribute.
+     * @see org.eclipse.sirius.components.view.form.JustifyContent
+     * @see #setFlexboxJustifyContent(JustifyContent)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_FlexboxJustifyContent()
+     * @model
+     * @generated
+     * @since v2026.12.0
+     */
+    JustifyContent getFlexboxJustifyContent();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexboxJustifyContent <em>Flexbox
+     * Justify Content</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Flexbox Justify Content</em>' attribute.
+     * @see org.eclipse.sirius.components.view.form.JustifyContent
+     * @see #getFlexboxJustifyContent()
+     * @generated
+     * @since v2026.12.0
+     */
+    void setFlexboxJustifyContent(JustifyContent value);
+
+    /**
+     * Returns the value of the '<em><b>Flexbox Align Items</b></em>' attribute. The literals are from the enumeration
+     * {@link org.eclipse.sirius.components.view.form.AlignItems}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Flexbox Align Items</em>' attribute.
+     * @see org.eclipse.sirius.components.view.form.AlignItems
+     * @see #setFlexboxAlignItems(AlignItems)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_FlexboxAlignItems()
+     * @model
+     * @generated
+     * @since v2026.12.0
+     */
+    AlignItems getFlexboxAlignItems();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexboxAlignItems <em>Flexbox
+     * Align Items</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Flexbox Align Items</em>' attribute.
+     * @see org.eclipse.sirius.components.view.form.AlignItems
+     * @see #getFlexboxAlignItems()
+     * @generated
+     * @since v2026.12.0
+     */
+    void setFlexboxAlignItems(AlignItems value);
+
+    /**
+     * Returns the value of the '<em><b>Margin</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Margin</em>' attribute.
+     * @see #setMargin(String)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_Margin()
+     * @model
+     * @generated
+     * @since v2026.12.0
+     */
+    String getMargin();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getMargin
+     * <em>Margin</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Margin</em>' attribute.
+     * @see #getMargin()
+     * @generated
+     * @since v2026.12.0
+     */
+    void setMargin(String value);
+
+    /**
+     * Returns the value of the '<em><b>Padding</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Padding</em>' attribute.
+     * @see #setPadding(String)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_Padding()
+     * @model
+     * @generated
+     * @since v2026.12.0
+     */
+    String getPadding();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getPadding
+     * <em>Padding</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Padding</em>' attribute.
+     * @see #getPadding()
+     * @generated
+     * @since v2026.12.0
+     */
+    void setPadding(String value);
+
+    /**
+     * Returns the value of the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Gap</em>' attribute.
+     * @see #setGap(String)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_Gap()
+     * @model
+     * @generated
+     * @since v2026.12.0
+     */
+    String getGap();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getGap
+     * <em>Gap</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Gap</em>' attribute.
+     * @see #getGap()
+     * @generated
+     * @since v2026.12.0
+     */
+    void setGap(String value);
 
 } // FlexboxContainerDescription

@@ -22,6 +22,8 @@ The `sirius-components-collaborative-diagrams` module provides the default confi
 - Switch to react-draggable 4.7.1
 - Switch to https://github.com/ObeoNetwork/react-trello/releases/tag/v2.5.2[@obeonetwork/react-trello 2.5.2]
 - Switch to https://github.com/ObeoNetwork/gantt-task-react/releases/tag/v0.7.2[@obeonetwork/gantt-task-react 0.7.2]
+- The View DSL's `FlexboxContainerDescription` now supports alignment and spacing properties.
+The GraphQL `FlexboxContainer` type adds `alignItems: String!`, `justifyContent: String!`, `margin: String`, `padding: String` and `gap: String`.
 
 == Bug fixes
 
@@ -49,6 +51,8 @@ It allows reducing the selected tree item and all its children recursively.
 - Applications can contribute diagram layout configurations from the backend to populate the Arrange All menu and configure automatic layout.
 Sirius Components provides Flow Layout, Compact Layout and Orthogonal Layout by default.
 - Improve refresh performance for large diagrams defined with the View DSL.
+- Flexbox containers in forms now support margin, padding, gaps, alignment and content distribution.
+These settings are also previewed in the form description editor.
 
 
 == Technical details
