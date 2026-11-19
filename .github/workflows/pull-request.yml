@@ -2,10 +2,6 @@ name: Pull Request Checks
 
 on:
   pull_request:
-    paths-ignore:
-      - "CHANGELOG.adoc"
-      - "README.adoc"
-      - "doc/**"
     types:
       [
         opened,
@@ -21,6 +17,9 @@ jobs:
   build:
     name: Metadata Review
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -123,3 +122,8 @@ jobs:
         working-directory: scripts
         run: java PullRequestSizeChecker.java ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
 
+      - name: Check the number of open pull requests from the contributor
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: bash scripts/check-open-pull-requests.sh
