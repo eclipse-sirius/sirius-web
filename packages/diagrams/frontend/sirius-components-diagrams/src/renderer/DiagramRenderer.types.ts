@@ -38,6 +38,13 @@ export type OutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_EN
 
 export type OutsideLabels = Partial<Record<OutsideLabelLocation, OutsideLabel>>;
 
+export interface NodeBorderWidths {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
 export interface NodeData extends Record<string, unknown> {
   targetObjectId: string;
   targetObjectKind: string;
@@ -55,6 +62,7 @@ export interface NodeData extends Record<string, unknown> {
   labelEditable: boolean;
   deletable: boolean;
   style: React.CSSProperties;
+  nodeBorderWidths: NodeBorderWidths | null;
   connectionHandles: ConnectionHandle[];
   isNew: boolean;
   resizedByUser: boolean;

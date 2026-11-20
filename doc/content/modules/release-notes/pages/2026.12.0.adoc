@@ -53,6 +53,7 @@ It allows reducing the selected tree item and all its children recursively.
 Sirius Components provides Flow Layout, Compact Layout and Orthogonal Layout by default.
 - Improve refresh performance for large diagrams defined with the View DSL.
 - Inside labels used as headers now fill the full header area of list and free-form nodes with their background color, following the rounded corners of the node.
+When a node is sized to its header, the header fills the entire area inside the borders.
 
 
 == Technical details

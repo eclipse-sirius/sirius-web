@@ -119,6 +119,7 @@ const toListNode = (
     },
     minComputedWidth: gqlNodeLayoutData?.minComputedSize?.width ?? null,
     minComputedHeight: gqlNodeLayoutData?.minComputedSize?.height ?? null,
+    nodeBorderWidths: null,
     isLastNodeSelected: false,
     moving: false,
     decorators,

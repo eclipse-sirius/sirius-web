@@ -108,6 +108,7 @@ const createHandleNode = (
       connectionLinePositionOnNode: 'none',
       minComputedWidth: null,
       minComputedHeight: null,
+      nodeBorderWidths: null,
       isLastNodeSelected: false,
       moving: false,
       nodeId,

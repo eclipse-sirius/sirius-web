@@ -48,7 +48,13 @@ export { useConnectorNodeStyle } from './renderer/connector/useConnectorNodeStyl
 export { DecoratorContainer } from './renderer/decorators/DecoratorContainer';
 export type { DecoratorContainerProps } from './renderer/decorators/DecoratorContainer.types';
 export { BorderNodePosition as BorderNodePosition } from './renderer/DiagramRenderer.types';
-export type { Diagram, EdgeData, NodeData, ReactFlowPropsCustomizer } from './renderer/DiagramRenderer.types';
+export type {
+  Diagram,
+  EdgeData,
+  NodeBorderWidths,
+  NodeData,
+  ReactFlowPropsCustomizer,
+} from './renderer/DiagramRenderer.types';
 export { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './renderer/DiagramRendererExtensionPoints';
 export { DiagramDirectEditInput } from './renderer/direct-edit/DiagramDirectEditInput';
 export type { DiagramDirectEditInputProps } from './renderer/direct-edit/DiagramDirectEditInput.types';

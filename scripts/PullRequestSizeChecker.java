@@ -130,6 +130,7 @@ public class PullRequestSizeChecker {
                 "doc/",
                 "tests/",
                 "src/test/",
+                "__tests__/",
                 "org.eclipse.core.resources.prefs",
                 "org.eclipse.core.runtime.prefs",
                 "org.eclipse.jdt.apt.core.prefs",

@@ -104,6 +104,7 @@ const toIconLabelNode = (
     },
     minComputedWidth: null,
     minComputedHeight: null,
+    nodeBorderWidths: null,
     isLastNodeSelected: false,
     moving: false,
     decorators,

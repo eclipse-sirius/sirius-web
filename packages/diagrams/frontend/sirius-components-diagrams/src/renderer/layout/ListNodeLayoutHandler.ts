@@ -12,12 +12,12 @@
  *******************************************************************************/
 
 import { Node } from '@xyflow/react';
-import { NodeData } from '../DiagramRenderer.types';
+import { NodeBorderWidths, NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousSize } from './bounds';
-import { getNodeBorderWidth } from './getNodeBorderWidth';
+import { getNodeBorderWidths } from './getNodeBorderWidth';
 import { ForcedDimensions, RawDiagram } from './layout.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
@@ -56,7 +56,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
-    const borderWidth: number = getNodeBorderWidth(node.data.style);
+    const borderWidths = getNodeBorderWidths(node.data);
     if (directChildren.length > 0) {
       this.handleParentNode(
         layoutEngine,
@@ -65,23 +65,23 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
         visibleNodes,
         directChildren,
         newlyAddedNodes,
-        borderWidth,
+        borderWidths,
         forceDimensions
       );
     } else {
-      this.handleLeafNode(layoutEngine, previousDiagram, node, visibleNodes, borderWidth, forceDimensions);
+      this.handleLeafNode(layoutEngine, previousDiagram, node, borderWidths, forceDimensions);
     }
   }
 
-  handleLeafNode(
+  private handleLeafNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
     node: Node<ListNodeData, DiagramNodeType>,
-    _visibleNodes: Node<NodeData, DiagramNodeType>[],
-    borderWidth: number,
+    borderWidths: NodeBorderWidths,
     forceDimensions?: ForcedDimensions
   ) {
-    const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel) + borderWidth * 2;
+    const horizontalBorders = borderWidths.left + borderWidths.right;
+    const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel) + horizontalBorders;
 
     const previousNode = (previousDiagram?.nodes ?? []).find((candidate) => candidate.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
@@ -102,16 +102,12 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       node.width = nodeWidth;
     }
 
-    updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - borderWidth * 2);
-    const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
+    updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - horizontalBorders);
+    const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidths.top + borderWidths.bottom;
 
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
     if (node.data.resizedByUser && !forceDimensions?.height) {
-      if (nodeMinComputeHeight > previousDimensions.height) {
-        node.height = nodeMinComputeHeight;
-      } else {
-        node.height = previousDimensions.height - heightLostSincePrevDiagram;
-      }
+      node.height = Math.max(nodeMinComputeHeight, previousDimensions.height - heightLostSincePrevDiagram);
     } else {
       node.height = nodeHeight;
     }
@@ -126,7 +122,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
-    borderWidth: number,
+    borderWidths: NodeBorderWidths,
     forceDimensions?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
@@ -146,9 +142,10 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
         .filter((child) => !directChildren.map((currentChild) => currentChild.id).includes(child.id))
         .reduce<number>((height, child) => height + (child.height ?? 0), 0) ?? 0;
 
-    let previousContentWidth = getDefaultOrMinWidth(0, node) - borderWidth * 2;
+    const horizontalBorders = borderWidths.left + borderWidths.right;
+    let previousContentWidth = getDefaultOrMinWidth(0, node) - horizontalBorders;
     if (node.data.resizedByUser) {
-      previousContentWidth = (previousNode?.width ?? node.width ?? 0) - borderWidth * 2;
+      previousContentWidth = (previousNode?.width ?? node.width ?? 0) - horizontalBorders;
     }
     const fixedWidth = Math.max(
       directNodesChildren.reduce<number>(
@@ -158,7 +155,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       northBorderNodeFootprintWidth,
       southBorderNodeFootprintWidth,
       previousContentWidth,
-      (forceDimensions?.width ?? 0) - borderWidth * 2
+      (forceDimensions?.width ?? 0) - horizontalBorders
     );
     const nonGrowableChilds = directNodesChildren.filter(
       (child) => !node.data.growableNodeIds.includes(child.data.descriptionId) || child.data.resizedByUser
@@ -171,7 +168,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     });
 
     const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel);
-    const nodeMinComputeWidth = Math.max(fixedWidth, labelOnlyWidth) + borderWidth * 2;
+    const nodeMinComputeWidth = Math.max(fixedWidth, labelOnlyWidth) + horizontalBorders;
 
     const previousDimensions = computePreviousSize(previousNode, node);
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
@@ -185,19 +182,21 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       node.width = nodeWidth;
     }
 
-    updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - borderWidth * 2);
-    const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
+    updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - horizontalBorders);
+    const spaceAboveChildren =
+      borderWidths.top + getHeaderHeightFootprint(node.data.insideLabel, 'TOP') + node.data.topGap;
+    const spaceBelowChildren =
+      borderWidths.bottom + getHeaderHeightFootprint(node.data.insideLabel, 'BOTTOM') + node.data.bottomGap;
     const growableChilds = directNodesChildren.filter(
       (child) => node.data.growableNodeIds.includes(child.data.descriptionId) && !child.data.resizedByUser
     );
     let availableHeight =
-      getDefaultOrMinHeight(forceDimensions?.height ?? 0, node) - borderWidth * 2 - headerHeightFootprint;
+      getDefaultOrMinHeight(forceDimensions?.height ?? 0, node) - spaceAboveChildren - spaceBelowChildren;
     if (node.data.resizedByUser) {
       availableHeight =
-        previousDimensions.height - borderWidth * 2 - headerHeightFootprint - heightLostSincePrevDiagram;
+        previousDimensions.height - spaceAboveChildren - spaceBelowChildren - heightLostSincePrevDiagram;
     }
     availableHeight -= nonGrowableChilds.reduce<number>((height, child) => height + (child.height ?? 0), 0);
-    availableHeight -= node.data.topGap + node.data.bottomGap;
     const childHeight = availableHeight / growableChilds.length;
     growableChilds.forEach((child) => {
       layoutEngine.layoutNodes(previousDiagram, visibleNodes, [child], newlyAddedNodes, {
@@ -208,8 +207,8 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     directNodesChildren.forEach((child, index) => {
       child.position = {
-        x: borderWidth,
-        y: headerHeightFootprint + node.data.topGap,
+        x: borderWidths.left,
+        y: spaceAboveChildren,
       };
       const previousSibling = directNodesChildren[index - 1];
       if (previousSibling) {
@@ -219,17 +218,16 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
     // Growing a child while preserving its ratio can expand its width beyond the shared width.
-    node.width = Math.max(forceDimensions?.width ?? node.width ?? 0, childrenContentBox.width + borderWidth * 2);
+    node.width = Math.max(forceDimensions?.width ?? node.width ?? 0, childrenContentBox.width + horizontalBorders);
 
     const directChildrenAwareNodeHeight =
-      childrenContentBox.y + childrenContentBox.height + borderWidth + node.data.bottomGap;
+      Math.max(spaceAboveChildren, childrenContentBox.y + childrenContentBox.height) + spaceBelowChildren;
     const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
     const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
     const nodeMinComputeHeight = Math.max(
       directChildrenAwareNodeHeight,
       eastBorderNodeFootprintHeight,
-      westBorderNodeFootprintHeight,
-      headerHeightFootprint
+      westBorderNodeFootprintHeight
     );
 
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
@@ -256,12 +254,12 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const minComputeChildrenWidth = directNodesChildren
       .map((node) => node.data.minComputedWidth ?? 0)
       .reduce((max, width) => Math.max(max, width), 0);
-    node.data.minComputedWidth = Math.max(minComputeChildrenWidth, labelOnlyWidth) + borderWidth * 2;
+    node.data.minComputedWidth = Math.max(minComputeChildrenWidth, labelOnlyWidth) + horizontalBorders;
     const minComputeChildrenHeight = directNodesChildren
       .map((node) => getChildNodeHeightMinFootPrint(node))
       .reduce((sum, height) => sum + height, 0);
     node.data.minComputedHeight = Math.max(
-      childrenContentBox.y + minComputeChildrenHeight + borderWidth + node.data.bottomGap,
+      spaceAboveChildren + minComputeChildrenHeight + spaceBelowChildren,
       eastBorderNodeFootprintHeight,
       westBorderNodeFootprintHeight
     );

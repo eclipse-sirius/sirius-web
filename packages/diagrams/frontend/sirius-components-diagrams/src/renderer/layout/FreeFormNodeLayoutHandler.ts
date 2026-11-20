@@ -12,12 +12,12 @@
  *******************************************************************************/
 
 import { Node } from '@xyflow/react';
-import { NodeData } from '../DiagramRenderer.types';
+import { NodeBorderWidths, NodeData } from '../DiagramRenderer.types';
 import { FreeFormNodeData } from '../node/FreeFormNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition, computePreviousSize } from './bounds';
-import { getNodeBorderWidth } from './getNodeBorderWidth';
+import { getNodeBorderWidths } from './getNodeBorderWidth';
 import { ForcedDimensions, RawDiagram } from './layout.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
@@ -51,7 +51,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
-    const borderWidth: number = getNodeBorderWidth(node.data.style);
+    const borderWidths = getNodeBorderWidths(node.data);
 
     if (directChildren.length > 0) {
       this.handleParentNode(
@@ -61,11 +61,11 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
         visibleNodes,
         directChildren,
         newlyAddedNodes,
-        borderWidth,
+        borderWidths,
         forceDimensions
       );
     } else {
-      this.handleLeafNode(layoutEngine, previousDiagram, node, visibleNodes, borderWidth, forceDimensions);
+      this.handleLeafNode(layoutEngine, previousDiagram, node, borderWidths, forceDimensions);
     }
   }
 
@@ -76,9 +76,12 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
-    borderWidth: number,
+    borderWidths: NodeBorderWidths,
     forceDimensions?: ForcedDimensions
   ) {
+    const { top, right, bottom, left } = borderWidths;
+    const horizontalBorders = left + right;
+    const verticalBorders = top + bottom;
     const previousNodesById = new Map(
       (previousDiagram?.nodes ?? []).map((previousNode) => [previousNode.id, previousNode])
     );
@@ -95,9 +98,9 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       if (createdChild) {
         x = createdChild.position.x;
       } else if (previousChildPosition) {
-        x = Math.max(previousChildPosition.x, borderWidth + rectangularNodePadding);
+        x = Math.max(previousChildPosition.x, left + rectangularNodePadding);
       } else {
-        x = getChildNodePosition(visibleNodes, child, 0, borderWidth, directNodesChildren[index - 1]).x;
+        x = getChildNodePosition(visibleNodes, child, 0, left, directNodesChildren[index - 1]).x;
       }
       child.position = { ...child.position, x };
     });
@@ -110,13 +113,10 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     const labelOnlyWidth =
       rectangularNodePadding + getInsideLabelWidthConstraint(node.data.insideLabel) + rectangularNodePadding;
 
-    const nodeMinComputeWidth =
-      Math.max(
-        directChildrenAwareNodeWidth,
-        labelOnlyWidth,
-        northBorderNodeFootprintWidth,
-        southBorderNodeFootprintWidth
-      ) + borderWidth;
+    const nodeMinComputeWidth = Math.max(
+      directChildrenAwareNodeWidth + right,
+      Math.max(labelOnlyWidth, northBorderNodeFootprintWidth, southBorderNodeFootprintWidth) + horizontalBorders
+    );
 
     const previousNode = previousNodesById.get(node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
@@ -131,9 +131,10 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       node.width = nodeWidth;
     }
 
-    updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - borderWidth * 2);
-    const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
-    const footerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'BOTTOM', borderWidth);
+    updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - horizontalBorders);
+    const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP');
+    const footerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'BOTTOM');
+    const minChildY = top + rectangularNodePadding + headerHeightFootprint;
     // Position children vertically only after measuring the header at its calculated width.
     directNodesChildren.forEach((child) => {
       const previousNode = previousNodesById.get(child.id);
@@ -142,19 +143,19 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
 
       if (!!createdNode) {
         child.position = createdNode.position;
-        if (child.position.y < borderWidth + rectangularNodePadding + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + rectangularNodePadding + headerHeightFootprint };
+        if (child.position.y < minChildY) {
+          child.position = { ...child.position, y: minChildY };
         }
       } else if (previousPosition) {
         child.position = previousPosition;
-        if (child.position.y < borderWidth + rectangularNodePadding + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + rectangularNodePadding + headerHeightFootprint };
+        if (child.position.y < minChildY) {
+          child.position = { ...child.position, y: minChildY };
         }
-        if (child.position.x < borderWidth + rectangularNodePadding) {
-          child.position = { ...child.position, x: borderWidth + rectangularNodePadding };
+        if (child.position.x < left + rectangularNodePadding) {
+          child.position = { ...child.position, x: left + rectangularNodePadding };
         }
       } else {
-        const { y } = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
+        const { y } = getChildNodePosition(visibleNodes, child, headerHeightFootprint, top);
         child.position = { ...child.position, y };
       }
     });
@@ -167,9 +168,11 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
     const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
 
-    const nodeMinComputeHeight =
-      Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
-      borderWidth;
+    const nodeMinComputeHeight = Math.max(
+      directChildrenAwareNodeHeight + bottom,
+      Math.max(node.data.insideLabel?.height ?? 0, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
+        verticalBorders
+    );
 
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
     if (node.data.resizedByUser && !forceDimensions?.height) {
@@ -197,26 +200,24 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
         labelOnlyWidth,
         northBorderNodeFootprintWidth,
         southBorderNodeFootprintWidth
-      ) +
-      borderWidth * 2;
+      ) + horizontalBorders;
     node.data.minComputedHeight =
       Math.max(
         childrenContentBox.height + headerHeightFootprint + footerHeightFootprint + rectangularNodePadding * 2,
         eastBorderNodeFootprintHeight,
         westBorderNodeFootprintHeight
-      ) +
-      borderWidth * 2;
+      ) + verticalBorders;
   }
 
   private handleLeafNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
     node: Node<FreeFormNodeData, 'freeFormNode'>,
-    _visibleNodes: Node<NodeData, DiagramNodeType>[],
-    borderWidth: number,
+    borderWidths: NodeBorderWidths,
     forceDimensions?: ForcedDimensions
   ) {
-    const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel) + borderWidth * 2;
+    const horizontalBorders = borderWidths.left + borderWidths.right;
+    const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel) + horizontalBorders;
 
     const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
@@ -232,8 +233,8 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       node.width = nodeWidth;
     }
 
-    updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - borderWidth * 2);
-    const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
+    updateInsideLabelSize(layoutEngine, node, (node.width ?? 0) - horizontalBorders);
+    const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidths.top + borderWidths.bottom;
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
     if (node.data.resizedByUser && !forceDimensions?.height) {
       if (nodeMinComputeHeight > previousDimensions.height) {

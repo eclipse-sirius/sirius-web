@@ -88,6 +88,7 @@ const buildNode = (id: string, x: number, y: number, width = 40, height = 40): T
     borderNodePosition: null,
     labelEditable: false,
     style: {},
+    nodeBorderWidths: null,
     connectionHandles: [],
     isNew: false,
     resizedByUser: false,

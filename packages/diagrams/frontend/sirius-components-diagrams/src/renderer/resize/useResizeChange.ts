@@ -24,6 +24,7 @@ import {
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
 import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
+import { getNodeBorderWidths } from '../layout/getNodeBorderWidth';
 import { getBorderNodeExtent } from '../layout/layoutBorderNodes';
 import { borderNodeOffset, defaultNodeMargin } from '../layout/layoutParams';
 import { ListNodeData } from '../node/ListNode.types';
@@ -36,16 +37,12 @@ import { FreeFormNodeData } from '../node/FreeFormNode.types';
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 const isFreeFormData = (node: Node): node is Node<FreeFormNodeData> => node.type === 'freeFormNode';
 
-const getBorderWidth = (resizedNode: Node<NodeData>): number => {
-  let borderLeftWidth: number = 1;
-  if (resizedNode.data.style.borderWidth) {
-    if (typeof resizedNode.data.style.borderWidth === 'number') {
-      borderLeftWidth = resizedNode.data.style.borderWidth;
-    } else {
-      borderLeftWidth = parseFloat(resizedNode.data.style.borderWidth);
-    }
+const getHeaderSeparatorWidth = (node: Node<NodeData>): number => {
+  const borderWidth = node.data.style.borderWidth;
+  if (!borderWidth) {
+    return 1;
   }
-  return borderLeftWidth;
+  return typeof borderWidth === 'number' ? borderWidth : parseFloat(borderWidth);
 };
 
 const computeFreeFormContentContainmentDelta = (
@@ -53,12 +50,16 @@ const computeFreeFormContentContainmentDelta = (
   nodesBox: Rect,
   dimensions: Dimensions
 ): XYPosition => {
-  const borderWidth: number = getBorderWidth(parentNode);
-  const headerHeightFootprint = getHeaderHeightFootprint(parentNode.data.insideLabel, 'TOP', borderWidth);
-  const minX = defaultNodeMargin + borderWidth;
-  const minY = defaultNodeMargin + borderWidth + headerHeightFootprint;
-  const maxX = dimensions.width - defaultNodeMargin - borderWidth;
-  const maxY = dimensions.height - defaultNodeMargin - borderWidth;
+  const { left, top, right, bottom } = getNodeBorderWidths(parentNode.data);
+  const headerHeightFootprint = getHeaderHeightFootprint(
+    parentNode.data.insideLabel,
+    'TOP',
+    getHeaderSeparatorWidth(parentNode)
+  );
+  const minX = defaultNodeMargin + left;
+  const minY = defaultNodeMargin + top + headerHeightFootprint;
+  const maxX = dimensions.width - defaultNodeMargin - right;
+  const maxY = dimensions.height - defaultNodeMargin - bottom;
 
   let deltaX = 0;
   let deltaY = 0;
@@ -87,7 +88,7 @@ const applyResizeToListContain = (
 ): NodeChange<Node<NodeData>>[] => {
   const newChanges: NodeChange<Node<NodeData>>[] = [];
   if (isListData(resizedNode) && change.dimensions) {
-    const borderWidth: number = getBorderWidth(resizedNode);
+    const { left, right } = getNodeBorderWidths(resizedNode.data);
     const growableChildNodes = nodes.filter(
       (node) =>
         !node.data.isBorderNode &&
@@ -125,7 +126,7 @@ const applyResizeToListContain = (
             resizing: change.resizing,
             setAttributes: true,
             dimensions: {
-              width: change.dimensions.width - borderWidth * 2,
+              width: change.dimensions.width - (left + right),
               height: (node.height ?? 0) + heightToAdd,
             },
           };
@@ -153,13 +154,13 @@ const applyMoveToListContain = (
 ): NodePositionChange => {
   const parentNode = nodes.find((node) => node.id === movedNode.parentId);
   if (parentNode && movedNode.id === change.id && isListData(parentNode)) {
-    const borderWidth: number = getBorderWidth(parentNode);
+    const { left } = getNodeBorderWidths(parentNode.data);
     if (change.position) {
       return {
         ...change,
         position: {
           ...change.position,
-          x: borderWidth,
+          x: left,
         },
       };
     }
@@ -280,9 +281,8 @@ const applyMoveToListChild = (
     if (insideLabel && insideLabel.isHeader && insideLabel.headerPosition === 'TOP') {
       const element = document.querySelector(`[data-id="${insideLabel.id}"]`);
       if (element) {
-        const borderOffset = insideLabel.displayHeaderSeparator
-          ? getBorderWidth(resizedNode) * 2
-          : getBorderWidth(resizedNode);
+        const { top } = getNodeBorderWidths(resizedNode.data);
+        const borderOffset = top + (insideLabel.displayHeaderSeparator ? getHeaderSeparatorWidth(resizedNode) : 0);
         const newLabelHeight = element.getBoundingClientRect().height / zoom + borderOffset + resizedNode.data.topGap;
         return nodes
           .filter((node) => node.parentId === resizedNode.id && !node.hidden && !node.data.isBorderNode)

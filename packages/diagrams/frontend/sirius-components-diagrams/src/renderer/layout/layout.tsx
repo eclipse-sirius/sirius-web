@@ -32,7 +32,7 @@ import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
 import { computePreviousPosition } from './bounds';
-import { getNodeBorderWidth } from './getNodeBorderWidth';
+import { getNodeBorderWidths } from './getNodeBorderWidth';
 import { InsideLabelMeasurer, RawDiagram } from './layout.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { computeNewlyNodePosition, getChildren } from './layoutNode';
@@ -40,14 +40,14 @@ import { gap } from './layoutParams';
 
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
 
-const getNodeBorderWidthForLabel = (node: Node<NodeData>, visibleNodes: Node<NodeData>[]): number => {
-  if (node.parentId) {
-    const parentNodeParent = visibleNodes.find((candidate) => candidate.id === node.parentId);
-    if (parentNodeParent && parentNodeParent.type === 'listNode') {
-      return getNodeBorderWidthForLabel(parentNodeParent, visibleNodes);
-    }
+const getInsideLabelConstraintWidth = (node: Node<NodeData>, parent: Node<NodeData> | undefined): number => {
+  let nodeWidth = node.width ?? 0;
+  if (parent && isListNode(parent) && parent.width !== undefined && !node.data.isBorderNode) {
+    const parentBorders = getNodeBorderWidths(parent.data);
+    nodeWidth = parent.width - parentBorders.left - parentBorders.right;
   }
-  return getNodeBorderWidth(node.data.style);
+  const borders = getNodeBorderWidths(node.data);
+  return Math.max(0, nodeWidth - borders.left - borders.right);
 };
 
 export const createInsideLabelMeasurer = (hiddenContainer: HTMLDivElement): InsideLabelMeasurer => {
@@ -83,17 +83,38 @@ export const prepareLayoutArea = (
   document.body.appendChild(hiddenContainer);
   const visibleNodes = diagram.nodes.filter((node) => !node.hidden);
 
+  const nodeBorderBoxes = new Map<Node<NodeData>, HTMLDivElement>();
+  const nodeBorderElements = visibleNodes.map((node) =>
+    createElement(
+      'div',
+      {
+        key: node.id,
+        ref: (element: HTMLDivElement | null) => {
+          if (element) {
+            nodeBorderBoxes.set(node, element);
+          } else {
+            nodeBorderBoxes.delete(node);
+          }
+        },
+        style: {
+          ...node.data.style,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0,
+          transform: 'none',
+          // Keep the measurement box hidden if a custom converter sets visibility: visible in node.data.style.
+          visibility: 'inherit',
+        },
+      },
+      createElement('div', { style: { position: 'absolute', inset: 0 } })
+    )
+  );
+
   // Render all label first
   const labelElements: React.JSX.Element[] = [];
   visibleNodes.forEach((node) => {
-    const borderWidth: number = getNodeBorderWidthForLabel(node, visibleNodes);
-    let insideLabelConstraintWidth = (node.width ?? 0) - borderWidth * 2;
-    if (node.parentId) {
-      const parentNode = visibleNodes.find((n) => n.id === node.parentId);
-      if (parentNode && parentNode.type === 'listNode' && parentNode.width) {
-        insideLabelConstraintWidth = parentNode.width - borderWidth * 2;
-      }
-    }
     if (hiddenContainer && node.data.insideLabel) {
       const children: React.JSX.Element[] = [
         createElement(Label, {
@@ -106,9 +127,6 @@ export const prepareLayoutArea = (
       const element: React.JSX.Element = createElement('div', {
         id: `${node.data.insideLabel.id}-label`,
         key: `${node.data.insideLabel.id}-label`,
-        style: {
-          maxWidth: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : insideLabelConstraintWidth,
-        },
         children,
       });
       labelElements.push(element);
@@ -197,6 +215,30 @@ export const prepareLayoutArea = (
   });
   const Element = () => {
     useEffect(() => {
+      nodeBorderBoxes.forEach((element, node) => {
+        const borderBox = element.getBoundingClientRect();
+        // The only child fills the padding box, up to the inner edge of each border.
+        const paddingBox = element.firstElementChild?.getBoundingClientRect();
+        if (paddingBox) {
+          node.data.nodeBorderWidths = {
+            top: paddingBox.top - borderBox.top,
+            right: borderBox.right - paddingBox.right,
+            bottom: borderBox.bottom - paddingBox.bottom,
+            left: paddingBox.left - borderBox.left,
+          };
+        }
+      });
+      const nodesById = new Map(visibleNodes.map((node) => [node.id, node]));
+      visibleNodes.forEach((node) => {
+        const label = node.data.insideLabel;
+        if (label && label.overflowStrategy !== 'NONE') {
+          const element = hiddenContainer.querySelector<HTMLElement>(`#${CSS.escape(`${label.id}-label`)}`);
+          if (element) {
+            const parent = node.parentId ? nodesById.get(node.parentId) : undefined;
+            element.style.maxWidth = `${getInsideLabelConstraintWidth(node, parent)}px`;
+          }
+        }
+      });
       renderCallback();
     }, []);
     return (
@@ -208,7 +250,10 @@ export const prepareLayoutArea = (
                 value={{
                   enqueueSnackbar: (_body: string, _options?: MessageOptions) => {},
                 }}>
-                <DiagramDirectEditContextProvider>{labelContainerElement}</DiagramDirectEditContextProvider>
+                <DiagramDirectEditContextProvider>
+                  {labelContainerElement}
+                  {nodeBorderElements}
+                </DiagramDirectEditContextProvider>
               </ToastContext.Provider>
             </ServerContext.Provider>
           </ThemeProvider>

@@ -12,7 +12,12 @@
  *******************************************************************************/
 
 import { CSSProperties } from 'react';
+import { NodeBorderWidths, NodeData } from '../DiagramRenderer.types';
 
+/**
+ * @deprecated
+ * Border node width is now computed from the rendered value in yhe pre-layout phase, prefer using `getNodeBorderWidths`
+ */
 export const getNodeBorderWidth = (style: CSSProperties): number => {
   const borderWidthStyle: string | number | undefined = style.borderLeftWidth ?? style.borderWidth;
   if (borderWidthStyle === undefined) {
@@ -22,4 +27,12 @@ export const getNodeBorderWidth = (style: CSSProperties): number => {
   const borderWidth: number =
     typeof borderWidthStyle === 'number' ? borderWidthStyle : Number.parseFloat(borderWidthStyle);
   return Number.isFinite(borderWidth) ? borderWidth : 0;
+};
+
+export const getNodeBorderWidths = (data: NodeData): NodeBorderWidths => {
+  if (data.nodeBorderWidths) {
+    return data.nodeBorderWidths;
+  }
+  const width = getNodeBorderWidth(data.style);
+  return { top: width, right: width, bottom: width, left: width };
 };
