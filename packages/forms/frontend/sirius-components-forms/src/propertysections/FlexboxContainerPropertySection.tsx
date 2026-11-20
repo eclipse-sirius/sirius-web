@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,37 +12,39 @@
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from 'tss-react/mui';
-import { GQLContainerBorderStyle, GQLFlexDirection, GQLFlexWrap } from '../form/FormEventFragments.types';
-import { FlexboxContainerPropertySectionProps } from './FlexboxContainerPropertySection.types';
+import {
+  FlexboxContainerPropertySectionProps,
+  FlexboxContainerPropertySectionStyleProps,
+} from './FlexboxContainerPropertySection.types';
 import { PropertySection } from './PropertySection';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useFlexboxContainerPropertySectionStyles = makeStyles<{
-  flexDirection: GQLFlexDirection;
-  flexWrap: GQLFlexWrap;
-  flexGrow: number;
-  borderStyle: GQLContainerBorderStyle | null;
-}>()((theme, { flexDirection, flexWrap, flexGrow, borderStyle }) => ({
-  containerAndLabel: {
-    margin: borderStyle ? theme.spacing(0.5) : 0,
-    padding: borderStyle ? theme.spacing(0.5) : 0,
-    borderWidth: borderStyle?.size || 0,
-    borderColor: borderStyle?.color ? getCSSColor(borderStyle.color, theme) : 'transparent',
-    borderStyle: borderStyle?.lineStyle || 'solid',
-    borderRadius: borderStyle?.radius || 0,
-  },
-  container: {
-    display: 'flex',
-    flexWrap: flexWrap,
-    flexDirection: flexDirection,
-    '& > *': {
-      marginBottom: theme.spacing(0),
+const useFlexboxContainerPropertySectionStyles = makeStyles<FlexboxContainerPropertySectionStyleProps>()(
+  (theme, { flexDirection, flexWrap, flexGrow, borderStyle, justifyContent, alignItems, margin, padding, gap }) => ({
+    containerAndLabel: {
+      margin: margin ?? (borderStyle ? theme.spacing(0.5) : 0),
+      padding: padding ?? (borderStyle ? theme.spacing(0.5) : 0),
+      borderWidth: borderStyle?.size || 0,
+      borderColor: borderStyle?.color ? getCSSColor(borderStyle.color, theme) : 'transparent',
+      borderStyle: borderStyle?.lineStyle || 'solid',
+      borderRadius: borderStyle?.radius || 0,
     },
-  },
-  children: {
-    flexGrow: flexGrow,
-  },
-}));
+    container: {
+      display: 'flex',
+      flexWrap: flexWrap,
+      flexDirection: flexDirection,
+      justifyContent,
+      alignItems,
+      gap: gap ?? undefined,
+      '& > *': {
+        marginBottom: theme.spacing(0),
+      },
+    },
+    children: {
+      flexGrow: flexGrow,
+    },
+  })
+);
 
 export const FlexboxContainerPropertySection = ({
   editingContextId,
@@ -55,6 +57,11 @@ export const FlexboxContainerPropertySection = ({
     flexWrap: widget.flexWrap,
     flexGrow: widget.flexGrow,
     borderStyle: widget.borderStyle,
+    justifyContent: widget.justifyContent,
+    alignItems: widget.alignItems,
+    margin: widget.margin,
+    padding: widget.padding,
+    gap: widget.gap,
   });
 
   let children = widget.children.map((childWidget) => (

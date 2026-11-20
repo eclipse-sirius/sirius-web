@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,9 +30,9 @@ import org.eclipse.sirius.components.view.UserColor;
  * Style</em>}</li>
  * </ul>
  *
- * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle()
  * @model
  * @generated
+ * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle()
  */
 public interface ContainerBorderStyle extends EObject {
 
@@ -40,10 +40,10 @@ public interface ContainerBorderStyle extends EObject {
      * Returns the value of the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Border Color</em>' reference.
-     * @see #setBorderColor(UserColor)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderColor()
      * @model required="true"
      * @generated
+     * @see #setBorderColor(UserColor)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderColor()
      */
     UserColor getBorderColor();
 
@@ -52,9 +52,9 @@ public interface ContainerBorderStyle extends EObject {
      * <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Border Color</em>' reference.
-     * @see #getBorderColor()
+     *         the new value of the '<em>Border Color</em>' reference.
      * @generated
+     * @see #getBorderColor()
      */
     void setBorderColor(UserColor value);
 
@@ -63,10 +63,10 @@ public interface ContainerBorderStyle extends EObject {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Border Radius</em>' attribute.
-     * @see #setBorderRadius(int)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderRadius()
      * @model default="3" dataType="org.eclipse.sirius.components.view.Length" required="true"
      * @generated
+     * @see #setBorderRadius(int)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderRadius()
      */
     int getBorderRadius();
 
@@ -75,9 +75,9 @@ public interface ContainerBorderStyle extends EObject {
      * <em>Border Radius</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Border Radius</em>' attribute.
-     * @see #getBorderRadius()
+     *         the new value of the '<em>Border Radius</em>' attribute.
      * @generated
+     * @see #getBorderRadius()
      */
     void setBorderRadius(int value);
 
@@ -86,10 +86,10 @@ public interface ContainerBorderStyle extends EObject {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Border Size</em>' attribute.
-     * @see #setBorderSize(int)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderSize()
      * @model default="1" dataType="org.eclipse.sirius.components.view.Length" required="true"
      * @generated
+     * @see #setBorderSize(int)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderSize()
      */
     int getBorderSize();
 
@@ -98,9 +98,9 @@ public interface ContainerBorderStyle extends EObject {
      * <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Border Size</em>' attribute.
-     * @see #getBorderSize()
+     *         the new value of the '<em>Border Size</em>' attribute.
      * @generated
+     * @see #getBorderSize()
      */
     void setBorderSize(int value);
 
@@ -110,11 +110,11 @@ public interface ContainerBorderStyle extends EObject {
      * end-user-doc -->
      *
      * @return the value of the '<em>Border Line Style</em>' attribute.
+     * @model
+     * @generated
      * @see org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
      * @see #setBorderLineStyle(ContainerBorderLineStyle)
      * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderLineStyle()
-     * @model
-     * @generated
      */
     ContainerBorderLineStyle getBorderLineStyle();
 
@@ -123,10 +123,10 @@ public interface ContainerBorderStyle extends EObject {
      * <em>Border Line Style</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Border Line Style</em>' attribute.
+     *         the new value of the '<em>Border Line Style</em>' attribute.
+     * @generated
      * @see org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
      * @see #getBorderLineStyle()
-     * @generated
      */
     void setBorderLineStyle(ContainerBorderLineStyle value);
 

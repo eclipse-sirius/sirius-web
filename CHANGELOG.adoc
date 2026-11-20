@@ -41,6 +41,8 @@ These fields were temporary while reworking library identifiers, and are needed 
 - https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Diagram layout configurations are now retrieved through the new `DiagramDescription.layoutConfigurations: [LayoutConfiguration!]!` GraphQL field instead of being hardcoded in the frontend.
 The `sirius-components-collaborative-diagrams` module provides the default configurations, implement `ILayoutConfigurationsProvider` to contribute additional configurations.
 Each configuration exposes `id`, `label`, `iconURL` and a list of string `key`/`value` entries in `layoutOptions`.
+- https://github.com/eclipse-sirius/sirius-web/issues/2161[#2161] [form] Add `flexboxAlignItems`, `flexboxJustifyContent`, `margin`, `padding` and `gap` to the View DSL's `FlexboxContainerDescription`.
+The GraphQL `FlexboxContainer` type exposes the matching `alignItems: String!`, `justifyContent: String!`, `margin: String`, `padding: String` and `gap: String` fields.
 
 
 === Dependency update
@@ -86,6 +88,8 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - https://github.com/eclipse-sirius/sirius-web/issues/6765[#6765] [tree]  The selected explorer description and expanded items are now saved in your browser local storage and restored when you refresh the page or reopen the project.
 - https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Move diagram layout configurations from frontend to backend
 - https://github.com/eclipse-sirius/sirius-web/issues/7178[#7178] [diagram] Improve refresh performance of View DSL diagrams by reusing edge endpoint description identifiers.
+- https://github.com/eclipse-sirius/sirius-web/issues/2161[#2161] [form] Improves flexbox customization possibilities by adding the following CSS properties:
+`margin`, `padding`, `gap`, `alignItems` and `justifyContent`, including their preview in the form description editor.
 
 
 == 2026.11.0

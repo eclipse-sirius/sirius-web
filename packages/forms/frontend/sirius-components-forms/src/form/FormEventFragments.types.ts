@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -331,9 +331,39 @@ export interface GQLFlexboxContainer extends GQLContainer {
   flexWrap: GQLFlexWrap;
   flexGrow: number;
   borderStyle: GQLContainerBorderStyle | null;
+  justifyContent: GQLFlexboxJustifyContent;
+  alignItems: GQLFlexboxAlignItems;
+  margin: string | null;
+  padding: string | null;
+  gap: string | null;
 }
 
 export type GQLFlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
+
+export type GQLFlexboxJustifyContent =
+  | 'stretch'
+  | 'start'
+  | 'center'
+  | 'end'
+  | 'flex-start'
+  | 'flex-end'
+  | 'left'
+  | 'right'
+  | 'normal'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly';
+
+export type GQLFlexboxAlignItems =
+  | 'stretch'
+  | 'normal'
+  | 'flex-start'
+  | 'flex-end'
+  | 'center'
+  | 'start'
+  | 'end'
+  | 'self-start'
+  | 'self-end';
 
 export type GQLFlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse';
 

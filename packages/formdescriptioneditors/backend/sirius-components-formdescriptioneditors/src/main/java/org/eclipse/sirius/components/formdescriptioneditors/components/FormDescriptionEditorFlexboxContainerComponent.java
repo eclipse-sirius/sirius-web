@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,9 @@ public class FormDescriptionEditorFlexboxContainerComponent implements IComponen
         var flexboxContainerElementPropsBuilder = FlexboxContainerElementProps.newFlexboxContainerElementProps(id)
                 .label(label)
                 .flexDirection(flexdirection)
-                .children(childrenWidgets);
+                .children(childrenWidgets)
+                .alignItems(flexboxContainerDescription.getAlignItems())
+                .justifyContent(flexboxContainerDescription.getJustifyContent());
         if (readOnly != null) {
             flexboxContainerElementPropsBuilder.readOnly(readOnly);
         }
@@ -85,6 +87,15 @@ public class FormDescriptionEditorFlexboxContainerComponent implements IComponen
 
         if (flexboxContainerDescription.getHelpTextProvider() != null) {
             flexboxContainerElementPropsBuilder.helpTextProvider(() -> flexboxContainerDescription.getHelpTextProvider().apply(variableManager));
+        }
+        if (flexboxContainerDescription.getGap() != null) {
+            flexboxContainerElementPropsBuilder.gap(flexboxContainerDescription.getGap());
+        }
+        if (flexboxContainerDescription.getMargin() != null) {
+            flexboxContainerElementPropsBuilder.margin(flexboxContainerDescription.getMargin());
+        }
+        if (flexboxContainerDescription.getPadding() != null) {
+            flexboxContainerElementPropsBuilder.padding(flexboxContainerDescription.getPadding());
         }
 
         Element flexboxContainerElement = new Element(FlexboxContainerElementProps.TYPE, flexboxContainerElementPropsBuilder.build());

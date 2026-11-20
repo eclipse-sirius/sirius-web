@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,9 +28,11 @@ import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptio
 import org.eclipse.sirius.components.view.builder.generated.form.PageDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
+import org.eclipse.sirius.components.view.form.AlignItems;
 import org.eclipse.sirius.components.view.form.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.JustifyContent;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
@@ -115,6 +117,11 @@ public class FormWithFlexboxContainerDescriptionProvider implements IEditingCont
         var flexboxContainerDescription = new FormBuilders().newFlexboxContainerDescription()
                 .name("Flexbox Container")
                 .flexDirection(FlexDirection.ROW)
+                .flexboxAlignItems(AlignItems.FLEX_START)
+                .flexboxJustifyContent(JustifyContent.SPACE_BETWEEN)
+                .margin("0 12px")
+                .padding("1rem 2rem")
+                .gap("8px 16px")
                 .children(nameTextfieldDescription, childCountDescription)
                 .borderStyle(style)
                 .conditionalBorderStyles(conditionalStyle)

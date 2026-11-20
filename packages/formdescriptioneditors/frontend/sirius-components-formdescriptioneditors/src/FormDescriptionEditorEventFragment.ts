@@ -61,6 +61,11 @@ export const formDescriptionEditorEventSubscription = `
     flexDirection
     flexWrap
     flexGrow
+    justifyContent
+    alignItems
+    margin
+    padding
+    gap
     borderStyle {
       color
       lineStyle

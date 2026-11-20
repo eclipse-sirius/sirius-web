@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,9 @@
  *******************************************************************************/
 import {
   GQLContainerBorderStyle,
+  GQLFlexboxAlignItems,
   GQLFlexboxContainer,
+  GQLFlexboxJustifyContent,
   GQLFlexDirection,
   GQLFlexWrap,
 } from '../form/FormEventFragments.types';
@@ -29,4 +31,9 @@ export interface FlexboxContainerPropertySectionStyleProps {
   flexWrap: GQLFlexWrap;
   flexGrow: number;
   borderStyle: GQLContainerBorderStyle | null;
+  justifyContent: GQLFlexboxJustifyContent;
+  alignItems: GQLFlexboxAlignItems;
+  margin: string | null;
+  padding: string | null;
+  gap: string | null;
 }

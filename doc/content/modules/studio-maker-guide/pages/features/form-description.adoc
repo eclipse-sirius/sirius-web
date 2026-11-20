@@ -79,6 +79,12 @@ Most static style properties are previewed live so you can iterate without switc
 
 * `children`: arbitrary mix of widgets and nested containers.
 * `flexDirection`: `FlexDirection` enum (`row`, `row-reverse`, `column`, `column-reverse`).
+* `flexboxAlignItems`: `AlignItems` enum (`stretch`, `normal`, `flexStart`, `flexEnd`, `center`, `start`, `end`, `selfStart`, `selfEnd`) controlling alignment on the cross axis.
+Defaults to `stretch`.
+* `flexboxJustifyContent`: `JustifyContent` enum (`stretch`, `start`, `center`, `end`, `flexStart`, `flexEnd`, `left`, `right`, `normal`, `spaceBetween`, `spaceAround`, `spaceEvenly`) controlling distribution along the main axis.
+Defaults to `stretch`.
+* `margin`, `padding`, and `gap`: optional CSS strings for outer spacing, inner spacing, and spacing between children.
+ CSS units and shorthand values are accepted, for example `0 12px`, `1rem 2rem`, and `8px 16px`.
 * `isEnabledExpression`: toggles the entire container.
 * `borderStyle` and `conditionalBorderStyles`: references to `ContainerBorderStyle` that define `borderColor`, `borderRadius`, `borderSize`, and `borderLineStyle` (`Solid`, `Dashed`, `Dotted`).
 

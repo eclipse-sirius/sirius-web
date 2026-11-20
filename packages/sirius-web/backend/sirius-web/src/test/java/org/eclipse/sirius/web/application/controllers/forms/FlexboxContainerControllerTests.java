@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class FlexboxContainerControllerTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -91,6 +91,12 @@ public class FlexboxContainerControllerTests extends AbstractIntegrationTests {
             assertThat(flexboxContainer.getBorderStyle().getLineStyle()).isEqualTo(ContainerBorderLineStyle.Dashed);
             assertThat(flexboxContainer.getBorderStyle().getRadius()).isEqualTo(5);
             assertThat(flexboxContainer.getBorderStyle().getSize()).isEqualTo(2);
+
+            assertThat(flexboxContainer.getAlignItems()).isEqualTo("flex-start");
+            assertThat(flexboxContainer.getJustifyContent()).isEqualTo("space-between");
+            assertThat(flexboxContainer.getMargin()).isEqualTo("0 12px");
+            assertThat(flexboxContainer.getPadding()).isEqualTo("1rem 2rem");
+            assertThat(flexboxContainer.getGap()).isEqualTo("8px 16px");
 
             assertThat(flexboxContainer.getChildren()).hasSize(2);
 

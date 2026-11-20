@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,14 @@ public class FlexboxContainerDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.form.FlexboxContainerDescription.
+     *
      * @generated
      */
-    private org.eclipse.sirius.components.view.form.FlexboxContainerDescription flexboxContainerDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createFlexboxContainerDescription();
+    private final org.eclipse.sirius.components.view.form.FlexboxContainerDescription flexboxContainerDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createFlexboxContainerDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.form.FlexboxContainerDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.form.FlexboxContainerDescription getFlexboxContainerDescription() {
@@ -36,6 +38,7 @@ public class FlexboxContainerDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.form.FlexboxContainerDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.form.FlexboxContainerDescription build() {
@@ -51,6 +54,7 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setName(value);
         return this;
     }
+
     /**
      * Setter for LabelExpression.
      *
@@ -60,6 +64,7 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setLabelExpression(value);
         return this;
     }
+
     /**
      * Setter for HelpExpression.
      *
@@ -69,6 +74,7 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setHelpExpression(value);
         return this;
     }
+
     /**
      * Setter for DiagnosticsExpression.
      *
@@ -78,12 +84,13 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setDiagnosticsExpression(value);
         return this;
     }
+
     /**
      * Setter for Children.
      *
      * @generated
      */
-    public FlexboxContainerDescriptionBuilder children(org.eclipse.sirius.components.view.form.FormElementDescription ... values) {
+    public FlexboxContainerDescriptionBuilder children(org.eclipse.sirius.components.view.form.FormElementDescription... values) {
         for (org.eclipse.sirius.components.view.form.FormElementDescription value : values) {
             this.getFlexboxContainerDescription().getChildren().add(value);
         }
@@ -99,6 +106,7 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setFlexDirection(value);
         return this;
     }
+
     /**
      * Setter for IsEnabledExpression.
      *
@@ -108,6 +116,7 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setIsEnabledExpression(value);
         return this;
     }
+
     /**
      * Setter for BorderStyle.
      *
@@ -117,15 +126,71 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setBorderStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalBorderStyles.
      *
      * @generated
      */
-    public FlexboxContainerDescriptionBuilder conditionalBorderStyles(org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle ... values) {
+    public FlexboxContainerDescriptionBuilder conditionalBorderStyles(org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle value : values) {
             this.getFlexboxContainerDescription().getConditionalBorderStyles().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for FlexboxJustifyContent.
+     *
+     * @generated
+     * @since v2026.12.0
+     */
+    public FlexboxContainerDescriptionBuilder flexboxJustifyContent(org.eclipse.sirius.components.view.form.JustifyContent value) {
+        this.getFlexboxContainerDescription().setFlexboxJustifyContent(value);
+        return this;
+    }
+
+    /**
+     * Setter for FlexboxAlignItems.
+     *
+     * @generated
+     * @since v2026.12.0
+     */
+    public FlexboxContainerDescriptionBuilder flexboxAlignItems(org.eclipse.sirius.components.view.form.AlignItems value) {
+        this.getFlexboxContainerDescription().setFlexboxAlignItems(value);
+        return this;
+    }
+
+    /**
+     * Setter for Margin.
+     *
+     * @generated
+     * @since v2026.12.0
+     */
+    public FlexboxContainerDescriptionBuilder margin(java.lang.String value) {
+        this.getFlexboxContainerDescription().setMargin(value);
+        return this;
+    }
+
+    /**
+     * Setter for Padding.
+     *
+     * @generated
+     * @since v2026.12.0
+     */
+    public FlexboxContainerDescriptionBuilder padding(java.lang.String value) {
+        this.getFlexboxContainerDescription().setPadding(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     * @since v2026.12.0
+     */
+    public FlexboxContainerDescriptionBuilder gap(java.lang.String value) {
+        this.getFlexboxContainerDescription().setGap(value);
         return this;
     }
 

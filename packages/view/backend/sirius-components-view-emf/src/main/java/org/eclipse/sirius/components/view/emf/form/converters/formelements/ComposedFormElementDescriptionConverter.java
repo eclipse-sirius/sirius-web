@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,8 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
+import org.eclipse.sirius.components.forms.FlexboxAlignItems;
+import org.eclipse.sirius.components.forms.FlexboxJustifyContent;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
@@ -167,20 +169,31 @@ public class ComposedFormElementDescriptionConverter implements IComposedFormEle
                 .flatMap(Optional::stream)
                 .toList();
 
-        var flexboxContainerDescription = FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
+        var builder = FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
                 .idProvider(new WidgetIdProvider())
                 .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                 .labelProvider(new StringValueProvider(interpreter, viewFlexboxContainerDescription.getLabelExpression()))
                 .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewFlexboxContainerDescription.getIsEnabledExpression()))
                 .flexDirection(flexDirection)
+                .alignItems(FlexboxAlignItems.valueOf(viewFlexboxContainerDescription.getFlexboxAlignItems().getName()))
+                .justifyContent(FlexboxJustifyContent.valueOf(viewFlexboxContainerDescription.getFlexboxJustifyContent().getName()))
                 .children(controlDescriptions)
                 .borderStyleProvider(borderStyleProvider)
                 .diagnosticsProvider(new DiagnosticProvider(interpreter, viewFlexboxContainerDescription.getDiagnosticsExpression()))
                 .kindProvider(new DiagnosticKindProvider())
                 .messageProvider(new DiagnosticMessageProvider())
-                .helpTextProvider(new StringValueProvider(interpreter, viewFlexboxContainerDescription.getHelpExpression()))
-                .build();
+                .helpTextProvider(new StringValueProvider(interpreter, viewFlexboxContainerDescription.getHelpExpression()));
 
-        return Optional.of(flexboxContainerDescription);
+        if (viewFlexboxContainerDescription.getMargin() != null && !viewFlexboxContainerDescription.getMargin().isBlank()) {
+            builder.margin(viewFlexboxContainerDescription.getMargin());
+        }
+        if (viewFlexboxContainerDescription.getPadding() != null && !viewFlexboxContainerDescription.getPadding().isBlank()) {
+            builder.padding(viewFlexboxContainerDescription.getPadding());
+        }
+        if (viewFlexboxContainerDescription.getGap() != null && !viewFlexboxContainerDescription.getGap().isBlank()) {
+            builder.gap(viewFlexboxContainerDescription.getGap());
+        }
+
+        return Optional.of(builder.build());
     }
 }

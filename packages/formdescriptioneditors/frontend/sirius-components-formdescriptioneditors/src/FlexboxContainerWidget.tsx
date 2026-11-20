@@ -38,50 +38,55 @@ import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-const useStyles = makeStyles<FlexboxContainerWidgetStyleProps>()((theme, { flexDirection, flexWrap, borderStyle }) => ({
-  selected: {
-    color: theme.palette.primary.main,
-  },
-  containerAndLabel: {
-    margin: borderStyle ? theme.spacing(0.5) : 0,
-    padding: borderStyle ? theme.spacing(0.5) : 0,
-    borderWidth: borderStyle?.size || 1,
-    borderColor: borderStyle?.color ? getCSSColor(borderStyle.color, theme) : 'gray',
-    borderStyle: borderStyle?.lineStyle || 'solid',
-    borderRadius: borderStyle?.radius || 0,
-    outline: 'none',
-  },
-  container: {
-    display: 'flex',
-    flexWrap: flexWrap,
-    flexDirection: flexDirection,
-    '& > *': {
-      marginBottom: theme.spacing(0),
+const useStyles = makeStyles<FlexboxContainerWidgetStyleProps>()(
+  (theme, { flexDirection, flexWrap, borderStyle, justifyContent, alignItems, margin, padding, gap }) => ({
+    selected: {
+      color: theme.palette.primary.main,
     },
-    paddingLeft: theme.spacing(1),
-  },
-  bottomDropArea: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
-    borderRadius: '10px',
-    color: 'gray',
-    height: '30px',
-    width: '100%',
-  },
-  dragOver: {
-    borderWidth: '1px',
-    borderStyle: 'dashed',
-    borderColor: theme.palette.primary.main,
-  },
-  propertySectionLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-}));
+    containerAndLabel: {
+      margin: margin ?? (borderStyle ? theme.spacing(0.5) : 0),
+      padding: padding ?? (borderStyle ? theme.spacing(0.5) : 0),
+      borderWidth: borderStyle?.size || 1,
+      borderColor: borderStyle?.color ? getCSSColor(borderStyle.color, theme) : 'gray',
+      borderStyle: borderStyle?.lineStyle || 'solid',
+      borderRadius: borderStyle?.radius || 0,
+      outline: 'none',
+    },
+    container: {
+      display: 'flex',
+      flexWrap: flexWrap,
+      flexDirection: flexDirection,
+      gap: gap ?? undefined,
+      alignItems,
+      justifyContent,
+      '& > *': {
+        marginBottom: theme.spacing(0),
+      },
+      paddingLeft: theme.spacing(1),
+    },
+    bottomDropArea: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'whitesmoke',
+      borderRadius: '10px',
+      color: 'gray',
+      height: '30px',
+      width: '100%',
+    },
+    dragOver: {
+      borderWidth: '1px',
+      borderStyle: 'dashed',
+      borderColor: theme.palette.primary.main,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+  })
+);
 
 export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetProps) => {
   const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
@@ -90,6 +95,11 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
     flexDirection: widget.flexDirection,
     flexWrap: widget.flexWrap,
     borderStyle: widget.borderStyle,
+    justifyContent: widget.justifyContent,
+    alignItems: widget.alignItems,
+    margin: widget.margin,
+    padding: widget.padding,
+    gap: widget.gap,
   });
 
   const initialState: FlexboxContainerWidgetState = { selected: false };
