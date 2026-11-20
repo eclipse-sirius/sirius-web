@@ -51,7 +51,5 @@ export const ExplorerSubscriptionContainer = ({
     }
   }, [payload]);
 
-  return (
-    <ExplorerContext.Provider value={{ tree: state.tree }}>{!!state.tree ? children : null}</ExplorerContext.Provider>
-  );
+  return <ExplorerContext.Provider value={{ tree: state.tree }}>{children}</ExplorerContext.Provider>;
 };
