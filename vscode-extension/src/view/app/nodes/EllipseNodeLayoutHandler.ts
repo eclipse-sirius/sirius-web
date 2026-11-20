@@ -67,6 +67,9 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
+    const previousNodesById: Map<string, Node<NodeData, DiagramNodeType>> = new Map(
+      (previousDiagram?.nodes ?? []).map((previousNode) => [previousNode.id, previousNode])
+    );
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
     const borderWidth = getNodeBorderWidth(node.data.style);
@@ -113,8 +116,16 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     // WARN: We suppose label are always on top of children (that wrong)
     const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width;
-    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
     const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel);
 
     const nodeMinComputeWidth =
@@ -128,8 +139,16 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 
     // WARN: the label is not used for the height because children are already position under the label
     const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height;
-    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
-    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousNodesById
+    );
 
     const nodeMinComputeHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
@@ -164,7 +183,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     borderNodes.forEach((borderNode) => {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
-    setBorderNodesPosition(borderNodes, node, previousDiagram, this.calculateCustomNodeBorderNodePosition);
+    setBorderNodesPosition(borderNodes, node, previousNodesById, this.calculateCustomNodeBorderNodePosition);
 
     node.data.minComputedWidth = getDefaultOrMinWidth(nodeMinComputeWidth, node);
     node.data.minComputedHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);

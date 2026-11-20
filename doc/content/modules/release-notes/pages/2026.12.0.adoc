@@ -22,6 +22,10 @@ The `sirius-components-collaborative-diagrams` module provides the default confi
 - Switch to react-draggable 4.7.1
 - Switch to https://github.com/ObeoNetwork/react-trello/releases/tag/v2.5.2[@obeonetwork/react-trello 2.5.2]
 - Switch to https://github.com/ObeoNetwork/gantt-task-react/releases/tag/v0.7.2[@obeonetwork/gantt-task-react 0.7.2]
+- Node layout handlers have been refactored for clarity, separating horizontal and vertical child positioning into dedicated methods and sharing dimension and border node layout helpers.
+Downstream applications with custom nodes can follow the same structure in their layout handlers, using `EllipseNodeLayoutHandler` as an example.
+Adopting this refactoring is optional.
+
 
 == Bug fixes
 
