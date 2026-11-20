@@ -3,6 +3,7 @@
     "rowsPerPage": "Rows per page:"
   },
   "tableContent": {
+    "autoSizeColumnWidth": "Fit column width to content",
     "autoSizeRowHeights": "Fit row heights to content",
     "resetRowHeights": "Reset row heights"
   },
