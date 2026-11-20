@@ -201,11 +201,21 @@ test.describe('explorer studio', () => {
       });
     });
 
+    const loadingIndicator = page.getByTestId('view-Explorer').getByRole('progressbar', { includeHidden: true });
+    await page.route('**/api/graphql', async (route) => {
+      const request = route.request();
+      if (request.method() === 'POST' && request.postDataJSON().operationName === 'getAllExplorerDescriptions') {
+        await expect(loadingIndicator).toBeVisible();
+      }
+      await route.continue();
+    });
+
     await page.goto(`/projects/${projectId}/edit`);
     const explorer = new PlaywrightExplorer(page);
 
     const domainNewModel = await explorer.getTreeItemLabel('DomainNewModel');
     await expect(domainNewModel).toBeVisible();
+    await expect(loadingIndicator).not.toBeAttached();
 
     const viewNewModel = await explorer.getTreeItemLabel('ViewNewModel');
     await expect(viewNewModel).toBeVisible();
