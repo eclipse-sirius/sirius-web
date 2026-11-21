@@ -15,7 +15,6 @@ import {
   MessageOptions,
   Selection,
   SelectionContext,
-  SelectionEntry,
   ServerContext,
   ToastContext,
   ToastContextValue,
@@ -38,7 +37,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
+const mockEnqueue = vi.fn<(body: string, options?: MessageOptions) => void>();
 
 const toastContextMock: ToastContextValue = {
   enqueueSnackbar: mockEnqueue,
@@ -163,7 +162,9 @@ test('should only expand the specified nodes on initial render', () => {
 });
 
 test('should change the selection when a selectable node is clicked', () => {
-  let selection: SelectionEntry = { id: 'undefined' };
+  let selection: Selection = {
+    entries: [{ id: 'undefined' }],
+  };
 
   const mocks = [];
   render(
@@ -174,7 +175,7 @@ test('should change the selection when a selectable node is clicked', () => {
             value={{
               selection,
               setSelection: (newSelection: Selection) => {
-                selection = newSelection.entries[0];
+                selection = newSelection;
               },
             }}>
             <TreePropertySection
@@ -196,18 +197,20 @@ test('should change the selection when a selectable node is clicked', () => {
   ]);
   // 1.2 is not selectable => no change
   screen.getByText('Node-1.2').click();
-  expect(selection).toEqual({
+  expect(selection.entries[0]).toEqual({
     id: 'undefined',
   });
   // 1.1 is selectable => should be the new selection
   screen.getByText('Node-1.1').click();
-  expect(selection).toEqual({
+  expect(selection.entries[0]).toEqual({
     id: '1.1',
   });
 });
 
 test('should collapse/expand a non-selectable node when clicked', async () => {
-  let selection: SelectionEntry = { id: 'undefined' };
+  let selection: Selection = {
+    entries: [{ id: 'undefined' }],
+  };
 
   const mocks = [];
   render(
@@ -218,7 +221,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
             value={{
               selection,
               setSelection: (newSelection: Selection) => {
-                selection = newSelection.entries[0];
+                selection = newSelection;
               },
             }}>
             <TreePropertySection
@@ -237,7 +240,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     'Node-1.1',
     'Node-1.1.1',
   ]);
-  expect(selection).toEqual({
+  expect(selection.entries[0]).toEqual({
     id: 'undefined',
   });
   expect(screen.getByText('Node-1.1.1')).toBeDefined();
@@ -246,7 +249,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
   await userEvent.click(screen.getByText('Node-1.1'));
 
   await waitFor(() => {
-    expect(selection).toEqual({
+    expect(selection.entries[0]).toEqual({
       id: 'undefined',
     });
     expect(screen.queryByText('Node-1.1.1')).toBeNull();
@@ -256,7 +259,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
   await userEvent.click(screen.getByText('Node-1.1'));
 
   await waitFor(() => {
-    expect(selection).toEqual({
+    expect(selection.entries[0]).toEqual({
       id: 'undefined',
     });
     expect(screen.getByText('Node-1.1.1')).toBeDefined();
