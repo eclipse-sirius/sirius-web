@@ -17,7 +17,7 @@ include::partial$common-representation.adoc[]
 
 `FormDescription` contains the form-specific parts of a representation:
 
-* `pages`: ordered collection of `PageDescription` instances keyed by `name`.
+* `pages`: ordered collection of xref:studio-maker-guide:features/page-description.adoc[PageDescription] instances keyed by `name`.
 * `formVariables`: reusable `FormVariable` entries defined once per form, each with a `name` and a `defaultValueExpression` evaluated when the form opens.
 
 Form variables act like constants or computed values that can be referenced by widgets.
@@ -28,18 +28,7 @@ To create a form model, open your studio project, use the **New Model** action, 
 Inside that view, create a *Form Description* (via *New Object*) and then add widgets/groups from the context menus.
 ====
 
-== Pages and toolbar actions
 
-Each `PageDescription` controls a logical page:
-
-* `name`: identifier used internally.
-* `labelExpression`: AQL text displayed in the page tab.
-* `domainType`, `semanticCandidatesExpression`, `preconditionExpression`: determine which semantic elements populate the page (defaults to the representation root).
-* `groups`: containment list of `GroupDescription` entries keyed by `name`.
-* `toolbarActions`: list of `ButtonDescription` instances rendered at the top of the page.
-
-Use multiple pages to separate complex forms.
-Use toolbar actions for page-level commands (export, reset, etc.).
 == Groups and repeaters
 
 `GroupDescription` is the main container inside a page:
@@ -61,6 +50,8 @@ This hierarchy ensures every widget is both a semantic element and part of the U
 * Containers such as `FlexboxContainerDescription` and `WidgetGridLayout` also inherit from `FormElementDescription` so they can live alongside widgets.
 
 This hierarchy ensures every widget is both a semantic element and part of the UI tree, just like the other View description components.
+
+
 == Visual editor
 
 To speed up the authoring workflow, you can open a **Form Description Editor**:
@@ -72,6 +63,7 @@ To speed up the authoring workflow, you can open a **Form Description Editor**:
 
 Toolbar actions can be created from the editor (click the "+" icon near the tab bar).
 Most static style properties are previewed live so you can iterate without switching to the textual details view.
+
 
 == Layout and containers
 
@@ -136,6 +128,8 @@ If a use case requires a bespoke widget, developers can extend the catalog:
 This approach mirrors how the built-in widgets are defined and allows teams to integrate charts, controls, or visualizations that are specific to their domain.
 This approach mirrors how the built-in widgets are defined.
 It allows teams to integrate charts, controls, or visualizations that are specific to their domain.
+
+
 == Styles
 
 Each widget type has a dedicated style class inheriting from `WidgetDescriptionStyle`:
@@ -152,6 +146,8 @@ Each widget type has a dedicated style class inheriting from `WidgetDescriptionS
 
 Every style has a corresponding `ConditionalXXXStyle` class inheriting from `Conditional`.
 This enables a conditional styling workflow: evaluate `condition`, then apply the override style when true.
+
+
 == Actions and operations
 
 Buttons, lists, selects, sliders, and other interactive widgets can run operations stored in their `body` reference.
