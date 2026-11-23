@@ -1,5 +1,32 @@
 = Tree Services
 
+== Explorer tree filters
+
+Register a Spring service implementing `org.eclipse.sirius.components.collaborative.trees.api.ITreeFilterProvider` to contribute filters to the Explorer toolbar.
+Implement `List<TreeFilter> get(String editingContextId, TreeDescription treeDescription)` and return the filters that apply to that editing context and tree description.
+
+To change the tree when the user enables a filter, register an `IExplorerTreeAlteredContentProvider` for root items or an `IExplorerTreeItemAlteredContentProvider` for children.
+In `canHandle`, check that the active filter IDs contain the ID you declared and that the provider applies to the context or item.
+In `apply`, return the items that should appear in the tree.
+
+=== Initial filter state
+
+`record TreeFilter(String id, String label, boolean defaultState)`
+
+Give each `TreeFilter` a stable ID and a label to display in the filter menu.
+
+The third argument of `TreeFilter` is `defaultState`.
+Set it to `true` to enable the filter when the Explorer opens, or to `false` to leave it available in the menu.
+For example, the built-in filter for studio projects is declared as follows.
+
+[source,java]
+----
+new TreeFilter("hide-color-palettes", "Hide In-Memory Studio Color Palettes", true)
+----
+
+If the initial Explorer view configuration supplies an `activeTreeFilters` entry with the same ID, the entry's `state` takes precedence over `defaultState`.
+This lets a shared configuration restore a filter that the user enabled or disabled.
+
 == Palette
 
 The palette computed in a tree for a tree item can be customized by using a service implementing `o.e.s.c.collaborative.trees.palette.api.ITreeItemPaletteCustomizer`.
