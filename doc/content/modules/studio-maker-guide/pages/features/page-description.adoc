@@ -1,0 +1,28 @@
+= Page Description
+
+The `PageDescription` describes one or more tabs of a form.
+Each tab can contain one of more groups which will display the various widgets of the form.
+
+== Core Properties
+
+* `name`: A unique identifier for the page description.
+
+== Rendering
+
+* [.interpreted-expression]#semanticCandidatesExpression: InterpretedExpression# Used to selected the semantic elements for which a tab may be created. The semantic elements selected by this expression will be then filtered by the `domainType`` and the `preconditionExpression`.
+  - `self: Object` The current context on which the expression is evaluated. It is the semantic element on which the form has been created.
+  - `editingContext: IEditingContext` The editing context of the workbench. It can be used with core services to retrieve information about the semantic elements.
+* [.domain-type]#domainType: DomainType# Fully qualified type of the semantic elements for which a node should be created. For example `flow::System` or `ecore::EClass`. Used to filter the semantic elements selected by the `semanticCandidatesExpression`.
+* [.interpreted-expression]#preconditionExpression: InterpretedExpression# Used to filter the semantic elements selected by the `semanticCandidatesExpression` after filtering by `domainType`.
+  - `self: Object` The current context on which the expression is evaluated. It is the semantic element on which the form has been created.
+  - `editingContext: IEditingContext` The editing context of the workbench. It can be used with core services to retrieve information about the semantic elements.
+* [.interpreted-expression]#labelExpression: InterpretedExpression# Used to compute the label of the tab. The expression is evaluated on each semantic element returned by the `semanticCandidatesExpression`.
+  - `self: Object` The current context on which the expression is evaluated. It is a semantic element returned by the `semanticCandidatesExpression`.
+  - `editingContext: IEditingContext` The editing context of the workbench. It can be used with core services to retrieve information about the semantic elements.
+
+== Structure
+
+A page can contain both toolbar actions and groups.
+
+* `toolbarActions`: list of `ButtonDescription` instances rendered at the top of the page.
+* `groups`: containment list of `GroupDescription` entries keyed by `name`.
