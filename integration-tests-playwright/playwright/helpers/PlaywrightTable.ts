@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import type { Page, Locator } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 export class PlaywrightTable {
   readonly page: Page;
@@ -44,5 +44,16 @@ export class PlaywrightTable {
 
   async resetGlobalFilter() {
     await this.tableLocator.locator('button[aria-label="Clear search"]').click();
+  }
+
+  rowHeader(label: string) {
+    return this.tableLocator.getByTestId('table-row-header').getByText(label, { exact: true });
+  }
+
+  async toggleRow(page: Page, label: string) {
+    const row = new PlaywrightTable(page).tableLocator.getByRole('row').filter({
+      has: page.getByTestId('table-row-header').getByText(label, { exact: true }),
+    });
+    await row.getByTestId('table-row-expand-header').getByRole('button').click();
   }
 }

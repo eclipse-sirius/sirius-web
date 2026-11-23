@@ -24,6 +24,7 @@ import { TableContent } from '../table/TableContent';
 import { ColumnFilter, ColumnSort } from '../table/TableContent.types';
 import { tableIdProvider } from './tableIdProvider';
 import { TableRepresentationPagination, TableRepresentationState } from './TableRepresentation.types';
+import { useLocalStorageTableState } from './useLocalStorageTableState';
 import { useTableConfiguration } from './useTableConfiguration';
 import { useTableSubscription } from './useTableSubscription';
 
@@ -55,11 +56,14 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
       ...defaultPagination,
       globalFilter: null,
       columnFilters: null,
-      expanded: [],
       activeRowFilterIds: [],
       columnSort: null,
-      expandAll: false,
     });
+
+    const { expanded, expandAll, onExpandedElementChange, onExpandAllChange } = useLocalStorageTableState(
+      editingContextId,
+      representationId
+    );
 
     const { globalFilter, columnFilters, columnSort, defaultPageSize } = useTableConfiguration(
       editingContextId,
@@ -101,11 +105,12 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
       state.size,
       state.globalFilter,
       state.columnFilters,
-      state.expanded,
+      expanded,
       state.activeRowFilterIds,
       state.columnSort,
-      state.expandAll
+      expandAll
     );
+
     const { complete, table } = useTableSubscription(editingContextId, representationFullId);
     useEffect(() => {
       if (complete) {
@@ -163,25 +168,9 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
       }));
     };
 
-    const onExpandedElementChange = (rowId: string) => {
-      if (state.expandAll) {
-        const expandAllId = table?.lines.filter((line) => line.hasChildren).map((line) => line.targetObjectId) ?? [];
-        setState((prev) => ({ ...prev, expandAll: false, expanded: expandAllId.filter((id) => id !== rowId) }));
-      } else {
-        if (state.expanded.includes(rowId)) {
-          setState((prev) => ({ ...prev, expanded: prev.expanded.filter((id) => id !== rowId) }));
-        } else {
-          setState((prev) => ({ ...prev, expanded: [...prev.expanded, rowId] }));
-        }
-      }
-    };
-
-    const onExpandAllChange = () => {
-      if (state.expandAll) {
-        setState((prev) => ({ ...prev, expandAll: !prev.expandAll, expanded: [] }));
-      } else {
-        setState((prev) => ({ ...prev, expandAll: !prev.expandAll }));
-      }
+    const handleExpandedElementChange = (rowId: string): void => {
+      const expandableRowIds = table?.lines.filter((line) => line.hasChildren).map((line) => line.targetObjectId) ?? [];
+      onExpandedElementChange(rowId, expandableRowIds);
     };
 
     if (complete) {
@@ -205,7 +194,7 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
             onPaginationChange={onPaginationChange}
             onGlobalFilterChange={onGlobalFilterChange}
             onColumnFiltersChange={onColumnFiltersChange}
-            onExpandedElementChange={onExpandedElementChange}
+            onExpandedElementChange={handleExpandedElementChange}
             onRowFiltersChange={onRowFiltersChange}
             onSortingChange={onSortingChange}
             enableColumnVisibility
@@ -216,12 +205,12 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
             enablePagination
             enableColumnOrdering
             enableSelectionSynchronization
-            expandedRowIds={state.expanded}
+            expandedRowIds={expanded}
             pageSize={state.size}
             rowFilters={rowFilters}
             activeRowFilterIds={state.activeRowFilterIds}
             enableSorting
-            expandAll={state.expandAll}
+            expandAll={expandAll}
             onExpandAllChange={onExpandAllChange}
           />
         </div>
