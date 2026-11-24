@@ -1,0 +1,50 @@
+= Project style customizations
+
+This page describes how to contribute project style customizations.
+
+== Provide style customization descriptions
+
+Description of project style customization are contributed by the backend through `IStyleCustomizationDescriptionProvider`
+Register a Spring service implementing this interface to contribute description for project style customizations.
+
+* `getStyleCustomizationDescriptions(String projectId)` returns the list of `StyleCustomizationDescription` it provides for a project.
+
+The project's _Appearances_ tab displays one entry per contributed customization ID.
+
+For example, `FlowStyleCustomizationDescriptionProvider` contributes two style customization descriptions for Flow projects.
+
+Each `StyleCustomizationDescription` contains the following properties.
+
+[cols="1,3",options="header"]
+|===
+|Property |Description
+
+|`id`
+|A stable identifier, unique across providers for a given project.
+Sirius Web uses this identifier to store and look up the customization's activation state.
+
+|`label`
+|The name displayed in the _Appearances_ tab.
+
+|`description`
+|A short explanation of what the customization does, displayed in the _Appearances_ tab.
+|===
+
+
+== Enabled project style customizations
+
+Sirius Web stores which style customizations are enabled for each project.
+To check whether a customization is enabled for a project, call
+`IProjectStyleCustomizationSearchService.existsByProjectIdAndStyleCustomizationDescriptionId(projectReference, id)`
+with the same `id` as in the contributed `StyleCustomizationDescription`.
+
+
+== Best practices
+
+Calling `IProjectStyleCustomizationSearchService` from `INodeStyleCustomizer.customize` can repeat the same database lookup for every node in the diagram.
+
+Use an `IRepresentationRenderVariableCustomizer` to look up each customization's activation state once at the start of each diagram refresh and store it in the `VariableManager`.
+Node style customizers can then reuse that value for every node.
+
+In the Flow Starter, `FlowRendererVariableCustomizer` follows this pattern.
+`PowerStatusNodeStyleCustomizer` and `StatusNodeStyleCustomizer` read the activation states from the `VariableManager` to decide whether to apply their styles.
