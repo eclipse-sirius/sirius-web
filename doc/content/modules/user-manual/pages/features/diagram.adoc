@@ -294,6 +294,23 @@ Invalid reconnection targets are faded just like during creation.
 Relationship edges are always synchronized with their semantic counterparts, so deleting them from a diagram also deletes them from the model.
 To delete a relationship from the model, select the edge and use the delete command.
 
+=== Edge appearance
+
+To customize an edge, right-click it and open the *Appearance* section of its contextual palette.
+The *Edge Type* property controls how the connection is drawn between its source and target.
+The available types are:
+
+* *Manhattan*: a path made of horizontal and vertical segments.
+* *Smart Manhattan*: an automatically computed path made of horizontal and vertical segments that attempts to avoid crossing nodes.
+* *Oblique*: a path made of straight segments, connecting the source directly to the target when there are no custom bending points.
+
+Choosing an edge type changes its graphical appearance without changing the relationship in the underlying model.
+Use the reset action next to *Edge Type* to restore the type defined by the configured style.
+Changing or resetting the edge type removes its existing custom bending points.
+The path is then recomputed using the selected or restored type.
+Other appearance changes, such as changing the edge color, preserve custom bending points.
+Undoing an edge type change restores both the previous type and its custom bending points.
+
 === Editable edge paths
 
 Edges expose handles so you can fine-tune their routing:

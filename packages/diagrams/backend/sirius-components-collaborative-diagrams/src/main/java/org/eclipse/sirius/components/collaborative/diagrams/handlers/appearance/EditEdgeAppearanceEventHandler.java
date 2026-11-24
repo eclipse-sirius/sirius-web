@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,8 @@ import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSi
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSourceArrowStyleAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeTargetArrowStyleAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeTypeStyleAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramEdgeLayoutEvent;
+import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -84,6 +86,7 @@ public class EditEdgeAppearanceEventHandler implements IDiagramEventHandler {
         if (diagramInput instanceof EditEdgeAppearanceInput editAppearanceInput) {
             List<String> edgeIds = editAppearanceInput.edgeIds();
             List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+            List<DiagramEdgeLayoutEvent> edgeLayoutEvents = new ArrayList<>();
             List<String> elementNotFoundIds = new ArrayList<>();
             for (String edgeId : edgeIds) {
                 Optional<Edge> optionalEdge = diagramQueryService.findEdgeById(diagramContext.diagram(), edgeId);
@@ -96,7 +99,13 @@ public class EditEdgeAppearanceEventHandler implements IDiagramEventHandler {
                     Optional.ofNullable(editAppearanceInput.appearance().targetArrowStyle())
                             .ifPresent(targetArrowStyle -> appearanceChanges.add(new EdgeTargetArrowStyleAppearanceChange(edgeId, targetArrowStyle)));
                     Optional.ofNullable(editAppearanceInput.appearance().edgeType()).ifPresent(edgeType -> appearanceChanges.add(new EdgeTypeStyleAppearanceChange(edgeId, edgeType)));
-
+                    if (editAppearanceInput.appearance().edgeType() != null) {
+                        var previousLayoutData = diagramContext.diagram().getLayoutData().edgeLayoutData().get(edgeId);
+                        if (previousLayoutData != null) {
+                            var resetLayoutData = new EdgeLayoutData(edgeId, List.of(), List.of(), previousLayoutData.edgeAnchorLayoutData());
+                            edgeLayoutEvents.add(new DiagramEdgeLayoutEvent(edgeId, resetLayoutData));
+                        }
+                    }
                 } else {
                     elementNotFoundIds.add(edgeId);
                 }
@@ -106,6 +115,7 @@ public class EditEdgeAppearanceEventHandler implements IDiagramEventHandler {
                 payload = new ErrorPayload(diagramInput.id(), nodeNotFoundMessage);
             } else {
                 diagramContext.diagramEvents().add(new EditAppearanceEvent(appearanceChanges));
+                diagramContext.diagramEvents().addAll(edgeLayoutEvents);
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE, diagramInput.representationId(), diagramInput);
             }

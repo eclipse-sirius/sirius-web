@@ -24,7 +24,6 @@ import { useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../../../contexts/DiagramContext.types';
-import { useEditableEdgePath } from '../../../edge/useEditableEdgePath';
 import { AppearanceColorPicker } from '../widget/AppearanceColorPicker';
 import { AppearanceNumberTextfield } from '../widget/AppearanceNumberTextfield ';
 import { AppearanceSelect } from '../widget/AppearanceSelect';
@@ -71,7 +70,6 @@ export const EdgeAppearancePart = ({ edgeIds, style, customizedStyleProperties }
 
   const { updateEdgeAppearance } = useEditEdgeAppearance();
   const { resetEdgeStyleProperties } = useResetEdgeAppearance();
-  const { removeEdgeLayoutData } = useEditableEdgePath();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'edgeAppearancePart' });
   const lineStyleOptions = useMemo(() => getLineStyleOptions(t), [t]);
   const arrowOptions = useMemo(() => getArrowOption(t), [t]);
@@ -140,14 +138,8 @@ export const EdgeAppearancePart = ({ edgeIds, style, customizedStyleProperties }
           label={t('edgeType')}
           initialValue={style.edgeType}
           disabled={isDisabled('EDGE_TYPE')}
-          onEdit={(newValue) => {
-            handleEditProperty({ edgeType: newValue });
-            removeEdgeLayoutData(edgeIds); //Reset custom bending points when changing the edge type.
-          }}
-          onReset={() => {
-            handleResetProperty('EDGE_TYPE');
-            removeEdgeLayoutData(edgeIds); //Reset custom bending points when changing the edge type.
-          }}></AppearanceSelect>
+          onEdit={(newValue) => handleEditProperty({ edgeType: newValue })}
+          onReset={() => handleResetProperty('EDGE_TYPE')}></AppearanceSelect>
       </Box>
     </ListItem>
   );

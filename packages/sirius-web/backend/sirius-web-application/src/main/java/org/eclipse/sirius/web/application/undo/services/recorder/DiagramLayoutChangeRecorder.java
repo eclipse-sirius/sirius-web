@@ -19,8 +19,8 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
@@ -62,7 +62,11 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
         Optional<LayoutDiagramInput> optionalLayoutDiagramInputCause = this.causalityChainVisitor.findFirstCauseOfType(changeDescription.getCause(), LayoutDiagramInput.class);
-        if (editingContext instanceof EditingContext siriusEditingContext && optionalLayoutDiagramInputCause.isPresent()) {
+        if (optionalLayoutDiagramInputCause.isEmpty()) {
+            this.recordEdgeLayoutEvents(editingContext, previousDiagram, diagramEvents, changeDescription);
+            return;
+        }
+        if (editingContext instanceof EditingContext siriusEditingContext) {
             LayoutDiagramInput layoutDiagramInput = optionalLayoutDiagramInputCause.get();
             List<IRepresentationChange> representationChanges = new ArrayList<>();
             List<DiagramNodeLayoutEvent> undoNodeLayoutEvents = new ArrayList<>();
@@ -138,6 +142,29 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
         }
     }
 
+    private void recordEdgeLayoutEvents(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, ChangeDescription changeDescription) {
+        Optional<IDiagramInput> optionalDiagramInput = this.causalityChainVisitor.findFirstCauseOfType(changeDescription.getCause(), IDiagramInput.class);
+        if (editingContext instanceof EditingContext siriusEditingContext && optionalDiagramInput.isPresent()) {
+            var diagramInput = optionalDiagramInput.get();
+            List<DiagramEdgeLayoutEvent> undoEdgeLayoutEvents = new ArrayList<>();
+            List<DiagramEdgeLayoutEvent> redoEdgeLayoutEvents = new ArrayList<>();
+            diagramEvents.stream()
+                    .filter(DiagramEdgeLayoutEvent.class::isInstance)
+                    .map(DiagramEdgeLayoutEvent.class::cast)
+                    .forEach(event -> {
+                        var previousLayoutData = previousDiagram.getLayoutData().edgeLayoutData().get(event.edgeId());
+                        if (previousLayoutData != null && !previousLayoutData.equals(event.edgeLayoutData())) {
+                            undoEdgeLayoutEvents.add(new DiagramEdgeLayoutEvent(event.edgeId(), previousLayoutData));
+                            redoEdgeLayoutEvents.add(event);
+                        }
+                    });
+            if (!undoEdgeLayoutEvents.isEmpty()) {
+                var edgeLayoutChange = new DiagramEdgeLayoutChange(diagramInput.id(), diagramInput.representationId(), undoEdgeLayoutEvents, redoEdgeLayoutEvents);
+                siriusEditingContext.getInputId2RepresentationChanges().computeIfAbsent(diagramInput.id(), id -> new ArrayList<>()).add(edgeLayoutChange);
+            }
+        }
+    }
+
     private boolean isSameEdgeLayoutData(EdgeLayoutData previousLayout, EdgeLayoutDataInput updatedLayout) {
         boolean isSame = previousLayout.bendingPoints().size() == updatedLayout.bendingPoints().size();
         if (isSame) {
@@ -166,10 +193,6 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
 
     private boolean isSameSize(Size previousSize, Size updatedSize) {
         return previousSize.height() == updatedSize.height() && previousSize.width() == updatedSize.width();
-    }
-
-    private boolean isSameLabelLayoutData(LabelLayoutData previousLayout, LabelLayoutDataInput updatedLayout) {
-        return this.isSamePosition(previousLayout.position(), updatedLayout.position());
     }
 
     private boolean isSameHandleLayoutDatas(List<HandleLayoutData> previousLayouts, List<HandleLayoutData> updatedLayouts) {

@@ -390,15 +390,12 @@ test.describe('edge', () => {
     await page.getByTestId('toolSection-Appearance').click();
     await page.locator('[data-testid="toolSection-Appearance-Edge Type"]').click();
     await page.waitForSelector('.MuiMenu-paper');
-    await page.locator('[data-value="Oblique"]').click();
 
-    await page.waitForFunction(
-      () => {
-        const edgePath = document.querySelector('[data-testid^="rf__edge-"] path')?.getAttribute('d');
-        return edgePath?.trim().match(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
-      },
-      { timeout: 2000 }
-    );
+    await new PlaywrightDiagram(page).waitForInitialLayout(() => page.locator('[data-value="Oblique"]').click());
+
+    const straightEdgePath = /^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+\s*$/;
+    const edgePath = page.locator('[data-testid^="rf__edge-"] path').first();
+    await expect(edgePath).toHaveAttribute('d', straightEdgePath);
   });
 
   test('when a oblique edge has one bending point, then path is composed of two lines', async ({ page }) => {

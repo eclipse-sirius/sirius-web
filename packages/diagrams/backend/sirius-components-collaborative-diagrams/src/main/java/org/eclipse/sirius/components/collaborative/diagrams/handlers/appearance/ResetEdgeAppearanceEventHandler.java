@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.EdgeAppearanceHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -35,6 +36,8 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.ResetEdgeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramEdgeLayoutEvent;
+import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -79,12 +82,20 @@ public class ResetEdgeAppearanceEventHandler implements IDiagramEventHandler {
         if (diagramInput instanceof ResetEdgeAppearanceInput resetAppearanceInput) {
             List<String> edgeIds = resetAppearanceInput.edgeIds();
             List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+            List<DiagramEdgeLayoutEvent> edgeLayoutEvents = new ArrayList<>();
             List<String> elementNotFoundIds = new ArrayList<>();
             for (String edgeId : edgeIds) {
                 Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.diagram(), edgeId);
                 if (optionalEdge.isPresent()) {
                     resetAppearanceInput.propertiesToReset()
                             .forEach(propertyToReset -> appearanceChanges.add(new ResetEdgeAppearanceChange(edgeId, propertyToReset)));
+                    if (resetAppearanceInput.propertiesToReset().contains(EdgeAppearanceHandler.EDGE_TYPE)) {
+                        var previousLayoutData = diagramContext.diagram().getLayoutData().edgeLayoutData().get(edgeId);
+                        if (previousLayoutData != null) {
+                            var resetLayoutData = new EdgeLayoutData(edgeId, List.of(), List.of(), previousLayoutData.edgeAnchorLayoutData());
+                            edgeLayoutEvents.add(new DiagramEdgeLayoutEvent(edgeId, resetLayoutData));
+                        }
+                    }
                 } else {
                     elementNotFoundIds.add(edgeId);
                 }
@@ -94,6 +105,7 @@ public class ResetEdgeAppearanceEventHandler implements IDiagramEventHandler {
                 payload = new ErrorPayload(diagramInput.id(), nodeNotFoundMessage);
             } else {
                 diagramContext.diagramEvents().add(new EditAppearanceEvent(appearanceChanges));
+                diagramContext.diagramEvents().addAll(edgeLayoutEvents);
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE, diagramInput.representationId(), diagramInput);
             }

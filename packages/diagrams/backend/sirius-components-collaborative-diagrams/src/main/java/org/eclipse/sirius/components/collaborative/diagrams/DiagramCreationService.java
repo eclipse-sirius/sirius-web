@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -192,8 +193,10 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .filter(DiagramEdgeLayoutEvent.class::isInstance)
                 .map(DiagramEdgeLayoutEvent.class::cast).toList();
 
-        var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of(),
+        var previousLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of(),
                 !diagramDescription.getLayoutOption().equals(DiagramLayoutOption.NONE)));
+        var newLayoutData = new DiagramLayoutData(new HashMap<>(previousLayoutData.nodeLayoutData()), new HashMap<>(previousLayoutData.edgeLayoutData()),
+                new HashMap<>(previousLayoutData.labelLayoutData()), previousLayoutData.autoLaidOut());
 
         diagramNodeLayoutEvents.forEach(nodeLayoutDataEvent ->
                 newLayoutData.nodeLayoutData().put(nodeLayoutDataEvent.nodeId(), nodeLayoutDataEvent.nodeLayoutData()));

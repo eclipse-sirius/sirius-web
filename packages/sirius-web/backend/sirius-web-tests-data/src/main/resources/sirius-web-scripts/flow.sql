@@ -408,8 +408,10 @@ INSERT INTO representation_content (
           "lineStyle": "Dash",
           "sourceArrow": "None",
           "targetArrow": "InputClosedArrow",
-          "color": "#B1BCBE"
+          "color": "#B1BCBE",
+          "edgeType": "Oblique"
         },
+        "customizedStyleProperties": ["EDGE_TYPE"],
         "centerLabelEditable": true
       },
       {
@@ -461,6 +463,7 @@ INSERT INTO representation_content (
           "id": "655fe01a-0a64-3b6f-91d6-1eff88b11dbf",
           "position": { "x": 86.0, "y": 0.0 },
           "size": { "width": 190.77500915527344, "height": 199.60000038146973 },
+          "minComputedSize": { "width": 0, "height": 0 },
           "resizedByUser": false,
           "handleLayoutData": []
         },
@@ -468,6 +471,7 @@ INSERT INTO representation_content (
           "id": "2c6c3606-5ed2-35f1-b05e-cba434e1a812",
           "position": { "x": 0.0, "y": 0.0 },
           "size": { "width": 66.0, "height": 90.0 },
+          "minComputedSize": { "width": 0, "height": 0 },
           "resizedByUser": false,
           "handleLayoutData": []
         },
@@ -475,6 +479,7 @@ INSERT INTO representation_content (
           "id": "8a1ebfd1-b2ec-3ec0-b26e-f6297fc7d8f2",
           "position": { "x": 8.0, "y": 32.79999923706055 },
           "size": { "width": 150.0, "height": 150.0 },
+          "minComputedSize": { "width": 0, "height": 0 },
           "resizedByUser": false,
           "handleLayoutData": [
           {
@@ -492,7 +497,19 @@ INSERT INTO representation_content (
       "edgeLayoutData": {
         "2415b5f8-c769-3999-ada1-c4d07e629e83": {
           "id": "2415b5f8-c769-3999-ada1-c4d07e629e83",
-          "bendingPoints": [],
+          "bendingPoints": [{"x": 10, "y": 20}, {"x": 30, "y": 40}],
+          "relativePositionBendingPoints": [{"x": 1, "y": 2}, {"x": 3, "y": 4}],
+          "edgeAnchorLayoutData": [{
+            "edgeId": "f2bab5c4-7e0b-3c1e-b224-b1172e445a53",
+            "positionRatio": 0.5,
+            "handlePosition": "left",
+            "type": "source"
+          }]
+        },
+        "f2bab5c4-7e0b-3c1e-b224-b1172e445a53": {
+          "id": "f2bab5c4-7e0b-3c1e-b224-b1172e445a53",
+          "bendingPoints": [{"x": 50, "y": 60}],
+          "relativePositionBendingPoints": [{"x": 5, "y": 6}],
           "edgeAnchorLayoutData": []
         }
       },
@@ -500,7 +517,7 @@ INSERT INTO representation_content (
     }
   }',
   'none',
-  '2025.6.0-202506011650',
+  '2026.5.0-202604141050',
   '2025-09-09 07:47:39.326207+00',
   '2025-09-09 07:47:40.332223+00'
 );
