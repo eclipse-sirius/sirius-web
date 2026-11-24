@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@
 export type { OmniboxCommand, OmniboxHandle, OmniboxMode } from './Omnibox.types';
 export * from './OmniboxButton';
 export * from './OmniboxButton.types';
+export * from './OmniboxContext';
+export * from './OmniboxContext.types';
 export * from './OmniboxExtensionPoints';
 export * from './OmniboxExtensionPoints.types';
 export * from './OmniboxProvider';
