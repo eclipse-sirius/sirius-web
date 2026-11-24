@@ -65,3 +65,27 @@ The frontend converts this list into the options dictionary passed to ELK.
 
 The `sirius-components-collaborative-diagrams` module registers `DefaultLayoutConfigurationsProvider`, which contributes Flow Layout (`elk-layered`), Compact Layout (`elk-rect-packing`) and Orthogonal Layout (`elk-spore-overlap`), in that order.
 The Flow Layout configuration uses the diagram description's arrange layout direction.
+
+== Style customization
+
+=== Node style customization
+
+Node style customizations are contributed by the backend through `org.eclipse.sirius.components.diagrams.renderer.api.INodeStyleCustomizer`.
+Register a Spring service implementing this interface to contribute style customization for a node:
+
+* `customize(VariableManager, DiagramDescription, NodeDescription, INodeStyle)` returns the customized `INodeStyle`.
+
+Each contributed service is executed at all diagram refreshes between the computation of the node style by the diagram description and user customization made through the appearance menu.
+
+Sirius Web applies node style customizers in sequence.
+Each customizer receives the style returned by the previous one, starting with the style computed from the node description.
+The application order is unspecified.
+If multiple customizers change the same property, the last one to change it takes precedence.
+
+For example, `org.eclipse.sirius.components.flow.starter.services.PowerStatusNodeStyleCustomizer` customizes the border color of flow elements depending on their power status.
+
+[NOTE]
+====
+The returned style must be compatible with the node type and supported by both the backend and the frontend.
+See xref:developer-guide:hands-on/how-tos/custom-diagram-node.adoc[Contribute custom diagram nodes].
+====
