@@ -34,6 +34,8 @@ The `sirius-components-collaborative-diagrams` module provides the default confi
 - Bending points on rectilinear edges now take priority over line segments when dragging.
 - Fix an issue where a tool configured with an impact analysis report and defined outside the View DSL was not executed correctly.
 - Fix an issue where the loading indicator of the explorer view was not rendered during the whole loading phase.
+- Changing or resetting an edge type now clears its custom bending points in the same operation.
+Undo and redo restore the edge type and its path together.
 
 
 == New features

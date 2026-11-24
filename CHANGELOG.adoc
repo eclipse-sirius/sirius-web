@@ -65,6 +65,7 @@ Each configuration exposes `id`, `label`, `iconURL` and a list of string `key`/`
 - https://github.com/eclipse-sirius/sirius-web/issues/7181[#7181] [diagram] Fix an issue where a tool configured with an impact analysis report and defined outside the View DSL was not executed correctly.
 - https://github.com/eclipse-sirius/sirius-web/issues/7190[#7190] [tree] Fix an issue where the loading indicator of the explorer view was not rendered during the whole loading phase.
 - [diagram] Fix experimental svg typescript imports
+- https://github.com/eclipse-sirius/sirius-web/issues/7194[#7194] [diagram] Reset edge bending points together with edge type appearance changes, preventing concurrent layout updates from restoring the previous path.
 
 
 
