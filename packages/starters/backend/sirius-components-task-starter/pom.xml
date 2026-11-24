@@ -28,21 +28,6 @@
 	<name>sirius-components-task-starter</name>
 	<description>Sirius Components Task Starter</description>
 
-	<repositories>
-		<repository>
-			<id>Eclipse Sirius</id>
-			<name>Sirius Repository - Snapshots</name>
-			<url>https://repo.eclipse.org/content/repositories/sirius-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>Central</id>
-			<url>https://repo.maven.apache.org/maven2</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
