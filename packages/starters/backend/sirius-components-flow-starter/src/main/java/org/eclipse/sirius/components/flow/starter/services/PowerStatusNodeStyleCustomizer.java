@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * The flow node style customizer updating the background color of flow element when their name contains "I'm Blue".
+ * Customizes the border color of flow elements based on their power status.
  *
  * @author gcoutable
  */
