@@ -75,3 +75,16 @@ extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   Component: DocumentTreeItemContextMenuContribution,
 });
 ----
+
+== Add a workbench omnibox command
+
+Papaya's *Show documentation* command illustrates how to add a command that opens a link.
+Register a Spring bean implementing `IWorkbenchOmniboxCommandProvider`.
+In `getCommands`, return an `OmniboxCommand` with a stable ID, a label, icon URLs, and a description.
+Return an empty list when the command does not apply to the current editing context or selection.
+The workbench filters the returned commands by label as the user types.
+
+To open a link in the browser, register a React component with `omniboxCommandOverrideContributionExtensionPoint` using the frontend extension registry's `putData` method.
+Set the contribution's `canHandle` predicate to match the ID returned by the provider, such as `showDocumentation`.
+The component receives `OmniboxCommandComponentProps`; forward `onKeyDown` to the command's list item so keyboard navigation works.
+In the click handler, open the link and call `onClose()` to dismiss the omnibox.
