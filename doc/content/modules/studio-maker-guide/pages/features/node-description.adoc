@@ -53,8 +53,10 @@ A node description can only have a single inside label description.
   - `ancestors: List<Object>` The list of all the semantic elements used to create the parents of the current node.
   - `collapsingState: CollapsingState` Indicates if the node is collapsed or expanded.
   - `isBorderNode: boolean` Indicates if the node being created is a border node or not.
+  - `diagramContext: DiagramContext`
   - `previousDiagram: Diagram` The previously rendered diagram. It can be used to retrieve information about the previous state of the diagram and its elements.
-  - `diagramEvent: IDiagramEvent` The current event that is involved in the refresh of the diagram.
+  - `diagramEvents: IDiagramEvent[]` The current events that are involved in the refresh of the diagram.
+  - `diagramServices: DiagramServices`
 * `overflowStrategy: LabelOverflowStrategy` Used to indicate how the label is supposed to behave if its size becomes larger the the size of the node.
   - `NONE` The node should grow to display the entire label
   - `WRAP` The label should be wrapped to create a new line

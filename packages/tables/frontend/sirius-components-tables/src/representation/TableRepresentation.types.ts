@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,10 +15,8 @@ import { ColumnFilter, ColumnSort } from '../table/TableContent.types';
 export interface TableRepresentationState extends TableRepresentationPagination {
   globalFilter: string | null;
   columnFilters: ColumnFilter[] | null;
-  expanded: string[];
   activeRowFilterIds: string[];
   columnSort: ColumnSort[] | null;
-  expandAll: boolean;
 }
 
 export interface TableRepresentationPagination {

@@ -70,6 +70,14 @@ Large tables are paginated automatically. Use the bottom toolbar to switch pages
 
 image::representations/table-pagination-toolbar.png[Pagination toolbar, width=320]
 
+=== Hierarchical rows
+
+Click on the arrow beside a hierarchical row to expand or collapse its children, or use "Expand all" and "Collapse all" to change the whole table.
+Expanded rows and the "Expand all" mode are saved automatically in your browser local storage, separately for each table in each project.
+They are restored when you reopen the table or reload the page, and preserved when you navigate between pages, sort rows, or change filters.
+
+These preferences remain local to your browser and are not shared with collaborators or other browsers.
+
 === Selection and editing
 
 Click a row header to select the underlying semantic element and synchronize other views such as the {explorer-view} or the {details-view}:
