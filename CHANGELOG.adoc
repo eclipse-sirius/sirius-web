@@ -93,6 +93,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 At least 10 to 25 lines of documentation must be added in every pull request depending on the size of the changes.
 - [releng] Run end-to-end tests at the end of the main build job so that their failures do not prevent Docker images from being published.
 - [cleanup] [diagram] Centralize XYFlow change predicates.
+- [doc] Document impact analysis configuration, library update previews and the execution lifecycle of custom diagram tools.
 
 
 == 2026.11.0
