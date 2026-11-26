@@ -14,10 +14,10 @@ package org.eclipse.sirius.web.application.capability.services;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.capabilities.api.ICapabilityEvaluator;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesDTO;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.springframework.stereotype.Service;
 

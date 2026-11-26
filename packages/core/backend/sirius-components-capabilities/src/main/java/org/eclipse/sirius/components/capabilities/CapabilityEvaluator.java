@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.capability.services;
+package org.eclipse.sirius.components.capabilities;
 
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
-import org.eclipse.sirius.web.application.capability.services.api.IDefaultCapabilityEvaluator;
+import org.eclipse.sirius.components.capabilities.api.CapabilityVote;
+import org.eclipse.sirius.components.capabilities.api.ICapabilityEvaluator;
+import org.eclipse.sirius.components.capabilities.api.ICapabilityVoter;
+import org.eclipse.sirius.components.capabilities.api.IDefaultCapabilityEvaluator;
 import org.springframework.stereotype.Service;
 
 /**

@@ -15,11 +15,11 @@ package org.eclipse.sirius.web.application.project.controllers;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
+import org.eclipse.sirius.components.capabilities.api.ICapabilityEvaluator;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.api.IUploadProjectInput;
 import org.eclipse.sirius.web.application.project.dto.UploadProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectUploadApplicationService;

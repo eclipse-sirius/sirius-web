@@ -15,9 +15,9 @@ package org.eclipse.sirius.web.application.library.controllers;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.capabilities.api.ICapabilityEvaluator;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
 import org.eclipse.sirius.web.library.domain.LibraryId;

@@ -34,6 +34,7 @@
 	<modules>
 		<module>sirius-components-annotations</module>
 		<module>sirius-components-annotations-spring</module>
+		<module>sirius-components-capabilities</module>
 		<module>sirius-components-representations</module>
 		<module>sirius-components-events</module>
 		<module>sirius-components-core</module>

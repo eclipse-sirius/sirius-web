@@ -19,8 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.eclipse.sirius.components.capabilities.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryMapper;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateContext;

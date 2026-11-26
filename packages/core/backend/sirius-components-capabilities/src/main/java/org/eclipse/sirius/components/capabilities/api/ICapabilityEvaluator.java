@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2026 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.capability.services.api;
+package org.eclipse.sirius.components.capabilities.api;
 
 /**
- * Used to provide a default vote for capabilities.
+ * Used to evaluate all the capability voter to find the result of a vote.
  *
  * @author sbegaudeau
- * @since v2026.11.0
  */
-public interface IDefaultCapabilityEvaluator {
-    boolean hasCapability();
+public interface ICapabilityEvaluator {
+    boolean hasCapability(String type, String identifier, String capability);
 }
