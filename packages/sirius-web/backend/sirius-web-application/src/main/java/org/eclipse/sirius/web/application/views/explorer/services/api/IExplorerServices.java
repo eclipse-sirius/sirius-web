@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.views.explorer.services.api;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.TreeItemDecorator;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 
 /**
@@ -31,6 +32,8 @@ public interface IExplorerServices {
     boolean isDeletable(Object self);
 
     boolean isSelectable(Object self);
+
+    List<TreeItemDecorator> getDecorators(IEditingContext editingContext, Object object);
 
     Object getTreeItemObject(String treeItemId, IEditingContext editingContext);
 

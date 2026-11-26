@@ -12,6 +12,9 @@ image::editor-left-panel-explorer.png[{workbench} Left panel Explorer]
 
 image::project-semantic-model.drawio.svg[{workbench} Explorer Content]
 
+Depending on how the application is configured, some items may show icons with optional text on the right of the row.
+These decorators convey information about the item, such as validation status.
+
 == {explorer-view} Toolbar
 
 At the top of the {explorer-view}, a toolbar provides quick access to essential actions:

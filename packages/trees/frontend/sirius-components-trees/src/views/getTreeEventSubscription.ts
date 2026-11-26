@@ -62,6 +62,10 @@ fragment treeItemFields on TreeItem {
   selectable
   kind
   iconURL
+  decorators {
+    iconURL
+    label
+  }
 }
 `;
 

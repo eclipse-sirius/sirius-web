@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,8 @@ public final class TreeItem {
     private StyledString label;
 
     private List<String> iconURL;
+
+    private List<TreeItemDecorator> decorators;
 
     private boolean editable;
 
@@ -86,6 +88,10 @@ public final class TreeItem {
         return this.iconURL;
     }
 
+    public List<TreeItemDecorator> getDecorators() {
+        return this.decorators;
+    }
+
     public boolean isHasChildren() {
         return this.hasChildren;
     }
@@ -120,6 +126,8 @@ public final class TreeItem {
 
         private List<String> iconURL;
 
+        private List<TreeItemDecorator> decorators = List.of();
+
         private boolean editable;
 
         private boolean deletable;
@@ -148,6 +156,11 @@ public final class TreeItem {
 
         public Builder iconURL(List<String> imageURL) {
             this.iconURL = Objects.requireNonNull(imageURL);
+            return this;
+        }
+
+        public Builder decorators(List<TreeItemDecorator> decorators) {
+            this.decorators = List.copyOf(decorators);
             return this;
         }
 
@@ -187,6 +200,7 @@ public final class TreeItem {
             treeItem.kind = Objects.requireNonNull(this.kind);
             treeItem.label = Objects.requireNonNull(this.label);
             treeItem.iconURL = Objects.requireNonNull(this.iconURL);
+            treeItem.decorators = this.decorators;
             treeItem.editable = this.editable;
             treeItem.deletable = this.deletable;
             treeItem.selectable = this.selectable;

@@ -31,7 +31,9 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.trees.TreeItemDecorator;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerDecoratorService;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -58,13 +60,18 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IDefaultObjectSearchService defaultObjectSearchService;
 
-    public ExplorerServices(IIdentityService identityService, IObjectSearchService objectSearchService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IDefaultObjectSearchService defaultObjectSearchService) {
+    private final IExplorerDecoratorService explorerDecoratorService;
+
+    public ExplorerServices(IIdentityService identityService, IObjectSearchService objectSearchService, IContentService contentService,
+            IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IDefaultObjectSearchService defaultObjectSearchService,
+            IExplorerDecoratorService explorerDecoratorService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.contentService = Objects.requireNonNull(contentService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.defaultObjectSearchService = Objects.requireNonNull(defaultObjectSearchService);
+        this.explorerDecoratorService = Objects.requireNonNull(explorerDecoratorService);
     }
 
     @Override
@@ -99,6 +106,11 @@ public class ExplorerServices implements IExplorerServices {
     @Override
     public boolean isSelectable(Object self) {
         return true;
+    }
+
+    @Override
+    public List<TreeItemDecorator> getDecorators(IEditingContext editingContext, Object object) {
+        return this.explorerDecoratorService.getDecorators(editingContext, object);
     }
 
     @Override

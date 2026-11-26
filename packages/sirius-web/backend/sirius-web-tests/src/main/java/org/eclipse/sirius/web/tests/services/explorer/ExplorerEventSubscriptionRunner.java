@@ -34,6 +34,27 @@ public class ExplorerEventSubscriptionRunner implements ISubscriptionRunner<Expl
             subscription explorerEvent($input: ExplorerEventInput!) {
               explorerEvent(input: $input) {
                 __typename
+                ... on TreeRefreshedEventPayload {
+                  tree {
+                    children {
+                      ...ExplorerTreeItemFields
+                      children {
+                        ...ExplorerTreeItemFields
+                        children {
+                          ...ExplorerTreeItemFields
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            fragment ExplorerTreeItemFields on TreeItem {
+              id
+              hasChildren
+              decorators {
+                iconURL
+                label
               }
             }
             """;
@@ -52,6 +73,10 @@ public class ExplorerEventSubscriptionRunner implements ISubscriptionRunner<Expl
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData);
         return new GraphQLSubscriptionResult(flux, rawResult.errors(), rawResult.extensions());
+    }
+
+    public GraphQLSubscriptionResult runToSpecification(ExplorerEventInput input) {
+        return this.graphQLRequestor.subscribeToSpecification(EXPLORER_EVENT_SUBSCRIPTION, input);
     }
 
 }

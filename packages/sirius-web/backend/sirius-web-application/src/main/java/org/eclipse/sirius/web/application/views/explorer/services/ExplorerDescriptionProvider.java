@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.components.trees.TreeItemDecorator;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventProcessorFactory;
@@ -94,6 +95,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .targetObjectIdProvider(variableManager -> variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .parentObjectProvider(this::getParentObject)
                 .treeItemIconURLsProvider(this::getImageURL)
+                .treeItemDecoratorsProvider(variableManager -> this.getDecorators(editingContext, variableManager))
                 .editableProvider(this::isEditable)
                 .deletableProvider(this::isDeletable)
                 .selectableProvider(this::isSelectable)
@@ -167,6 +169,14 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     private List<String> getImageURL(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         return this.labelService.getImagePaths(self);
+    }
+
+    private List<TreeItemDecorator> getDecorators(IEditingContext editingContext, VariableManager variableManager) {
+        var optionalSelf = variableManager.get(RepresentationVariables.SELF.name(), Object.class);
+        if (optionalSelf.isEmpty()) {
+            return List.of();
+        }
+        return this.explorerServices.getDecorators(editingContext, optionalSelf.get());
     }
 
     private IStatus getDeleteHandler(VariableManager variableManager) {

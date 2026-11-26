@@ -18,6 +18,7 @@ import { makeStyles } from 'tss-react/mui';
 import { PartHovered, TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemAction } from './TreeItemAction';
 import { TreeItemArrow } from './TreeItemArrow';
+import { TreeItemDecorators } from './TreeItemDecorators';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { TreeItemIcon } from './TreeItemIcon';
 import { isFilterCandidate } from './filterTreeItem';
@@ -72,6 +73,15 @@ const useTreeItemStyle = makeStyles<TreeItemStyleProps>()((theme, { depth }) => 
     alignItems: 'center',
     gridColumnStart: '2',
     gridColumnEnd: '3',
+  },
+  decorators: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(0.5),
+    flexShrink: 0,
+    marginInlineStart: 'auto',
+    paddingInlineEnd: theme.spacing(0.5),
+    pointerEvents: 'none',
   },
   imageAndLabel: {
     display: 'flex',
@@ -408,6 +418,11 @@ export const TreeItem = ({
               </div>
             </div>
           </div>
+          {item.decorators.length > 0 && (
+            <span className={classes.decorators}>
+              <TreeItemDecorators decorators={item.decorators} />
+            </span>
+          )}
         </div>
       </>
     );
