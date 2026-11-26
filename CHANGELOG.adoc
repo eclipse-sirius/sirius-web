@@ -47,6 +47,7 @@ Downstream applications with custom nodes can follow the same structure in their
 The exported `setBorderNodesPosition`, `getNorthBorderNodeFootprintWidth`, `getSouthBorderNodeFootprintWidth`, `getEastBorderNodeFootprintHeight`, and `getWestBorderNodeFootprintHeight` helpers now take `previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>` instead of `previousDiagram: RawDiagram | null`.
 See `EllipseNodeLayoutHandler` for an updated example.
 - https://github.com/eclipse-sirius/sirius-web/issues/7204[#7204] [sirius-web] Extract the capability APIs such as `ICapabilityVoter`, `CapabilityVote`, `IDefaultCapabilityEvaluator` or `ICapabilityEvaluator` from the module `sirius-web-application` and its package `org.eclipse.sirius.web.application.capability.services` to the module `sirius-components-capabilities` and the package `org.eclipse.sirius.components.capabilities`.
+- https://github.com/eclipse-sirius/sirius-web/issues/7204[#7204] [sirius-web] Move `IDomainEvent` from `org.eclipse.sirius.web.domain.events` in `sirius-web-domain` to `org.eclipse.sirius.web.core.domain.events` in `sirius-web-core-domain` to make it easier for downstream applications to implement their own domain events without having a dependency to specific Sirius Web domain concepts and services.
 
 
 === Dependency update

@@ -26,12 +26,12 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
+import org.eclipse.sirius.web.core.domain.events.IDomainEvent;
 import org.eclipse.sirius.web.application.project.dto.UnserializeImportedRepresentationDataInput;
 import org.eclipse.sirius.web.application.project.dto.UnserializeImportedRepresentationSuccessPayload;
 import org.eclipse.sirius.web.application.project.services.api.IProjectContentImportParticipant;
 import org.eclipse.sirius.web.application.project.services.api.IRepresentationImporterUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
-import org.eclipse.sirius.web.domain.events.IDomainEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

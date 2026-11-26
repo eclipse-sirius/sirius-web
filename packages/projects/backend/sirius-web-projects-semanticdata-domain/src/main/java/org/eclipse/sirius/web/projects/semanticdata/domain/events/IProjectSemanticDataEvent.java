@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.projects.semanticdata.domain.events;
 
-import org.eclipse.sirius.web.domain.events.IDomainEvent;
+import org.eclipse.sirius.web.core.domain.events.IDomainEvent;
 
 /**
  * Interface implemented by all the domain events of the project semantic data bounded context.
