@@ -26,7 +26,7 @@ export const EdgeCreationHandle = ({ edgeId, edgePath, isPathDragged }: EdgeCrea
   const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
   const { setCandidateDescriptionIds } = useConnectorPalette();
 
-  // Unmount/Mount around the center of the edge while selected or moving a bending point or segment
+  // Refresh the handles when layout changes the path, including its center and direction.
   useEffect(() => {
     if (shouldRender && !isPathDragged) {
       mountEdgeHandles(edgeId, edgePath);
@@ -36,7 +36,7 @@ export const EdgeCreationHandle = ({ edgeId, edgePath, isPathDragged }: EdgeCrea
     return () => {
       unMountHandles();
     };
-  }, [shouldRender, isPathDragged]);
+  }, [shouldRender, isPathDragged, edgeId, edgePath]);
 
   // Set candidates in the context
   useEffect(() => {

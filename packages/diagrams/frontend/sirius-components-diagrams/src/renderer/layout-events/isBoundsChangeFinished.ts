@@ -11,25 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
+import { Node, NodeChange } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
-
-const isMoveFinished = (change: NodeChange<Node<NodeData>>, nodes: Node<NodeData>[]): change is NodePositionChange => {
-  return (
-    change.type === 'position' &&
-    typeof change.dragging === 'boolean' &&
-    !change.dragging &&
-    hasDropBeenTriggered(nodes)
-  );
-};
-const isResizeFinished = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
-  change.type === 'dimensions' && typeof change.resizing === 'boolean' && !change.resizing;
+import { isMoveFinished, isResizeFinished } from '../node/nodeChangePredicates';
 
 export const isBoundsChangeFinished = (
   changes: NodeChange<Node<NodeData>>[],
   nodes: Node<NodeData>[]
 ): NodeChange<Node<NodeData>> | undefined => {
-  return changes.find((change) => isMoveFinished(change, nodes) || isResizeFinished(change));
+  return changes.find((change) => (isMoveFinished(change) && hasDropBeenTriggered(nodes)) || isResizeFinished(change));
 };
 
 const hasDropBeenTriggered = (nodes: Node<NodeData>[]): boolean => {

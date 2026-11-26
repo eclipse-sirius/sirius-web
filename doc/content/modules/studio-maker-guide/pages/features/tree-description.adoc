@@ -74,6 +74,22 @@ Note that you have to check the type of the tree item (using a precondition for 
 
 Operation bodies reuse the shared operation language (`ChangeContext`, `CreateInstance`, `SetValue`, `UnsetValue`, `DeleteElement`, `Let`, `If`, `For`), so context menu actions can create semantic children, open representations, or trigger validation services directly from the tree.
 Context menu actions can create semantic children, open representations, or trigger validation services directly from the tree.
+
+=== Preview the impact of a tool with ImpactAnalysis
+
+Set `withImpactAnalysis` to `true` on a `SingleClickTreeItemContextMenuEntry` o show an impact analysis report before executing the tool.
+This boolean is disabled by default.
+
+It is useful for tools that change several semantic elements, so users can review the changes before applying them.
+
+For example, to preview a tool that deletes a semantic element:
+
+1. Add a `SingleClickTreeItemContextMenuEntry` to the tree description.
+2. Define its body with a `DeleteElement` operation.
+3. Enable `withImpactAnalysis` on the tool.
+
+A `CustomTreeItemContextMenuEntry` also exposes this flag, but its frontend contribution must support the impact analysis workflow.
+
 == Styles
 
 Styling for tree items is primarily handled through `TreeItemLabelFragmentDescription`, which has an optional `TextStyleDescription` reference.

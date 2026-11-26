@@ -10,20 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  Edge,
-  InternalNode,
-  Node,
-  NodeChange,
-  NodeDimensionChange,
-  Position,
-  useStoreApi,
-  XYPosition,
-} from '@xyflow/react';
+import { Edge, InternalNode, Node, NodeChange, Position, useStoreApi, XYPosition } from '@xyflow/react';
 import { useCallback, useRef } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DEFAULT_HANDLE_SIZE } from '../edge/EdgeLayout';
 import { DiagramNodeType } from '../node/NodeTypes.types';
+import { isDimensionChange } from '../node/nodeChangePredicates';
 import { ConnectionHandle } from './ConnectionHandles.types';
 import { UseHandleResizedChangeValue } from './useHandleResizedChange.types';
 
@@ -66,8 +58,6 @@ const getHandlePosition = (
   return XYPosition;
 };
 
-const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange => change.type === 'dimensions';
-
 export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = storeApi.getState();
@@ -87,7 +77,7 @@ export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
     ): Node<NodeData, DiagramNodeType>[] => {
       const updatedConnectionHandles: Map<string, ConnectionHandle[]> = new Map();
       changes.forEach((change: NodeChange<Node<NodeData>>) => {
-        if (isResize(change)) {
+        if (isDimensionChange(change)) {
           const resizedNode = nodeLookup.get(change.id);
           if (resizedNode) {
             const resizedNodeInitialHeight = initialDimensionsRef.current.initialHeight.get(resizedNode.id);

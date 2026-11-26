@@ -64,6 +64,7 @@ Each configuration exposes `id`, `label`, `iconURL` and a list of string `key`/`
 - https://github.com/eclipse-sirius/sirius-web/issues/5485[#5485] [diagram] Edge bending points are above line segments
 - https://github.com/eclipse-sirius/sirius-web/issues/7181[#7181] [diagram] Fix an issue where a tool configured with an impact analysis report and defined outside the View DSL was not executed correctly.
 - https://github.com/eclipse-sirius/sirius-web/issues/7190[#7190] [tree] Fix an issue where the loading indicator of the explorer view was not rendered during the whole loading phase.
+- https://github.com/eclipse-sirius/sirius-web/issues/7187[#7187] [diagram] Keep creation handles aligned with their node or edge owner when an Arrange All action is triggered.
 
 
 === New Features
@@ -91,7 +92,8 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - [doc] Add a minimal documentation requirement for every pull request to ensure that the documentation is kept up to date with the code changes.
 At least 10 to 25 lines of documentation must be added in every pull request depending on the size of the changes.
 - [releng] Run end-to-end tests at the end of the main build job so that their failures do not prevent Docker images from being published.
-
+- [cleanup] [diagram] Centralize XYFlow change predicates.
+- [doc] Document impact analysis configuration, library update previews and the execution lifecycle of custom diagram tools.
 
 
 == 2026.11.0

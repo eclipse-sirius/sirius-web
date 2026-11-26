@@ -73,6 +73,21 @@ test.describe('diagram - arrange all', () => {
     expect(reactFlowXYPositionAfter.y).toBe(reactFlowXYPositionBefore.y);
     expect(reactFlowXYPositionAfter.x).toBe(reactFlowXYPositionBefore.x);
   });
+
+  test('when arrange all moves a selected node, then its creation handles follow it', async ({ page }) => {
+    const diagram = new PlaywrightDiagram(page);
+    const wifiNode = new PlaywrightNode(page, 'Wifi');
+    await diagram.waitForLayout(() => wifiNode.move({ x: 200, y: 100 }));
+    await wifiNode.click();
+    const positionBefore = await wifiNode.getNodePosition();
+    await expect.poll(() => wifiNode.areCreationHandlesAligned()).toBe(true);
+
+    await diagram.arrangeAll();
+
+    // Keep the original selection: selecting the node again would recreate its handles and hide the regression.
+    await expect.poll(() => wifiNode.getNodePosition()).not.toEqual(positionBefore);
+    await expect.poll(() => wifiNode.areCreationHandlesAligned()).toBe(true);
+  });
 });
 
 test.describe('diagram - arrange all', () => {

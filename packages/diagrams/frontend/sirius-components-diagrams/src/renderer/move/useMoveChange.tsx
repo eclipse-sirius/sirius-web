@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
+import { isDragChange } from '../node/nodeChangePredicates';
 import { UseMoveChangeValue } from './useMoveChange.types';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
@@ -40,16 +41,13 @@ const applyPositionChangeToParentIfUndraggable = (
   }
 };
 
-const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
-  change.type === 'position' && typeof change.dragging === 'boolean';
-
 export const useMoveChange = (): UseMoveChangeValue => {
   const { getNodes } = useStore();
 
   const transformUndraggableListNodeChanges = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       return changes.map((change) => {
-        if (isMove(change)) {
+        if (isDragChange(change)) {
           const movedNode = getNodes().find((node) => change.id === node.id);
           if (movedNode?.parentId && !movedNode.data.isBorderNode) {
             applyPositionChangeToParentIfUndraggable(movedNode, getNodes(), change);
@@ -66,7 +64,7 @@ export const useMoveChange = (): UseMoveChangeValue => {
 
   const applyMoveChange = (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): Node<NodeData>[] => {
     changes.forEach((change) => {
-      if (isMove(change)) {
+      if (isDragChange(change)) {
         const movedNode = nodes.find((node) => node.id === change.id);
         if (movedNode) {
           movedNode.zIndex = 1;

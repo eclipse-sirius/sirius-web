@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,17 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
+import { Node, NodeChange } from '@xyflow/react';
 import { useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { NodeData } from '../DiagramRenderer.types';
+import { isDimensionChange, isPositionChange } from '../node/nodeChangePredicates';
 import { UseFilterReadOnlyChangesValue } from './useFilterReadOnlyChanges.types';
 
-const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange => change.type === 'position';
-const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange => change.type === 'dimensions';
-
-const isChangingDiagram = (change: NodeChange<Node<NodeData>>): boolean => isMove(change) || isResize(change);
+const isChangingDiagram = (change: NodeChange<Node<NodeData>>): boolean =>
+  isPositionChange(change) || isDimensionChange(change);
 
 export const useFilterReadOnlyChanges = (): UseFilterReadOnlyChangesValue => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
