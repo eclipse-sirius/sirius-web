@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.document.services.api.IProxyValidator;
-import org.eclipse.sirius.web.application.document.services.api.IUploadDocumentReportProvider;
 import org.eclipse.sirius.web.application.document.services.api.IUploadFileLoader;
 import org.eclipse.sirius.web.application.document.services.api.UploadedResource;
 import org.eclipse.sirius.web.application.project.services.api.IProjectContentImportParticipant;
@@ -46,6 +45,9 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
 import org.eclipse.sirius.web.domain.events.IDomainEvent;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.projects.domain.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.projects.semanticdata.domain.events.ProjectSemanticDataCreatedEvent;
 import org.slf4j.Logger;
@@ -77,17 +79,20 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
 
     private final IProxyValidator proxyValidator;
 
+    private final ILibrarySearchService librarySearchService;
+
     private final Logger logger = LoggerFactory.getLogger(SemanticDataProjectContentImportParticipant.class);
 
     public SemanticDataProjectContentImportParticipant(
-            IEditingContextSearchService editingContextSearchService, IUploadFileLoader uploadDocumentLoader, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, ISemanticDataUpdateService semanticDataUpdateService,
-            IEditingContextPersistenceService editingContextPersistenceService, IRewriteProxiesService rewriteProxiesService, IProxyValidator proxyValidator) {
+            IEditingContextSearchService editingContextSearchService, IUploadFileLoader uploadDocumentLoader, ISemanticDataUpdateService semanticDataUpdateService,
+            IEditingContextPersistenceService editingContextPersistenceService, IRewriteProxiesService rewriteProxiesService, IProxyValidator proxyValidator, ILibrarySearchService librarySearchService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.uploadDocumentLoader = Objects.requireNonNull(uploadDocumentLoader);
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.rewriteProxiesService = Objects.requireNonNull(rewriteProxiesService);
         this.proxyValidator = Objects.requireNonNull(proxyValidator);
+        this.librarySearchService = Objects.requireNonNull(librarySearchService);
     }
 
     @Override
@@ -109,9 +114,8 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
                 var dependencies = list.stream()
                         .filter(String.class::isInstance)
                         .map(String.class::cast)
-                        .map(new UUIDParser()::parse)
+                        .map(this::parseDependencyEntry)
                         .flatMap(Optional::stream)
-                        .map(AggregateReference::<SemanticData, UUID> to)
                         .toList();
 
                 this.semanticDataUpdateService.addDependencies(event, AggregateReference.to(semanticDataCreatedEvent.semanticData().getId()), dependencies);
@@ -123,6 +127,31 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
                 this.copyDocuments(initializeProjectInput, editingContextId, documentsToUpload);
             }
         }
+    }
+
+    private Optional<AggregateReference<SemanticData, UUID>> parseDependencyEntry(String dependencyEntry) {
+        Optional<AggregateReference<SemanticData, UUID>> result = Optional.empty();
+        Optional<UUID> semanticDataDependency = new UUIDParser().parse(dependencyEntry);
+        if (semanticDataDependency.isPresent()) {
+            // SemanticData-type dependencies
+            result = semanticDataDependency.map(AggregateReference::to);
+        } else {
+            // namespace:name@version dependencies
+            result = this.parseLibraryId(dependencyEntry)
+                    .flatMap(this.librarySearchService::findById)
+                    .map(Library::getSemanticData);
+        }
+        return result;
+    }
+
+    private Optional<LibraryId> parseLibraryId(String value) {
+        Optional<LibraryId> result = Optional.empty();
+        int versionSeparator = value.lastIndexOf('@');
+        int nameSeparator = value.indexOf(':');
+        if (nameSeparator > 0 && versionSeparator > nameSeparator) {
+            result = Optional.of(new LibraryId(value.substring(0, nameSeparator), value.substring(nameSeparator + 1, versionSeparator), value.substring(versionSeparator + 1)));
+        }
+        return result;
     }
 
     /**

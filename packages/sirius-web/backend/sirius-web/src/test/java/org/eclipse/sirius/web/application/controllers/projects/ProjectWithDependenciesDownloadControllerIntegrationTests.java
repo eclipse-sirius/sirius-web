@@ -100,7 +100,7 @@ public class ProjectWithDependenciesDownloadControllerIntegrationTests extends A
                         }
                       },
                       "dependencies":[
-                        "6f24a044-1605-484d-96c3-553ff6bc184d"
+                        "papaya:sirius-web-tests-data@1.0.0"
                       ]
                     }
                     """;

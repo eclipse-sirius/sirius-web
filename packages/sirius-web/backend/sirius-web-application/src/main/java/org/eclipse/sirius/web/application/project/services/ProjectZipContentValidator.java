@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.project.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectZipContentValidator;
@@ -21,6 +22,8 @@ import org.eclipse.sirius.web.core.domain.results.Failure;
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -36,12 +39,15 @@ public class ProjectZipContentValidator implements IProjectZipContentValidator {
 
     private final IEditingContextSearchService editingContextSearchService;
 
+    private final ILibrarySearchService librarySearchService;
+
     private final IMessageService messageService;
 
     private final Logger logger = LoggerFactory.getLogger(ProjectZipContentValidator.class);
 
-    public ProjectZipContentValidator(IEditingContextSearchService editingContextSearchService, IMessageService messageService) {
+    public ProjectZipContentValidator(IEditingContextSearchService editingContextSearchService, ILibrarySearchService librarySearchService, IMessageService messageService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
+        this.librarySearchService = Objects.requireNonNull(librarySearchService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -55,7 +61,7 @@ public class ProjectZipContentValidator implements IProjectZipContentValidator {
             var unknownDependencies = list.stream()
                     .filter(String.class::isInstance)
                     .map(String.class::cast)
-                    .filter(dependencyId -> !this.editingContextSearchService.existsById(dependencyId))
+                    .filter(dependency -> !this.isValidDependency(dependency))
                     .toList();
 
             if (!unknownDependencies.isEmpty()) {
@@ -68,6 +74,21 @@ public class ProjectZipContentValidator implements IProjectZipContentValidator {
             }
         }
 
+        return result;
+    }
+
+    private boolean isValidDependency(String dependencyEntry) {
+        return this.editingContextSearchService.existsById(dependencyEntry)
+                || this.parseLibraryId(dependencyEntry).map(this.librarySearchService::existsById).orElse(false);
+    }
+
+    private Optional<LibraryId> parseLibraryId(String value) {
+        Optional<LibraryId> result = Optional.empty();
+        int versionSeparator = value.lastIndexOf('@');
+        int nameSeparator = value.indexOf(':');
+        if (nameSeparator > 0 && versionSeparator > nameSeparator) {
+            result = Optional.of(new LibraryId(value.substring(0, nameSeparator), value.substring(nameSeparator + 1, versionSeparator), value.substring(versionSeparator + 1)));
+        }
         return result;
     }
 }
