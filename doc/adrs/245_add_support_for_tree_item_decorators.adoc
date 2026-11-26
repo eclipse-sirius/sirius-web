@@ -1,0 +1,79 @@
+:author: Pierre-Charles David
+:date: 2026-11-26
+:status: proposed
+:consulted: Stéphane Bégaudeau, William Piers
+:informed: Stéphane Bégaudeau, William Piers, Mélanie Bats
+:deciders: Stéphane Bégaudeau
+:pitch: doc/iterations/2026.12/add_support_for_tree_item_decorators.adoc
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/7200
+
+= ADR-245 - Add support for Explorer tree item decorators
+
+== Context and Problem Statement
+
+Applications built on Sirius Web need to attach visual cues, such as validation status, to items in the default Explorer.
+Several independent features may contribute cues to the same item.
+Each cue has an icon and may have a short text label.
+
+== Decision Drivers
+
+- Applications can extend the default Explorer through Java without replacing its description.
+- Decorators from multiple contributions appear together in a stable order.
+- Work stays proportional to the rendered items, including when a large branch is collapsed.
+- Decorators fit alongside existing tree item labels and actions without introducing interactive controls.
+
+== Considered Options
+
+=== Compose Explorer decorator service delegates
+
+Use the existing Explorer service and delegate convention to compute decorators during tree rendering.
+The renderer has access to each item's source object, including objects that would require special handling to resolve from an item ID.
+The computed values can travel in the existing tree subscription payload.
+
+=== Resolve decorators separately from the rendered tree
+
+Use a dedicated lookup keyed by tree item IDs.
+This would allow clients to request decorators independently, at the cost of resolving source objects again and coordinating results with tree refreshes.
+
+=== Supply an alternate Explorer description
+
+An application could wire decorators into its own tree description.
+This gives the application control over rendering inputs but requires it to maintain that description alongside the default Explorer and combine contributions itself.
+
+== Decision Outcome
+
+The default Explorer uses a composed decorator service following the pattern of `IExplorerTooltipService`, `ComposedExplorerTooltipService`, and `IExplorerTooltipServiceDelegate`.
+Applications register `IExplorerDecoratorServiceDelegate` beans that opt in for an editing context and source object.
+The composed service concatenates every matching delegate's results in Spring bean order and preserves the order returned by each delegate.
+The default result is an empty list.
+
+The tree renderer evaluates the Explorer provider only for items it renders.
+The GraphQL `TreeItem.decorators` field is a non-null list of non-null entries with a mandatory `iconURL` and nullable `label`.
+The frontend displays the decorators side by side on the right of the tree row as passive icons and text.
+The built-in provider is configured only on the default Explorer and is available through the Java API.
+
+== Consequences
+
+=== Advantages
+
+- Independent contributions can coexist on one item while reusing the default description.
+- Decorators update with the tree through the existing subscription.
+- Collapsed descendants incur no decorator computation, and rows with an empty list render no decorator elements.
+
+=== Drawbacks
+
+- Every rendered Explorer item incurs an applicability check per registered delegate, so delegates should keep that check inexpensive.
+- The shared tree subscription carries an empty list for undecorated items.
+- The row layout assumes that the contributed decorators fit in the available space.
+
+== More Information
+
+=== Implementation
+
+- Deliver the Java extension point, tree rendering, GraphQL field, and frontend rendering together so the subscription has a consistent contract.
+- Verify the contract with an Explorer subscription test covering contribution order, optional labels, and undecorated items.
+
+=== References
+
+- xref:../iterations/2026.12/add_support_for_tree_item_decorators.adoc[Add support for configurable Explorer tree item decorators]
+- xref:227_add_support_for_node_decorators.adoc[ADR-227 - Add support for node decorators]
