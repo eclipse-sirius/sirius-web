@@ -83,6 +83,7 @@ See `EllipseNodeLayoutHandler` for an updated example.
 - https://github.com/eclipse-sirius/sirius-web/issues/7088[#7088] [table] Add the ability to adjust table row heights to fit their content.
 - https://github.com/eclipse-sirius/sirius-web/issues/7198[#7198] [diagram] Add support for NodeInsideLabel
 - https://github.com/eclipse-sirius/sirius-web/issues/7200[#7200] [tree] Allow applications to contribute icons with optional labels to items in the default Explorer.
+- https://github.com/eclipse-sirius/sirius-web/issues/7200[#7200] [tree] Show Papaya task priority and completion in the Explorer.
 
 
 
