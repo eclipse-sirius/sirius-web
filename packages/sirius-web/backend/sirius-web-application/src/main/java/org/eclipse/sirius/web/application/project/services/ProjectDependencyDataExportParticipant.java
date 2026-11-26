@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.project.services;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.zip.ZipOutputStream;
 
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -22,8 +23,9 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectExportPar
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.projects.domain.Project;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,8 +38,11 @@ public class ProjectDependencyDataExportParticipant implements IProjectExportPar
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
-    public ProjectDependencyDataExportParticipant(ISemanticDataSearchService semanticDataSearchService) {
+    private final ILibrarySearchService librarySearchService;
+
+    public ProjectDependencyDataExportParticipant(ISemanticDataSearchService semanticDataSearchService, ILibrarySearchService librarySearchService) {
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
+        this.librarySearchService = Objects.requireNonNull(librarySearchService);
     }
 
     @Override
@@ -49,7 +54,9 @@ public class ProjectDependencyDataExportParticipant implements IProjectExportPar
 
         var dependencies = semanticDataDependencies.stream()
                 .map(SemanticDataDependency::dependencySemanticDataId)
-                .map(AggregateReference::getId)
+                .map(this.librarySearchService::findBySemanticData)
+                .flatMap(Optional::stream)
+                .map(Library::getId)
                 .map(Objects::toString)
                 .toList();
 

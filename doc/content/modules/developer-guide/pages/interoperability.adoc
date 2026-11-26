@@ -5,10 +5,31 @@ The interoperability inherent in an open source tool such as {product} is a corn
 [#import-export]
 == Import and export
 
+Exported projects are ZIP archives containing models and representations in JSON format.
+Each archive includes a `manifest.json` file describing its contents and dependencies.
+
 === JSON format
 
-{product} extends its utility by introducing the capability to import and export projects in JSON format.
+{product} extends its utility by introducing the capability to import and export project data in JSON format.
 This feature enhances interoperability, allowing users to seamlessly exchange project data and collaborate with external tools or platforms.
 
 For detailed instructions on xref:user-manual:hands-on/how-tos/project-management.adoc#download-project[downloading projects], xref:user-manual:hands-on/how-tos/model-management.adoc#download-model[downloading models], xref:user-manual:hands-on/how-tos/project-management.adoc#upload-project[uploading projects], and xref:user-manual:hands-on/how-tos/model-management.adoc#upload-model[uploading models], please refer to the respective sections in the documentation.
 These sections provide step-by-step guidance on how to perform these actions within the {product} environment.
+
+=== Library dependencies
+
+The manifest's `dependencies` array identifies the xref:user-manual:features/libraries.adoc[libraries] used by the project.
+Since {product} 2026.12.0, each dependency uses the library identifier serialized as `namespace:name@version` instead of its semantic data UUID.
+For example, a manifest can contain the following dependency:
+
+[source,json]
+----
+{
+  "dependencies": ["papaya:java@1.0.0"]
+}
+----
+
+To import the project into another {product} instance, the same libraries must already be published there with matching namespaces, names, and versions.
+
+Older manifests containing semantic data UUIDs remain supported on import.
+Versions of {product} prior to 2026.12.0 cannot import projects whose manifests use the new library identifier format.

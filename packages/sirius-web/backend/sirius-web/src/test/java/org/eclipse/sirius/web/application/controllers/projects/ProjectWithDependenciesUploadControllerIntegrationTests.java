@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -31,6 +32,9 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.UploadProjectInput;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.LibraryId;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.projects.semanticdata.domain.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -81,6 +85,9 @@ public class ProjectWithDependenciesUploadControllerIntegrationTests extends Abs
 
     @Autowired
     private ISemanticDataSearchService semanticDataSearchService;
+
+    @Autowired
+    private ILibrarySearchService librarySearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -179,7 +186,11 @@ public class ProjectWithDependenciesUploadControllerIntegrationTests extends Abs
                 .map(AggregateReference::getId)
                 .map(Object::toString)
                 .toList();
-        assertThat(dependencyIds).containsExactly("6f24a044-1605-484d-96c3-553ff6bc184d");
+
+        Optional<Library> optionalPapayaLibrary = this.librarySearchService.findById(new LibraryId("papaya", "java", "1.0.0"));
+        assertThat(optionalPapayaLibrary).isPresent();
+
+        assertThat(dependencyIds).containsExactly("6f24a044-1605-484d-96c3-553ff6bc184d", optionalPapayaLibrary.get().getSemanticData().getId().toString());
     }
 
     private byte[] getZipTestFile() {
@@ -217,7 +228,8 @@ public class ProjectWithDependenciesUploadControllerIntegrationTests extends Abs
               "representations":{
               },
               "dependencies":[
-                "6f24a044-1605-484d-96c3-553ff6bc184d"
+                "6f24a044-1605-484d-96c3-553ff6bc184d",
+                "papaya:java@1.0.0"
               ]
             }
             """;

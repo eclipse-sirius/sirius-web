@@ -25,6 +25,9 @@ The `sirius-components-collaborative-diagrams` module provides the default confi
 - Node layout handlers have been refactored for clarity, separating horizontal and vertical child positioning into dedicated methods and sharing dimension and border node layout helpers.
 Downstream applications with custom nodes can follow the same structure in their layout handlers, using `EllipseNodeLayoutHandler` as an example.
 Adopting this refactoring is optional.
+- Exported project manifests now identify library dependencies as `namespace:name@version`, allowing projects to be exchanged between instances where the same libraries are published.
+Older manifests using semantic data UUIDs remain supported on import when those UUIDs exist in the target instance.
+Projects exported with the new dependency format cannot be imported into older versions of {product}.
 
 
 == Bug fixes

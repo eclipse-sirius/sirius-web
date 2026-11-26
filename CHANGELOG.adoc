@@ -46,6 +46,9 @@ Each configuration exposes `id`, `label`, `iconURL` and a list of string `key`/`
 Downstream applications with custom nodes can follow the same structure in their layout handlers, using `EllipseNodeLayoutHandler` as an example.
 The exported `setBorderNodesPosition`, `getNorthBorderNodeFootprintWidth`, `getSouthBorderNodeFootprintWidth`, `getEastBorderNodeFootprintHeight`, and `getWestBorderNodeFootprintHeight` helpers now take `previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>` instead of `previousDiagram: RawDiagram | null`.
 See `EllipseNodeLayoutHandler` for an updated example.
+- https://github.com/eclipse-sirius/sirius-web/issues/6453[#6453] [sirius-web] Exported project manifests now contain namespace:name@version dependencies instead of non-portable UUID.
+Manifest created from this version onwards are not compatible with previous versions of Sirius Web.
+Note that older manifests can still be imported in the current version of Sirius Web.
 
 
 === Dependency update
@@ -101,7 +104,8 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 At least 10 to 25 lines of documentation must be added in every pull request depending on the size of the changes.
 - [releng] Run end-to-end tests at the end of the main build job so that their failures do not prevent Docker images from being published.
 - https://github.com/eclipse-sirius/sirius-web/issues/7198[#7198] [diagram] Render inside labels and node actions separately
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6453[#6453] [sirius-web] Exported project manifests now contain namespace:name@version dependencies instead of non-portable UUID.
+This makes dependencies portable across Sirius Web instances, as long as the same library (with the same namespace, name, version) is available.
 
 
 == 2026.11.0
