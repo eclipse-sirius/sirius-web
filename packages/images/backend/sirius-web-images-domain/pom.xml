@@ -31,7 +31,7 @@
     <dependencies>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
-            <artifactId>sirius-web-domain</artifactId>
+            <artifactId>sirius-web-core-domain</artifactId>
             <version>2026.11.2</version>
         </dependency>
 

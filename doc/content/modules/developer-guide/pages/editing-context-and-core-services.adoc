@@ -1,0 +1,16 @@
+= IEditingContext and core services
+
+The `IEditingContext` is an abstraction of the semantic data of the domain being manipulated.
+The only constraint that Sirius Components require from the `IEditingContext` is the presence of an identifier.
+
+Sirius Components does not assume how semantic data are stored or which data structure they use.
+Anything in Sirius Components can be a semantic object like EMF based objects, regular Java data structure, representation, remote data, etc.
+The `IEditingContext` may contain the data in-memory, like the default EMF based implementation of Sirius Web does it, or just contain a mean to connect to a remote datastore.
+In Sirius Web, the data in the `IEditingContext` are the runtime view of one `SemanticData` aggregate.
+Core services will use the `IEditingContext` as a mean to find and interact with the semantic data.
+
+Sirius Components provides various core services which are used to interact with the `IEditingContext`:
+
+- `IIdentityService`: Computes a stable identifier for semantic objects
+- `IObjectSearchService`: Finds a semantic object from its identifier, the inverse partnership of `IIdentityService`
+- `ILabelService`: Provides a label and image for semantic objects.

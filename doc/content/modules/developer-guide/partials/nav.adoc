@@ -6,6 +6,7 @@
 ** xref:developer-guide:backend/architecture.adoc[]
 ** xref:developer-guide:backend/technical-stack.adoc[]
 ** xref:developer-guide:backend/project-creation-lifecycle.adoc[]
+** xref:developer-guide:editing-context-and-core-services.adoc[]
 ** xref:developer-guide:capabilities.adoc[]
 * xref:developer-guide:testing.adoc[]
 * xref:developer-guide:workstation.adoc[]
