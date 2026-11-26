@@ -14,9 +14,9 @@ package org.eclipse.sirius.web.e2e.tests.capabilities;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.capabilities.api.CapabilityVote;
+import org.eclipse.sirius.components.capabilities.api.ICapabilityVoter;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
 import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

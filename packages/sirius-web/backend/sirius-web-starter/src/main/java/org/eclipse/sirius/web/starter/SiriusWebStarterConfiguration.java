@@ -41,6 +41,7 @@ import reactor.core.scheduler.Schedulers;
 @AutoConfiguration
 @ComponentScan(basePackages = {
     "org.eclipse.sirius.components.browser",
+    "org.eclipse.sirius.components.capabilities",
     "org.eclipse.sirius.components.core",
     "org.eclipse.sirius.components.collaborative",
     "org.eclipse.sirius.components.emf",

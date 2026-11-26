@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.capability.services;
 
-import org.eclipse.sirius.web.application.capability.services.api.IDefaultCapabilityEvaluator;
+import org.eclipse.sirius.components.capabilities.api.IDefaultCapabilityEvaluator;
 import org.springframework.context.annotation.Fallback;
 import org.springframework.stereotype.Service;
 

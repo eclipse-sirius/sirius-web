@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,6 +77,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
     private void createCore(IEMFEditingContext editingContext) {
         var siriusComponentsAnnotations = new ComponentInitializer().initialize("sirius-components-annotations", "org.eclipse.sirius.components.annotations", packageName -> packageName.equals("org.eclipse.sirius.components.annotations"));
         var siriusComponentsAnnotationsSpring = new ComponentInitializer().initialize("sirius-components-annotations-spring", "org.eclipse.sirius.components.annotations.spring", packageName -> packageName.startsWith("org.eclipse.sirius.components.annotations.spring"));
+        var siriusComponentsCapabilities = new ComponentInitializer().initialize("sirius-components-capabilities", "org.eclipse.sirius.components.capabilities", packageName -> packageName.startsWith("org.eclipse.sirius.components.capabilities"));
 
         var siriusComponentsCollaborativePackages = List.of(
                 "org.eclipse.sirius.components.collaborative",
@@ -102,6 +103,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         siriusComponentsCoreBackend.getElements().addAll(List.of(
                 siriusComponentsAnnotations,
                 siriusComponentsAnnotationsSpring,
+                siriusComponentsCapabilities,
                 siriusComponentsCollaborative,
                 siriusComponentsCore,
                 siriusComponentsGraphQLApi,

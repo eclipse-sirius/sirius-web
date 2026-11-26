@@ -6,13 +6,25 @@ This page documents the inputs seen by a voter and the capabilities currently qu
 
 == How voting works
 
-`ICapabilityVoter#vote(type, identifier, capability)` receives:
+In order to use the capability voters, you have to depend on the module `sirius-components-capabilities`.
+It provides the `ICapabilityEvaluator` which will check every capability voter available to figure out if a capability is available or not.
+For that, it will ask every capability voter to vote and consider the result.
+A capability voter can abstain, grant the capability or deny it.
+All those who abstain will be ignored.
+A capability will be available only if every non-abstaining capability voter has granted the capability.
+
+If all capability voters have abstained from the vote, then we will leverage the `IDefaultCapabilityEvaluator` to have a default value.
+By default, Sirius Web will return `true` for all possible capability checks.
+To change this behavior and deny everything by default, just provide an implementation of `IDefaultCapabilityEvaluator` returning `false`.
+
+`ICapabilityVoter#vote(type, identifier, capability): CapabilityVote` receives:
 
 * `type` — identifies the resource category (for example `Project` or `ProjectSettings#images`).
 * `identifier` — optional resource identifier; when the capability applies to a specific instance it contains the project/library id, otherwise it is `null`.
 * `capability` — the action being tested (for example `canCreate`).
 
-Return `CapabilityResult.granted()` to enable the feature, or `CapabilityResult.denied("reason")` to disable it.
+Return `CapabilityVote.GRANTED` to enable the feature, or `CapabilityVote.DENIED` to disable it.
+It is critical to return `CapabilityVote.ABSTAIN` if your capability voter does not need to take part to the vote.
 
 == Supported capabilities
 

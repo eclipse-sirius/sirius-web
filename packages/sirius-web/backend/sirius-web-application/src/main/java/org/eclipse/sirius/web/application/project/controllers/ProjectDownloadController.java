@@ -15,8 +15,8 @@ package org.eclipse.sirius.web.application.project.controllers;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.capabilities.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportService;
 import org.eclipse.sirius.web.projects.domain.services.api.IProjectSearchService;

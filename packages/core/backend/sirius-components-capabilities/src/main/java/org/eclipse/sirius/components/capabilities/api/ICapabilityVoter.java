@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.capability.services.api;
-
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
+package org.eclipse.sirius.components.capabilities.api;
 
 /**
  * Used to vote on the capability.
@@ -44,8 +42,6 @@ import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
  * }
  *}
  *
- *
- * @see org.eclipse.sirius.web.application.capability.controllers.ProjectsCapabilitiesCanCreateDataFetcher
  * @author gcoutable
  */
 public interface ICapabilityVoter {
