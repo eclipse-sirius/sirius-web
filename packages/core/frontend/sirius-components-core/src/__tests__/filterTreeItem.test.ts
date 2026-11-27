@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -108,7 +108,7 @@ test('should split text in a case insensitive manner', () => {
   expect(splitText('Something Different', comPattern)).toStrictEqual(['Something Different']);
   expect(splitText('Another Label', comPattern)).toStrictEqual(['Another Label']);
   expect(splitText('A null pattern', null)).toStrictEqual(['A null pattern']);
-  expect(splitText('An undefined pattern', undefined)).toStrictEqual(['An undefined pattern']);
+  expect(splitText('An undefined pattern', null)).toStrictEqual(['An undefined pattern']);
   expect(splitText('An empty pattern', '')).toStrictEqual(['An empty pattern']);
   expect(splitText('A pattern with []*(){}^/$ special characters', '[]*(){}^/$')).toStrictEqual([
     'A pattern with ',
