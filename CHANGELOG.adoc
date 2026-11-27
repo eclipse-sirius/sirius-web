@@ -14,7 +14,7 @@
 - [ADR-242] Add the ability to fit table row height and column width
 - [ADR-243] Allow to contribute query result actions
 - [ADR-244] Compute select cell options on demand
-
+- [ADR-245] Use library ID in manifest dependencies
 
 === Deprecation warning
 
