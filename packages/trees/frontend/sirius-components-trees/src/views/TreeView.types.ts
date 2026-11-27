@@ -51,10 +51,16 @@ export interface GQLTreeItem {
   label: GQLStyledString;
   kind: string;
   iconURL: [string];
+  decorators: GQLTreeItemDecorator[];
   hasChildren: boolean;
   children: GQLTreeItem[];
   expanded: boolean;
   editable: boolean;
   deletable: boolean;
   selectable: boolean;
+}
+
+export interface GQLTreeItemDecorator {
+  iconURL: string;
+  label: string | null;
 }

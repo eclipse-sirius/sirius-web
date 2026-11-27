@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.trees.TreeItemDecorator;
 
 /**
  * The root concept of the description of a tree representation.
@@ -67,6 +68,8 @@ public final class TreeDescription implements IRepresentationDescription {
     private Function<VariableManager, Object> parentObjectProvider;
 
     private Function<VariableManager, List<String>> treeItemIconURLsProvider;
+
+    private Function<VariableManager, List<TreeItemDecorator>> treeItemDecoratorsProvider;
 
     private Function<VariableManager, Boolean> editableProvider;
 
@@ -140,6 +143,10 @@ public final class TreeDescription implements IRepresentationDescription {
 
     public Function<VariableManager, List<String>> getTreeItemIconURLsProvider() {
         return this.treeItemIconURLsProvider;
+    }
+
+    public Function<VariableManager, List<TreeItemDecorator>> getTreeItemDecoratorsProvider() {
+        return this.treeItemDecoratorsProvider;
     }
 
     public Function<VariableManager, Boolean> getEditableProvider() {
@@ -232,6 +239,8 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, List<String>> treeItemIconURLsProvider;
 
+        private Function<VariableManager, List<TreeItemDecorator>> treeItemDecoratorsProvider = variableManager -> List.of();
+
         private Function<VariableManager, Boolean> editableProvider;
 
         private Function<VariableManager, Boolean> deletableProvider;
@@ -270,6 +279,7 @@ public final class TreeDescription implements IRepresentationDescription {
             this.targetObjectIdProvider = treeDescription.getTargetObjectIdProvider();
             this.parentObjectProvider = treeDescription.getParentObjectProvider();
             this.treeItemIconURLsProvider = treeDescription.getTreeItemIconURLsProvider();
+            this.treeItemDecoratorsProvider = treeDescription.getTreeItemDecoratorsProvider();
             this.editableProvider = treeDescription.getEditableProvider();
             this.deletableProvider = treeDescription.getDeletableProvider();
             this.selectableProvider = treeDescription.getSelectableProvider();
@@ -326,6 +336,11 @@ public final class TreeDescription implements IRepresentationDescription {
 
         public Builder treeItemIconURLsProvider(Function<VariableManager, List<String>> treeItemIconURLsProvider) {
             this.treeItemIconURLsProvider = Objects.requireNonNull(treeItemIconURLsProvider);
+            return this;
+        }
+
+        public Builder treeItemDecoratorsProvider(Function<VariableManager, List<TreeItemDecorator>> treeItemDecoratorsProvider) {
+            this.treeItemDecoratorsProvider = Objects.requireNonNull(treeItemDecoratorsProvider);
             return this;
         }
 
@@ -400,6 +415,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             treeDescription.parentObjectProvider = Objects.requireNonNull(this.parentObjectProvider);
             treeDescription.treeItemIconURLsProvider = Objects.requireNonNull(this.treeItemIconURLsProvider);
+            treeDescription.treeItemDecoratorsProvider = this.treeItemDecoratorsProvider;
             treeDescription.editableProvider = Objects.requireNonNull(this.editableProvider);
             treeDescription.deletableProvider = Objects.requireNonNull(this.deletableProvider);
             treeDescription.selectableProvider = Objects.requireNonNull(this.selectableProvider);

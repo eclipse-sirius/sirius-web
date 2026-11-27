@@ -36,12 +36,18 @@ type TreeItem {
   label: StyledString!
   kind: String!
   iconURL: [String!]!
+  decorators: [TreeItemDecorator!]!
   editable: Boolean!
   deletable: Boolean!
   selectable: Boolean!
   expanded: Boolean!
   hasChildren: Boolean!
   children: [TreeItem]!
+}
+
+type TreeItemDecorator {
+  iconURL: String!
+  label: String
 }
 
 type StyledString {

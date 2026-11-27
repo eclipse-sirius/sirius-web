@@ -22,9 +22,11 @@ import java.util.UUID;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.core.api.labels.StyledStringFragment;
 import org.eclipse.sirius.components.core.api.labels.StyledStringFragmentStyle;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.components.trees.TreeItemDecorator;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +93,7 @@ public class TreeRenderer {
         boolean deletable = this.treeDescription.getDeletableProvider().apply(treeItemVariableManager);
         boolean selectable = this.treeDescription.getSelectableProvider().apply(treeItemVariableManager);
         List<String> iconURLs = this.treeDescription.getTreeItemIconURLsProvider().apply(treeItemVariableManager);
+        List<TreeItemDecorator> decorators = this.treeDescription.getTreeItemDecoratorsProvider().apply(treeItemVariableManager);
 
         if (this.loopDetected(treeItemVariableManager, id)) {
             return this.renderWarningTreeItem(id, kind, label, iconURLs, treeItemVariableManager);
@@ -107,7 +110,7 @@ public class TreeRenderer {
             List<Object> childAncestors = new ArrayList<Object>(treeItemVariableManager.get(ANCESTOR_IDS, List.class).orElse(List.of()));
             childAncestors.add(id);
             childVariableManager.put(ANCESTOR_IDS, childAncestors);
-            childVariableManager.put(VariableManager.SELF, child);
+            childVariableManager.put(RepresentationVariables.SELF.name(), child);
             childVariableManager.put(INDEX, childIndex++);
             childrenTreeItems.add(this.renderTreeItem(childVariableManager));
         }
@@ -119,6 +122,7 @@ public class TreeRenderer {
                 .deletable(deletable)
                 .selectable(selectable)
                 .iconURL(iconURLs)
+                .decorators(decorators)
                 .children(childrenTreeItems)
                 .hasChildren(hasChildren)
                 .expanded(expanded)

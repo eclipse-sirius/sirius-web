@@ -66,6 +66,10 @@ const getDocumentSubscription = gql`
     selectable
     kind
     iconURL
+    decorators {
+      iconURL
+      label
+    }
   }
 `.loc.source.body.trim();
 

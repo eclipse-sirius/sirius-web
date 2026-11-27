@@ -49,6 +49,8 @@ It allows reducing the selected tree item and all its children recursively.
 - The selected explorer description and expanded items are now saved in your browser and restored when you refresh the page or reopen the project.
 - The table top toolbar provides an action to dynamically resize the visible row heights to fit the cell contents.
 - The table column provides an action to resize a column width to fit the cell contents.
+- Applications can decorate items in the default Explorer with icons and optional short labels to show information such as validation status.
+Papaya tasks show a priority flag with a label such as P2, and completed tasks also show a checkmark.
 
 
 == Improvements

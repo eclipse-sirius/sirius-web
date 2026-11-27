@@ -47,6 +47,8 @@ Each configuration exposes `id`, `label`, `iconURL` and a list of string `key`/`
 Downstream applications with custom nodes can follow the same structure in their layout handlers, using `EllipseNodeLayoutHandler` as an example.
 The exported `setBorderNodesPosition`, `getNorthBorderNodeFootprintWidth`, `getSouthBorderNodeFootprintWidth`, `getEastBorderNodeFootprintHeight`, and `getWestBorderNodeFootprintHeight` helpers now take `previousNodesById: Map<string, Node<NodeData, DiagramNodeType>>` instead of `previousDiagram: RawDiagram | null`.
 See `EllipseNodeLayoutHandler` for an updated example.
+- https://github.com/eclipse-sirius/sirius-web/issues/7200[#7200] [tree] Add `TreeItem.decorators: [TreeItemDecorator!]!` to the GraphQL schema and the corresponding field to the frontend `GQLTreeItem` type.
+`IExplorerServices` now exposes `getDecorators`, and `ExplorerServices` takes an `IExplorerDecoratorService` constructor argument.
 
 
 === Dependency update
@@ -80,6 +82,8 @@ See `EllipseNodeLayoutHandler` for an updated example.
 - https://github.com/eclipse-sirius/sirius-web/issues/7088[#7088] [table] Add the ability to adjust table row heights and table column width to fit the cell contents.
 - https://github.com/eclipse-sirius/sirius-web/issues/7088[#7088] [table] Add the ability to adjust table row heights to fit their content.
 - https://github.com/eclipse-sirius/sirius-web/issues/7198[#7198] [diagram] Add support for NodeInsideLabel
+- https://github.com/eclipse-sirius/sirius-web/issues/7200[#7200] [tree] Allow applications to contribute icons with optional labels to items in the default Explorer.
+- https://github.com/eclipse-sirius/sirius-web/issues/7200[#7200] [tree] Show Papaya task priority and completion in the Explorer.
 
 
 

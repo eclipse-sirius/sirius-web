@@ -34,7 +34,11 @@ public final class PapayaIdentifiers {
 
     public static final UUID SIRIUS_WEB_PLANNING_PROJECT_OBJECT = UUID.fromString("1135f77e-0d16-4b10-8a4b-c492ac80221f");
 
+    public static final UUID SIRIUS_WEB_PLANNING_DOCUMENT = UUID.fromString("a0473b31-912f-4d99-8b41-3d44a8a1b238");
+
     public static final UUID FIRST_TASK_OBJECT = UUID.fromString("31395bb3-1e09-42a5-b450-034955c45ac2");
+
+    public static final UUID ADD_ADDITIONAL_TESTS_TASK_OBJECT = UUID.fromString("087a700e-c509-458d-9634-5b4132ce10e3");
 
     public static final UUID FIRST_ITERATION_OBJECT = UUID.fromString("8a8e1113-b7ce-4549-a80d-91349879e3d8");
 

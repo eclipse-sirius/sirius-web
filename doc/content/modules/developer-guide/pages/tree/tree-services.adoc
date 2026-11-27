@@ -1,5 +1,17 @@
 = Tree Services
 
+== Explorer tree item decorators
+
+Register a Spring bean implementing `org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerDecoratorServiceDelegate` to decorate items in the default Explorer.
+Use `canHandle(editingContext, object)` to select the contexts and source objects that the contribution supports.
+This check runs for each rendered item, so keep it inexpensive.
+
+Return a list of `org.eclipse.sirius.components.trees.TreeItemDecorator` values from `getDecorators(editingContext, object)`.
+Each decorator requires a static image path or an absolute HTTP(S) image URL and accepts a nullable text label.
+Use an empty list when an item has no decorators.
+The Explorer preserves the order of each list and combines the lists in Spring bean order.
+Use Spring's `@Order` when contributions need an explicit relative order.
+
 == Explorer tree filters
 
 Register a Spring service implementing `org.eclipse.sirius.components.collaborative.trees.api.ITreeFilterProvider` to contribute filters to the Explorer toolbar.
