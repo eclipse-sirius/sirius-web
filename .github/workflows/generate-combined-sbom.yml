@@ -1,0 +1,62 @@
+name: Generate combined SBOM
+
+# Merges the Maven SBOM and the runtime NPM SBOM into a single SBOM of what
+# Sirius Web ships. The full NPM SBOM is left out: it is a superset of the
+# runtime one and would only add duplicates and development dependencies.
+#
+# The SBOMs are read from the `backend-sbom` and `frontend-sbom` artifacts of the
+# calling workflow run, which `Generate Maven SBOM` and `Generate NPM SBOM` store.
+# Hence this workflow can only be called, after those two, and not dispatched.
+
+on:
+  workflow_call:
+    inputs:
+      product-version:
+        description: "Product version to upload the combined SBOM with"
+        type: string
+        required: true
+
+env:
+  CYCLONEDX_CLI_VERSION: "0.33.1"
+  CYCLONEDX_CLI_SHA256: "bfc8b2538da86fe239bc53658bbb63c1c8c510a293c1e6891aa5bea5d3c58746"
+  PRODUCT_VERSION: ${{ inputs.product-version }}
+
+permissions: {}
+
+jobs:
+  generate-sbom:
+    name: Generate combined SBOM
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download SBOMs
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: "*-sbom"
+          path: sboms
+          merge-multiple: true
+
+      - name: Install cyclonedx-cli
+        run: |
+          curl -sSfL -o cyclonedx "https://github.com/CycloneDX/cyclonedx-cli/releases/download/v${CYCLONEDX_CLI_VERSION}/cyclonedx-linux-x64"
+          echo "${CYCLONEDX_CLI_SHA256}  cyclonedx" | sha256sum --check
+          chmod +x cyclonedx
+
+      - name: Generate combined SBOM
+        run: |
+          ./cyclonedx merge \
+            --hierarchical \
+            --name "Sirius Web" \
+            --version "${PRODUCT_VERSION}" \
+            --input-files sboms/bom.json sboms/runtime-bom.json \
+            --output-format json \
+            --output-file combined-bom.json
+
+      - name: Upload combined SBOM
+        uses: eclipse-csi/workflows/upload-sbom@d2d3dbbc0a1907f41892c1698b3c6353235c87cb # upload-sbom/v1.0.0
+        with:
+          sbom-file: combined-bom.json
+          product-name: "Sirius Web - Combined"
+          product-version: ${{ env.PRODUCT_VERSION }}

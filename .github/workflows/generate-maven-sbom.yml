@@ -2,6 +2,10 @@ name: Generate Maven SBOM
 
 on:
   workflow_call:
+    outputs:
+      project-version:
+        description: "Product version the SBOM was uploaded with"
+        value: ${{ jobs.generate-sbom.outputs.project-version }}
   workflow_dispatch:
     inputs:
       version:
@@ -28,6 +32,8 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    outputs:
+      project-version: ${{ steps.version.outputs.PROJECT_VERSION }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -71,3 +77,11 @@ jobs:
           sbom-file: ${{ env.PRODUCT_PATH }}/target/bom.json
           product-name: "Sirius Web - Backend"
           product-version: ${{ steps.version.outputs.PROJECT_VERSION }}
+
+      # Consumed by the `combined-sbom` job of the calling workflow
+      - name: Store sbom
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: backend-sbom
+          path: ${{ env.PRODUCT_PATH }}/target/bom.json
+          retention-days: 5

@@ -404,3 +404,20 @@ jobs:
       packages: read
       id-token: write
     uses: ./.github/workflows/generate-npm-sbom.yml
+
+  # Merges the SBOMs that the two jobs above store as artifacts. Skipped whenever
+  # those jobs are skipped.
+  #
+  # The combined SBOM is uploaded with the product version of the Maven SBOM,
+  # i.e. the backend version from `packages/pom.xml`. The NPM SBOMs derive their
+  # version from the root `package.json` instead. Both are expected to be the
+  # same, but nothing prevents them from drifting apart today. If they did, the
+  # combined SBOM would carry the backend version for frontend components too.
+  combined-sbom:
+    name: Generate combined SBOM
+    needs: [maven-sbom, npm-sbom]
+    permissions:
+      id-token: write
+    uses: ./.github/workflows/generate-combined-sbom.yml
+    with:
+      product-version: ${{ needs.maven-sbom.outputs.project-version }}

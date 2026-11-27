@@ -89,3 +89,11 @@ jobs:
           sbom-file: ${{ env.PRODUCT_PATH }}/full-bom.json
           product-name: "Sirius Web - Frontend Full"
           product-version: ${{ steps.version.outputs.PROJECT_VERSION }}
+
+      # Consumed by the `combined-sbom` job of the calling workflow
+      - name: Store runtime SBOM
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: frontend-sbom
+          path: ${{ env.PRODUCT_PATH }}/runtime-bom.json
+          retention-days: 5
