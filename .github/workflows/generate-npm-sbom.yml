@@ -55,6 +55,10 @@ jobs:
         run: |
           cyclonedx-npm --output-format json --output-file runtime-bom.json --omit dev
 
+      - name: Generate full SBOM
+        run: |
+          cyclonedx-npm --output-format json --output-file full-bom.json
+
       - name: Extract product version
         id: version
         shell: bash
@@ -72,9 +76,16 @@ jobs:
           echo "PROJECT_VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Product version: $VERSION"
 
-      - name: Upload SBOM
+      - name: Upload runtime SBOM
         uses: eclipse-csi/workflows/upload-sbom@d2d3dbbc0a1907f41892c1698b3c6353235c87cb # upload-sbom/v1.0.0
         with:
           sbom-file: ${{ env.PRODUCT_PATH }}/runtime-bom.json
-          product-name: "Sirius Web - Frontend"
+          product-name: "Sirius Web - Frontend Runtime"
+          product-version: ${{ steps.version.outputs.PROJECT_VERSION }}
+
+      - name: Upload full SBOM
+        uses: eclipse-csi/workflows/upload-sbom@d2d3dbbc0a1907f41892c1698b3c6353235c87cb # upload-sbom/v1.0.0
+        with:
+          sbom-file: ${{ env.PRODUCT_PATH }}/full-bom.json
+          product-name: "Sirius Web - Frontend Full"
           product-version: ${{ steps.version.outputs.PROJECT_VERSION }}
